@@ -1,0 +1,24 @@
+# Dependencies
+node_modules/
+.pnp/
+.pnp.js
+
+# Build output
+.next/
+dist/
+build/
+out/
+
+# Local environment files
+.env
+.env.*
+!.env.example
+
+# Tooling and OS files
+.DS_Store
+*.log
+coverage/
+
+# Local editor settings
+.vscode/
+.idea/
