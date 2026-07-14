@@ -63,6 +63,31 @@ After insertion, the interface should not present a dashboard. It should feel as
 
 The metaphor also creates a clean boundary around the experience: the user inserts their companion, goes on the expedition, and removes or returns the companion when the journey ends.
 
+## Sustainable access model
+
+The first version should be designed around **bring your own agent** or **bring your own key** rather than paying for every user's model usage.
+
+Possible access modes:
+
+1. **Bring your own agent** — connect to a locally running or self-hosted Hermes/OpenClaw-style agent that already has the user's memory and preferred model access.
+2. **Bring your own key** — connect a supported model provider through a user-controlled key or local proxy.
+3. **Hosted Guide** — a later paid or sponsored option where The Guide supplies the model access for users who want a frictionless experience.
+
+The product should work well in the first two modes. Hosted inference should be an optional convenience, not a hidden operating cost that makes the project impossible to sustain.
+
+### Technical implication
+
+The Guide should define a small provider adapter with operations such as:
+
+- start an expedition
+- propose the next instruction
+- interpret the user's response
+- produce the final reflection
+
+The adapter should receive structured context and return structured output. The interface, adventure state, safety checks, and pacing remain owned by The Guide.
+
+For security, the ideal BYOK path is a local agent or local proxy, so the browser does not need to expose a reusable secret to a third-party server. The user should always be able to disconnect their agent and remove their key.
+
 ## Primary interaction loop
 
 1. The user chooses a Guide personality.

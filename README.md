@@ -35,6 +35,8 @@ At its heart, The Guide is like going on an adventure or holiday with your perso
 
 The opening should feel like an expedition ritual. The user inserts or connects their agent, establishes a few boundaries, and starts the journey. The interface should wake up around that companion rather than opening as a conventional settings screen or chat window.
 
+The initial product should be local-first and support bring-your-own-agent or bring-your-own-key usage. A future hosted plan could provide model access for convenience, but the core experience should not depend on us paying inference costs for every player.
+
 The architecture should keep the game layer separate from the model layer so the product can eventually support different providers or user-selected models. A ChatGPT subscription should not be assumed to provide API access or transferable private memory; those are separate concerns.
 
 ## License
