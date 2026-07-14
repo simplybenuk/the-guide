@@ -106,6 +106,39 @@ The possession is temporary and bounded. When the adventure ends, the companion 
 
 The interface should feel like a tiny illustrated world rather than a productivity dashboard: a few objects, expressive empty space, readable text, and occasional clues that reward attention. Humor and mystery should make the experience approachable; the underlying controls should keep it safe and achievable.
 
+## Mobile-first opening screen
+
+The first screen should feel like the opening screen of a point-and-click adventure, redesigned for a phone held in one hand. It should be a portrait scene rather than a form or dashboard.
+
+### Initial composition
+
+- A quiet, illustrated environment fills most of the screen.
+- The user's companion is the focal character or object.
+- The elixir is visible as the one important interactive object.
+- A short line of dialogue establishes the mood and acknowledges the companion.
+- One large, thumb-friendly action invites the user to begin.
+- Pause, exit, and safety controls remain available but visually quiet.
+
+The first interaction could be as simple as:
+
+> **Your companion has arrived.**
+>
+> It has been given an elixir. It is waiting for your permission.
+>
+> **Let it drink**
+
+The user should understand the scene without reading instructions. Tapping the elixir or the primary button begins a short transformation sequence. From that point, the layout becomes the adventure screen: the current scene, the Game Master's message, and one next action or response control.
+
+### Mobile constraints
+
+- Design for portrait orientation first.
+- Make the primary action reachable with one thumb.
+- Use large tap targets and short readable text.
+- Keep each screen focused on one decision or observation.
+- Avoid persistent toolbars, dense status panels, and chat-like message history.
+- Treat vibration, sound, and small transitions as optional atmosphere, never required for comprehension.
+- Preserve the experience on a slow connection and on a small screen.
+
 ## Primary interaction loop
 
 1. The user chooses a Guide personality.

@@ -39,6 +39,8 @@ The initial product should be local-first and support bring-your-own-agent or br
 
 The visual direction is a minimal point-and-click adventure: playful, strange, lightly spooky, and dryly funny. The companion enters with the user, drinks a fictional elixir, and is temporarily possessed by the Game Master. The ritual marks the start of the expedition and keeps the game world distinct from ordinary assistant use.
 
+The product is mobile-first. The opening should resemble the start of a point-and-click adventure in portrait orientation: one illustrated scene, one companion, one elixir, and one obvious thumb-friendly action.
+
 The architecture should keep the game layer separate from the model layer so the product can eventually support different providers or user-selected models. A ChatGPT subscription should not be assumed to provide API access or transferable private memory; those are separate concerns.
 
 ## License
