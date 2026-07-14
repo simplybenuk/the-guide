@@ -33,15 +33,15 @@ The interface should feel like a clean, mysterious encounter with a responsive o
 
 The user can surrender the burden of deciding what happens next, but control is always reversible. Adventures must be achievable, paced one action at a time, and responsive to refusal, changing energy, and real-world boundaries.
 
-At its heart, The Guide is like going on an adventure or holiday with your personal agent: the agent is a travelling companion with memory and a point of view, while the user remains free to change course or go home.
+At its heart, The Guide is a human/AI buddy game: the user goes on an adventure or holiday with an AI that already exists as a companion, or creates and personifies one before the journey begins.
 
-The opening should feel like an expedition ritual. The user inserts or connects their agent, establishes a few boundaries, and starts the journey. The interface should wake up around that companion rather than opening as a conventional settings screen or chat window.
+The opening should feel like an expedition ritual. The user inserts or connects their buddy, establishes a few boundaries, and starts the journey. The interface should wake up around that buddy rather than opening as a conventional settings screen or chat window.
 
 The initial product should be local-first and support bring-your-own-agent or bring-your-own-key usage. A future hosted plan could provide model access for convenience, but the core experience should not depend on us paying inference costs for every player.
 
-The visual direction is a minimal point-and-click adventure: playful, strange, lightly spooky, and dryly funny. The companion enters with the user, drinks a fictional elixir, and is temporarily possessed by the Game Master. The ritual marks the start of the expedition and keeps the game world distinct from ordinary assistant use.
+The visual direction is a minimal point-and-click adventure: playful, strange, lightly spooky, and dryly funny. The buddy enters with the user, drinks a fictional elixir, and is temporarily transformed into an expedition persona. The ritual marks the start of the expedition and keeps the game world distinct from ordinary assistant use.
 
-The product is mobile-first. The opening should resemble the start of a point-and-click adventure in portrait orientation: one illustrated scene, one companion, one elixir, and one obvious thumb-friendly action.
+The product is mobile-first. The opening should resemble the start of a point-and-click adventure in portrait orientation: one illustrated scene, one buddy, one elixir, and one obvious thumb-friendly action.
 
 The architecture should keep the game layer separate from the model layer so the product can eventually support different providers or user-selected models. A ChatGPT subscription should not be assumed to provide API access or transferable private memory; those are separate concerns.
 
