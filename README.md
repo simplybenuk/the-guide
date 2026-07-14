@@ -33,6 +33,8 @@ The user can surrender the burden of deciding what happens next, but control is 
 
 At its heart, The Guide is like going on an adventure or holiday with your personal agent: the agent is a travelling companion with memory and a point of view, while the user remains free to change course or go home.
 
+The opening should feel like an expedition ritual. The user inserts or connects their agent, establishes a few boundaries, and starts the journey. The interface should wake up around that companion rather than opening as a conventional settings screen or chat window.
+
 The architecture should keep the game layer separate from the model layer so the product can eventually support different providers or user-selected models. A ChatGPT subscription should not be assumed to provide API access or transferable private memory; those are separate concerns.
 
 ## License

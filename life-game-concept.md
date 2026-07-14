@@ -47,6 +47,22 @@ This metaphor should shape the experience:
 
 The strongest version of the product is therefore a temporary relationship: a small, bounded holiday from ordinary decision-making, taken with an intelligence that knows enough about the user to make the journey feel personal.
 
+## Opening ritual: insert your companion
+
+The experience could begin with a simple expedition ritual. Instead of completing a conventional onboarding form, the user **inserts their agent**:
+
+- connect a personal agent such as Hermes or OpenClaw
+- select or name the travelling companion
+- optionally provide a small boundary card: time, energy, location precision, and hard limits
+- place the companion into the Guide interface
+- press **Begin Expedition**
+
+The visual language can suggest an old expedition device or mysterious artifact: a dark field, a single receiving slot, a token or card representing the agent, and a restrained moment of mechanical or magical activation. The feeling should be tactile and anticipatory, with an Indiana-Jones-like sense of setting out into the unknown, while remaining visually original and minimal.
+
+After insertion, the interface should not present a dashboard. It should feel as if the expedition has started. The companion appears, acknowledges the user in its own voice, establishes the first destination or mystery, and gives the first achievable instruction.
+
+The metaphor also creates a clean boundary around the experience: the user inserts their companion, goes on the expedition, and removes or returns the companion when the journey ends.
+
 ## Primary interaction loop
 
 1. The user chooses a Guide personality.
