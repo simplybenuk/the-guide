@@ -276,4 +276,18 @@ In practice, a user's existing ChatGPT subscription should not be treated as a d
 
 This keeps the concept open to different models without making the quality of the experience depend on hidden access to a user's private account memory.
 
+### Possible personal-agent integration
+
+An OpenClaw- or Hermes-style personal agent could be the user's private companion behind The Guide. Hermes is especially interesting for an experiment because it supports multiple model providers, persistent context, and an OpenAI-compatible API surface. The Guide would act as a deliberately narrow front end over that personal agent.
+
+The integration should be constrained:
+
+- The Guide sends structured adventure context and the latest user response.
+- The agent returns a structured next step, not an unrestricted autonomous action.
+- Tools, shell access, messaging, web browsing, and background tasks remain disabled by default during an adventure.
+- The app validates the proposed step for time, effort, safety, and clarity before showing it.
+- The agent's memory can personalize the voice and suggestions, but it must not override the user's current boundaries.
+
+This would let the user bring an agent that already knows them while preserving the clean, intentional game experience. It also makes Hermes or OpenClaw an optional personal-agent backend rather than the product's entire safety boundary.
+
 Before writing code, settle the first demo adventure and choose the initial Guide personality that best proves the concept. The likely strongest starting point is The Detective or The Trickster because both can turn a mundane setting into an immediately visible game.
