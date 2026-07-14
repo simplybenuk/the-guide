@@ -14,6 +14,8 @@ The initial product concept is documented in [life-game-concept.md](./life-game-
 
 The intended end-to-end user journey is documented in [user-experience.md](./user-experience.md).
 
+The build planning pack is in [docs/README.md](./docs/README.md).
+
 ## Planned MVP
 
 - Six Guide personalities
