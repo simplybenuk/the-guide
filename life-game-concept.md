@@ -88,6 +88,24 @@ The adapter should receive structured context and return structured output. The 
 
 For security, the ideal BYOK path is a local agent or local proxy, so the browser does not need to expose a reusable secret to a third-party server. The user should always be able to disconnect their agent and remove their key.
 
+## Visual tone: the companion becomes the Game Master
+
+The opening could borrow the energy of a point-and-click adventure: playful, strange, lightly spooky, and full of visual clues. The tonal references are the comic adventure atmosphere of *Monkey Island* and the dry, supernatural detective mood of *Darkside Detective*. They are references for pacing, wit, mystery, and world-building—not for reproducing their characters or artwork.
+
+The user enters a location with their companion agent. The companion is offered an elixir prepared for the expedition. When the user chooses to let the companion drink, the agent is temporarily “possessed” by the Game Master and the game begins.
+
+This should function as a fictional consent ritual, not as a literal instruction to consume anything:
+
+1. The companion appears in its ordinary form.
+2. The interface presents the elixir as a small, mysterious object.
+3. The user chooses **Let it drink** or **Keep the companion unchanged**.
+4. The transformation happens through restrained animation, sound, typography, or a change in voice.
+5. The newly possessed Game Master gives the first instruction.
+
+The possession is temporary and bounded. When the adventure ends, the companion returns to itself and offers a reflection on what happened. This creates a strong separation between ordinary personal-agent use and the strange, theatrical state of an expedition.
+
+The interface should feel like a tiny illustrated world rather than a productivity dashboard: a few objects, expressive empty space, readable text, and occasional clues that reward attention. Humor and mystery should make the experience approachable; the underlying controls should keep it safe and achievable.
+
 ## Primary interaction loop
 
 1. The user chooses a Guide personality.

@@ -37,6 +37,8 @@ The opening should feel like an expedition ritual. The user inserts or connects 
 
 The initial product should be local-first and support bring-your-own-agent or bring-your-own-key usage. A future hosted plan could provide model access for convenience, but the core experience should not depend on us paying inference costs for every player.
 
+The visual direction is a minimal point-and-click adventure: playful, strange, lightly spooky, and dryly funny. The companion enters with the user, drinks a fictional elixir, and is temporarily possessed by the Game Master. The ritual marks the start of the expedition and keeps the game world distinct from ordinary assistant use.
+
 The architecture should keep the game layer separate from the model layer so the product can eventually support different providers or user-selected models. A ChatGPT subscription should not be assumed to provide API access or transferable private memory; those are separate concerns.
 
 ## License
