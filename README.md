@@ -12,6 +12,8 @@ Early concept and planning. Implementation has not started yet.
 
 The initial product concept is documented in [life-game-concept.md](./life-game-concept.md).
 
+The intended end-to-end user journey is documented in [user-experience.md](./user-experience.md).
+
 ## Planned MVP
 
 - Six Guide personalities
