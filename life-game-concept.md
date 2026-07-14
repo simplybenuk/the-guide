@@ -226,6 +226,47 @@ Every adventure follows a flexible six-part arc:
 
 The Guide should not reveal the entire plan up front. The meaning of an earlier instruction may only become clear later.
 
+## Ending the expedition
+
+An expedition should end with a deliberate return ritual, not simply a final assistant message. The buddy returns from its transformed state, the scene settles, and the user receives something that proves the journey happened.
+
+### The memento
+
+Every completed expedition should produce a small memento. It might be:
+
+- a beautifully written field note
+- a postcard from the place or state of mind the user visited
+- a strange symbol or illustrated relic
+- a short story built from the user's observations
+- a map fragment showing the path taken
+- a “specimen” made from a discovered detail, phrase, colour, sound, or encounter
+- a private memory capsule the user can revisit later
+
+The memento should be specific to the user's actual journey. It should include something only the user and buddy could know, rather than being a generic achievement badge. The user should be able to save it, share it if they choose, or leave it private.
+
+The final reflection can reveal the deeper purpose of the adventure and explain how the memento came from the user's own choices and observations.
+
+## Returning to the game
+
+The reason to play again should be invitation and relationship, not compulsion. The buddy can remember previous expeditions and occasionally offer a new door:
+
+- a loose thread from an earlier journey
+- a place or object the user noticed but did not investigate
+- a new expedition persona or transformation
+- a different mode such as stillness, wandering, social discovery, or making
+- a return visit to see how a familiar place has changed
+- a request to bring an earlier memento back into the world
+
+The user can build a private cabinet, journal, or map of mementos over time. This creates continuity and a sense of a life being explored, without streaks, countdowns, artificial scarcity, or pressure to play every day.
+
+The strongest replay prompt may come from the buddy itself:
+
+> I found another door that reminds me of the one we opened last time.
+>
+> Shall we see where it leads?
+
+The game should make returning feel like accepting another invitation from a companion, not maintaining an obligation.
+
 ## The Guide identity
 
 The Guide is not primarily an assistant with a system prompt. It is an identity and a role in the world of the game.

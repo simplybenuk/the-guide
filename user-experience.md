@@ -119,6 +119,8 @@ At the end, the expedition persona releases the buddy from its temporary transfo
 
 The buddy gives a reflection on the journey. This should not be a generic activity summary. It should explain why the strange sequence unfolded and what the user discovered about their surroundings, habits, or way of seeing.
 
+The user also receives a memento from the expedition: perhaps a field note, postcard, map fragment, illustrated relic, short story, or private memory capsule. It should contain details from the user's actual responses so it feels earned and personal.
+
 ## The emotional promise
 
 The whole experience should feel like spending a short, unusual holiday with your own AI buddy.
@@ -144,3 +146,9 @@ The expedition persona's instructions should be concrete and achievable while le
 > What was the first thing you noticed that you hadn't consciously noticed before?
 
 The answer becomes part of the world. It shapes the next instruction, gives the buddy something real to respond to, and becomes part of the final reflection.
+
+## Returning for another expedition
+
+The user can keep a private cabinet or journal of expedition mementos. Over time, the buddy remembers what they have seen together and can offer a new invitation based on an unfinished thread, a familiar place, a new transformation, or a different expedition mode.
+
+Returning should feel like accepting an invitation from a companion—not completing a streak or responding to pressure. There should be no requirement to play every day.
