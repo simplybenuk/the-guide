@@ -31,6 +31,22 @@ The desired emotional outcome is:
 
 > “That wasn't what I expected, but I'm glad I did it.”
 
+## Core relationship: going somewhere together
+
+The emotional model for The Guide is not “an assistant gives the user tasks.” It is “the user and their agent go on an adventure together.”
+
+The agent is a travelling companion with a point of view. It notices things, remembers what matters to the user, suggests the next turn in the road, and occasionally surprises them. The user remains the person who can say yes, no, slower, faster, or home—but for a little while they do not have to plan the whole journey themselves.
+
+This metaphor should shape the experience:
+
+- The Guide should feel present, not like a form or productivity tool.
+- The user and agent should develop a shared story during the adventure.
+- Personal memory should make the journey feel familiar without making it predictable.
+- The agent should sometimes be a companion, sometimes a guide, and sometimes a fellow explorer.
+- The ending should feel like returning from somewhere, with a story to keep.
+
+The strongest version of the product is therefore a temporary relationship: a small, bounded holiday from ordinary decision-making, taken with an intelligence that knows enough about the user to make the journey feel personal.
+
 ## Primary interaction loop
 
 1. The user chooses a Guide personality.
