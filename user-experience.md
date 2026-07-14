@@ -37,8 +37,11 @@ The game asks for only a few boundaries:
 - How much time do you have?
 - How much energy do you have?
 - Is there anything you absolutely do not want to do?
+- Do you want to travel, wander nearby, or stay where you are?
 
 These are presented as simple, friendly choices rather than a long questionnaire.
+
+If the user chooses to travel, they also choose a rough radius, destination, or time limit. The buddy can then turn the surrounding world into a field of possible discoveries. If the user chooses to stay, the expedition remains fully playable indoors or in one location.
 
 ## 3. The elixir
 
@@ -76,6 +79,20 @@ The user receives one achievable instruction at a time. The screen might show a 
 The expedition persona adapts to the user’s responses. The user can answer in free text, not just by pressing buttons. If the user refuses, the story branches immediately. If they notice something unexpected, it becomes part of the adventure. If they are tired or short on time, the expedition changes scale.
 
 The user and their buddy gradually feel like travelling companions. The buddy remembers enough about the user to make the experience personal, while the expedition persona controls the temporary mood, pacing, mystery, and narrative.
+
+## Travel mode
+
+Travel is an optional expedition mode inspired by the feeling of being sent into the real world to discover something just beyond ordinary attention. The user is not collecting branded characters; they are collecting moments, clues, places, observations, and stories.
+
+The setup choice is simple:
+
+> **Do you want to travel?**
+
+- **Stay here** — discover something in the current room or immediate setting.
+- **Wander nearby** — take a short walk within a chosen time or distance.
+- **Go somewhere** — travel to a chosen destination or let the buddy suggest one.
+
+The expedition persona should state the expected effort before the user begins. Location sharing is optional and should use the least precise information needed. The user should never be tracked silently, sent toward dangerous areas, or encouraged to keep walking just to complete a collection.
 
 ## 6. The adventure arc
 

@@ -43,6 +43,8 @@ The visual direction is a minimal point-and-click adventure: playful, strange, l
 
 The product is mobile-first. The opening should resemble the start of a point-and-click adventure in portrait orientation: one illustrated scene, one buddy, one elixir, and one obvious thumb-friendly action.
 
+Travel can be an optional expedition mode. The user chooses whether to stay put, wander nearby, or go somewhere, and the buddy turns the real world into a field of discoveries while respecting time, distance, safety, and location privacy.
+
 The architecture should keep the game layer separate from the model layer so the product can eventually support different providers or user-selected models. A ChatGPT subscription should not be assumed to provide API access or transferable private memory; those are separate concerns.
 
 ## License

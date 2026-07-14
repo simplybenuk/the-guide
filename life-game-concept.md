@@ -289,8 +289,29 @@ After selection, the user provides only enough context to make the first adventu
 - energy level
 - interests or boundaries
 - whether they are alone or with others
+- whether they want to travel during the expedition
 
 The product should avoid turning setup into a questionnaire. The first instruction should arrive quickly.
+
+### Travel mode
+
+The expedition can optionally turn the user's real surroundings into a field of possible encounters. The feeling should be that the buddy is sending the user out to discover or “catch” moments, clues, objects, places, or observations in the real world—not that the app is assigning errands.
+
+During setup, the user is asked:
+
+> **Do you want to travel?**
+
+Possible choices:
+
+- **Stay here** — an indoor, stillness, observation, or nearby-environment adventure
+- **Wander nearby** — a short walk within a user-chosen radius or time limit
+- **Go somewhere** — a longer journey or destination-based expedition
+
+The user should also be able to choose **Surprise me**, with the app selecting only within the boundaries they have approved.
+
+Travel mode should preserve the core interaction loop: one instruction, one observation, one free-text response. A walk might turn into a search for a particular colour, an overlooked architectural detail, a small local story, or an unexpected human-made object. The reward is the encounter and the story it creates, not a points economy that encourages compulsive movement.
+
+Location should remain optional and privacy-conscious. The user can provide a broad area, a chosen destination, or no location at all. The app should ask for the minimum precision needed, show the expected distance and time before travel begins, avoid unsafe roads or isolated areas, and never quietly track movement in the background.
 
 ## Candidate MVP
 
