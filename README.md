@@ -47,6 +47,8 @@ Travel can be an optional expedition mode. The user chooses whether to stay put,
 
 The architecture should keep the game layer separate from the model layer so the product can eventually support different providers or user-selected models. A ChatGPT subscription should not be assumed to provide API access or transferable private memory; those are separate concerns.
 
+Conceptually, The Guide is an AI harness for play: it gives a personal AI buddy a temporary role, a bounded world, a narrative arc, persistent mementos, and safe rules for interacting with a human.
+
 ## License
 
 License to be decided.

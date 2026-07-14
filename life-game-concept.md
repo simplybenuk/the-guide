@@ -441,6 +441,24 @@ The product will need more than a personality prompt. Important model and applic
 
 One useful design direction is to treat the model as the narrator and decision-maker while the application maintains explicit structured state. This makes the experience easier to test and prevents the adventure from becoming an unbounded chat.
 
+## The Guide as a gaming harness for personal AI
+
+At an architectural level, The Guide is an AI harness designed around play. It gives a personal AI buddy a temporary role, a bounded world, a memory of previous journeys, and a structured way to interact with a human.
+
+The harness has several layers:
+
+1. **Buddy layer** — the user's existing or newly created AI identity, memory, voice, and preferences.
+2. **Expedition layer** — time horizon, energy, travel mode, boundaries, and current journey state.
+3. **Game-master layer** — the temporary mythic persona that controls pacing, mystery, escalation, and reflection.
+4. **World layer** — the user's surroundings, observations, discoveries, objects, places, and people encountered safely.
+5. **Interaction layer** — one instruction at a time, free-text responses, refusal, surprise, pause, and stop.
+6. **Archive layer** — past expeditions, mementos, open threads, and the relationship's continuity.
+7. **Safety layer** — validates proposed actions against physical, social, privacy, and emotional boundaries.
+
+The model should not be responsible for all of these layers by itself. It can propose an instruction, interpret a response, and narrate the world, while the harness owns state, permissions, validation, and the user's ability to leave.
+
+This is what makes the product different from a general-purpose personal agent. A general agent is usually judged by what it can accomplish on the user's behalf. The Guide is judged by the quality of the shared experience it creates with the user.
+
 ## Safety and trust
 
 Because the product asks users to take real-world actions, safety is a central product feature rather than a footnote.
