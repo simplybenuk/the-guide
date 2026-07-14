@@ -25,6 +25,10 @@ The initial product concept is documented in [life-game-concept.md](./life-game-
 
 This repository is currently documentation-first. Implementation instructions will be added when the technology stack is selected.
 
+## Design direction
+
+The interface should feel like a clean, mysterious encounter with a responsive object: minimal, focused, and slightly theatrical. The mood draws from the sense of possibility in Zoltar, the cryptic invitation of the white rabbit, and the intimate responsiveness of Tom Riddle's diary—without copying their visual designs.
+
 ## License
 
 License to be decided.

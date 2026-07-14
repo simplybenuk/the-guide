@@ -219,4 +219,31 @@ This concept is being documented before implementation. When building begins, th
 
 ## Current next step
 
+## Visual and interaction direction
+
+The experience should feel like an encounter with a mysterious guide or artifact, not like opening a conventional assistant.
+
+Useful reference points include:
+
+- **Zoltar from *Big*** — a small, theatrical object that invites the user to surrender to a moment of possibility.
+- **The white-rabbit sequence from *The Matrix*** — a simple, cryptic signal that creates curiosity and asks the user to follow.
+- **Tom Riddle's diary from *Harry Potter*** — an intimate object that appears to respond personally and reveal more over time.
+
+These are references for mood and interaction, not for copying visual details. The product should remain original, restrained, and easy to understand.
+
+### Interface principles
+
+- Keep the interface minimal and uncluttered.
+- Make the Guide feel like a distinct presence or object.
+- Use mystery, pacing, and anticipation instead of lots of explanatory UI.
+- Present one meaningful choice or instruction at a time.
+- Let typography, spacing, subtle motion, and carefully chosen transitions carry the atmosphere.
+- Keep the primary action obvious and immediate: choose a Guide, then press **Go**.
+- Avoid a dense dashboard, conventional chat layout, or excessive controls during an adventure.
+- Make the interface feel clean and modern even when the tone is uncanny or theatrical.
+
+### Desired first impression
+
+The user should feel that they have discovered a quiet, intriguing machine that is waiting to give them a direction.
+
 Before writing code, settle the first demo adventure and choose the initial Guide personality that best proves the concept. The likely strongest starting point is The Detective or The Trickster because both can turn a mundane setting into an immediately visible game.
