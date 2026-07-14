@@ -29,6 +29,10 @@ This repository is currently documentation-first. Implementation instructions wi
 
 The interface should feel like a clean, mysterious encounter with a responsive object: minimal, focused, and slightly theatrical. The mood draws from the sense of possibility in Zoltar, the cryptic invitation of the white rabbit, and the intimate responsiveness of Tom Riddle's diary—without copying their visual designs.
 
+The user can surrender the burden of deciding what happens next, but control is always reversible. Adventures must be achievable, paced one action at a time, and responsive to refusal, changing energy, and real-world boundaries.
+
+The architecture should keep the game layer separate from the model layer so the product can eventually support different providers or user-selected models. A ChatGPT subscription should not be assumed to provide API access or transferable private memory; those are separate concerns.
+
 ## License
 
 License to be decided.

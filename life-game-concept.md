@@ -246,4 +246,34 @@ These are references for mood and interaction, not for copying visual details. T
 
 The user should feel that they have discovered a quiet, intriguing machine that is waiting to give them a direction.
 
+## User agency and achievable adventures
+
+The central promise is not that the Guide can control the user. It is that the user can briefly and deliberately hand over the burden of deciding what to do next.
+
+That surrender must always remain reversible. Every adventure should:
+
+- begin with a clear time horizon and a lightweight boundary check
+- offer actions that are achievable with the user's current time, energy, setting, and resources
+- give one instruction at a time
+- make the effort and any meaningful risk legible before the user commits
+- accept refusal immediately and branch without guilt or punishment
+- provide a prominent pause and stop action
+- treat the user's real-world judgment as higher authority than the Guide
+- end before the experience becomes exhausting, intrusive, or unsafe
+
+The Guide should create momentum, not pressure. A successful adventure is one the user feels glad they chose to continue—not one that technically completed the most steps.
+
+## Personal model and memory direction
+
+It may be valuable to let users bring their preferred AI model or provider, especially one that already understands their preferences. The product should therefore keep the game layer separate from the model layer:
+
+- The application owns the adventure state, pacing, branches, safety checks, and interface.
+- The user's chosen model supplies narration, interpretation, and Guide personality.
+- The application sends only the context needed for the current adventure.
+- Long-term memory is explicit and user-controlled rather than assumed to be available from a provider.
+
+In practice, a user's existing ChatGPT subscription should not be treated as a drop-in API credential. ChatGPT subscriptions and API usage are separate products and billing systems. A future version could support a provider connection or a user-supplied API key where appropriate, but the first prototype should use a replaceable model adapter and an explicit user profile or “Guide passport.”
+
+This keeps the concept open to different models without making the quality of the experience depend on hidden access to a user's private account memory.
+
 Before writing code, settle the first demo adventure and choose the initial Guide personality that best proves the concept. The likely strongest starting point is The Detective or The Trickster because both can turn a mundane setting into an immediately visible game.
