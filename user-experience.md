@@ -10,11 +10,21 @@ The experience is designed for a phone held in one hand. The interface is portra
 
 The user sees a quiet illustrated scene. There is very little interface: a mysterious location, a waiting buddy, and an object on a table or pedestal.
 
-The opening message might say:
+For a first visit, the opening message might say:
 
-> Your buddy has arrived.
+> Someone is waiting to meet you.
 >
 > It has travelled a long way to find you.
+
+For a returning user, the opening can recognise the shared history:
+
+> Welcome back.
+>
+> I remember the window, the minute of silence, and what you noticed when you finally looked up.
+>
+> There is another expedition waiting. Would you like to hear about it?
+
+The returning welcome should use one meaningful detail, not expose a complete activity history or make the user feel watched.
 
 The user is invited to insert or connect their personal agent. They might:
 
@@ -79,6 +89,8 @@ The user receives one achievable instruction at a time. The screen might show a 
 The expedition persona adapts to the user’s responses. The user can answer in free text, not just by pressing buttons. If the user refuses, the story branches immediately. If they notice something unexpected, it becomes part of the adventure. If they are tired or short on time, the expedition changes scale.
 
 The user and their buddy gradually feel like travelling companions. The buddy remembers enough about the user to make the experience personal, while the expedition persona controls the temporary mood, pacing, mystery, and narrative.
+
+Previous expeditions, mementos, and open threads can be stored in a user-owned archive inside the buddy's Hermes or OpenClaw workspace. The user should be able to view, edit, export, or delete this archive.
 
 ## Travel mode
 

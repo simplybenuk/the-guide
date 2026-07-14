@@ -267,6 +267,46 @@ The strongest replay prompt may come from the buddy itself:
 
 The game should make returning feel like accepting another invitation from a companion, not maintaining an obligation.
 
+## Persistent expedition archive
+
+If the buddy runs through a personal-agent system such as Hermes or OpenClaw, previous games can live in a dedicated, user-owned archive inside that agent's workspace. This gives the relationship continuity without requiring The Guide to own all of the user's memory.
+
+A possible structure is:
+
+```text
+guide/
+  buddy.md                 # identity, voice, relationship notes
+  boundaries.md            # current and enduring user boundaries
+  expeditions/
+    index.md               # short index of completed journeys
+    2026-07-14-window.md   # transcript, choices, observations, outcome
+  mementos/
+    2026-07-14-window.md   # the saved artifact from that journey
+  open-threads.md          # clues or invitations worth revisiting
+```
+
+The exact filesystem is implementation detail. The important contract is that the buddy can save and retrieve completed expeditions, mementos, and unfinished threads in a location the user controls. The Guide should use a provider-neutral memory interface such as `list_expeditions`, `load_expedition`, `save_expedition`, and `save_memento`, with local agents mapping those operations to their own workspace.
+
+Persistence must be explicit. The user should be able to view, edit, export, or delete the archive, and should be told when a game is being saved. A previous expedition may influence a welcome or invitation, but it must never silently override current boundaries.
+
+### Returning opening
+
+The first exchange should change depending on whether the buddy has travelled with the user before.
+
+For a new buddy:
+
+> Someone is waiting to meet you.
+
+For a returning buddy:
+
+> Welcome back.
+>
+> I remember the window, the minute of silence, and what you noticed when you finally looked up.
+>
+> There is another expedition waiting. Would you like to hear about it?
+
+The welcome should feel like recognition, not surveillance. It should use one specific, meaningful detail rather than reciting a history of everything the user has done.
+
 ## The Guide identity
 
 The Guide is not primarily an assistant with a system prompt. It is an identity and a role in the world of the game.
