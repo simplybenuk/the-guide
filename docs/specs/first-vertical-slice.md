@@ -2,9 +2,9 @@
 
 ## Status
 
-**READY FOR HUMAN APPROVAL**
+**APPROVED FOR DEVELOPMENT**
 
-This specification defines the first implementation slice. It remains provisional until a human explicitly marks it **APPROVED FOR DEVELOPMENT**.
+This specification defines the approved first implementation slice.
 
 ## Objective and scope
 
@@ -382,7 +382,6 @@ These questions do not prevent approval if the captured defaults are acceptable:
 
 ## Approval record
 
-- Human approver: _pending_
-- Approval date: _pending_
-- Approval notes: _pending_
-
+- Human approver: Repository owner
+- Approval date: 2026-07-16
+- Approval notes: Approved by the user in the Codex workflow session.
