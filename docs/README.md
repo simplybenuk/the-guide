@@ -1,5 +1,9 @@
 # Planning documents
 
+This is a proposed planning pack for an ideation-stage project. It is not an
+implementation specification yet; the decision records and task plan still
+require review before coding begins.
+
 - [Product brief](./product-brief.md)
 - [System architecture](./architecture.md)
 - [Opening and expedition UX](./ux/opening-and-expedition.md)

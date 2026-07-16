@@ -6,7 +6,11 @@ Choose a Guide personality, press **Go**, and let the character lead you through
 
 ## Status
 
-Early concept and planning. Implementation has not started yet.
+Ideation and planning only. Implementation has not started yet.
+
+This repository is the single source of truth for The Guide. Product ideas,
+the intended experience, and proposed implementation decisions are kept here
+until the concept is approved for build.
 
 ## Project context
 
@@ -25,9 +29,19 @@ The build planning pack is in [docs/README.md](./docs/README.md).
 - Explicit adventure state and safety constraints
 - Final reflection and a small adventure history
 
+## Documentation map
+
+- [Product concept](./life-game-concept.md) — the product idea, principles, and open questions.
+- [User experience](./user-experience.md) — the end-to-end journey from arrival to returning home.
+- [Planning pack](./docs/README.md) — proposed architecture, state, safety, adapter, UX, and MVP decisions.
+
+The planning documents are intentionally provisional. They describe a possible
+first vertical slice, not an implementation commitment.
+
 ## Getting started
 
-This repository is currently documentation-first. Implementation instructions will be added when the technology stack is selected.
+There is nothing to run yet. This is a documentation-first repository; build
+instructions will be added after the concept and MVP decisions are approved.
 
 ## Design direction
 
