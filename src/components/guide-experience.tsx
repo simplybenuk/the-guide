@@ -27,7 +27,7 @@ import {
 import { PixelGameShell } from "@/components/pixel-game-shell";
 import { PixelAsset } from "@/components/pixel-asset";
 
-type View = "arrival" | "buddy" | "setup" | "ritual" | "play" | "ending" | "archive";
+type View = "arrival" | "buddy" | "setup" | "ritual" | "transformation" | "play" | "ending" | "archive";
 type RitualStep = "room_ready" | "elixir_selected" | "choice_open" | "resolved";
 
 const voices = ["Warm and observant", "Dry and quietly funny", "Gentle and mysterious"];
@@ -53,8 +53,11 @@ export function GuideExperience() {
   const [response, setResponse] = useState("");
   const [ritualStep, setRitualStep] = useState<RitualStep>("room_ready");
   const [roomMessage, setRoomMessage] = useState("The room is quiet. Something glints on the table.");
+  const [pendingTransformation, setPendingTransformation] = useState<boolean>();
+  const [departureReady, setDepartureReady] = useState(false);
   const headingRef = useRef<HTMLHeadingElement>(null);
   const ritualResolvedRef = useRef(false);
+  const expeditionCreatedRef = useRef(false);
 
   useEffect(() => {
     try {
@@ -71,6 +74,13 @@ export function GuideExperience() {
   useEffect(() => {
     headingRef.current?.focus();
   }, [view]);
+
+  useEffect(() => {
+    if (view !== "transformation" || departureReady) return;
+    const delay = window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 1800;
+    const timer = window.setTimeout(() => setDepartureReady(true), delay);
+    return () => window.clearTimeout(timer);
+  }, [departureReady, view]);
 
   function persist(next: Archive) {
     const saved = saveArchive(window.localStorage, next);
@@ -110,15 +120,26 @@ export function GuideExperience() {
     event.preventDefault();
     setError("");
     ritualResolvedRef.current = false;
+    expeditionCreatedRef.current = false;
+    setPendingTransformation(undefined);
+    setDepartureReady(false);
     setRitualStep("room_ready");
     setRoomMessage("The room is quiet. Something glints on the table.");
     setView("ritual");
   }
 
-  function beginExpedition(transformed: boolean) {
+  function resolveElixir(transformed: boolean) {
     if (!archive?.buddy || ritualResolvedRef.current) return;
     ritualResolvedRef.current = true;
     setRitualStep("resolved");
+    setPendingTransformation(transformed);
+    setDepartureReady(false);
+    setView("transformation");
+  }
+
+  function enterExpedition() {
+    if (!archive?.buddy || pendingTransformation === undefined || expeditionCreatedRef.current) return;
+    expeditionCreatedRef.current = true;
     try {
       const expedition = createExpedition({
         installationId: archive.installationId,
@@ -126,7 +147,7 @@ export function GuideExperience() {
         timeBudgetMinutes: timeBudget,
         energy,
         boundaries: boundaries.split(/[,\n]/).slice(0, 8),
-        transformed,
+        transformed: pendingTransformation,
       });
       persist(saveExpedition(archive, expedition));
       setResponse("");
@@ -134,6 +155,7 @@ export function GuideExperience() {
       setView("play");
     } catch (reason) {
       ritualResolvedRef.current = false;
+      expeditionCreatedRef.current = false;
       setError(reason instanceof Error ? reason.message : "No safe opening instruction is available.");
       setView("setup");
     }
@@ -318,11 +340,31 @@ export function GuideExperience() {
           {ritualStep === "choice_open" ? (
             <div className="ritual-choice">
               <p>{archive.buddy?.name} is waiting for permission. The elixir is fictional; nothing real is consumed.</p>
-              <div className="button-stack"><button className="primary" type="button" onClick={() => beginExpedition(true)}>Let it drink</button><button className="secondary" type="button" onClick={() => beginExpedition(false)}>Keep {archive.buddy?.name} unchanged</button></div>
+              <div className="button-stack"><button className="primary" type="button" onClick={() => resolveElixir(true)}>Let it drink</button><button className="secondary" type="button" onClick={() => resolveElixir(false)}>Keep {archive.buddy?.name} unchanged</button></div>
             </div>
           ) : (
             <button className="ritual-shortcut" type="button" onClick={openRitualChoice}>Begin ritual</button>
           )}
+        </section>
+      </PixelGameShell>
+    );
+  }
+
+  if (view === "transformation" && pendingTransformation !== undefined) {
+    return (
+      <PixelGameShell className="transformation-scene">
+        <section className="panel transformation-panel" aria-labelledby="transformation-title">
+          <p className="eyebrow">The departure wakes</p>
+          <div className={`transformation-stage${departureReady ? " is-ready" : ""}`}>
+            <PixelAsset kind={pendingTransformation ? "buddy-transformed" : "buddy"} className="transformation-buddy" />
+            <PixelAsset kind={departureReady ? "portal-active" : "portal-dormant"} className="transformation-portal" />
+          </div>
+          <h1 id="transformation-title" ref={headingRef} tabIndex={-1}>
+            {pendingTransformation ? `${archive.buddy?.name} has become the expedition persona.` : `${archive.buddy?.name} remains itself.`}
+          </h1>
+          <p aria-live="polite">{departureReady ? "The portal is active. Your expedition is ready." : "The portal gathers itself from the dark."}</p>
+          {!departureReady ? <button className="ritual-shortcut" type="button" onClick={() => setDepartureReady(true)}>Skip transformation</button> : null}
+          <button className="primary departure-action" type="button" disabled={!departureReady} onClick={enterExpedition}>Enter expedition</button>
         </section>
       </PixelGameShell>
     );

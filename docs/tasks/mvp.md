@@ -13,17 +13,25 @@ The first vertical slice was approved on 2026-07-16 and completed. The playable 
 
 ## Active
 
-No task is active. P04 passed independent review; P05 is the next eligible task.
+No task is active. P05 passed independent review; P06 is the next eligible task.
 
 ## Backlog
 
-- [ ] **P05 — Implement transformation and departure presentation**
 - [ ] **P06 — Reskin expedition, pause, ending, and archive**
 - [ ] **P07 — Add bounded audio and preferences**
 - [ ] **P08 — Expand automated accessibility and responsive tests**
 - [ ] **P09 — Run full validation and prepare independent review**
 
 ## Completed
+
+- [x] **P05 — Implement transformation and departure presentation** (2026-07-17)
+  - Added a dedicated transformation/departure state between the elixir decision and expedition creation.
+  - Presented matching ordinary/transformed buddy variants beside dormant/active portal states with explicit textual equivalents.
+  - Added a sub-two-second stepped transformation, immediate reduced-motion equivalent, visible skip action, and explicit Enter expedition handoff.
+  - Kept the item path within four primary activations and guarded departure synchronously against duplicate expedition creation.
+  - Expanded browser coverage for transformed and unchanged copy, skip, activated portal state, reduced-motion readiness, and double departure activation.
+  - Validated with `npm run validate` (38 unit/integration tests and 6 mobile Playwright scenarios passed).
+  - Independent agent review passed with no blocking or should-fix findings; P05 is ready for human testing.
 
 - [x] **P04 — Reframe buddy creation and boundaries** (2026-07-17)
   - Reframed buddy creation as an in-world character dialogue with the ordinary buddy portrait and retained the same name, voice, curiosity, and peculiarity controls.

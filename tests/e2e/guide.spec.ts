@@ -29,6 +29,9 @@ test("completes an adaptive expedition and manages its local archive", async ({ 
   await page.getByRole("button", { name: "Prepare the elixir" }).click();
   await page.getByRole("button", { name: "Begin ritual" }).click();
   await page.getByRole("button", { name: "Keep Moss unchanged" }).click();
+  await expect(page.getByRole("heading", { name: "Moss remains itself." })).toBeVisible();
+  await page.getByRole("button", { name: "Skip transformation" }).click();
+  await page.getByRole("button", { name: "Enter expedition" }).click();
 
   await expect(page.getByText("Expedition 1 of 3")).toBeVisible();
   await page.getByLabel("What detail claimed your attention first?").fill("a green leaf");
@@ -68,6 +71,8 @@ test("refuses without advancing and can stop with a partial record", async ({ pa
   await page.getByRole("button", { name: "Prepare the elixir" }).click();
   await page.getByRole("button", { name: "Begin ritual" }).click();
   await page.getByRole("button", { name: "Let it drink" }).click();
+  await page.getByRole("button", { name: "Skip transformation" }).click();
+  await page.getByRole("button", { name: "Enter expedition" }).click();
 
   await page.getByRole("button", { name: "Not possible" }).click();
   await expect(page.getByText("Expedition 1 of 3")).toBeVisible();
@@ -113,6 +118,12 @@ test("supports keyboard entry, touch targets, and reduced motion", async ({ page
   await expect(page.getByLabel("Expedition boundary summary")).toContainText(
     "You can refuse, pause, or stop at any time.",
   );
+  await page.getByRole("button", { name: "Prepare the elixir" }).click();
+  await page.getByRole("button", { name: "Begin ritual" }).click();
+  await page.getByRole("button", { name: "Keep Moss unchanged" }).click();
+  await expect(page.getByText("The portal is active. Your expedition is ready.")).toBeVisible();
+  await expect(page.getByRole("button", { name: "Skip transformation" })).toHaveCount(0);
+  await expect(page.getByRole("button", { name: "Enter expedition" })).toBeEnabled();
 });
 
 test("plays the semantic elixir room without persisting optional inspections", async ({ page }) => {
@@ -157,6 +168,13 @@ test("plays the semantic elixir room without persisting optional inspections", a
     (button as HTMLButtonElement).click();
     (button as HTMLButtonElement).click();
   });
+  await expect(page.getByRole("heading", { name: "Moss has become the expedition persona." })).toBeVisible();
+  await page.getByRole("button", { name: "Skip transformation" }).click();
+  await expect(page.getByText("The portal is active. Your expedition is ready.")).toBeVisible();
+  await page.getByRole("button", { name: "Enter expedition" }).evaluate((button) => {
+    (button as HTMLButtonElement).click();
+    (button as HTMLButtonElement).click();
+  });
 
   await expect(page.getByText("Expedition 1 of 3")).toBeVisible();
   const archiveAfterChoice = await page.evaluate(() =>
@@ -176,6 +194,8 @@ test("redirects safely when no opening instruction fits the boundaries", async (
   await page.getByRole("button", { name: "Prepare the elixir" }).click();
   await page.getByRole("button", { name: "Begin ritual" }).click();
   await page.getByRole("button", { name: "Let it drink" }).click();
+  await page.getByRole("button", { name: "Skip transformation" }).click();
+  await page.getByRole("button", { name: "Enter expedition" }).click();
 
   await expect(page.getByRole("heading", { name: "Set the edges" })).toBeVisible();
   const safetyAlert = page.getByRole("alert").filter({
@@ -198,6 +218,8 @@ test("ends gently when no refusal alternative is safe", async ({ page }) => {
   await page.getByRole("button", { name: "Prepare the elixir" }).click();
   await page.getByRole("button", { name: "Begin ritual" }).click();
   await page.getByRole("button", { name: "Let it drink" }).click();
+  await page.getByRole("button", { name: "Skip transformation" }).click();
+  await page.getByRole("button", { name: "Enter expedition" }).click();
   await page.getByRole("button", { name: "Not possible" }).click();
 
   await expect(page.getByRole("heading", { name: "The path closes gently." })).toBeVisible();
