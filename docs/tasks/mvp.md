@@ -13,15 +13,25 @@ The first vertical slice was approved on 2026-07-16 and completed. The playable 
 
 ## Active
 
-No task is active. P06 passed independent review; P07 is the next eligible task.
+No task is active. P07 passed independent review; P08 is the next eligible task.
 
 ## Backlog
 
-- [ ] **P07 — Add bounded audio and preferences**
 - [ ] **P08 — Expand automated accessibility and responsive tests**
 - [ ] **P09 — Run full validation and prepare independent review**
 
 ## Completed
+
+- [x] **P07 — Add bounded audio and preferences** (2026-07-17)
+  - Added three deterministic, project-authored PCM effects for pickup, elixir resolution, and portal departure, plus a reproducible local generation script.
+  - Added a globally reachable 44px sound toggle that defaults off, persists separately in local storage, and starts no playback before user activation.
+  - Added optional event playback with low volume and silent handling for blocked or unavailable browser audio.
+  - Recorded audio provenance and format in the asset manifest and validated RIFF/WAVE headers for every declared effect.
+  - Added unit coverage for preference isolation and browser coverage for opt-in, persistence, no autoplay, logical keyboard order, and blocked-audio continuity.
+  - Resolved the initial review blocker by including the sound preference in recovery and Delete all local data, synchronizing the mounted toggle immediately, and verifying both local keys are removed.
+  - Recovered from a malformed disposable `.next` cache by moving it to `/tmp/tmp.vSsbfgMu5h/next-cache`; no source data was deleted.
+  - Validated with `npm run validate` (40 unit/integration tests and 7 mobile Playwright scenarios passed).
+  - Independent re-review passed with no remaining blocking or should-fix findings; P07 is ready for human testing.
 
 - [x] **P06 — Reskin expedition, pause, ending, and archive** (2026-07-17)
   - Reframed the active instruction as a game-world quest dialogue beside the correct ordinary or transformed buddy sprite.

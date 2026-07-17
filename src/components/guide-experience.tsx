@@ -26,6 +26,7 @@ import {
 } from "@/domain/schemas";
 import { PixelGameShell } from "@/components/pixel-game-shell";
 import { PixelAsset } from "@/components/pixel-asset";
+import { clearSoundPreference, playSound } from "@/lib/audio";
 
 type View = "arrival" | "buddy" | "setup" | "ritual" | "transformation" | "play" | "ending" | "archive";
 type RitualStep = "room_ready" | "elixir_selected" | "choice_open" | "resolved";
@@ -90,6 +91,7 @@ export function GuideExperience() {
 
   function resetLocalData() {
     const next = clearArchive(window.localStorage);
+    clearSoundPreference();
     setArchive(next);
     setError("");
     setBuddyName("");
@@ -133,6 +135,7 @@ export function GuideExperience() {
     ritualResolvedRef.current = true;
     setRitualStep("resolved");
     setPendingTransformation(transformed);
+    void playSound("elixir");
     setDepartureReady(false);
     setView("transformation");
   }
@@ -150,6 +153,7 @@ export function GuideExperience() {
         transformed: pendingTransformation,
       });
       persist(saveExpedition(archive, expedition));
+      void playSound("departure");
       setResponse("");
       setError("");
       setView("play");
@@ -164,6 +168,7 @@ export function GuideExperience() {
   function pickUpElixir() {
     if (ritualStep !== "room_ready") return;
     setRitualStep("elixir_selected");
+    void playSound("pickup");
     setRoomMessage("The elixir settles into your inventory. It is warm, though the room is cold.");
   }
 

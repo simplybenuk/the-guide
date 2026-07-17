@@ -96,6 +96,8 @@ test("supports keyboard entry, touch targets, and reduced motion", async ({ page
   await page.screenshot({ path: "test-results/mobile-arrival.png", fullPage: true });
 
   await page.keyboard.press("Tab");
+  await expect(page.getByRole("button", { name: "Sound off" })).toBeFocused();
+  await page.keyboard.press("Tab");
   const start = page.getByRole("button", { name: "Meet my buddy" });
   await expect(start).toBeFocused();
   const startBox = await start.boundingBox();
@@ -129,6 +131,53 @@ test("supports keyboard entry, touch targets, and reduced motion", async ({ page
   await expect(page.getByText("The portal is active. Your expedition is ready.")).toBeVisible();
   await expect(page.getByRole("button", { name: "Skip transformation" })).toHaveCount(0);
   await expect(page.getByRole("button", { name: "Enter expedition" })).toBeEnabled();
+});
+
+test("keeps sound opt-in, persistent, and non-blocking", async ({ page }) => {
+  await page.addInitScript(() => {
+    const trackedWindow = window as Window & { __playCalls?: number };
+    trackedWindow.__playCalls = 0;
+    HTMLMediaElement.prototype.play = function play() {
+      trackedWindow.__playCalls = (trackedWindow.__playCalls ?? 0) + 1;
+      return Promise.reject(new Error("Audio blocked for test"));
+    };
+  });
+  await page.goto("/");
+
+  await expect(page.getByRole("button", { name: "Sound off" })).toHaveAttribute("aria-pressed", "false");
+  expect(await page.evaluate(() => (window as Window & { __playCalls?: number }).__playCalls)).toBe(0);
+  await page.getByRole("button", { name: "Sound off" }).click();
+  await expect(page.getByRole("button", { name: "Sound on" })).toHaveAttribute("aria-pressed", "true");
+
+  await page.getByRole("button", { name: "Meet my buddy" }).click();
+  await page.getByLabel("Buddy name").fill("Moss");
+  await page.getByRole("button", { name: "Meet my buddy" }).click();
+  await page.getByRole("button", { name: "Prepare the elixir" }).click();
+  await page.getByRole("button", { name: "Pick up elixir" }).click();
+  await expect(page.getByLabel("Inventory", { exact: true })).toContainText("Elixir");
+  expect(await page.evaluate(() => (window as Window & { __playCalls?: number }).__playCalls)).toBe(1);
+
+  await page.reload();
+  await expect(page.getByRole("button", { name: "Sound on" })).toHaveAttribute("aria-pressed", "true");
+
+  await page.getByRole("button", { name: "Begin another expedition" }).click();
+  await page.getByRole("button", { name: "Prepare the elixir" }).click();
+  await page.getByRole("button", { name: "Begin ritual" }).click();
+  await page.getByRole("button", { name: "Keep Moss unchanged" }).click();
+  await page.getByRole("button", { name: "Skip transformation" }).click();
+  await page.getByRole("button", { name: "Enter expedition" }).click();
+  page.once("dialog", (dialog) => dialog.accept());
+  await page.getByRole("button", { name: "Stop" }).click();
+  await page.getByRole("button", { name: "Return home" }).click();
+  await page.getByRole("button", { name: "Open the cabinet" }).click();
+  page.once("dialog", (dialog) => dialog.accept());
+  await page.getByRole("button", { name: "Delete all local data" }).click();
+
+  await expect(page.getByRole("button", { name: "Sound off" })).toHaveAttribute("aria-pressed", "false");
+  expect(await page.evaluate(() => ({
+    archive: localStorage.getItem("the-guide:archive:v1"),
+    sound: localStorage.getItem("the-guide:sound-enabled:v1"),
+  }))).toEqual({ archive: null, sound: null });
 });
 
 test("plays the semantic elixir room without persisting optional inspections", async ({ page }) => {

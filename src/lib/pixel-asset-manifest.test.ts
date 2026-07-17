@@ -55,4 +55,21 @@ describe("pixel asset manifest", () => {
     expect(png.subarray(1, 4).toString("ascii")).toBe("PNG");
     expect([png.readUInt32BE(16), png.readUInt32BE(20)]).toEqual([1254, 1254]);
   });
+
+  it("accounts for playable PCM effects", () => {
+    const path = resolve(process.cwd(), "public/assets/pixel/manifest.json");
+    const manifest = manifestSchema.parse(JSON.parse(readFileSync(path, "utf8")));
+    const sounds = manifest.assets.filter((asset) => asset.kind === "sound");
+
+    expect(sounds.map((asset) => asset.path)).toEqual([
+      "/assets/pixel/pickup.wav",
+      "/assets/pixel/elixir.wav",
+      "/assets/pixel/departure.wav",
+    ]);
+    for (const sound of sounds) {
+      const wav = readFileSync(resolve(process.cwd(), "public", sound.path.slice(1)));
+      expect(wav.subarray(0, 4).toString("ascii")).toBe("RIFF");
+      expect(wav.subarray(8, 12).toString("ascii")).toBe("WAVE");
+    }
+  });
 });
