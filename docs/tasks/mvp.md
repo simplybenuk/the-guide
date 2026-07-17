@@ -13,11 +13,10 @@ The first vertical slice was approved on 2026-07-16 and completed. The playable 
 
 ## Active
 
-No task is active. P03 is complete and awaiting independent agent review before P04 begins.
+No task is active. P04 passed independent review; P05 is the next eligible task.
 
 ## Backlog
 
-- [ ] **P04 — Reframe buddy creation and boundaries**
 - [ ] **P05 — Implement transformation and departure presentation**
 - [ ] **P06 — Reskin expedition, pause, ending, and archive**
 - [ ] **P07 — Add bounded audio and preferences**
@@ -25,6 +24,17 @@ No task is active. P03 is complete and awaiting independent agent review before 
 - [ ] **P09 — Run full validation and prepare independent review**
 
 ## Completed
+
+- [x] **P04 — Reframe buddy creation and boundaries** (2026-07-17)
+  - Reframed buddy creation as an in-world character dialogue with the ordinary buddy portrait and retained the same name, voice, curiosity, and peculiarity controls.
+  - Reframed boundary setup as a parchment presented beside the dormant portal while preserving the same time, energy, hard-limit, summary, validation, and submission behaviour.
+  - Preserved native form labels, focus behaviour, validation alerts, and the explicit statement that the user may refuse, pause, or stop at any time.
+  - Expanded mobile browser coverage to assert exactly three buddy selects, six boundary radios, the hard-limit field, and the accessible boundary summary.
+  - Resolved the initial review blocker with a parchment-scoped dark error colour; automated browser coverage now exercises custom invalid-buddy validation and requires at least a 4.5:1 rendered contrast ratio for the unsafe-boundary alert.
+  - Validated with `npm run validate` (38 unit/integration tests and 6 mobile Playwright scenarios passed).
+  - Independent re-review passed with no remaining blocking or should-fix findings; P04 is ready for human testing.
+  - Commit status: P03 is committed as `566be57`; P04 changes are not committed.
+  - Next handoff: `bwh-agent-review`.
 
 - [x] **P03 — Build the semantic playable elixir room** (2026-07-17)
   - Replaced the decorative ritual display with an ephemeral room state machine: ready, elixir selected, choice open, and resolved.
@@ -37,7 +47,7 @@ No task is active. P03 is complete and awaiting independent agent review before 
   - Validated with `npm run validate` (38 unit/integration tests and 6 mobile Playwright scenarios passed).
   - Independent agent re-review passed with no remaining blocking or should-fix findings; P03 is ready for human testing.
   - P01–P02 independent agent review passed with no blocking or should-fix findings before P03 began.
-  - Commit status: P03 changes are not committed; commit `a15444d` contains work through P02 and is pushed to `origin/agent/planning-decisions`.
+  - Commit status: P03 is committed as `566be57`; commit `a15444d` contains work through P02 and is pushed to `origin/agent/planning-decisions`.
   - Next handoff: `bwh-agent-review`.
 
 - [x] **P02 — Author and integrate the bounded original asset set** (2026-07-17)

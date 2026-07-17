@@ -1,5 +1,20 @@
 import { expect, test } from "@playwright/test";
 
+function contrastRatio(foreground: string, background: string) {
+  const luminance = (rgb: string) => {
+    const channels = rgb.match(/\d+(?:\.\d+)?/g)?.slice(0, 3).map(Number) ?? [];
+    const linear = channels.map((channel) => {
+      const value = channel / 255;
+      return value <= 0.04045 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4;
+    });
+    return 0.2126 * linear[0] + 0.7152 * linear[1] + 0.0722 * linear[2];
+  };
+  const foregroundLuminance = luminance(foreground);
+  const backgroundLuminance = luminance(background);
+  return (Math.max(foregroundLuminance, backgroundLuminance) + 0.05) /
+    (Math.min(foregroundLuminance, backgroundLuminance) + 0.05);
+}
+
 test("completes an adaptive expedition and manages its local archive", async ({ page }) => {
   await page.goto("/");
   await expect(page.getByText("Opening the expedition cabinet…")).toBeHidden();
@@ -84,6 +99,20 @@ test("supports keyboard entry, touch targets, and reduced motion", async ({ page
   await page.keyboard.press("Enter");
   await expect(page.getByRole("heading", { name: "Who is waiting?" })).toBeVisible();
   await expect(page.getByLabel("Buddy name")).toBeVisible();
+  await expect(page.getByRole("combobox")).toHaveCount(3);
+
+  await page.getByLabel("Buddy name").fill("   ");
+  await page.getByRole("button", { name: "Meet my buddy" }).click();
+  await expect(page.getByRole("alert").filter({ hasText: "Give your buddy a name" })).toBeVisible();
+
+  await page.getByLabel("Buddy name").fill("Moss");
+  await page.getByRole("button", { name: "Meet my buddy" }).click();
+  await expect(page.getByRole("heading", { name: "Set the edges" })).toBeVisible();
+  await expect(page.getByRole("radio")).toHaveCount(6);
+  await expect(page.getByLabel(/Hard limits/)).toBeVisible();
+  await expect(page.getByLabel("Expedition boundary summary")).toContainText(
+    "You can refuse, pause, or stop at any time.",
+  );
 });
 
 test("plays the semantic elixir room without persisting optional inspections", async ({ page }) => {
@@ -149,11 +178,15 @@ test("redirects safely when no opening instruction fits the boundaries", async (
   await page.getByRole("button", { name: "Let it drink" }).click();
 
   await expect(page.getByRole("heading", { name: "Set the edges" })).toBeVisible();
-  await expect(
-    page.getByRole("alert").filter({
-      hasText: "No safe opening instruction fits the boundaries you chose.",
-    }),
-  ).toBeVisible();
+  const safetyAlert = page.getByRole("alert").filter({
+    hasText: "No safe opening instruction fits the boundaries you chose.",
+  });
+  await expect(safetyAlert).toBeVisible();
+  const colors = await safetyAlert.evaluate((element) => ({
+    foreground: getComputedStyle(element).color,
+    background: getComputedStyle(element.closest(".boundary-form") as Element).backgroundColor,
+  }));
+  expect(contrastRatio(colors.foreground, colors.background)).toBeGreaterThanOrEqual(4.5);
 });
 
 test("ends gently when no refusal alternative is safe", async ({ page }) => {

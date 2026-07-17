@@ -233,10 +233,16 @@ export function GuideExperience() {
   if (view === "buddy") {
     return (
       <PixelGameShell>
-        <section className="panel" aria-labelledby="buddy-title">
+        <section className="panel creation-panel" aria-labelledby="buddy-title">
           <p className="eyebrow">A companion takes shape</p>
-          <h1 id="buddy-title" ref={headingRef} tabIndex={-1}>Who is waiting?</h1>
-          <form onSubmit={createBuddy} className="stack">
+          <div className="dialogue-intro">
+            <PixelAsset kind="buddy" className="dialogue-portrait" />
+            <div className="dialogue-box">
+              <h1 id="buddy-title" ref={headingRef} tabIndex={-1}>Who is waiting?</h1>
+              <p>Give the traveller a name, a voice, and one curious habit. It will remember the shape you choose.</p>
+            </div>
+          </div>
+          <form onSubmit={createBuddy} className="stack character-form">
             <label>Buddy name<input required maxLength={40} value={buddyName} onChange={(event) => setBuddyName(event.target.value)} /></label>
             <label>Voice<select value={voice} onChange={(event) => setVoice(event.target.value)}>{voices.map((item) => <option key={item}>{item}</option>)}</select></label>
             <label>Curiosity<select value={curiosity} onChange={(event) => setCuriosity(event.target.value)}>{curiosities.map((item) => <option key={item}>{item}</option>)}</select></label>
@@ -253,14 +259,20 @@ export function GuideExperience() {
   if (view === "setup") {
     return (
       <PixelGameShell>
-        <section className="panel" aria-labelledby="setup-title">
+        <section className="panel boundary-panel" aria-labelledby="setup-title">
           <p className="eyebrow">Before the door opens</p>
-          <h1 id="setup-title" ref={headingRef} tabIndex={-1}>Set the edges</h1>
-          <form onSubmit={beginRitual} className="stack">
-            <fieldset><legend>Time available</legend><div className="choice-row">{[10, 20, 30].map((minutes) => <label className="choice" key={minutes}><input type="radio" name="time" checked={timeBudget === minutes} onChange={() => setTimeBudget(minutes)} />{minutes} min</label>)}</div></fieldset>
-            <fieldset><legend>Energy</legend><div className="choice-row">{(["low", "medium", "high"] as const).map((level) => <label className="choice" key={level}><input type="radio" name="energy" checked={energy === level} onChange={() => setEnergy(level)} />{level}</label>)}</div></fieldset>
+          <div className="boundary-intro">
+            <PixelAsset kind="portal-dormant" className="boundary-portal" />
+            <div>
+              <h1 id="setup-title" ref={headingRef} tabIndex={-1}>Set the edges</h1>
+              <p>The door listens for three things before it opens.</p>
+            </div>
+          </div>
+          <form onSubmit={beginRitual} className="stack boundary-form">
+            <fieldset className="parchment-section"><legend>Time available</legend><div className="choice-row">{[10, 20, 30].map((minutes) => <label className="choice" key={minutes}><input type="radio" name="time" checked={timeBudget === minutes} onChange={() => setTimeBudget(minutes)} />{minutes} min</label>)}</div></fieldset>
+            <fieldset className="parchment-section"><legend>Energy</legend><div className="choice-row">{(["low", "medium", "high"] as const).map((level) => <label className="choice" key={level}><input type="radio" name="energy" checked={energy === level} onChange={() => setEnergy(level)} />{level}</label>)}</div></fieldset>
             <label>Hard limits <span>optional, separated by commas</span><textarea rows={3} maxLength={500} value={boundaries} onChange={(event) => setBoundaries(event.target.value)} placeholder="For example: no writing, no standing" /></label>
-            <div className="boundary-card"><strong>Stay here · {timeBudget} minutes · {energy} energy</strong><span>You can refuse, pause, or stop at any time.</span></div>
+            <div className="boundary-card" aria-label="Expedition boundary summary"><strong>Stay here · {timeBudget} minutes · {energy} energy</strong><span>You can refuse, pause, or stop at any time.</span></div>
             <p className="error" role="alert" aria-live="assertive">{error}</p>
             <button className="primary" type="submit">Prepare the elixir</button>
           </form>
