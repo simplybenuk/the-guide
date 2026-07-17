@@ -74,7 +74,7 @@ export function GuideExperience() {
 
   useEffect(() => {
     headingRef.current?.focus();
-  }, [view]);
+  }, [archive?.activeExpedition?.status, archive?.activeExpedition?.turnNumber, view]);
 
   useEffect(() => {
     if (view !== "transformation" || departureReady) return;

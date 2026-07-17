@@ -13,14 +13,26 @@ The first vertical slice was approved on 2026-07-16 and completed. The playable 
 
 ## Active
 
-No task is active. P07 passed independent review; P08 is the next eligible task.
+No task is active. P08 passed independent review and is ready to commit before P09.
 
 ## Backlog
 
-- [ ] **P08 — Expand automated accessibility and responsive tests**
 - [ ] **P09 — Run full validation and prepare independent review**
 
 ## Completed
+
+- [x] **P08 — Expand automated accessibility and responsive tests** (2026-07-17)
+  - Added a dedicated 320×568 mobile scenario covering arrival, buddy setup, boundaries, the playable room, transformation, departure, and active expedition.
+  - Enforced zero horizontal overflow, 44px hotspot and sound-toggle targets, viewport-bounded room controls, and non-overlap between the fixed sound control and narrative heading.
+  - Applied 200% root text sizing during active play and verified the response field plus Done, Not possible, Pause, and Stop remain available without horizontal overflow.
+  - Added direct viewport-intersection assertions across creation, boundaries, ritual choice, transformation, departure, active play, validation feedback, and pause instead of relying on document scroll width alone.
+  - Extended keyboard-only coverage through room interactions, expedition advancement, pause, and resume, including deliberate heading focus when the instruction or expedition state changes.
+  - Fixed narrow-screen intrinsic sizing for panels, forms, system controls, and long headings discovered by the new 200% text checks.
+  - Reserved responsive top space for the global sound control and captured a representative 320px room screenshot.
+  - Existing scenarios continue to cover keyboard order, reduced motion, shortcut and item branches, returning bypass, blocked audio, persistence, refusal, pause, stop, and deletion.
+  - Validated with `npm run validate` (40 unit/integration tests and 8 mobile Playwright scenarios passed).
+  - Initial independent review gaps were addressed; re-review passed with no blocking or should-fix findings.
+  - Human focus: visually inspect 320px/200% quest controls and keyboard focus indicators from the room through pause.
 
 - [x] **P07 — Add bounded audio and preferences** (2026-07-17)
   - Added three deterministic, project-authored PCM effects for pickup, elixir resolution, and portal departure, plus a reproducible local generation script.

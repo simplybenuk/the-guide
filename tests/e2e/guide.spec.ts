@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test";
+import type { Locator, Page } from "@playwright/test";
 
 function contrastRatio(foreground: string, background: string) {
   const luminance = (rgb: string) => {
@@ -13,6 +14,40 @@ function contrastRatio(foreground: string, background: string) {
   const backgroundLuminance = luminance(background);
   return (Math.max(foregroundLuminance, backgroundLuminance) + 0.05) /
     (Math.min(foregroundLuminance, backgroundLuminance) + 0.05);
+}
+
+async function expectNoHorizontalOverflow(page: Page) {
+  const dimensions = await page.evaluate(() => ({
+    clientWidth: document.documentElement.clientWidth,
+    scrollWidth: document.documentElement.scrollWidth,
+  }));
+  expect(dimensions.scrollWidth).toBeLessThanOrEqual(dimensions.clientWidth);
+}
+
+async function expectWithinViewport(locator: Locator, page: Page, minimumTarget = false) {
+  await expect(locator).toBeVisible();
+  const box = await locator.boundingBox();
+  const viewport = page.viewportSize();
+  expect(box).not.toBeNull();
+  expect(viewport).not.toBeNull();
+  if (!box || !viewport) return;
+  expect(box.x, `${locator} starts inside the viewport`).toBeGreaterThanOrEqual(0);
+  expect(box.x + box.width, `${locator} ends inside the viewport (${JSON.stringify(box)})`).toBeLessThanOrEqual(viewport.width);
+  if (minimumTarget) {
+    expect(box.width).toBeGreaterThanOrEqual(44);
+    expect(box.height).toBeGreaterThanOrEqual(44);
+  }
+}
+
+async function expectScreenBounds(page: Page, locators: Locator[]) {
+  await expectNoHorizontalOverflow(page);
+  for (const locator of locators) await expectWithinViewport(locator, page);
+}
+
+async function activateWithKeyboard(locator: Locator, page: Page) {
+  await locator.focus();
+  await expect(locator).toBeFocused();
+  await page.keyboard.press("Enter");
 }
 
 test("completes an adaptive expedition and manages its local archive", async ({ page }) => {
@@ -110,27 +145,45 @@ test("supports keyboard entry, touch targets, and reduced motion", async ({ page
 
   await page.keyboard.press("Enter");
   await expect(page.getByRole("heading", { name: "Who is waiting?" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Who is waiting?" })).toBeFocused();
   await expect(page.getByLabel("Buddy name")).toBeVisible();
   await expect(page.getByRole("combobox")).toHaveCount(3);
 
-  await page.getByLabel("Buddy name").fill("   ");
-  await page.getByRole("button", { name: "Meet my buddy" }).click();
+  await page.getByLabel("Buddy name").focus();
+  await page.keyboard.type("   ");
+  await activateWithKeyboard(page.getByRole("button", { name: "Meet my buddy" }), page);
   await expect(page.getByRole("alert").filter({ hasText: "Give your buddy a name" })).toBeVisible();
 
-  await page.getByLabel("Buddy name").fill("Moss");
-  await page.getByRole("button", { name: "Meet my buddy" }).click();
+  await page.getByLabel("Buddy name").focus();
+  await page.keyboard.press("ControlOrMeta+A");
+  await page.keyboard.type("Moss");
+  await activateWithKeyboard(page.getByRole("button", { name: "Meet my buddy" }), page);
   await expect(page.getByRole("heading", { name: "Set the edges" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Set the edges" })).toBeFocused();
   await expect(page.getByRole("radio")).toHaveCount(6);
   await expect(page.getByLabel(/Hard limits/)).toBeVisible();
   await expect(page.getByLabel("Expedition boundary summary")).toContainText(
     "You can refuse, pause, or stop at any time.",
   );
-  await page.getByRole("button", { name: "Prepare the elixir" }).click();
-  await page.getByRole("button", { name: "Begin ritual" }).click();
-  await page.getByRole("button", { name: "Keep Moss unchanged" }).click();
+  await activateWithKeyboard(page.getByRole("button", { name: "Prepare the elixir" }), page);
+  await expect(page.getByRole("heading", { name: "Choose what happens next." })).toBeFocused();
+  await activateWithKeyboard(page.getByRole("button", { name: "Pick up elixir" }), page);
+  await activateWithKeyboard(page.getByRole("button", { name: "Offer elixir to Moss" }), page);
+  await activateWithKeyboard(page.getByRole("button", { name: "Keep Moss unchanged" }), page);
+  await expect(page.getByRole("heading", { name: "Moss remains itself." })).toBeFocused();
   await expect(page.getByText("The portal is active. Your expedition is ready.")).toBeVisible();
   await expect(page.getByRole("button", { name: "Skip transformation" })).toHaveCount(0);
   await expect(page.getByRole("button", { name: "Enter expedition" })).toBeEnabled();
+  await activateWithKeyboard(page.getByRole("button", { name: "Enter expedition" }), page);
+  await expect(page.getByRole("heading", { level: 1 })).toBeFocused();
+  await page.getByLabel(/What detail claimed your attention first/).focus();
+  await page.keyboard.type("a green leaf");
+  await activateWithKeyboard(page.getByRole("button", { name: "Done" }), page);
+  await expect(page.getByRole("heading", { level: 1 })).toBeFocused();
+  await activateWithKeyboard(page.getByRole("button", { name: "Pause" }), page);
+  await expect(page.getByRole("heading", { name: "The path will wait." })).toBeFocused();
+  await activateWithKeyboard(page.getByRole("button", { name: "Resume expedition" }), page);
+  await expect(page.getByRole("heading", { level: 1 })).toBeFocused();
 });
 
 test("keeps sound opt-in, persistent, and non-blocking", async ({ page }) => {
@@ -178,6 +231,100 @@ test("keeps sound opt-in, persistent, and non-blocking", async ({ page }) => {
     archive: localStorage.getItem("the-guide:archive:v1"),
     sound: localStorage.getItem("the-guide:sound-enabled:v1"),
   }))).toEqual({ archive: null, sound: null });
+});
+
+test("keeps the playable path operable at 320px and 200 percent text", async ({ page }) => {
+  await page.setViewportSize({ width: 320, height: 568 });
+  await page.goto("/");
+  await expectScreenBounds(page, [
+    page.getByRole("heading", { name: "Someone is waiting to meet you." }),
+    page.getByRole("button", { name: "Meet my buddy" }),
+  ]);
+
+  const soundBox = await page.getByRole("button", { name: "Sound off" }).boundingBox();
+  const eyebrowBox = await page.getByText("A small expedition machine").boundingBox();
+  expect(soundBox?.height).toBeGreaterThanOrEqual(44);
+  expect(eyebrowBox && soundBox ? eyebrowBox.y + eyebrowBox.height <= soundBox.y || soundBox.y + soundBox.height <= eyebrowBox.y : false).toBe(true);
+
+  await page.getByRole("button", { name: "Meet my buddy" }).click();
+  await expectScreenBounds(page, [
+    page.getByRole("heading", { name: "Who is waiting?" }),
+    page.getByLabel("Buddy name"),
+    page.getByRole("button", { name: "Meet my buddy" }),
+  ]);
+  await page.getByLabel("Buddy name").fill("   ");
+  await page.getByRole("button", { name: "Meet my buddy" }).click();
+  await expectScreenBounds(page, [page.getByRole("alert").filter({ hasText: "Give your buddy a name" })]);
+  await page.getByLabel("Buddy name").fill("Moss");
+  await page.getByRole("button", { name: "Meet my buddy" }).click();
+  await expectScreenBounds(page, [
+    page.getByRole("heading", { name: "Set the edges" }),
+    page.getByLabel(/Hard limits/),
+    page.getByLabel("Expedition boundary summary"),
+    page.getByRole("button", { name: "Prepare the elixir" }),
+  ]);
+  await page.getByRole("button", { name: "Prepare the elixir" }).click();
+  await expectScreenBounds(page, [
+    page.getByRole("heading", { name: "Choose what happens next." }),
+    page.getByLabel("Inventory", { exact: true }),
+    page.getByRole("button", { name: "Begin ritual" }),
+  ]);
+
+  for (const button of await page.locator(".room-hotspot").all()) {
+    const box = await button.boundingBox();
+    expect(box?.height).toBeGreaterThanOrEqual(44);
+    expect(box?.x).toBeGreaterThanOrEqual(0);
+    expect(box ? box.x + box.width : 321).toBeLessThanOrEqual(320);
+  }
+
+  await page.screenshot({ path: "test-results/mobile-room-320.png", fullPage: true });
+  await page.getByRole("button", { name: "Begin ritual" }).click();
+  await expectScreenBounds(page, [
+    page.getByText(/waiting for permission/),
+    page.getByRole("button", { name: "Let it drink" }),
+    page.getByRole("button", { name: "Keep Moss unchanged" }),
+  ]);
+  await page.getByRole("button", { name: "Keep Moss unchanged" }).click();
+  await expectScreenBounds(page, [
+    page.getByRole("heading", { name: "Moss remains itself." }),
+    page.getByText("The portal gathers itself from the dark."),
+    page.getByRole("button", { name: "Skip transformation" }),
+    page.getByRole("button", { name: "Enter expedition" }),
+  ]);
+  await page.getByRole("button", { name: "Skip transformation" }).click();
+  await expectScreenBounds(page, [
+    page.getByRole("heading", { name: "Moss remains itself." }),
+    page.getByText("The portal is active. Your expedition is ready."),
+    page.getByRole("button", { name: "Enter expedition" }),
+  ]);
+  await page.getByRole("button", { name: "Enter expedition" }).click();
+
+  // Root text enlargement is the deterministic browser-test proxy for 200% text sizing.
+  await page.evaluate(() => document.documentElement.style.fontSize = "200%");
+  const activeControls = [
+    page.getByLabel(/What detail claimed your attention first/),
+    page.getByRole("button", { name: "Done" }),
+    page.getByRole("button", { name: "Not possible" }),
+    page.getByRole("button", { name: "Pause" }),
+    page.getByRole("button", { name: "Stop" }),
+    page.getByRole("button", { name: "Sound off" }),
+  ];
+  await expectScreenBounds(page, [page.getByRole("heading", { level: 1 }), ...activeControls]);
+  for (const control of activeControls.slice(1)) await expectWithinViewport(control, page, true);
+
+  await page.getByRole("button", { name: "Done" }).click();
+  await expectScreenBounds(page, [
+    page.getByLabel(/What detail claimed your attention first/),
+    page.getByRole("button", { name: "Not possible" }),
+    page.getByRole("button", { name: "Pause" }),
+    page.getByRole("button", { name: "Stop" }),
+  ]);
+  await page.getByRole("button", { name: "Pause" }).click();
+  await expectScreenBounds(page, [
+    page.getByRole("heading", { name: "The path will wait." }),
+    page.getByRole("button", { name: "Resume expedition" }),
+    page.getByRole("button", { name: "Stop and return home" }),
+  ]);
 });
 
 test("plays the semantic elixir room without persisting optional inspections", async ({ page }) => {
