@@ -2,9 +2,9 @@
 
 ## Status
 
-**APPROVED FOR DEVELOPMENT**
+**READY FOR HUMAN TESTING**
 
-This specification was approved by the repository owner on 2026-07-17. It defines a presentation and interaction vertical slice over the implemented first expedition.
+This specification was approved by the repository owner on 2026-07-17. P01–P09 passed the complete validation gate and independent agent review on 2026-07-17; the presentation and interaction vertical slice is ready for human output testing.
 
 ## Objective and scope
 

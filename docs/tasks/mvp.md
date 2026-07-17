@@ -13,13 +13,22 @@ The first vertical slice was approved on 2026-07-16 and completed. The playable 
 
 ## Active
 
-No task is active. P08 passed independent review and is ready to commit before P09.
+No task is active. P01–P09 are complete and the playable pixel-art opening is ready for human testing.
 
 ## Backlog
 
-- [ ] **P09 — Run full validation and prepare independent review**
+No approved tasks remain.
 
 ## Completed
+
+- [x] **P09 — Run full validation and prepare independent review** (2026-07-17)
+  - Added a completeness audit that matches every shipped pixel media file to a provenance-manifest entry.
+  - Added representative 1280px desktop arrival and expedition captures alongside the existing mobile arrival and 320px room captures.
+  - Visually inspected representative desktop and mobile states and found no material clipping or coherence issue.
+  - Ran `npm run validate`: lint, typecheck, 41 unit/integration tests, production build, and 9 Playwright scenarios passed.
+  - Final independent whole-slice review found no blocking or should-fix implementation findings and marked FR-1–FR-10 materially satisfied.
+  - Advanced `docs/specs/playable-pixel-art-opening.md` to **READY FOR HUMAN TESTING**.
+  - Human focus: nostalgic feel, pickup-to-choice discoverability, both visual outcomes, transformation/audio restraint, real-device readability, and keyboard focus.
 
 - [x] **P08 — Expand automated accessibility and responsive tests** (2026-07-17)
   - Added a dedicated 320×568 mobile scenario covering arrival, buddy setup, boundaries, the playable room, transformation, departure, and active expedition.

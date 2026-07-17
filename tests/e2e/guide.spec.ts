@@ -327,6 +327,27 @@ test("keeps the playable path operable at 320px and 200 percent text", async ({ 
   ]);
 });
 
+test("captures representative desktop arrival and expedition states", async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 800 });
+  await page.goto("/");
+  await expect(page.getByRole("heading", { name: "Someone is waiting to meet you." })).toBeVisible();
+  await expectNoHorizontalOverflow(page);
+  await page.screenshot({ path: "test-results/desktop-arrival.png", fullPage: true });
+
+  await page.getByRole("button", { name: "Meet my buddy" }).click();
+  await page.getByLabel("Buddy name").fill("Moss");
+  await page.getByRole("button", { name: "Meet my buddy" }).click();
+  await page.getByRole("button", { name: "Prepare the elixir" }).click();
+  await page.getByRole("button", { name: "Begin ritual" }).click();
+  await page.getByRole("button", { name: "Keep Moss unchanged" }).click();
+  await page.getByRole("button", { name: "Skip transformation" }).click();
+  await page.getByRole("button", { name: "Enter expedition" }).click();
+
+  await expect(page.getByText("Expedition 1 of 3")).toBeVisible();
+  await expectNoHorizontalOverflow(page);
+  await page.screenshot({ path: "test-results/desktop-expedition.png", fullPage: true });
+});
+
 test("plays the semantic elixir room without persisting optional inspections", async ({ page }) => {
   await page.goto("/");
   await page.getByRole("button", { name: "Meet my buddy" }).click();

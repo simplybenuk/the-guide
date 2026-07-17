@@ -1,4 +1,4 @@
-import { readFileSync } from "node:fs";
+import { readFileSync, readdirSync } from "node:fs";
 import { resolve } from "node:path";
 
 import { describe, expect, it } from "vitest";
@@ -31,6 +31,17 @@ describe("pixel asset manifest", () => {
     const manifest: unknown = JSON.parse(readFileSync(path, "utf8"));
 
     expect(manifestSchema.parse(manifest)).toEqual(manifest);
+  });
+
+  it("accounts for every shipped media file", () => {
+    const directory = resolve(process.cwd(), "public/assets/pixel");
+    const manifest = manifestSchema.parse(JSON.parse(readFileSync(resolve(directory, "manifest.json"), "utf8")));
+    const shippedFiles = readdirSync(directory)
+      .filter((file) => file !== "manifest.json")
+      .map((file) => `/assets/pixel/${file}`)
+      .sort();
+
+    expect(manifest.assets.map((asset) => asset.path).sort()).toEqual(shippedFiles);
   });
 
   it("accounts for the complete bounded visual atlas", () => {
