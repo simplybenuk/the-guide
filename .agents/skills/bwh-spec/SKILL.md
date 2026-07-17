@@ -17,9 +17,13 @@ Produce a decision-ready spec and a readiness bundle that another agent can tran
 2. Inspect only the smallest useful set of project planning and source-of-truth artifacts.
 3. Ask only questions whose answers could materially change scope or design. Otherwise record explicit assumptions.
 4. Define goals, non-goals, requirements, proposed design, risks, security, rollout, tests, acceptance criteria, decisions, and material open questions.
-5. Add development-readiness artifacts: proposed task outline, dependencies, affected areas, acceptance criteria, validation plan, risks, and an explicit status of `DRAFT`, `NEEDS REFINEMENT`, `READY FOR HUMAN APPROVAL`, or human-set `APPROVED FOR DEVELOPMENT`.
+5. Resolve the repository's spec location and format from its adapter or established conventions. If neither defines one, create a Markdown spec under `docs/specs/` with a descriptive kebab-case filename and report that fallback. Stop and report a blocker instead if repository guardrails prohibit writing there.
+6. Write the complete spec into the consuming repository. Include the development-readiness bundle in the same file unless project conventions require linked files: proposed task outline, dependencies, affected areas, acceptance criteria, validation plan, risks, and an explicit status of `DRAFT`, `NEEDS REFINEMENT`, `READY FOR HUMAN APPROVAL`, or human-set `APPROVED FOR DEVELOPMENT`.
+7. Read the persisted artifact back and verify that it contains the status, requirements, acceptance criteria, task outline, validation plan, decisions, assumptions, and open questions. Do not report completion if the artifact was not created successfully.
 
 Use the consuming project's spec conventions. Keep the spec model-agnostic and proportional to the work. This is the human approval gate before development planning.
+
+The repository file is the authoritative output. Do not substitute a spec published only in chat. The final response is a concise handoff and must not duplicate the full artifact.
 
 ## Stop conditions
 
@@ -27,7 +31,7 @@ Stop for user input when a missing decision would materially change product dire
 
 ## Handoff
 
-Return the spec path or artifact, readiness status, confirmed decisions, assumptions, open questions, proposed task outline, and recommended next step: human spec approval or `bwh-refine-spec`. Do not edit execution plans unless explicitly requested.
+Return the repository-relative spec path, readiness status, a concise summary of confirmed decisions, assumptions and open questions, and the recommended next step: human spec approval or `bwh-refine-spec`. Do not edit execution plans unless explicitly requested.
 
 ## Output
 
@@ -35,16 +39,10 @@ Return exactly these headings:
 
 - `artifact_path`
 - `status`
-- `problem_and_outcome`
-- `actors`
-- `goals_and_non_goals`
-- `requirements`
-- `design_and_constraints`
-- `decisions`
-- `assumptions`
-- `open_questions`
-- `task_outline`
-- `validation_plan`
+- `summary`
+- `confirmed_decisions`
+- `assumptions_and_open_questions`
+- `persistence_validation`
 - `recommended_next_step`
 - `context_files_read`
 - `source_of_truth_decisions`

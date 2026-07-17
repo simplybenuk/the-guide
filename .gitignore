@@ -22,3 +22,8 @@ coverage/
 # Local editor settings
 .vscode/
 .idea/
+
+# local tooling
+*.tsbuildinfo
+test-results/
+playwright-report/

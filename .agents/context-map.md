@@ -19,7 +19,7 @@
 
 ## Existing features
 
-- Shipped feature index: None; the repository is in ideation and planning.
+- Shipped feature index: The approved first vertical slice implementation is under `src/`; status and acceptance remain governed by `docs/specs/first-vertical-slice.md`.
 - Active feature specs: `docs/specs/` and `docs/ux/opening-and-expedition.md`
 - Deferred or archived work: Deferred decisions are recorded in the relevant documents under `docs/`; there is no separate archive.
 
@@ -32,8 +32,8 @@
 
 ## Development workflow
 
-- Package manager: Not yet defined.
-- Validation commands: Not yet defined; there is currently no runnable implementation.
+- Package manager: npm, with `package-lock.json` committed for reproducible installs.
+- Validation commands: `npm test` for focused tests, `npm run test:e2e` for mobile browser flows, and `npm run validate` for the complete suite.
 - Branch policy: Not yet defined.
 - Commit/PR rules: Not yet defined.
 

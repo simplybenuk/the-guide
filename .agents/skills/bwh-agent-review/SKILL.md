@@ -33,18 +33,15 @@ Stop and return the work to `bwh-development` when a blocking finding exists, re
 
 Return a concise review verdict, findings with file or test evidence, validation performed, residual risks, and the human output-testing focus. The final handoff should explicitly say either `READY FOR HUMAN TESTING` or `NOT READY FOR HUMAN TESTING`.
 
+Do not reproduce the spec, implementation summary, full validation logs, or exhaustive inspected-file lists. Consolidate related findings and include only evidence needed to understand or act on the verdict. When the project defines a review or progress artifact, persist detailed evidence there and link it.
+
 ## Output
 
-Return exactly these headings:
+Use one verdict sentence followed by at most six short bullets covering:
 
-- `verdict`
-- `blocking_findings`
-- `should_fix_findings`
-- `informational_findings`
-- `validation_evidence`
-- `residual_risks`
-- `human_test_focus`
-- `next_handoff`
-- `context_files_read`
-- `source_of_truth_decisions`
-- `conflicts_found`
+- blocking and should-fix findings, omitting empty categories
+- validation result
+- material residual risk
+- human test focus when ready
+- review artifact when one exists
+- next handoff state

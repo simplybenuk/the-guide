@@ -1,4 +1,4 @@
 source: https://github.com/simplybenuk/bwh-ai-workflow.git
-revision: 90ce7f5ea550ad050b1b2a150748e281da218729
-installed_at: 2026-07-16
+revision: a19ec8c10746c1829851f41e488f49afdaa6ef2e
+installed_at: 2026-07-17
 installed_paths: .agents/skills/bwh-*, .agents/contracts/

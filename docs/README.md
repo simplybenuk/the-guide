@@ -1,8 +1,6 @@
 # Planning documents
 
-This is a proposed planning pack for an ideation-stage project. It is not an
-implementation specification yet; the decision records and task plan still
-require review before coding begins.
+This planning pack records the product direction and the approved first vertical slice. The implementation source of truth is [the first vertical slice specification](./specs/first-vertical-slice.md), with progress tracked in [the development plan](./tasks/mvp.md). Older decision records remain useful context unless the approved specification resolves them differently.
 
 - [Product brief](./product-brief.md)
 - [System architecture](./architecture.md)
@@ -22,4 +20,4 @@ require review before coding begins.
 - [Provider integration strategy](./decisions/0006-provider-integration-strategy.md)
 - [Build review questions](./decisions/0007-review-questions.md)
 
-These are proposed planning decisions for review, not final implementation commitments.
+These records preserve how the project reached the approved slice. Where they conflict, the approved first vertical slice specification takes precedence.

@@ -2,9 +2,9 @@
 
 ## Status
 
-**APPROVED FOR DEVELOPMENT**
+**READY FOR HUMAN TESTING**
 
-This specification defines the approved first implementation slice.
+This specification defines the approved first implementation slice. Development began on 2026-07-16 and independent agent review passed on 2026-07-17.
 
 ## Objective and scope
 

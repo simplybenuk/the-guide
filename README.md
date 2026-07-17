@@ -6,7 +6,7 @@ Choose a Guide personality, press **Go**, and let the character lead you through
 
 ## Status
 
-Ideation and planning only. Implementation has not started yet.
+The approved first vertical slice is implemented and undergoing final agent review before human output testing.
 
 This repository is the single source of truth for The Guide. Product ideas,
 the intended experience, and proposed implementation decisions are kept here
@@ -20,14 +20,14 @@ The intended end-to-end user journey is documented in [user-experience.md](./use
 
 The build planning pack is in [docs/README.md](./docs/README.md).
 
-## Planned MVP
+## Approved first vertical slice
 
-- Six Guide personalities
-- Lightweight time and context setup
-- One-action-at-a-time adventure progression
-- Completion, refusal, and unexpected-event branches
-- Explicit adventure state and safety constraints
-- Final reflection and a small adventure history
+- One created buddy and one temporary expedition role
+- Lightweight time, energy, and boundary setup
+- A deterministic three-turn stay-here expedition
+- Completion, refusal, pause, stop, and unexpected-event branches
+- Explicit state, validation, and safe fallback constraints
+- A grounded reflection, memento, and private local archive
 
 ## Documentation map
 
@@ -40,8 +40,20 @@ first vertical slice, not an implementation commitment.
 
 ## Getting started
 
-There is nothing to run yet. This is a documentation-first repository; build
-instructions will be added after the concept and MVP decisions are approved.
+Requires Node.js 20.9 or later.
+
+```bash
+npm install
+npm run dev
+```
+
+Open `http://localhost:3000`. Run the complete local validation suite with:
+
+```bash
+npm run validate
+```
+
+The end-to-end suite uses Playwright. On a new Linux environment, install its browser and system dependencies with `npx playwright install --with-deps chromium`.
 
 ## Design direction
 

@@ -10,9 +10,9 @@
 
 - Discovery tools: Repository file inspection and search (`rg`, `rg --files`, and Git read-only commands).
 - Source-of-truth inspection: Start with `README.md`, then follow `.agents/context-map.md` to the relevant product, architecture, decision, specification, UX, and task documents.
-- Focused tests: Not yet defined; implementation has not started.
-- Full validation: Not yet defined; implementation has not started.
-- Browser or smoke checks: Not yet defined; there is currently no runnable application.
+- Focused tests: `npm test` (Vitest domain and route tests).
+- Full validation: `npm run validate` (lint, strict typecheck, unit/integration tests, production build, and Playwright mobile tests).
+- Browser or smoke checks: `npm run test:e2e`; local development uses `npm run dev` and `/api/health`.
 
 ## Local guardrails
 
@@ -24,7 +24,7 @@
 ## Planning and delivery
 
 - Spec location and format: Product and engineering specifications are Markdown files under `docs/specs/`; UX specifications are under `docs/ux/`.
-- PRD/task schema: The current MVP task plan is `docs/tasks/mvp.md`; no formal task schema is defined yet.
+- PRD/task schema: The current ordered development plan is `docs/tasks/mvp.md`.
 - Progress log: Not yet defined.
-- Branch and commit policy: Not yet defined.
+- Branch and commit policy: Not yet defined; do not commit development changes without user or workflow authorization.
 - Review and release policy: Not yet defined.
