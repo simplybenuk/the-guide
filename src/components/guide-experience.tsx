@@ -374,8 +374,9 @@ export function GuideExperience() {
     if (expedition.status === "paused") {
       return (
         <PixelGameShell>
-          <section className="panel" aria-labelledby="paused-title">
+          <section className="panel pause-panel" aria-labelledby="paused-title">
             <p className="eyebrow">Expedition paused</p>
+            <PixelAsset kind="portal-dormant" className="pause-portal" />
             <h1 id="paused-title" ref={headingRef} tabIndex={-1}>The path will wait.</h1>
             <p>Your place and current instruction are saved on this device.</p>
             <div className="button-stack"><button className="primary" type="button" onClick={resume}>Resume expedition</button><button className="danger" type="button" onClick={stop}>Stop and return home</button></div>
@@ -385,11 +386,15 @@ export function GuideExperience() {
     }
     return (
       <PixelGameShell className="expedition-scene">
-        <section className="panel expedition" aria-labelledby="instruction-title">
-          <PixelAsset kind={expedition.transformed ? "buddy-transformed" : "buddy"} className="expedition-buddy" />
-          <header className="expedition-header"><span>Expedition {expedition.turnNumber + 1} of 3</span><span>{expedition.transformed ? "Expedition persona" : archive.buddy?.name}</span></header>
-          <h1 id="instruction-title" ref={headingRef} tabIndex={-1}>{expedition.currentInstruction?.text}</h1>
-          <p className="effort">About {expedition.currentInstruction?.expectedMinutes} min · {expedition.currentInstruction?.physicalEffort} effort</p>
+        <section className="panel expedition quest-panel" aria-labelledby="instruction-title">
+          <div className="quest-companion">
+            <PixelAsset kind={expedition.transformed ? "buddy-transformed" : "buddy"} className="expedition-buddy" />
+            <header className="expedition-header"><span>Expedition {expedition.turnNumber + 1} of 3</span><span>{expedition.transformed ? "Expedition persona" : archive.buddy?.name}</span></header>
+          </div>
+          <div className="quest-dialogue">
+            <h1 id="instruction-title" ref={headingRef} tabIndex={-1}>{expedition.currentInstruction?.text}</h1>
+            <p className="effort">About {expedition.currentInstruction?.expectedMinutes} min · {expedition.currentInstruction?.physicalEffort} effort</p>
+          </div>
           <form className="stack" onSubmit={(event) => { event.preventDefault(); void advance("done"); }}>
             <label>{expedition.currentInstruction?.responsePrompt}<textarea required rows={4} maxLength={240} value={response} onChange={(event) => setResponse(event.target.value)} /></label>
             <p className="error" role="alert" aria-live="polite">{error}</p>
@@ -406,7 +411,7 @@ export function GuideExperience() {
     const finished = archive.expeditions[0];
     return (
       <PixelGameShell>
-        <section className="panel" aria-labelledby="ending-title">
+        <section className="panel return-panel" aria-labelledby="ending-title">
           <p className="eyebrow">Returned home</p>
           <PixelAsset kind="buddy" className="ending-buddy" />
           <h1 id="ending-title" ref={headingRef} tabIndex={-1}>{finished?.status === "complete" ? "The expedition is complete." : "The path closes gently."}</h1>
@@ -420,7 +425,7 @@ export function GuideExperience() {
   if (view === "archive") {
     return (
       <PixelGameShell>
-        <section className="panel wide" aria-labelledby="archive-title">
+        <section className="panel wide cabinet-panel" aria-labelledby="archive-title">
           <p className="eyebrow">Private local archive</p>
           <PixelAsset kind="cabinet" className="cabinet-art" />
           <h1 id="archive-title" ref={headingRef} tabIndex={-1}>The cabinet</h1>

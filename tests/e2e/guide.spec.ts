@@ -34,12 +34,14 @@ test("completes an adaptive expedition and manages its local archive", async ({ 
   await page.getByRole("button", { name: "Enter expedition" }).click();
 
   await expect(page.getByText("Expedition 1 of 3")).toBeVisible();
+  await expect(page.locator(".quest-companion .pixel-asset--buddy")).toBeVisible();
   await page.getByLabel("What detail claimed your attention first?").fill("a green leaf");
   await page.getByRole("button", { name: "Done" }).click();
   await expect(page.getByText(/evidence of something living/i)).toBeVisible();
 
   await page.getByRole("button", { name: "Pause" }).click();
   await expect(page.getByRole("heading", { name: "The path will wait." })).toBeVisible();
+  await expect(page.locator(".pause-portal")).toBeVisible();
   await page.reload();
   await expect(page.getByRole("heading", { name: "The path will wait." })).toBeVisible();
   await page.getByRole("button", { name: "Resume expedition" }).click();
@@ -51,11 +53,13 @@ test("completes an adaptive expedition and manages its local archive", async ({ 
   await page.getByRole("button", { name: "Done" }).click();
 
   await expect(page.getByRole("heading", { name: "The expedition is complete." })).toBeVisible();
+  await expect(page.locator(".ending-buddy.pixel-asset--buddy")).toBeVisible();
   await expect(page.getByText(/Field note: Green Signal — a green leaf/)).toBeVisible();
   await page.getByRole("button", { name: "Return home" }).click();
   await expect(page.getByRole("heading", { name: "I remember a green leaf." })).toBeVisible();
 
   await page.getByRole("button", { name: "Open the cabinet" }).click();
+  await expect(page.locator(".cabinet-art")).toBeVisible();
   await expect(page.getByText("Green Signal", { exact: true })).toBeVisible();
   await page.getByRole("button", { name: "Delete", exact: true }).click();
   await expect(page.getByText("The cabinet is empty.")).toBeVisible();
@@ -75,6 +79,7 @@ test("refuses without advancing and can stop with a partial record", async ({ pa
   await page.getByRole("button", { name: "Enter expedition" }).click();
 
   await page.getByRole("button", { name: "Not possible" }).click();
+  await expect(page.locator(".quest-companion .pixel-asset--buddy-transformed")).toBeVisible();
   await expect(page.getByText("Expedition 1 of 3")).toBeVisible();
   await expect(page.getByText(/Listen until one ordinary sound/i)).toBeVisible();
 

@@ -13,16 +13,23 @@ The first vertical slice was approved on 2026-07-16 and completed. The playable 
 
 ## Active
 
-No task is active. P05 passed independent review; P06 is the next eligible task.
+No task is active. P06 passed independent review; P07 is the next eligible task.
 
 ## Backlog
 
-- [ ] **P06 — Reskin expedition, pause, ending, and archive**
 - [ ] **P07 — Add bounded audio and preferences**
 - [ ] **P08 — Expand automated accessibility and responsive tests**
 - [ ] **P09 — Run full validation and prepare independent review**
 
 ## Completed
+
+- [x] **P06 — Reskin expedition, pause, ending, and archive** (2026-07-17)
+  - Reframed the active instruction as a game-world quest dialogue beside the correct ordinary or transformed buddy sprite.
+  - Added a dormant portal treatment to pause, an ordinary-buddy return treatment to completion, and a cabinet-led archive presentation.
+  - Preserved all instruction, free-text, effort, response, refusal, pause, stop, memento, privacy, deletion, and recovery semantics.
+  - Expanded mobile browser coverage to verify ordinary/transformed expedition sprites, pause portal, returned buddy, and archive cabinet across the complete flow.
+  - Validated with `npm run validate` (38 unit/integration tests and 6 mobile Playwright scenarios passed).
+  - Independent agent review passed with no blocking or should-fix findings; P06 is ready for human testing.
 
 - [x] **P05 — Implement transformation and departure presentation** (2026-07-17)
   - Added a dedicated transformation/departure state between the elixir decision and expedition creation.
