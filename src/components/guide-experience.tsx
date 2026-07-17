@@ -28,6 +28,7 @@ import { PixelGameShell } from "@/components/pixel-game-shell";
 import { PixelAsset } from "@/components/pixel-asset";
 
 type View = "arrival" | "buddy" | "setup" | "ritual" | "play" | "ending" | "archive";
+type RitualStep = "room_ready" | "elixir_selected" | "choice_open" | "resolved";
 
 const voices = ["Warm and observant", "Dry and quietly funny", "Gentle and mysterious"];
 const curiosities = ["Overlooked details", "Small signs of life", "How ordinary things are made"];
@@ -50,7 +51,10 @@ export function GuideExperience() {
   const [energy, setEnergy] = useState<Expedition["energy"]>("medium");
   const [boundaries, setBoundaries] = useState("");
   const [response, setResponse] = useState("");
+  const [ritualStep, setRitualStep] = useState<RitualStep>("room_ready");
+  const [roomMessage, setRoomMessage] = useState("The room is quiet. Something glints on the table.");
   const headingRef = useRef<HTMLHeadingElement>(null);
+  const ritualResolvedRef = useRef(false);
 
   useEffect(() => {
     try {
@@ -105,11 +109,16 @@ export function GuideExperience() {
   function beginRitual(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setError("");
+    ritualResolvedRef.current = false;
+    setRitualStep("room_ready");
+    setRoomMessage("The room is quiet. Something glints on the table.");
     setView("ritual");
   }
 
   function beginExpedition(transformed: boolean) {
-    if (!archive?.buddy) return;
+    if (!archive?.buddy || ritualResolvedRef.current) return;
+    ritualResolvedRef.current = true;
+    setRitualStep("resolved");
     try {
       const expedition = createExpedition({
         installationId: archive.installationId,
@@ -124,9 +133,28 @@ export function GuideExperience() {
       setError("");
       setView("play");
     } catch (reason) {
+      ritualResolvedRef.current = false;
       setError(reason instanceof Error ? reason.message : "No safe opening instruction is available.");
       setView("setup");
     }
+  }
+
+  function pickUpElixir() {
+    if (ritualStep !== "room_ready") return;
+    setRitualStep("elixir_selected");
+    setRoomMessage("The elixir settles into your inventory. It is warm, though the room is cold.");
+  }
+
+  function offerElixir() {
+    if (ritualStep !== "elixir_selected") return;
+    setRitualStep("choice_open");
+    setRoomMessage(`${archive?.buddy?.name ?? "Your buddy"} looks at the bottle, then at you.`);
+  }
+
+  function openRitualChoice() {
+    if (ritualStep === "resolved") return;
+    setRitualStep("choice_open");
+    setRoomMessage("The room draws close around a single choice.");
   }
 
   async function advance(kind: "done" | "unexpected" | "not_possible") {
@@ -244,16 +272,45 @@ export function GuideExperience() {
   if (view === "ritual") {
     return (
       <PixelGameShell className="ritual-scene">
-        <section className="panel ritual" aria-labelledby="ritual-title">
-          <p className="eyebrow">A fictional transformation</p>
-          <div className="ritual-assets" aria-hidden="true">
-            <PixelAsset kind="buddy" />
-            <PixelAsset kind="elixir" />
-            <PixelAsset kind="portal-dormant" />
+        <section className="panel ritual room-panel" aria-labelledby="ritual-title">
+          <p className="eyebrow">The elixir room</p>
+          <h1 id="ritual-title" ref={headingRef} tabIndex={-1}>Choose what happens next.</h1>
+          <div className="room-stage" aria-label="A mysterious room containing your buddy, an elixir, a sealed portal, an astrolabe, and a cabinet">
+            <PixelAsset kind="room" className="room-backdrop" />
+            <button className="room-hotspot room-hotspot--elixir" type="button" onClick={pickUpElixir} disabled={ritualStep !== "room_ready"} aria-label={ritualStep === "room_ready" ? "Pick up elixir" : "Elixir is in inventory"}>
+              <PixelAsset kind="elixir" />
+              <span>{ritualStep === "room_ready" ? "Pick up" : "Taken"}</span>
+            </button>
+            <button className="room-hotspot room-hotspot--buddy" type="button" onClick={offerElixir} disabled={ritualStep !== "elixir_selected"} aria-label={`Offer elixir to ${archive.buddy?.name}`}>
+              <PixelAsset kind="buddy" />
+              <span>{archive.buddy?.name}</span>
+            </button>
+            <div className="room-object room-object--portal" aria-label="The portal is sealed">
+              <PixelAsset kind="portal-dormant" />
+              <span>Sealed</span>
+            </div>
+            <button className="room-hotspot room-hotspot--astrolabe" type="button" onClick={() => setRoomMessage("The brass rings describe a sky that does not belong to this world.")}>
+              <PixelAsset kind="astrolabe" />
+              <span>Inspect astrolabe</span>
+            </button>
+            <button className="room-hotspot room-hotspot--cabinet" type="button" onClick={() => setRoomMessage("The cabinet contains old maps, blank postcards, and one locked drawer.")}>
+              <PixelAsset kind="cabinet" />
+              <span>Inspect cabinet</span>
+            </button>
           </div>
-          <h1 id="ritual-title" ref={headingRef} tabIndex={-1}>An elixir has been prepared.</h1>
-          <p>{archive.buddy?.name} is waiting for permission. Nothing real is consumed.</p>
-          <div className="button-stack"><button className="primary" type="button" onClick={() => beginExpedition(true)}>Let it drink</button><button className="secondary" type="button" onClick={() => beginExpedition(false)}>Keep {archive.buddy?.name} unchanged</button></div>
+          <p className="room-message" aria-live="polite">{roomMessage}</p>
+          <div className="room-inventory" aria-label="Inventory">
+            <strong>Inventory</strong>
+            {ritualStep === "elixir_selected" || ritualStep === "choice_open" ? <span className="inventory-item"><PixelAsset kind="elixir" />Elixir</span> : <span>Empty</span>}
+          </div>
+          {ritualStep === "choice_open" ? (
+            <div className="ritual-choice">
+              <p>{archive.buddy?.name} is waiting for permission. The elixir is fictional; nothing real is consumed.</p>
+              <div className="button-stack"><button className="primary" type="button" onClick={() => beginExpedition(true)}>Let it drink</button><button className="secondary" type="button" onClick={() => beginExpedition(false)}>Keep {archive.buddy?.name} unchanged</button></div>
+            </div>
+          ) : (
+            <button className="ritual-shortcut" type="button" onClick={openRitualChoice}>Begin ritual</button>
+          )}
         </section>
       </PixelGameShell>
     );

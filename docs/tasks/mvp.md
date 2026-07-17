@@ -13,11 +13,10 @@ The first vertical slice was approved on 2026-07-16 and completed. The playable 
 
 ## Active
 
-No task is active. P02 is complete and awaiting independent agent review before P03 begins.
+No task is active. P03 is complete and awaiting independent agent review before P04 begins.
 
 ## Backlog
 
-- [ ] **P03 — Build the semantic playable elixir room**
 - [ ] **P04 — Reframe buddy creation and boundaries**
 - [ ] **P05 — Implement transformation and departure presentation**
 - [ ] **P06 — Reskin expedition, pause, ending, and archive**
@@ -26,6 +25,20 @@ No task is active. P02 is complete and awaiting independent agent review before 
 - [ ] **P09 — Run full validation and prepare independent review**
 
 ## Completed
+
+- [x] **P03 — Build the semantic playable elixir room** (2026-07-17)
+  - Replaced the decorative ritual display with an ephemeral room state machine: ready, elixir selected, choice open, and resolved.
+  - Added semantic keyboard-operable hotspots for the elixir, buddy, astrolabe, and cabinet, plus a textual sealed-portal state.
+  - Added contextual room narration, visible inventory feedback, the direct Begin ritual shortcut, and the explicit fictional-elixir consent choice.
+  - Prevented repeated choice activation from creating more than one active expedition.
+  - Kept optional inspections and item selection out of the local archive and expedition domain state until explicit elixir resolution.
+  - Updated all existing end-to-end paths to exercise the shortcut and added a dedicated item-play scenario covering inspections, inventory, consent, and persistence boundaries.
+  - Resolved initial agent-review findings by retaining the elixir in inventory through the consent choice, proving synchronous duplicate-choice protection with a UUID call-count assertion, and removing the stale backlog entry.
+  - Validated with `npm run validate` (38 unit/integration tests and 6 mobile Playwright scenarios passed).
+  - Independent agent re-review passed with no remaining blocking or should-fix findings; P03 is ready for human testing.
+  - P01–P02 independent agent review passed with no blocking or should-fix findings before P03 began.
+  - Commit status: P03 changes are not committed; commit `a15444d` contains work through P02 and is pushed to `origin/agent/planning-decisions`.
+  - Next handoff: `bwh-agent-review`.
 
 - [x] **P02 — Author and integrate the bounded original asset set** (2026-07-17)
   - Generated one original 1254×1254 pixel-art atlas using the built-in OpenAI image-generation tool from a project-authored prompt.
@@ -36,7 +49,7 @@ No task is active. P02 is complete and awaiting independent agent review before 
   - Visually inspected the generated atlas and Playwright mobile arrival capture; the T3 shared preview was unavailable, so the configured Playwright browser was used as the documented fallback.
   - Validated with `npm run validate` (38 unit/integration tests and 5 mobile Playwright scenarios passed).
   - No commit was created because the project does not document commit authorisation.
-  - Next handoff: `bwh-agent-review`.
+  - Independent agent review passed with no blocking or should-fix findings.
 
 - [x] **P01 — Establish pixel presentation primitives and asset manifest** (2026-07-17)
   - Added a reusable semantic game shell and applied it across the existing journey.
