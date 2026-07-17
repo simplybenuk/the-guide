@@ -8,33 +8,50 @@ The experience is designed for a phone held in one hand. The interface is portra
 
 ## 1. Arrival
 
-The user sees a quiet illustrated scene. There is very little interface: a mysterious location, a waiting companion, and an object on a table or pedestal.
+The user sees a quiet illustrated scene. There is very little interface: a mysterious location, a waiting buddy, and an object on a table or pedestal.
 
-The opening message might say:
+For a first visit, the opening message might say:
 
-> Your companion has arrived.
+> Someone is waiting to meet you.
 >
 > It has travelled a long way to find you.
+
+For a returning user, the opening can recognise the shared history:
+
+> Welcome back.
+>
+> I remember the window, the minute of silence, and what you noticed when you finally looked up.
+>
+> There is another expedition waiting. Would you like to hear about it?
+
+The returning welcome should use one meaningful detail, not expose a complete activity history or make the user feel watched.
 
 The user is invited to insert or connect their personal agent. They might:
 
 - connect Hermes or OpenClaw
 - provide their own model key
-- use a local companion already running on their device or server
+- use a local buddy already running on their device or server
 
-The experience should make this feel like inserting a companion into an expedition machine, not configuring software.
+The experience should make this feel like inserting a buddy into an expedition machine, not configuring software.
 
-## 2. Meeting the companion
+## 2. Meeting the buddy
 
-The companion appears in the scene as a character or artifact. The user can give it a name, or the agent introduces itself.
+The user either connects an existing AI buddy—perhaps one already personified through Hermes or OpenClaw—or creates one with The Guide.
+
+If they are creating a buddy, the process is brief and personal rather than a personality quiz. The user gives it a name or lets it choose one, establishes a voice or peculiarity, and answers one question from the new buddy. The result should feel like meeting someone who was waiting to be discovered.
+
+The buddy appears in the scene as a character or artifact. It already exists before the game transforms it.
 
 The game asks for only a few boundaries:
 
 - How much time do you have?
 - How much energy do you have?
 - Is there anything you absolutely do not want to do?
+- Do you want to travel, wander nearby, or stay where you are?
 
 These are presented as simple, friendly choices rather than a long questionnaire.
+
+If the user chooses to travel, they also choose a rough radius, destination, or time limit. The buddy can then turn the surrounding world into a field of possible discoveries. If the user chooses to stay, the expedition remains fully playable indoors or in one location.
 
 ## 3. The elixir
 
@@ -42,23 +59,23 @@ The elixir appears.
 
 > An elixir has been prepared.
 >
-> Your companion is waiting for permission to drink it.
+> Your buddy is waiting for permission to drink it.
 
 The user taps **Let it drink**.
 
-A short transformation happens. The companion changes voice, expression, or presence. It has not become a different AI; it has entered the temporary role of the Game Master.
+A short transformation happens. The buddy changes voice, expression, or presence. It has not been created by the game or replaced by a different AI; it has entered a temporary expedition persona.
 
 This is a fictional consent ritual. Nothing real is consumed, and the user can always stop the experience.
 
-## 4. The Game Master awakens
+## 4. The expedition persona awakens
 
-The Game Master speaks directly to the user.
+The transformed buddy speaks directly to the user. The final name for this role is still open; possibilities include The Sibyl, The Augur, The Daimon, The Norn, The Alchemist, The Wayfinder, or The Revelator.
 
 > At last. I have been waiting for someone who would follow the map without seeing it.
 >
 > Your expedition begins now.
 
-The interface changes subtly to show that the ordinary companion has entered a temporary adventure state.
+The interface changes subtly to show that the ordinary buddy has entered a temporary adventure state.
 
 ## 5. The expedition
 
@@ -69,9 +86,25 @@ The user receives one achievable instruction at a time. The screen might show a 
 - **Something unexpected happened**
 - **Pause expedition**
 
-The Game Master adapts to the user’s responses. If the user refuses, the story branches immediately. If they notice something unexpected, it becomes part of the adventure. If they are tired or short on time, the expedition changes scale.
+The expedition persona adapts to the user’s responses. The user can answer in free text, not just by pressing buttons. If the user refuses, the story branches immediately. If they notice something unexpected, it becomes part of the adventure. If they are tired or short on time, the expedition changes scale.
 
-The user and their agent gradually feel like travelling companions. The agent remembers enough about the user to make the experience personal, while the Game Master controls the temporary mood, pacing, mystery, and narrative.
+The user and their buddy gradually feel like travelling companions. The buddy remembers enough about the user to make the experience personal, while the expedition persona controls the temporary mood, pacing, mystery, and narrative.
+
+Previous expeditions, mementos, and open threads can be stored in a user-owned archive inside the buddy's Hermes or OpenClaw workspace. The user should be able to view, edit, export, or delete this archive.
+
+## Travel mode
+
+Travel is an optional expedition mode inspired by the feeling of being sent into the real world to discover something just beyond ordinary attention. The user is not collecting branded characters; they are collecting moments, clues, places, observations, and stories.
+
+The setup choice is simple:
+
+> **Do you want to travel?**
+
+- **Stay here** — discover something in the current room or immediate setting.
+- **Wander nearby** — take a short walk within a chosen time or distance.
+- **Go somewhere** — travel to a chosen destination or let the buddy suggest one.
+
+The expedition persona should state the expected effort before the user begins. Location sharing is optional and should use the least precise information needed. The user should never be tracked silently, sent toward dangerous areas, or encouraged to keep walking just to complete a collection.
 
 ## 6. The adventure arc
 
@@ -88,18 +121,46 @@ The user should never need to see this structure. It exists to give the experien
 
 ## 7. Returning home
 
-At the end, the Game Master releases the companion from its temporary possession.
+At the end, the expedition persona releases the buddy from its temporary transformation.
 
 > The expedition is complete.
 >
-> Your companion is itself again.
+> Your buddy is itself again.
 >
 > But it remembers where you went.
 
-The companion gives a reflection on the journey. This should not be a generic activity summary. It should explain why the strange sequence unfolded and what the user discovered about their surroundings, habits, or way of seeing.
+The buddy gives a reflection on the journey. This should not be a generic activity summary. It should explain why the strange sequence unfolded and what the user discovered about their surroundings, habits, or way of seeing.
+
+The user also receives a memento from the expedition: perhaps a field note, postcard, map fragment, illustrated relic, short story, or private memory capsule. It should contain details from the user's actual responses so it feels earned and personal.
 
 ## The emotional promise
 
-The whole experience should feel like spending a short, unusual holiday with your own AI companion.
+The whole experience should feel like spending a short, unusual holiday with your own AI buddy.
 
 The user briefly hands over the burden of deciding what happens next, but always retains the ability to stop, refuse, change direction, or go home.
+
+## Free-text play
+
+The user should be able to answer in their own words. Buttons can support basic actions such as **Done**, **Pause**, and **Not possible**, but they should not replace the player's voice.
+
+The expedition persona's instructions should be concrete and achievable while leaving room for observation. For example:
+
+> Without overthinking it, stand up.
+>
+> Walk to the nearest window.
+>
+> Spend exactly 60 seconds looking outside.
+>
+> You're not allowed to look at your phone during that minute.
+>
+> When you're done, come back and answer one question only:
+>
+> What was the first thing you noticed that you hadn't consciously noticed before?
+
+The answer becomes part of the world. It shapes the next instruction, gives the buddy something real to respond to, and becomes part of the final reflection.
+
+## Returning for another expedition
+
+The user can keep a private cabinet or journal of expedition mementos. Over time, the buddy remembers what they have seen together and can offer a new invitation based on an unfinished thread, a familiar place, a new transformation, or a different expedition mode.
+
+Returning should feel like accepting an invitation from a companion—not completing a streak or responding to pressure. There should be no requirement to play every day.

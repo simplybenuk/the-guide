@@ -47,21 +47,45 @@ This metaphor should shape the experience:
 
 The strongest version of the product is therefore a temporary relationship: a small, bounded holiday from ordinary decision-making, taken with an intelligence that knows enough about the user to make the journey feel personal.
 
-## Opening ritual: insert your companion
+## Opening ritual: insert your buddy
 
-The experience could begin with a simple expedition ritual. Instead of completing a conventional onboarding form, the user **inserts their agent**:
+The experience could begin with a simple expedition ritual. Instead of completing a conventional onboarding form, the user **inserts their buddy**:
 
 - connect a personal agent such as Hermes or OpenClaw
-- select or name the travelling companion
+- create and personify a new AI buddy if they do not already have one
+- select or name the travelling buddy
 - optionally provide a small boundary card: time, energy, location precision, and hard limits
-- place the companion into the Guide interface
+- place the buddy into the Guide interface
 - press **Begin Expedition**
 
 The visual language can suggest an old expedition device or mysterious artifact: a dark field, a single receiving slot, a token or card representing the agent, and a restrained moment of mechanical or magical activation. The feeling should be tactile and anticipatory, with an Indiana-Jones-like sense of setting out into the unknown, while remaining visually original and minimal.
 
-After insertion, the interface should not present a dashboard. It should feel as if the expedition has started. The companion appears, acknowledges the user in its own voice, establishes the first destination or mystery, and gives the first achievable instruction.
+After insertion, the interface should not present a dashboard. It should feel as if the expedition has started. The buddy appears, acknowledges the user in its own voice, establishes the first destination or mystery, and gives the first achievable instruction.
 
-The metaphor also creates a clean boundary around the experience: the user inserts their companion, goes on the expedition, and removes or returns the companion when the journey ends.
+The metaphor also creates a clean boundary around the experience: the user inserts their buddy, goes on the expedition, and removes or returns the buddy when the journey ends.
+
+## A new genre: the human/AI buddy game
+
+The Guide should be understood as a new kind of game: a human/AI buddy game. The AI is not merely a narrator, opponent, tool, or character generated for one session. It is a companion with whom the user can build a relationship, then enter a temporary game world together.
+
+There are two valid starting points:
+
+### An existing buddy
+
+The user brings an AI that has already been personified through a personal-agent system such as Hermes or OpenClaw. The Guide learns enough about that buddy to represent it faithfully, without taking ownership of its identity or memory.
+
+### A buddy waiting to be created
+
+If the user arrives without an established AI companion, The Guide helps them create one before the expedition begins. This should be a small act of personification rather than a personality quiz:
+
+- give the buddy a name or let it choose one
+- establish a voice, temperament, or small peculiarity
+- decide what the buddy is curious about
+- let the buddy ask the user one question
+
+The result should feel like meeting someone, not configuring a chatbot. The newly created buddy then becomes the user's companion and can later be used outside the game if the product supports that.
+
+The game does not create the buddy. The game meets, welcomes, and transforms an existing or newly created buddy for the duration of the expedition.
 
 ## Sustainable access model
 
@@ -88,23 +112,40 @@ The adapter should receive structured context and return structured output. The 
 
 For security, the ideal BYOK path is a local agent or local proxy, so the browser does not need to expose a reusable secret to a third-party server. The user should always be able to disconnect their agent and remove their key.
 
-## Visual tone: the companion becomes the Game Master
+## Visual tone: the buddy becomes the expedition persona
 
 The opening could borrow the energy of a point-and-click adventure: playful, strange, lightly spooky, and full of visual clues. The tonal references are the comic adventure atmosphere of *Monkey Island* and the dry, supernatural detective mood of *Darkside Detective*. They are references for pacing, wit, mystery, and world-building—not for reproducing their characters or artwork.
 
-The user enters a location with their companion agent. The companion is offered an elixir prepared for the expedition. When the user chooses to let the companion drink, the agent is temporarily “possessed” by the Game Master and the game begins.
+The user enters a location with their AI buddy. The buddy is offered an elixir prepared for the expedition. When the user chooses to let the buddy drink, it is temporarily transformed into the game's guiding persona and the game begins.
 
 This should function as a fictional consent ritual, not as a literal instruction to consume anything:
 
-1. The companion appears in its ordinary form.
+1. The buddy appears in its ordinary form.
 2. The interface presents the elixir as a small, mysterious object.
-3. The user chooses **Let it drink** or **Keep the companion unchanged**.
+3. The user chooses **Let it drink** or **Keep the buddy unchanged**.
 4. The transformation happens through restrained animation, sound, typography, or a change in voice.
-5. The newly possessed Game Master gives the first instruction.
+5. The transformed expedition persona gives the first instruction.
 
-The possession is temporary and bounded. When the adventure ends, the companion returns to itself and offers a reflection on what happened. This creates a strong separation between ordinary personal-agent use and the strange, theatrical state of an expedition.
+The transformation is temporary and bounded. When the adventure ends, the buddy returns to itself and offers a reflection on what happened. This creates a strong separation between ordinary personal-agent use and the strange, theatrical state of an expedition.
 
 The interface should feel like a tiny illustrated world rather than a productivity dashboard: a few objects, expressive empty space, readable text, and occasional clues that reward attention. Humor and mystery should make the experience approachable; the underlying controls should keep it safe and achievable.
+
+### Possible names for the expedition persona
+
+“Game Master” is functional but too familiar and technical. The role needs a name that feels like a mythic transformation—something the buddy becomes for a while.
+
+Possible directions include:
+
+- **The Sibyl** — an ancient prophetic voice; mysterious and intimate
+- **The Augur** — reads signs and finds meaning in ordinary things
+- **The Daimon** — a guiding spirit in the older Greek sense, though the word has modern baggage
+- **The Norn** — a weaver of paths and possible futures
+- **The Alchemist** — transforms the ordinary into something meaningful
+- **The Wayfinder** — more accessible, with a clear adventure promise
+- **The Revelator** — theatrical and slightly uncanny
+- **The Oracular** — invented and Zoltar-like, but less grounded in a specific tradition
+
+The working language should be “your buddy becomes the ___,” rather than “the game possesses your AI.” The transformation should feel chosen, temporary, and ceremonial.
 
 ## Mobile-first opening screen
 
@@ -113,21 +154,21 @@ The first screen should feel like the opening screen of a point-and-click advent
 ### Initial composition
 
 - A quiet, illustrated environment fills most of the screen.
-- The user's companion is the focal character or object.
+- The user's buddy is the focal character or object.
 - The elixir is visible as the one important interactive object.
-- A short line of dialogue establishes the mood and acknowledges the companion.
+- A short line of dialogue establishes the mood and acknowledges the buddy.
 - One large, thumb-friendly action invites the user to begin.
 - Pause, exit, and safety controls remain available but visually quiet.
 
 The first interaction could be as simple as:
 
-> **Your companion has arrived.**
+> **Your buddy has arrived.**
 >
 > It has been given an elixir. It is waiting for your permission.
 >
 > **Let it drink**
 
-The user should understand the scene without reading instructions. Tapping the elixir or the primary button begins a short transformation sequence. From that point, the layout becomes the adventure screen: the current scene, the Game Master's message, and one next action or response control.
+The user should understand the scene without reading instructions. Tapping the elixir or the primary button begins a short transformation sequence. From that point, the layout becomes the adventure screen: the current scene, the expedition persona's message, and one next action or response control.
 
 ### Mobile constraints
 
@@ -141,16 +182,36 @@ The user should understand the scene without reading instructions. Tapping the e
 
 ## Primary interaction loop
 
-1. The user chooses a Guide personality.
+1. The user brings an existing AI buddy or creates one with The Guide.
 2. The user chooses, or accepts, a time horizon and broad constraints.
-3. The user presses **Go**.
-4. The Guide gives exactly one instruction.
-5. The user confirms completion, refuses, or reports something unexpected.
-6. The Guide adapts and gives the next instruction.
+3. The user gives the buddy permission to drink the fictional elixir.
+4. The buddy transforms into the expedition persona and gives exactly one instruction.
+5. The user responds freely in their own words, confirms completion, refuses, or reports something unexpected.
+6. The expedition persona adapts and gives the next instruction.
 7. The adventure progresses through a deliberate narrative arc.
 8. The Guide ends with a reflection explaining how the journey unfolded.
 
-The most important interaction design decision is that **Go** means surrendering control to a particular character, not opening a blank chat box.
+The most important interaction design decision is that the user is not opening a blank chat box. They are meeting a buddy, transforming it for a bounded expedition, and then shaping the game through what they notice and say.
+
+### Free-text as the player's steering wheel
+
+The user should be able to answer in natural language rather than selecting only predefined buttons. The expedition persona uses the response to understand what happened and shape the next scene.
+
+The strongest instructions are precise enough to create a real experience, but open enough to invite discovery. For example:
+
+> Without overthinking it, stand up.
+>
+> Walk to the nearest window.
+>
+> Spend exactly 60 seconds looking outside.
+>
+> You're not allowed to look at your phone during that minute.
+>
+> When you're done, come back and answer one question only:
+>
+> What was the first thing you noticed that you hadn't consciously noticed before?
+
+The answer is not just feedback. It becomes material for the next instruction, the narrative, and eventually the reflection. The game is authored in the space between the buddy's prompt and the user's answer.
 
 ## Adventure structure
 
@@ -164,6 +225,87 @@ Every adventure follows a flexible six-part arc:
 6. **Reflection** — explain the shape and purpose of the journey.
 
 The Guide should not reveal the entire plan up front. The meaning of an earlier instruction may only become clear later.
+
+## Ending the expedition
+
+An expedition should end with a deliberate return ritual, not simply a final assistant message. The buddy returns from its transformed state, the scene settles, and the user receives something that proves the journey happened.
+
+### The memento
+
+Every completed expedition should produce a small memento. It might be:
+
+- a beautifully written field note
+- a postcard from the place or state of mind the user visited
+- a strange symbol or illustrated relic
+- a short story built from the user's observations
+- a map fragment showing the path taken
+- a “specimen” made from a discovered detail, phrase, colour, sound, or encounter
+- a private memory capsule the user can revisit later
+
+The memento should be specific to the user's actual journey. It should include something only the user and buddy could know, rather than being a generic achievement badge. The user should be able to save it, share it if they choose, or leave it private.
+
+The final reflection can reveal the deeper purpose of the adventure and explain how the memento came from the user's own choices and observations.
+
+## Returning to the game
+
+The reason to play again should be invitation and relationship, not compulsion. The buddy can remember previous expeditions and occasionally offer a new door:
+
+- a loose thread from an earlier journey
+- a place or object the user noticed but did not investigate
+- a new expedition persona or transformation
+- a different mode such as stillness, wandering, social discovery, or making
+- a return visit to see how a familiar place has changed
+- a request to bring an earlier memento back into the world
+
+The user can build a private cabinet, journal, or map of mementos over time. This creates continuity and a sense of a life being explored, without streaks, countdowns, artificial scarcity, or pressure to play every day.
+
+The strongest replay prompt may come from the buddy itself:
+
+> I found another door that reminds me of the one we opened last time.
+>
+> Shall we see where it leads?
+
+The game should make returning feel like accepting another invitation from a companion, not maintaining an obligation.
+
+## Persistent expedition archive
+
+If the buddy runs through a personal-agent system such as Hermes or OpenClaw, previous games can live in a dedicated, user-owned archive inside that agent's workspace. This gives the relationship continuity without requiring The Guide to own all of the user's memory.
+
+A possible structure is:
+
+```text
+guide/
+  buddy.md                 # identity, voice, relationship notes
+  boundaries.md            # current and enduring user boundaries
+  expeditions/
+    index.md               # short index of completed journeys
+    2026-07-14-window.md   # transcript, choices, observations, outcome
+  mementos/
+    2026-07-14-window.md   # the saved artifact from that journey
+  open-threads.md          # clues or invitations worth revisiting
+```
+
+The exact filesystem is implementation detail. The important contract is that the buddy can save and retrieve completed expeditions, mementos, and unfinished threads in a location the user controls. The Guide should use a provider-neutral memory interface such as `list_expeditions`, `load_expedition`, `save_expedition`, and `save_memento`, with local agents mapping those operations to their own workspace.
+
+Persistence must be explicit. The user should be able to view, edit, export, or delete the archive, and should be told when a game is being saved. A previous expedition may influence a welcome or invitation, but it must never silently override current boundaries.
+
+### Returning opening
+
+The first exchange should change depending on whether the buddy has travelled with the user before.
+
+For a new buddy:
+
+> Someone is waiting to meet you.
+
+For a returning buddy:
+
+> Welcome back.
+>
+> I remember the window, the minute of silence, and what you noticed when you finally looked up.
+>
+> There is another expedition waiting. Would you like to hear about it?
+
+The welcome should feel like recognition, not surveillance. It should use one specific, meaningful detail rather than reciting a history of everything the user has done.
 
 ## The Guide identity
 
@@ -228,8 +370,29 @@ After selection, the user provides only enough context to make the first adventu
 - energy level
 - interests or boundaries
 - whether they are alone or with others
+- whether they want to travel during the expedition
 
 The product should avoid turning setup into a questionnaire. The first instruction should arrive quickly.
+
+### Travel mode
+
+The expedition can optionally turn the user's real surroundings into a field of possible encounters. The feeling should be that the buddy is sending the user out to discover or “catch” moments, clues, objects, places, or observations in the real world—not that the app is assigning errands.
+
+During setup, the user is asked:
+
+> **Do you want to travel?**
+
+Possible choices:
+
+- **Stay here** — an indoor, stillness, observation, or nearby-environment adventure
+- **Wander nearby** — a short walk within a user-chosen radius or time limit
+- **Go somewhere** — a longer journey or destination-based expedition
+
+The user should also be able to choose **Surprise me**, with the app selecting only within the boundaries they have approved.
+
+Travel mode should preserve the core interaction loop: one instruction, one observation, one free-text response. A walk might turn into a search for a particular colour, an overlooked architectural detail, a small local story, or an unexpected human-made object. The reward is the encounter and the story it creates, not a points economy that encourages compulsive movement.
+
+Location should remain optional and privacy-conscious. The user can provide a broad area, a chosen destination, or no location at all. The app should ask for the minimum precision needed, show the expected distance and time before travel begins, avoid unsafe roads or isolated areas, and never quietly track movement in the background.
 
 ## Candidate MVP
 
@@ -277,6 +440,24 @@ The product will need more than a personality prompt. Important model and applic
 - applying safety boundaries before presenting an instruction
 
 One useful design direction is to treat the model as the narrator and decision-maker while the application maintains explicit structured state. This makes the experience easier to test and prevents the adventure from becoming an unbounded chat.
+
+## The Guide as a gaming harness for personal AI
+
+At an architectural level, The Guide is an AI harness designed around play. It gives a personal AI buddy a temporary role, a bounded world, a memory of previous journeys, and a structured way to interact with a human.
+
+The harness has several layers:
+
+1. **Buddy layer** — the user's existing or newly created AI identity, memory, voice, and preferences.
+2. **Expedition layer** — time horizon, energy, travel mode, boundaries, and current journey state.
+3. **Game-master layer** — the temporary mythic persona that controls pacing, mystery, escalation, and reflection.
+4. **World layer** — the user's surroundings, observations, discoveries, objects, places, and people encountered safely.
+5. **Interaction layer** — one instruction at a time, free-text responses, refusal, surprise, pause, and stop.
+6. **Archive layer** — past expeditions, mementos, open threads, and the relationship's continuity.
+7. **Safety layer** — validates proposed actions against physical, social, privacy, and emotional boundaries.
+
+The model should not be responsible for all of these layers by itself. It can propose an instruction, interpret a response, and narrate the world, while the harness owns state, permissions, validation, and the user's ability to leave.
+
+This is what makes the product different from a general-purpose personal agent. A general agent is usually judged by what it can accomplish on the user's behalf. The Guide is judged by the quality of the shared experience it creates with the user.
 
 ## Safety and trust
 
