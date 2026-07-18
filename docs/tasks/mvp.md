@@ -16,12 +16,7 @@ active tree under the approved repository-pivot specification.
 
 ## Active
 
-- [ ] **D06 — Publish the authorized GitHub Pages alpha**
-  - Add the owner-approved personal, non-commercial alpha terms to the
-    repository and audited artifact.
-  - Publish the reviewed delivery scope through a draft PR, merge with explicit
-    authority, run the main-only manual Pages workflow, and verify the live
-    cabinet before starting ChatGPT evidence collection.
+No implementation task is active. ChatGPT evidence collection is the next gate.
 
 ## Waiting on external evidence
 
@@ -42,6 +37,19 @@ active tree under the approved repository-pivot specification.
 
 ## Completed
 
+- [x] **D06 — Publish the authorized GitHub Pages alpha** (2026-07-18)
+  - Added the owner-approved personal, non-commercial alpha terms to the
+    repository and audited artifact.
+  - Merged PR `#5` as commit `c4ee2f18b5e0b5d9c62ed29d9d7263665b142096`,
+    enabled GitHub Pages in custom-workflow mode, and completed manual workflow
+    run `29661850789` successfully.
+  - Verified `https://simplybenuk.github.io/the-guide/` and all 15 served files
+    byte-for-byte against the reviewed artifact. A live headless-browser check
+    confirmed the ChatGPT handoff URL and consent instruction, one local
+    delivery event, no external requests, and no console errors.
+  - Publication does not enable analytics collection or establish ChatGPT
+    compatibility; ChatGPT remains at zero live runs.
+
 - [x] **D05 — Independent ChatGPT-first delivery review** (2026-07-18)
   - Initial review returned one blocking audit gap and two should-fix contract
     gaps; development tightened remote-origin/collector rejection, shared strict
@@ -59,18 +67,18 @@ active tree under the approved repository-pivot specification.
     local in-page dispatch, rejection coverage, and acquisition-action fixtures.
   - Made **Copy for ChatGPT** the dominant handoff while preserving immutable
     URL, Markdown, complete-text, accessible denial, and no-JavaScript paths.
-  - Artifact audit now allowlists 15 static files and rejects transmission,
+  - Artifact audit now allowlists 16 static files and rejects transmission,
     analytics, persistence, public logging, server, secret, and unexpected-file
     markers; no cartridge, covenant, artwork, or versioned behavior changed.
   - `npm run validate` passed after independent-review fixes: lint, strict
     typecheck, 9 Vitest files with 51 tests, deterministic
-    15-file/6,167,559-byte artifact audit, and all 8
+    16-file/6,168,560-byte artifact audit, and all 8
     cabinet browser journeys.
   - Visual inspection passed using the Playwright fallback because the T3
     collaborative preview explicitly had no automation host. ChatGPT remains
     environment-blocked with zero runs and no compatibility claim.
-  - Changes are uncommitted; no deployment, publication, release, domain, tag,
-    workflow trigger, push, or live analytics collection occurred.
+  - At implementation handoff, no deployment or live analytics collection had
+    occurred; the separately authorized D06 publication followed review.
 
 - [x] **A04 — Validate, independently review, and publish the cleanup PR** (2026-07-18)
   - Clean `npm ci` installed 159 packages with zero audit vulnerabilities.
