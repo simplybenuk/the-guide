@@ -1,0 +1,42 @@
+{
+  "generatedAt": "2026-07-18T13:55:14.070Z",
+  "harness": "codex-cli 0.144.5",
+  "runs": [
+    {
+      "slug": "signal",
+      "reasoning": "medium",
+      "compatibility": "compatible",
+      "path": "docs/evaluations/codex-cli-0.144.5/signal-medium.json"
+    },
+    {
+      "slug": "signal",
+      "reasoning": "low",
+      "compatibility": "untested",
+      "path": "docs/evaluations/codex-cli-0.144.5/signal-low.json"
+    },
+    {
+      "slug": "mystery",
+      "reasoning": "medium",
+      "compatibility": "compatible",
+      "path": "docs/evaluations/codex-cli-0.144.5/mystery-medium.json"
+    },
+    {
+      "slug": "mystery",
+      "reasoning": "low",
+      "compatibility": "untested",
+      "path": "docs/evaluations/codex-cli-0.144.5/mystery-low.json"
+    },
+    {
+      "slug": "story",
+      "reasoning": "medium",
+      "compatibility": "compatible",
+      "path": "docs/evaluations/codex-cli-0.144.5/story-medium.json"
+    },
+    {
+      "slug": "story",
+      "reasoning": "low",
+      "compatibility": "untested",
+      "path": "docs/evaluations/codex-cli-0.144.5/story-low.json"
+    }
+  ]
+}

@@ -70,6 +70,33 @@ Reads and writes buddies, expeditions, mementos, and open threads. It should sup
 - Environment-configured provider endpoint for real model testing
 - No background jobs, location tracking, or tool execution in the first slice
 
+## Portable static Elixir mode
+
+The Elixir cabinet is a separate additive architecture, not a static export of
+the hosted application:
+
+```text
+Canonical Markdown cartridges + artwork
+  -> deterministic static generator
+  -> standalone HTML/CSS/JavaScript/cartridge artifact
+  -> player chooses URL, file, or copied text
+  -> third-party agent harness owns the conversation and model access
+```
+
+The static artifact contains no server route, provider SDK, credential, runtime
+configuration, database, archive, or transcript receiver. It does not import or
+call the hosted orchestrator, buddy adapter, provider configuration, installation
+identity, or local-storage schema. GitHub Pages is one possible static host; the
+repository workflow is manual-only and has not been deployed.
+
+In this mode, safety and lifecycle rules are transparent instructions inside
+each cartridge. The third-party harness retains higher-priority authority and
+ambient permissions, so the cartridge cannot be described as a sandbox. The
+cabinet therefore scopes compatibility to completed live evidence and keeps
+unknown classes untested. Current evidence supports only an experimental
+coding-agent classification; ChatGPT consumer evaluation is environment-blocked
+and is not a compatibility pass.
+
 ## Trust boundaries
 
 - The browser is untrusted for secrets and validation.
@@ -77,6 +104,10 @@ Reads and writes buddies, expeditions, mementos, and open threads. It should sup
 - A personal agent may have tools that The Guide must not inherit automatically.
 - User archive data must be scoped to the authenticated or local user.
 - Provider responses must be schema-validated before state changes.
+- In portable Elixir mode, The Guide cannot validate turns or enforce role
+  release after handoff; the chosen harness owns execution and data handling.
+- The static cabinet receives no gameplay transcript, provider credential,
+  player boundary, or memento.
 
 ## Recommendation: server-side orchestration, local-first provider access
 

@@ -8,12 +8,15 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "build:elixirs": "node scripts/elixirs/build.mjs",
+    "audit:elixirs": "node scripts/elixirs/audit.mjs dist/elixirs-pages",
     "start": "next start",
     "lint": "eslint . --max-warnings=0",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:e2e": "playwright test",
-    "validate": "npm run lint && npm run typecheck && npm run test && npm run build && npm run test:e2e"
+    "test:e2e:elixirs": "playwright test --config playwright.elixirs.config.ts",
+    "validate": "npm run lint && npm run typecheck && npm run test && npm run build && npm run build:elixirs && npm run test:e2e && npm run test:e2e:elixirs"
   },
   "dependencies": {
     "next": "16.2.10",

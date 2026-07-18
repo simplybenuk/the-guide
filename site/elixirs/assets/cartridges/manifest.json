@@ -1,0 +1,59 @@
+{
+  "schemaVersion": 1,
+  "project": "The Guide — Elixir Cabinet",
+  "assetRoot": "assets/cartridges/",
+  "policy": "Every shipped cartridge artwork must be original, accessible, and listed here before release.",
+  "assets": [
+    {
+      "id": "art-signal",
+      "path": "assets/cartridges/signal.png",
+      "kind": "visual",
+      "source": "OpenAI built-in image generation from a project-authored production prompt",
+      "author": "OpenAI image generation, directed by The Guide project",
+      "license": "Generated for this project; use governed by the applicable OpenAI terms",
+      "dimensions": {
+        "width": 1536,
+        "height": 1024
+      },
+      "generatedAt": "2026-07-18",
+      "generationMode": "Original generation with the existing project atlas supplied only as a loose style and palette reference",
+      "referenceAsset": "public/assets/pixel/expedition-atlas.png",
+      "promptSummary": "Original 16-bit pixel-art observatory cabinet where a blue elixir's luminous thread crosses harmless noticing instruments and reaches a subtle signal; no text, people, danger, logos, or borrowed characters.",
+      "sha256": "bc91387fba453db6efcea7c5cb1464c9fcf4271672c467806d1973535fb51f5c"
+    },
+    {
+      "id": "art-mystery",
+      "path": "assets/cartridges/mystery.png",
+      "kind": "visual",
+      "source": "OpenAI built-in image generation from a project-authored production prompt",
+      "author": "OpenAI image generation, directed by The Guide project",
+      "license": "Generated for this project; use governed by the applicable OpenAI terms",
+      "dimensions": {
+        "width": 1536,
+        "height": 1024
+      },
+      "generatedAt": "2026-07-18",
+      "generationMode": "Original generation with the existing project atlas supplied only as a loose style and palette reference",
+      "referenceAsset": "public/assets/pixel/expedition-atlas.png",
+      "promptSummary": "Original 16-bit pixel-art amber elixir illuminating a playful tabletop case board of harmless ordinary clues; no text, people, crime, danger, surveillance, logos, or borrowed characters.",
+      "sha256": "11951585da65e906b2c94488598bf72eca6d1e4a4a5b40b1d49d0437253d022e"
+    },
+    {
+      "id": "art-story",
+      "path": "assets/cartridges/story.png",
+      "kind": "visual",
+      "source": "OpenAI built-in image generation from a project-authored production prompt",
+      "author": "OpenAI image generation, directed by The Guide project",
+      "license": "Generated for this project; use governed by the applicable OpenAI terms",
+      "dimensions": {
+        "width": 1536,
+        "height": 1024
+      },
+      "generatedAt": "2026-07-18",
+      "generationMode": "Original generation with the existing project atlas supplied only as a loose style and palette reference",
+      "referenceAsset": "public/assets/pixel/expedition-atlas.png",
+      "promptSummary": "Original 16-bit pixel-art violet elixir opening into a paper world with three luminous branching paths that converge in a closing light; no text, people, danger, logos, or borrowed characters.",
+      "sha256": "be8da2a8d9fa5e8a723d1cdb6f72ef37526201f6602e21e5b9607f7278fed4ba"
+    }
+  ]
+}

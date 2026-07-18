@@ -1,0 +1,67 @@
+name: Deploy Elixir Cabinet to GitHub Pages
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: elixirs-pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: read
+    steps:
+      - name: Check out reviewed source
+        uses: actions/checkout@v7
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          package-manager-cache: false
+
+      - name: Install locked dependencies
+        run: npm ci
+
+      - name: Run cartridge and static-site tests
+        run: npm test
+
+      - name: Build standalone static cabinet
+        run: npm run build:elixirs
+
+      - name: Audit exact deployment artifact
+        run: npm run audit:elixirs
+
+      - name: Configure Pages metadata
+        uses: actions/configure-pages@v6
+        with:
+          enablement: false
+
+      - name: Upload reviewed Pages artifact
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: dist/elixirs-pages
+          include-hidden-files: true
+          retention-days: 1
+
+  deploy:
+    if: github.ref == 'refs/heads/main'
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy reviewed artifact
+        id: deployment
+        uses: actions/deploy-pages@v4

@@ -31,6 +31,24 @@ The first compelling vertical slice is one short expedition:
 
 The MVP should work fully in “stay here” mode. Travel mode is an optional second path, not a dependency for proving the core experience.
 
+## Portable Elixir experiment
+
+An additive experiment tests a simpler route to playing with an AI companion
+the player already uses. A standalone static cabinet offers three transparent,
+versioned Elixir cartridges: Signal, Mystery, and Story. The player chooses one
+and gives its URL, file, or complete text to their existing conversational or
+agent harness. That harness explains the game, asks for consent, temporarily
+plays the role, and explicitly returns to ordinary interaction when the game
+ends or the player stops.
+
+This path needs no Guide account, provider API key, agent endpoint, or server.
+The Guide neither receives nor stores the resulting conversation, boundaries,
+or memento; the player's chosen provider may process them under its own terms.
+The cartridge is an instruction contract rather than an enforceable sandbox,
+so compatibility claims are limited to observed evidence. Current live evidence
+supports an experimental coding-agent label only. Consumer-assistant evaluation
+is blocked in the available headless environment and is not marked as passed.
+
 ## Product principles
 
 - Experience over efficiency.
@@ -69,6 +87,11 @@ The MVP should work fully in “stay here” mode. Travel mode is an optional se
 Use a deterministic mock/demo provider first so the experience can be tested without API cost. Define the adapter around an OpenAI-compatible endpoint so Hermes/OpenClaw-style agents can be connected later.
 
 Rationale: this lets us prove the game loop before solving every provider's authentication and memory model.
+
+The portable Elixir cabinet complements rather than replaces this approach. It
+tests whether authored games can work inside third-party harnesses without any
+Guide-side model integration, while the hosted prototype remains the stronger
+application-owned safety and state boundary.
 
 ### Recommendation: make stay-here mode the required MVP path
 
