@@ -35,6 +35,8 @@ jobs:
 
       - name: Build standalone static cabinet
         run: npm run build:elixirs
+        env:
+          ELIXIR_SOURCE_REVISION: ${{ github.sha }}
 
       - name: Audit exact deployment artifact
         run: npm run audit:elixirs

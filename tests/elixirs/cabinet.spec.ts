@@ -64,7 +64,7 @@ for (const basePath of ["/", "/the-guide/"]) {
     );
 
     await page.getByText("Show complete cartridge source").click();
-    await expect(page.getByText("The Guide Common Elixir Covenant", { exact: false })).toBeVisible();
+    await expect(page.locator("[data-cartridge-source]")).toContainText("The Guide Common Elixir Covenant");
     expect(pageErrors).toEqual([]);
     expect(requestedUrls.every((url) => url.startsWith("http://127.0.0.1:4173/"))).toBe(true);
     expect(
@@ -93,7 +93,7 @@ test("remains usable at 320px, 200% text, keyboard navigation, and reduced motio
   await expect(page.getByRole("button", { name: "Copy for ChatGPT" })).toBeVisible();
 });
 
-test("copies the exact resolved handoff and complete canonical cartridge", async ({ page }) => {
+test("copies the exact self-contained, resolver, and raw cartridge payloads", async ({ page }) => {
   await captureDeliveryEvents(page);
   await page.addInitScript(() => {
     const state = window as unknown as { copiedText: string[] };
@@ -106,32 +106,54 @@ test("copies the exact resolved handoff and complete canonical cartridge", async
   await page.goto("/the-guide/elixirs/signal/");
 
   await page.getByRole("button", { name: "Copy for ChatGPT" }).click();
-  await expect(page.getByRole("status")).toContainText("Handoff copied");
-  const handoff = await page.locator("[data-handoff]").inputValue();
-  const copiedHandoff = await page.evaluate(
+  await expect(page.getByRole("status")).toContainText("Complete ChatGPT prompt copied");
+  const chatgptPrompt = await page.locator("[data-chatgpt-prompt]").inputValue();
+  const copiedChatgptPrompt = await page.evaluate(
     () => (window as unknown as { copiedText: string[] }).copiedText[0],
   );
-  expect(copiedHandoff).toBe(handoff);
-  expect(copiedHandoff).toContain(
+  expect(copiedChatgptPrompt).toBe(chatgptPrompt);
+  expect(copiedChatgptPrompt).toContain("Delivery envelope: the-guide-elixir/1");
+  expect(copiedChatgptPrompt).toContain("<<< BEGIN THE GUIDE ELIXIR CARTRIDGE >>>");
+  expect(copiedChatgptPrompt).toContain("<<< END THE GUIDE ELIXIR CARTRIDGE >>>");
+  expect(copiedChatgptPrompt).toContain("affirmative consent");
+  expect(copiedChatgptPrompt).not.toContain("http://127.0.0.1:4173");
+
+  await page.getByText("Agent prompt (experimental)").click();
+  await page.getByRole("button", { name: "Copy agent prompt" }).click();
+  await expect(page.getByRole("status")).toContainText("Experimental agent prompt copied");
+  const resolverPrompt = await page.locator("[data-resolver-prompt]").inputValue();
+  const copiedResolverPrompt = await page.evaluate(
+    () => (window as unknown as { copiedText: string[] }).copiedText[1],
+  );
+  expect(copiedResolverPrompt).toBe(resolverPrompt);
+  expect(copiedResolverPrompt).toContain(
     "http://127.0.0.1:4173/the-guide/cartridges/signal/0.1.0/elixir.md",
   );
-  expect(copiedHandoff).toContain("read the complete The Signal Elixir v0.1.0 cartridge");
-  expect(copiedHandoff).toContain("If you cannot retrieve it, say so rather than guessing");
-  expect(copiedHandoff).toContain("Explain the game");
-  expect(copiedHandoff).toContain("affirmative consent");
+  expect(copiedResolverPrompt).toMatch(
+    /https:\/\/raw\.githubusercontent\.com\/simplybenuk\/the-guide\/[0-9a-f]{40}\/content\/elixirs\/signal\.md/,
+  );
+  expect(copiedResolverPrompt).not.toMatch(/\/main\/|\bnpx\b/);
 
-  await page.getByRole("button", { name: "Copy complete cartridge" }).click();
+  await page.getByRole("button", { name: "Copy raw cartridge" }).click();
   await expect(page.getByRole("status")).toHaveText("Complete cartridge copied.");
   const copiedCartridge = await page.evaluate(
-    () => (window as unknown as { copiedText: string[] }).copiedText[1],
+    () => (window as unknown as { copiedText: string[] }).copiedText[2],
   );
   expect(copiedCartridge).toBe(await page.locator("[data-cartridge-source]").textContent());
   expect(copiedCartridge).toContain("# The Signal Elixir");
+  const openingMarker = "<<< BEGIN THE GUIDE ELIXIR CARTRIDGE >>>\n";
+  expect(
+    copiedChatgptPrompt.slice(
+      copiedChatgptPrompt.indexOf(openingMarker) + openingMarker.length,
+      copiedChatgptPrompt.indexOf("<<< END THE GUIDE ELIXIR CARTRIDGE >>>"),
+    ),
+  ).toBe(copiedCartridge);
 
   const events = await readDeliveryEvents(page);
-  expect(events).toHaveLength(2);
+  expect(events).toHaveLength(3);
   expect(events.map(({ delivery_method, target_harness, result }) => ({ delivery_method, target_harness, result }))).toEqual([
-    { delivery_method: "handoff_message_copy", target_harness: "chatgpt", result: "succeeded" },
+    { delivery_method: "self_contained_prompt_copy", target_harness: "chatgpt", result: "succeeded" },
+    { delivery_method: "resolver_prompt_copy", target_harness: "unspecified", result: "succeeded" },
     { delivery_method: "cartridge_text_copy", target_harness: "unspecified", result: "succeeded" },
   ]);
   for (const event of events) {
@@ -150,7 +172,7 @@ test("copies the exact resolved handoff and complete canonical cartridge", async
       "target_harness",
     ]);
     expect(event).toMatchObject({
-      contract_version: "1.0.0",
+      contract_version: "1.1.0",
       event_name: "delivery_action_recorded",
       surface: "cabinet_detail",
       channel: "cabinet_first",
@@ -163,13 +185,14 @@ test("copies the exact resolved handoff and complete canonical cartridge", async
   }
 });
 
-test("resolves the handoff against the current host rather than a fixed deployment", async ({ page }) => {
+test("resolves only the Pages source in the agent prompt against the current host", async ({ page }) => {
   await page.goto("http://localhost:4173/the-guide/elixirs/story/");
 
-  await expect(page.locator("[data-handoff]")).toHaveValue(
+  await expect(page.locator("[data-resolver-prompt]")).toHaveValue(
     /http:\/\/localhost:4173\/the-guide\/cartridges\/story\/0\.1\.0\/elixir\.md/,
   );
-  await expect(page.locator("[data-handoff]")).not.toHaveValue(/simplybenuk\.github\.io/);
+  await expect(page.locator("[data-chatgpt-prompt]")).not.toHaveValue(/https?:\/\//);
+  await expect(page.locator("[data-resolver-prompt]")).not.toHaveValue(/simplybenuk\.github\.io|\/main\//);
 });
 
 test("offers manual fallback when clipboard access is denied", async ({ page }) => {
@@ -177,24 +200,53 @@ test("offers manual fallback when clipboard access is denied", async ({ page }) 
   await page.addInitScript(() => {
     Object.defineProperty(navigator, "clipboard", {
       configurable: true,
-      value: { writeText: () => Promise.reject(new Error("denied")) },
+      value: { writeText: () => Promise.reject(new DOMException("denied", "NotAllowedError")) },
     });
   });
   await page.goto("/the-guide/elixirs/story/");
 
   await page.getByRole("button", { name: "Copy for ChatGPT" }).click();
   await expect(page.getByRole("status")).toContainText("selected so you can copy it manually");
-  await expect(page.locator("[data-handoff]")).toBeFocused();
+  await expect(page.locator("[data-chatgpt-prompt]")).toBeFocused();
 
-  await page.getByRole("button", { name: "Copy complete cartridge" }).click();
+  await page.getByText("Agent prompt (experimental)").click();
+  await page.getByRole("button", { name: "Copy agent prompt" }).click();
+  await expect(page.locator("[data-resolver-prompt]")).toBeFocused();
+
+  await page.getByRole("button", { name: "Copy raw cartridge" }).click();
   await expect(page.getByRole("status")).toContainText("complete source is open below");
-  await expect(page.locator("details")).toHaveAttribute("open", "");
+  await expect(page.locator(".source-panel details")).toHaveAttribute("open", "");
 
   const events = await readDeliveryEvents(page);
-  expect(events).toHaveLength(2);
-  expect(events.map(({ result }) => result)).toEqual(["denied", "denied"]);
+  expect(events).toHaveLength(3);
+  expect(events.map(({ result }) => result)).toEqual(["denied", "denied", "denied"]);
   expect(events.every((event) => Object.keys(event).length === 12)).toBe(true);
   expect(JSON.stringify(events)).not.toMatch(/transcript|clipboard|stack|private/i);
+});
+
+test("distinguishes unavailable clipboard access from an unexpected copy failure", async ({ page }) => {
+  await captureDeliveryEvents(page);
+  await page.addInitScript(() => {
+    Object.defineProperty(navigator, "clipboard", { configurable: true, value: {} });
+  });
+  await page.goto("/the-guide/elixirs/story/");
+
+  await page.getByRole("button", { name: "Copy for ChatGPT" }).click();
+  await expect(page.getByRole("status")).toContainText("Clipboard access is unavailable");
+  await page.evaluate(() => {
+    Object.defineProperty(navigator, "clipboard", {
+      configurable: true,
+      value: { writeText: () => Promise.reject(new Error("unexpected")) },
+    });
+  });
+  await page.getByText("Agent prompt (experimental)").click();
+  await page.getByRole("button", { name: "Copy agent prompt" }).click();
+  await expect(page.getByRole("status")).toContainText("Copying failed unexpectedly");
+
+  expect((await readDeliveryEvents(page)).map(({ delivery_method, result }) => ({ delivery_method, result }))).toEqual([
+    { delivery_method: "self_contained_prompt_copy", result: "unavailable" },
+    { delivery_method: "resolver_prompt_copy", result: "failed" },
+  ]);
 });
 
 test("records download initiation locally without an analytics request", async ({ page }) => {
@@ -238,12 +290,13 @@ test("keeps source inspection and download available without JavaScript", async 
   await page.goto("http://127.0.0.1:4173/the-guide/elixirs/signal/");
 
   await expect(page.getByRole("button", { name: "Copy for ChatGPT" })).toHaveCount(0);
-  await expect(page.locator("[data-handoff]")).toHaveValue(
+  await expect(page.locator("[data-chatgpt-prompt]")).toHaveValue(/<<< END THE GUIDE ELIXIR CARTRIDGE >>>/);
+  await expect(page.locator("[data-resolver-prompt]")).toHaveValue(
     /\.\.\/\.\.\/cartridges\/signal\/0\.1\.0\/elixir\.md/,
   );
-  await expect(page.getByText("select and copy the handoff message", { exact: false })).toBeVisible();
+  await expect(page.getByText("select and copy the complete prompt above", { exact: false })).toBeVisible();
   await page.getByText("Show complete cartridge source").click();
-  await expect(page.getByText("The Signal Elixir has worn off", { exact: false })).toBeVisible();
+  await expect(page.locator("[data-cartridge-source]")).toContainText("The Signal Elixir has worn off");
   const download = page.getByRole("link", { name: "Download Markdown" });
   await expect(download).toHaveAttribute("download", "the-guide-signal-0.1.0.md");
   const response = await context.request.get(
