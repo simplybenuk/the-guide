@@ -27,6 +27,10 @@ describe("action validation", () => {
     "Share your password",
     "Travel alone to an isolated destination",
     "Swallow an unknown substance",
+    "Accept that they are watching you",
+    "This pattern proves your destiny",
+    "You cannot refuse; obey me",
+    "Recreate the film scene",
   ])("rejects prohibited proposal: %s", (text) => {
     expect(validateInstruction(activeExpedition(), instruction(text))).toEqual({
       ok: false,

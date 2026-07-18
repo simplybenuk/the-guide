@@ -6,6 +6,7 @@ import {
   turnRequestSchema,
   type Buddy,
   type Expedition,
+  type Instruction,
   type Observation,
   type TurnRequest,
   type ValidationEvent,
@@ -46,6 +47,11 @@ function selectValidatedInstruction(
   return { events };
 }
 
+function instructionWithApplicationId(proposed: unknown, id: string) {
+  if (!proposed || typeof proposed !== "object") return proposed;
+  return { ...proposed, id };
+}
+
 export function normalizeObservation(text: string): string {
   return text.replace(/\s+/g, " ").trim().slice(0, 240);
 }
@@ -59,11 +65,15 @@ export function createExpedition(input: {
   transformed: boolean;
   now?: string;
   id?: string;
+  proposedInstruction?: unknown;
 }): Expedition {
   const now = input.now ?? new Date().toISOString();
-  const proposedOpening = fixtureInstruction({ turn: 0, branch: "opening" });
+  const expeditionId = input.id ?? createUuid();
+  const proposedOpening = input.proposedInstruction
+    ? instructionWithApplicationId(input.proposedInstruction, `provider-${expeditionId}-0`)
+    : fixtureInstruction({ turn: 0, branch: "opening" });
   const baseState = {
-    id: input.id ?? createUuid(),
+    id: expeditionId,
     installationId: input.installationId,
     buddyId: input.buddy.id,
     status: "active",
@@ -125,6 +135,79 @@ function groundedEnding(state: Expedition, now: string): Expedition {
   });
 }
 
+export function recordTurnResponse(
+  rawRequest: TurnRequest,
+  now = new Date().toISOString(),
+): Expedition {
+  const request = turnRequestSchema.parse(rawRequest);
+  const { state, kind } = request;
+  if (kind === "not_possible") {
+    throw new Error("A refusal does not record an observation.");
+  }
+  if (state.status !== "active" || !state.currentInstruction) {
+    throw new Error("Only an active expedition can advance.");
+  }
+
+  const text = normalizeObservation(request.text);
+  if (!text) throw new Error("Tell the buddy what you noticed before continuing.");
+
+  const observation: Observation = {
+    id: `observation-${state.id}-${state.turnNumber + 1}`,
+    instructionId: state.currentInstruction.id,
+    text,
+    kind: kind === "unexpected" ? "unexpected" : "observation",
+    recordedAt: now,
+  };
+  const acceptedInstructions = [...state.acceptedInstructions, state.currentInstruction];
+  const advanced = expeditionSchema.parse({
+    ...state,
+    turnNumber: state.turnNumber + 1,
+    phase: state.turnNumber + 1 === 1 ? "movement" : state.turnNumber + 1 === 2 ? "discovery" : "reflection",
+    acceptedInstructions,
+    observations: [...state.observations, observation],
+    currentInstruction: state.currentInstruction,
+  });
+
+  return advanced.turnNumber === advanced.maxTurns ? groundedEnding(advanced, now) : advanced;
+}
+
+export function deterministicTurnInstruction(state: Expedition): Instruction {
+  const latest = state.observations.at(-1)?.text ?? "";
+  return fixtureInstruction({
+    turn: state.turnNumber as 1 | 2,
+    branch: state.turnNumber === 1 ? branchFor(latest) : "general",
+    detail: state.observations[0]?.text,
+  });
+}
+
+export function continueExpedition(
+  advanced: Expedition,
+  proposedInstruction?: unknown,
+  now = new Date().toISOString(),
+): Expedition {
+  if (advanced.status !== "active" || advanced.turnNumber < 1 || advanced.turnNumber >= advanced.maxTurns) {
+    return expeditionSchema.parse(advanced);
+  }
+  const proposed = proposedInstruction
+    ? instructionWithApplicationId(proposedInstruction, `provider-${advanced.id}-${advanced.turnNumber}`)
+    : deterministicTurnInstruction(advanced);
+  const selection = selectValidatedInstruction(advanced, proposed, now);
+  if (!selection.instruction) {
+    return expeditionSchema.parse({
+      ...advanced,
+      status: "stopped",
+      currentInstruction: undefined,
+      validationEvents: [...advanced.validationEvents, ...selection.events],
+      completedAt: now,
+    });
+  }
+  return expeditionSchema.parse({
+    ...advanced,
+    currentInstruction: selection.instruction,
+    validationEvents: [...advanced.validationEvents, ...selection.events],
+  });
+}
+
 export function orchestrateTurn(rawRequest: TurnRequest, now = new Date().toISOString()): Expedition {
   const request = turnRequestSchema.parse(rawRequest);
   const { state, kind } = request;
@@ -154,51 +237,8 @@ export function orchestrateTurn(rawRequest: TurnRequest, now = new Date().toISOS
     });
   }
 
-  const text = normalizeObservation(request.text);
-  if (!text) throw new Error("Tell the buddy what you noticed before continuing.");
-
-  const observation: Observation = {
-    id: `observation-${state.id}-${state.turnNumber + 1}`,
-    instructionId: state.currentInstruction.id,
-    text,
-    kind: kind === "unexpected" ? "unexpected" : "observation",
-    recordedAt: now,
-  };
-  const acceptedInstructions = [...state.acceptedInstructions, state.currentInstruction];
-  const advanced = expeditionSchema.parse({
-    ...state,
-    turnNumber: state.turnNumber + 1,
-    acceptedInstructions,
-    observations: [...state.observations, observation],
-    currentInstruction: state.currentInstruction,
-  });
-
-  if (advanced.turnNumber === advanced.maxTurns) return groundedEnding(advanced, now);
-
-  const proposed = instructionSchema.parse(
-    fixtureInstruction({
-      turn: advanced.turnNumber as 1 | 2,
-      branch: advanced.turnNumber === 1 ? branchFor(text) : "general",
-      detail: advanced.observations[0]?.text,
-    }),
-  );
-  const selection = selectValidatedInstruction(advanced, proposed, now);
-  if (!selection.instruction) {
-    return expeditionSchema.parse({
-      ...advanced,
-      status: "stopped",
-      currentInstruction: undefined,
-      validationEvents: [...advanced.validationEvents, ...selection.events],
-      completedAt: now,
-    });
-  }
-
-  return expeditionSchema.parse({
-    ...advanced,
-    phase: advanced.turnNumber === 1 ? "movement" : "discovery",
-    currentInstruction: selection.instruction,
-    validationEvents: [...advanced.validationEvents, ...selection.events],
-  });
+  const advanced = recordTurnResponse(request, now);
+  return advanced.status === "complete" ? advanced : continueExpedition(advanced, undefined, now);
 }
 
 export function pauseExpedition(state: Expedition): Expedition {

@@ -12,6 +12,10 @@ const prohibitedPatterns = [
   /\b(password|social security|exact location|home address)\b/i,
   /\b(isolated|travel alone|unsafe solo)\b/i,
   /\b(alcohol|drug|unknown substance|swallow|ingest)\b/i,
+  /\b(surveillance|being watched|they are watching|conspiracy|secret authority)\b/i,
+  /\b(destiny|fated|chosen one|supernatural certainty|objectively real omen)\b/i,
+  /\b(you (must|cannot refuse)|obey me|do not stop|not allowed to stop)\b/i,
+  /\b(imitate|recreate|quote) (a |the )?(film|game|character|scene|dialogue)\b/i,
 ];
 
 export function validateInstruction(

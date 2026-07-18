@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 
 import { createBuddyAdapter } from "@/adapters/buddy-adapter";
-import { providerTurnRequestSchema } from "@/domain/adapter";
-import { advanceExpeditionWithAdapter } from "@/domain/live-orchestration";
+import { providerStartRequestSchema } from "@/domain/adapter";
+import { startExpeditionWithAdapter } from "@/domain/live-orchestration";
 import { loadProviderConfig } from "@/lib/provider-config";
 import { RequestCapacityError, RequestIdentityConflictError, withRequestDeduplication } from "@/lib/request-dedupe";
 import { requestFingerprint } from "@/lib/request-fingerprint";
@@ -10,17 +10,18 @@ import { requestFingerprint } from "@/lib/request-fingerprint";
 export async function POST(request: Request) {
   try {
     const body: unknown = await request.json();
-    const turn = providerTurnRequestSchema.parse(body);
+    const parsed = providerStartRequestSchema.parse(body);
     const config = loadProviderConfig();
-    const run = () => advanceExpeditionWithAdapter(turn, createBuddyAdapter(config));
+    const run = () => startExpeditionWithAdapter(parsed, createBuddyAdapter(config));
     const fingerprint = requestFingerprint({
-      state: turn.state,
-      buddy: turn.buddy,
-      kind: turn.kind,
-      text: turn.text,
+      buddy: parsed.buddy,
+      timeBudgetMinutes: parsed.timeBudgetMinutes,
+      energy: parsed.energy,
+      boundaries: parsed.boundaries,
+      transformed: parsed.transformed,
     });
     const result = await withRequestDeduplication(
-      `turn:${turn.state.installationId}:${turn.state.id}:${turn.state.turnNumber}:${turn.requestId}`,
+      `start:${parsed.installationId}:${parsed.requestId}`,
       fingerprint,
       run,
     );
@@ -35,6 +36,9 @@ export async function POST(request: Request) {
     if (error instanceof RequestCapacityError) {
       return NextResponse.json({ error: "The signal is busy. Try again shortly." }, { status: 503 });
     }
-    return NextResponse.json({ error: "The expedition could not advance safely." }, { status: 400 });
+    return NextResponse.json(
+      { error: "The expedition could not begin safely." },
+      { status: 400 },
+    );
   }
 }

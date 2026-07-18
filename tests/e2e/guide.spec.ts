@@ -44,6 +44,19 @@ async function expectScreenBounds(page: Page, locators: Locator[]) {
   for (const locator of locators) await expectWithinViewport(locator, page);
 }
 
+async function expectNoOverlap(first: Locator, second: Locator) {
+  const firstBox = await first.boundingBox();
+  const secondBox = await second.boundingBox();
+  expect(firstBox).not.toBeNull();
+  expect(secondBox).not.toBeNull();
+  if (!firstBox || !secondBox) return;
+  const separated = firstBox.x + firstBox.width <= secondBox.x ||
+    secondBox.x + secondBox.width <= firstBox.x ||
+    firstBox.y + firstBox.height <= secondBox.y ||
+    secondBox.y + secondBox.height <= firstBox.y;
+  expect(separated, `${first} and ${second} do not overlap`).toBe(true);
+}
+
 async function activateWithKeyboard(locator: Locator, page: Page) {
   await locator.focus();
   await expect(locator).toBeFocused();
@@ -68,7 +81,7 @@ test("completes an adaptive expedition and manages its local archive", async ({ 
   await page.getByRole("button", { name: "Skip transformation" }).click();
   await page.getByRole("button", { name: "Enter expedition" }).click();
 
-  await expect(page.getByText("Expedition 1 of 3")).toBeVisible();
+  await expect(page.getByText("Signal 1 of 3")).toBeVisible();
   await expect(page.locator(".quest-companion .pixel-asset--buddy")).toBeVisible();
   await page.getByLabel("What detail claimed your attention first?").fill("a green leaf");
   await page.getByRole("button", { name: "Done" }).click();
@@ -115,13 +128,63 @@ test("refuses without advancing and can stop with a partial record", async ({ pa
 
   await page.getByRole("button", { name: "Not possible" }).click();
   await expect(page.locator(".quest-companion .pixel-asset--buddy-transformed")).toBeVisible();
-  await expect(page.getByText("Expedition 1 of 3")).toBeVisible();
+  await expect(page.getByText("Signal 1 of 3")).toBeVisible();
   await expect(page.getByText(/Listen until one ordinary sound/i)).toBeVisible();
 
   page.once("dialog", (dialog) => dialog.accept());
   await page.getByRole("button", { name: "Stop" }).click();
   await expect(page.getByRole("heading", { name: "The path closes gently." })).toBeVisible();
   await expect(page.getByText("Nothing more is required.")).toBeVisible();
+});
+
+test("reuses a lost-response action identity, deduplicates submits, and lets the user stop waiting", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/");
+  await page.getByRole("button", { name: "Meet my buddy" }).click();
+  await page.getByLabel("Buddy name").fill("Moss");
+  await page.getByRole("button", { name: "Meet my buddy" }).click();
+  await expect(page.getByText(/If live AI is enabled/)).toBeVisible();
+  await page.getByRole("button", { name: "Prepare the elixir" }).click();
+  await page.getByRole("button", { name: "Begin ritual" }).click();
+  await page.getByRole("button", { name: "Keep Moss unchanged" }).click();
+  await page.getByRole("button", { name: "Enter expedition" }).click();
+  await page.getByLabel("What detail claimed your attention first?").fill("a green leaf");
+
+  const actionIds: string[] = [];
+  await page.route("**/api/expedition/turn", async (route) => {
+    const requestBody = JSON.parse(route.request().postData() ?? "{}");
+    actionIds.push(String(requestBody.requestId));
+    if (actionIds.length === 1) {
+      await route.fetch();
+      await route.abort("failed");
+      return;
+    }
+    if (actionIds.length === 2) {
+      await route.continue();
+      return;
+    }
+    await new Promise((resolve) => setTimeout(resolve, 750));
+    await route.continue().catch(() => undefined);
+  });
+  await page.locator(".quest-panel form").evaluate((form) => {
+    (form as HTMLFormElement).requestSubmit();
+    (form as HTMLFormElement).requestSubmit();
+  });
+  await expect(page.locator(".quest-panel .error")).toContainText(/could not advance/i);
+  await page.getByRole("button", { name: "Done" }).click();
+  await expect(page.getByText("Signal 2 of 3")).toBeVisible();
+  expect(actionIds[1]).toBe(actionIds[0]);
+
+  await page.getByLabel("What evidence did you find?").fill("a small shadow");
+  await page.locator(".quest-panel form").evaluate((form) => {
+    (form as HTMLFormElement).requestSubmit();
+    (form as HTMLFormElement).requestSubmit();
+  });
+  await expect(page.getByRole("button", { name: "Stop waiting" })).toBeVisible();
+  page.once("dialog", (dialog) => dialog.accept());
+  await page.getByRole("button", { name: "Stop waiting" }).click();
+  await expect(page.getByRole("heading", { name: "The path closes gently." })).toBeVisible();
+  expect(actionIds).toHaveLength(3);
 });
 
 test("supports keyboard entry, touch targets, and reduced motion", async ({ page }) => {
@@ -146,6 +209,8 @@ test("supports keyboard entry, touch targets, and reduced motion", async ({ page
   await page.keyboard.press("Enter");
   await expect(page.getByRole("heading", { name: "Who is waiting?" })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Who is waiting?" })).toBeFocused();
+  await expect(page.locator(".dialogue-portrait")).toContainText("Your buddy");
+  await expect(page.locator(".dialogue-portrait")).toHaveCSS("background-image", /expedition-atlas/);
   await expect(page.getByLabel("Buddy name")).toBeVisible();
   await expect(page.getByRole("combobox")).toHaveCount(3);
 
@@ -160,6 +225,7 @@ test("supports keyboard entry, touch targets, and reduced motion", async ({ page
   await activateWithKeyboard(page.getByRole("button", { name: "Meet my buddy" }), page);
   await expect(page.getByRole("heading", { name: "Set the edges" })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Set the edges" })).toBeFocused();
+  await expect(page.locator(".boundary-buddy.pixel-asset--buddy")).toContainText("Moss");
   await expect(page.getByRole("radio")).toHaveCount(6);
   await expect(page.getByLabel(/Hard limits/)).toBeVisible();
   await expect(page.getByLabel("Expedition boundary summary")).toContainText(
@@ -263,12 +329,19 @@ test("keeps the playable path operable at 320px and 200 percent text", async ({ 
     page.getByLabel("Expedition boundary summary"),
     page.getByRole("button", { name: "Prepare the elixir" }),
   ]);
+  await page.screenshot({ path: "test-results/mobile-boundaries-320.png", fullPage: true });
   await page.getByRole("button", { name: "Prepare the elixir" }).click();
   await expectScreenBounds(page, [
     page.getByRole("heading", { name: "Choose what happens next." }),
     page.getByLabel("Inventory", { exact: true }),
     page.getByRole("button", { name: "Begin ritual" }),
   ]);
+  await expectNoOverlap(
+    page.getByRole("button", { name: "Sound off" }),
+    page.getByRole("heading", { name: "Choose what happens next." }),
+  );
+  const roomBackdropBox = await page.locator(".room-backdrop").boundingBox();
+  expect(roomBackdropBox?.width).toBeGreaterThanOrEqual(304);
 
   for (const button of await page.locator(".room-hotspot").all()) {
     const box = await button.boundingBox();
@@ -343,7 +416,7 @@ test("captures representative desktop arrival and expedition states", async ({ p
   await page.getByRole("button", { name: "Skip transformation" }).click();
   await page.getByRole("button", { name: "Enter expedition" }).click();
 
-  await expect(page.getByText("Expedition 1 of 3")).toBeVisible();
+  await expect(page.getByText("Signal 1 of 3")).toBeVisible();
   await expectNoHorizontalOverflow(page);
   await page.screenshot({ path: "test-results/desktop-expedition.png", fullPage: true });
 });
@@ -355,9 +428,23 @@ test("plays the semantic elixir room without persisting optional inspections", a
   await page.getByRole("button", { name: "Meet my buddy" }).click();
   await page.getByRole("button", { name: "Prepare the elixir" }).click();
 
-  await expect(page.getByLabel(/mysterious room/i)).toBeVisible();
+  const room = page.getByLabel(/single mysterious room/i);
+  await expect(room).toBeVisible();
+  await expect(room.locator(".room-backdrop")).toHaveCount(1);
+  await expect(room.locator(".room-hotspot")).toHaveCount(6);
+  await expect(room.locator(".room-object")).toHaveCount(0);
+  for (const hotspot of await room.locator(".room-hotspot").all()) {
+    await expect(hotspot).toHaveCSS("position", "absolute");
+  }
   await expect(page.getByLabel("Inventory", { exact: true })).toContainText("Empty");
 
+  await page.getByRole("button", { name: "Collect brass token" }).click();
+  await expect(page.getByRole("button", { name: "Collect brass token" })).toHaveCount(0);
+  await expect(page.getByLabel("Inventory", { exact: true })).toContainText("Brass token");
+  await expect(page.getByText(/pleasingly useless/i)).toBeVisible();
+
+  await page.getByRole("button", { name: "Inspect sealed portal" }).click();
+  await expect(page.getByText(/waiting for the ritual/i)).toBeVisible();
   await page.getByRole("button", { name: "Inspect astrolabe" }).click();
   await expect(page.getByText(/sky that does not belong/i)).toBeVisible();
   await page.getByRole("button", { name: "Inspect cabinet" }).click();
@@ -367,9 +454,13 @@ test("plays the semantic elixir room without persisting optional inspections", a
     JSON.parse(localStorage.getItem("the-guide:archive:v1") ?? "null"),
   );
   expect(archiveBeforePickup.activeExpedition).toBeUndefined();
+  expect(JSON.stringify(archiveBeforePickup)).not.toContain("Brass token");
 
   await page.getByRole("button", { name: "Pick up elixir" }).click();
+  await expect(page.getByRole("button", { name: "Pick up elixir" })).toHaveCount(0);
   await expect(page.getByLabel("Inventory", { exact: true })).toContainText("Elixir");
+  await expect(page.getByLabel("Inventory", { exact: true })).toContainText("Brass token");
+  await page.screenshot({ path: "test-results/mobile-room-collected.png", fullPage: true });
   await page.getByRole("button", { name: "Offer elixir to Moss" }).click();
   await expect(page.getByText(/nothing real is consumed/i)).toBeVisible();
   await expect(page.getByLabel("Inventory", { exact: true })).toContainText("Elixir");
@@ -398,7 +489,7 @@ test("plays the semantic elixir room without persisting optional inspections", a
     (button as HTMLButtonElement).click();
   });
 
-  await expect(page.getByText("Expedition 1 of 3")).toBeVisible();
+  await expect(page.getByText("Signal 1 of 3")).toBeVisible();
   const archiveAfterChoice = await page.evaluate(() =>
     JSON.parse(localStorage.getItem("the-guide:archive:v1") ?? "null"),
   );
