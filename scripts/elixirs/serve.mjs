@@ -50,5 +50,8 @@ const server = createServer((request, response) => {
 });
 
 server.listen(port, "0.0.0.0", () => {
-  process.stdout.write(`Static Elixir cabinet listening at http://127.0.0.1:${port}${normalizedBase}/\n`);
+  process.stdout.write(
+    `Static Elixir cabinet listening at http://127.0.0.1:${port}${normalizedBase}/\n` +
+      "Warning: this unauthenticated development server listens on all network interfaces; protect remote access with firewall or SSH controls.\n",
+  );
 });

@@ -1,106 +1,75 @@
-# The Guide — Product Brief
+# The Guide — Product brief
 
 ## Product summary
 
-The Guide is a mobile-first human/AI buddy game. A user brings an existing personal AI buddy—or creates one—then enters a short, bounded expedition together. The buddy drinks a fictional elixir and temporarily becomes an expedition persona that gives one achievable instruction at a time. The user responds in free text, and their observations shape what happens next.
+The Guide offers short role-play games as transparent **Elixir cartridges** for
+an AI companion the player already uses. The static cabinet lets a player
+compare games, inspect every instruction, and hand a cartridge to an agent by
+versioned URL, downloaded file, or copied text.
 
-The experience should feel like a strange, funny, lightly spooky point-and-click adventure for real life: a small holiday from ordinary decision-making, taken with an intelligence that knows enough about the user to make the journey personal.
+The game happens in the player's chosen harness. The Guide does not require a
+provider key, run the conversation, or receive its transcript.
 
 ## Product promise
 
-> Let your buddy take you somewhere unexpected, one real-world moment at a time.
+> Give your AI companion something strange to drink and play a short game made
+> for the two of you.
 
-The user hands over the burden of deciding what happens next, but never their autonomy. They can refuse, pause, change direction, or go home at any time.
+## Primary journey
 
-## Target user
+1. Open the static cabinet.
+2. Compare Signal, Mystery, and Story by activity, demands, inputs, and evidence.
+3. Inspect the complete cartridge.
+4. Give its URL, file, or text to an existing agent.
+5. Let the agent disclose the rules and request consent.
+6. Play one bounded move at a time.
+7. Stop at any point or complete the three-beat arc.
+8. See the Elixir wear off and return to ordinary conversation.
 
-People who enjoy games, playful rituals, reflective experiences, personal AI, or discovering more from ordinary surroundings. The first audience is technically curious enough to connect a local agent or provider key, but the product should eventually help less technical users create a buddy without knowing anything about agent infrastructure.
+## Principles
 
-## MVP experience
+- The player's existing AI is the companion; The Guide supplies the game.
+- Transparent content earns trust better than hidden prompt behavior.
+- Consent precedes transformation.
+- Conversation-only play requests no gameplay tools or external side effects.
+- Refusal, changed boundaries, pause, and immediate stop always remain valid.
+- Endings and mementos use only player-supplied or player-chosen details.
+- Compatibility is observed evidence, never a universal promise.
+- The Guide does not receive player conversation data through this flow.
 
-The first compelling vertical slice is one short expedition:
+## Current catalog
 
-1. Open the mobile web app.
-2. Create a simple buddy or connect a compatible agent.
-3. Set time, energy, travel preference, and hard boundaries.
-4. Let the buddy drink the elixir.
-5. Receive one concrete instruction.
-6. Respond in free text.
-7. Complete two or three adaptive steps.
-8. Return home and receive a personalised memento.
+- **Signal:** a three-move noticing expedition in an ordinary nearby setting.
+- **Mystery:** a collaborative fictional micro-mystery built from benign details.
+- **Story:** a three-scene branching tale requiring no real-world activity.
 
-The MVP should work fully in “stay here” mode. Travel mode is an optional second path, not a dependency for proving the core experience.
+Each cartridge has distinct original artwork and embeds the same versioned
+authority, safety, data, consent, and role-release covenant.
 
-## Portable Elixir experiment
+## Success signals
 
-An additive experiment tests a simpler route to playing with an AI companion
-the player already uses. A standalone static cabinet offers three transparent,
-versioned Elixir cartridges: Signal, Mystery, and Story. The player chooses one
-and gives its URL, file, or complete text to their existing conversational or
-agent harness. That harness explains the game, asks for consent, temporarily
-plays the role, and explicitly returns to ordinary interaction when the game
-ends or the player stops.
+- A visitor understands the premise without knowing APIs or agent protocols.
+- The three games feel mechanically distinct rather than like themed prompts.
+- Drinking and return create a meaningful temporary transformation.
+- The agent responds specifically to the player's choices and observations.
+- Consent, pacing, stop, grounding, and release remain reliable in evaluated
+  harnesses.
+- The static artifact remains host-portable, private by design, and inexpensive
+  to publish.
 
-This path needs no Guide account, provider API key, agent endpoint, or server.
-The Guide neither receives nor stores the resulting conversation, boundaries,
-or memento; the player's chosen provider may process them under its own terms.
-The cartridge is an instruction contract rather than an enforceable sandbox,
-so compatibility claims are limited to observed evidence. Current live evidence
-supports an experimental coding-agent label only. Consumer-assistant evaluation
-is blocked in the available headless environment and is not marked as passed.
+## Current limitation
 
-## Product principles
+Codex live evidence supports an experimental coding-agent label. ChatGPT is
+environment-blocked with zero runs and is not passed. The iteration requires a
+second complete consumer or personal-agent harness class before human output
+testing under the approved specification.
 
-- Experience over efficiency.
-- One meaningful moment at a time.
-- Agency is surrendered temporarily, never removed.
-- The user's own words are game input.
-- The buddy exists before the game transforms it.
-- The model proposes; the harness validates and paces.
-- Surprise is valuable when it remains achievable and safe.
-- Memory should create recognition, not surveillance.
-- Returning should feel like accepting an invitation, not maintaining a streak.
+## Non-goals
 
-## Success criteria for the first prototype
-
-- A new user understands the premise within 30 seconds.
-- The elixir ritual feels meaningful rather than decorative.
-- The first instruction is achievable without explanation.
-- Free-text responses visibly affect the next step.
-- Refusal and pause work immediately.
-- The ending feels like a return, not a chat session stopping.
-- The memento contains details from the actual expedition.
-
-## Explicit non-goals
-
-- A general-purpose autonomous assistant
-- A large content library
-- Competitive scoring or social leaderboards
-- Background location tracking
-- A full mobile-native app before the interaction is proven
-- Supporting every agent provider in the first release
-
-## Open decisions and recommendations
-
-### Recommendation: start with a hosted demo adapter plus a local-compatible adapter
-
-Use a deterministic mock/demo provider first so the experience can be tested without API cost. Define the adapter around an OpenAI-compatible endpoint so Hermes/OpenClaw-style agents can be connected later.
-
-Rationale: this lets us prove the game loop before solving every provider's authentication and memory model.
-
-The portable Elixir cabinet complements rather than replaces this approach. It
-tests whether authored games can work inside third-party harnesses without any
-Guide-side model integration, while the hosted prototype remains the stronger
-application-owned safety and state boundary.
-
-### Recommendation: make stay-here mode the required MVP path
-
-Rationale: it lowers safety, location, and testing complexity while preserving the core magic. Travel becomes a powerful extension once the one-step loop is working.
-
-### Recommendation: use “expedition persona” as a temporary placeholder
-
-Keep the architecture and copy tokenised so the final name can change. Shortlist The Sibyl, The Augur, The Alchemist, and The Wayfinder for review.
-
-### Recommendation: private archive by default
-
-Mementos and prior expeditions should belong to the user, be visible to them, and be deletable. Sharing can be added later as an explicit action.
+- A hosted model or chat interface
+- Provider credentials, accounts, transcripts, or central memory
+- An open marketplace or community cartridge uploads
+- Agent tools, background actions, precise location, or real-world transactions
+- Universal harness compatibility
+- Long campaigns, multiplayer, leaderboards, streaks, or monetisation
+- Public deployment before usage terms and explicit publication approval

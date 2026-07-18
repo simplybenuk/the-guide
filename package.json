@@ -6,35 +6,30 @@
     "node": ">=20.9.0"
   },
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
+    "dev": "npm start",
+    "build": "npm run build:elixirs",
     "build:elixirs": "node scripts/elixirs/build.mjs",
     "audit:elixirs": "node scripts/elixirs/audit.mjs dist/elixirs-pages",
-    "start": "next start",
+    "start": "npm run build && npm run audit:elixirs && npm run start:elixirs",
+    "start:elixirs": "node scripts/elixirs/serve.mjs --root dist/elixirs-pages --port 4173",
     "lint": "eslint . --max-warnings=0",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:e2e": "playwright test",
-    "test:e2e:elixirs": "playwright test --config playwright.elixirs.config.ts",
-    "validate": "npm run lint && npm run typecheck && npm run test && npm run build && npm run build:elixirs && npm run test:e2e && npm run test:e2e:elixirs"
+    "test:e2e:elixirs": "npm run test:e2e",
+    "validate": "npm run lint && npm run typecheck && npm run test && npm run build && npm run audit:elixirs && npm run test:e2e"
   },
   "dependencies": {
-    "next": "16.2.10",
-    "react": "19.2.7",
-    "react-dom": "19.2.7",
     "zod": "4.4.3"
   },
   "devDependencies": {
+    "@eslint/js": "^9.0.0",
     "@types/node": "^24.0.0",
-    "@types/react": "^19.2.0",
-    "@types/react-dom": "^19.2.0",
     "@playwright/test": "1.61.1",
     "eslint": "^9.0.0",
-    "eslint-config-next": "16.2.10",
+    "globals": "^16.0.0",
     "typescript": "^5.9.3",
+    "typescript-eslint": "^8.0.0",
     "vitest": "4.1.10"
-  },
-  "overrides": {
-    "postcss": "8.5.10"
   }
 }

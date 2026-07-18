@@ -1,4 +1,4 @@
-# Project Adapter
+# Project adapter
 
 ## Project
 
@@ -8,24 +8,37 @@
 
 ## Required tools and validation
 
-- Discovery tools: Repository file inspection and search (`rg`, `rg --files`, and Git read-only commands).
-- Source-of-truth inspection: Start with `README.md`, then follow `.agents/context-map.md` to the relevant product, architecture, decision, specification, UX, and task documents.
-- Focused tests: `npm test` (Vitest domain and route tests).
-- Full validation: `npm run validate` (lint, strict typecheck, unit/integration tests, production build, and Playwright mobile tests).
-- Browser or smoke checks: `npm run test:e2e`; local development uses `npm run dev` and `/api/health`.
+- Inspect with `rg`, `rg --files`, and read-only Git commands.
+- Start with `README.md`, then load the smallest relevant sources from the
+  context map.
+- Focused tests: `npm test`.
+- Static build: `npm run build`.
+- Artifact audit: `npm run audit:elixirs`.
+- Browser validation: `npm run test:e2e`.
+- Full validation: `npm run validate`.
+- Local preview: `npm start`; the unauthenticated server listens on all
+  interfaces for headless development and requires firewall or SSH protection.
 
 ## Local guardrails
 
-- Security and tenancy: Follow the trust boundaries in `docs/architecture.md` and safety requirements in `docs/specs/safety-model.md`; a final tenancy model is not yet defined.
-- Data handling: Treat expedition archives and mementos as private and user-owned; follow the explicit-memory and secret-handling constraints in project specifications.
-- Scope exclusions: Respect the non-goals in `docs/product-brief.md` and deferred work recorded in the planning documents.
-- External-write approvals: Not documented; obtain human approval before external writes, publishing, releases, or other irreversible actions.
+- Follow `docs/architecture.md` and `content/elixirs/covenant.md` for authority,
+  safety, privacy, tools, grounding, and role-release boundaries.
+- Cartridge, artwork, covenant, and evaluation evidence changes require focused
+  version/provenance review; never silently mutate published-version behavior.
+- Do not claim compatibility beyond the named class, harness, cartridge version,
+  and complete redacted evidence.
+- The hosted prototype is retired historical evidence at
+  `hosted-prototype-final`, not an active fallback or implementation source.
+- Public deployment, release, domain changes, tag changes, and other external
+  writes require explicit human authorization.
 
 ## Planning and delivery
 
-- Discovery location and format: Markdown discovery briefs under `docs/discovery/`.
-- Spec location and format: Product and engineering specifications are Markdown files under `docs/specs/`; UX specifications are under `docs/ux/`.
-- PRD/task schema: The current ordered development plan is `docs/tasks/mvp.md`.
-- Progress log: Not yet defined.
-- Branch and commit policy: Not yet defined; do not commit development changes without user or workflow authorization.
-- Review and release policy: Not yet defined.
+- Discovery briefs: `docs/discovery/`.
+- Specifications: `docs/specs/`.
+- Active plan: `docs/tasks/mvp.md`.
+- Compatibility and review evidence: `docs/evaluations/`.
+- Generated artifacts are disposable and must not be committed.
+- Commits and pushes require user or workflow authorization.
+- Independent agent review is required before human output testing or cleanup
+  PR handoff.

@@ -10,13 +10,13 @@ const workflow = readFileSync(
 
 describe("manual Elixir Pages workflow", () => {
   it("is manual-only and main-branch constrained", () => {
-    expect(workflow).toMatch(/^on:\n  workflow_dispatch:\s*$/m);
+    expect(workflow).toMatch(/^on:\n {2}workflow_dispatch:\s*$/m);
     expect(workflow).not.toMatch(/^\s*(?:push|pull_request|schedule):/m);
     expect(workflow.match(/if: github\.ref == 'refs\/heads\/main'/g)).toHaveLength(2);
   });
 
   it("keeps deployment permissions out of the build job", () => {
-    const [beforeDeploy, deployJob] = workflow.split(/^  deploy:$/m);
+    const [beforeDeploy, deployJob] = workflow.split(/^ {2}deploy:$/m);
     expect(beforeDeploy).toContain("contents: read");
     expect(beforeDeploy).toContain("pages: read");
     expect(beforeDeploy).not.toContain("pages: write");
