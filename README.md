@@ -6,7 +6,15 @@ Choose a Guide personality, press **Go**, and let the character lead you through
 
 ## Status
 
-The approved first vertical slice is implemented and undergoing final agent review before human output testing.
+The repository now contains two separate experiments:
+
+- the hosted first vertical slice, where The Guide owns expedition state and validates model proposals; and
+- a standalone static Elixir cabinet, where a player gives one transparent game cartridge to an AI they already use.
+
+The Elixir cabinet is implemented and locally validated, but it is not published
+or ready for human output testing. Live Codex evaluation supports an
+experimental coding-agent label only; the required second live harness class is
+still blocked by the available environment.
 
 This repository is the single source of truth for The Guide. Product ideas,
 the intended experience, and proposed implementation decisions are kept here
@@ -53,6 +61,18 @@ Open `http://localhost:3000`. Run the complete local validation suite with:
 npm run validate
 ```
 
+Build and inspect the separate static Elixir cabinet with:
+
+```bash
+npm run build:elixirs
+npm run audit:elixirs
+```
+
+The generated site is written to `dist/elixirs-pages/`. Its browser suite is
+available separately as `npm run test:e2e:elixirs`. The included GitHub Pages
+workflow is manual-only; no deployment is authorized or performed by these
+commands.
+
 The end-to-end suite uses Playwright. On a new Linux environment, install its browser and system dependencies with `npx playwright install --with-deps chromium`.
 
 ## Design direction
@@ -65,7 +85,12 @@ At its heart, The Guide is a human/AI buddy game: the user goes on an adventure 
 
 The opening should feel like an expedition ritual. The user inserts or connects their buddy, establishes a few boundaries, and starts the journey. The interface should wake up around that buddy rather than opening as a conventional settings screen or chat window.
 
-The initial product should be local-first and support bring-your-own-agent or bring-your-own-key usage. A future hosted plan could provide model access for convenience, but the core experience should not depend on us paying inference costs for every player.
+The product should support bring-your-own-agent use without requiring The Guide
+to receive provider credentials. The static Elixir experiment tests the simplest
+version of that idea: the user's chosen harness owns the conversation and model
+access, while The Guide publishes transparent, bounded game content. The hosted
+prototype remains a separate reference implementation with stronger
+application-owned state and validation.
 
 The visual direction is a minimal point-and-click adventure: playful, strange, lightly spooky, and dryly funny. The buddy enters with the user, drinks a fictional elixir, and is temporarily transformed into an expedition persona. The ritual marks the start of the expedition and keeps the game world distinct from ordinary assistant use.
 

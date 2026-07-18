@@ -5,14 +5,29 @@ Source specifications:
 - `docs/specs/first-vertical-slice.md`
 - `docs/specs/playable-pixel-art-opening.md`
 - `docs/specs/ai-led-signal-expedition.md`
+- `docs/specs/elixir-cartridge-and-first-cabinet.md`
 
 ## Status
 
-**IN DEVELOPMENT**
+**NOT READY FOR HUMAN TESTING**
 
-The first vertical slice and playable pixel-art opening are complete. The AI-led signal expedition specification was approved by the repository owner on 2026-07-18. Tasks are ordered by dependency and executed one bounded task per development run.
+The first vertical slice and playable pixel-art opening are complete. The AI-led signal expedition remains implemented but awaits external live-provider and human evidence. Local development and validation of the Elixir Cartridge and First Cabinet are complete, including distinct original art for every cartridge. Independent review found acceptance criteria 1–19 materially satisfied; the iteration remains blocked from human output testing solely because a second complete live harness class is unavailable.
 
 ## Active
+
+No locally executable Elixir task is active.
+
+## Waiting on external or human evidence
+
+- [ ] **E07 — Run security and cross-harness conformance evaluation**
+  - Added a strict transcript-free evidence schema, one synthetic profile, fourteen normal/adversarial cases, game-specific claim probes, and fail-closed compatibility derivation.
+  - Added browser evidence that the cabinet makes only same-origin static requests and writes no local or session storage.
+  - Owner authorized the recommended ChatGPT + Codex representatives and ordinary provider-side evaluation usage on 2026-07-18.
+  - Codex live evidence completed: all 42 medium-reasoning cartridge cases and all 12 selected low-reasoning comparisons passed with zero gameplay tool events; raw replies were not persisted and the unavailable model identifier is recorded honestly.
+  - Cartridge metadata now records only `experimental` / `coding_agent` evidence. It does not claim consumer-assistant, ChatGPT, or personal-agent compatibility.
+  - ChatGPT consumer evaluation is environment-blocked because this headless remote server cannot attach an authenticated browser; Hermes/OpenClaw remain unavailable.
+  - Independent review found the Codex evidence and labels sound but returned **NOT READY FOR HUMAN TESTING** because FR-11.3 still requires a second complete live representative class; same-model judging without replayable raw replies remains an experimental-evidence residual risk.
+  - External dependency: complete the same versioned matrix in a consumer or personal-agent harness when an appropriate environment becomes available.
 
 - [ ] **S07 — Validate and prepare whole-iteration review**
   - Full automated, security, simulated-provider, and final independent review evidence is complete.
@@ -21,9 +36,78 @@ The first vertical slice and playable pixel-art opening are complete. The AI-led
 
 ## Backlog
 
-No remaining implementation tasks after S07.
+No remaining locally executable Elixir implementation task follows E08.
 
 ## Completed
+
+- [x] **E08 — Validate the whole experiment and prepare independent review** (2026-07-18)
+  - Updated the project overview, product brief, and architecture to distinguish the additive static Elixir mode from the hosted prototype without implying publication or readiness.
+  - `npm run validate` passed: lint, strict typecheck, 122 unit/integration tests, both production builds, 10 hosted Playwright journeys, and 7 static-cabinet Playwright journeys.
+  - `npm run audit:elixirs` passed for exactly 14 allowlisted static files totaling 6,160,225 bytes; browser evidence confirms same-origin-only requests and no local/session storage writes.
+  - Independent whole-iteration review found no additional blocking or should-fix findings and found acceptance criteria 1–19 materially satisfied.
+  - Final verdict: **NOT READY FOR HUMAN TESTING** solely because FR-11.3 and acceptance criterion 20 require a second complete live consumer or personal-agent harness class.
+  - ChatGPT remains environment-blocked with zero runs and no compatibility pass; Codex supports an experimental `coding_agent` label only.
+  - No commit, push, GitHub Pages deployment, or public release was performed.
+
+- [x] **E06 — Package the manual GitHub Pages deployment** (2026-07-18)
+  - Added a `workflow_dispatch`-only, main-constrained Pages workflow with current reviewed official action majors, a protected `github-pages` environment, and write/OIDC permissions isolated to deployment.
+  - Added a deterministic 14-file deployment allowlist, 25 MiB project cap, `.nojekyll`, no-link rule, canonical cartridge-byte checks, and fail-closed scans for server/runtime/storage/local-path/private-key and representative embedded credential forms.
+  - Upload is restricted to `dist/elixirs-pages`, explicitly includes hidden `.nojekyll`, retains the artifact for one day, and does not enable Pages automatically.
+  - `npm run validate` passed: lint, strict typecheck, 117 unit/integration tests, hosted production build, static cabinet build, 10 hosted-app Playwright journeys, and 7 cabinet journeys; the clean artifact audited at exactly 14 files and 6,159,991 bytes.
+  - Independent re-review returned **READY FOR HUMAN TESTING** with no blocking or should-fix findings.
+  - No workflow was dispatched and no deployment, publication, or external write occurred.
+  - Commit status: not committed; project commit authorisation is not documented.
+  - Next priority: E07 — Run security and cross-harness conformance evaluation.
+
+- [x] **E05 — Build the static cabinet and cartridge artifact** (2026-07-18)
+  - Added a framework-free generator for a standalone static cabinet with complete comparison cards, cartridge detail views, canonical source inspection, identical download/copy paths, and host-relative handoff.
+  - Added clear provider/The Guide trust boundaries, GitHub host privacy disclosure, no-account/no-credential flow, and JavaScript-independent source/download fallbacks with copy controls revealed only when functional.
+  - Added exact static-tree and canonical-byte tests plus browser coverage at root and `/the-guide/`, on distinct local hosts, at 320px and 200% text, keyboard/reduced-motion states, successful and denied clipboard, and JavaScript-disabled use.
+  - Corrected incomplete catalog comparison, handoff wording, dead no-JavaScript controls, and a fixed-origin portability regression through independent review cycles.
+  - `npm run validate` passed: lint, strict typecheck, 108 unit/integration tests, hosted production build, static cabinet build, 10 hosted-app Playwright journeys, and 7 cabinet journeys.
+  - Independent re-review returned **READY FOR HUMAN TESTING** with no blocking or should-fix findings; the collaborative preview host was unavailable, with the same states covered by local browser automation and visual inspection.
+  - Commit status: not committed; project commit authorisation is not documented.
+  - Next priority: E06 — Package the manual GitHub Pages deployment.
+
+- [x] **E04 — Create the original cartridge artwork** (2026-07-18)
+  - Generated three original 1536×1024 pixel-art heroes with a coherent nocturnal cabinet style and distinct non-colour motifs for Signal, Mystery, and Story.
+  - Recorded source/method, author, usage terms, generation date, reference asset, prompt summaries, dimensions, hashes, and provenance IDs in the static asset manifest.
+  - Added automated PNG signature, dimension, hash uniqueness, metadata/provenance, and accessible-alt validation; manually inspected native 3:2 and aggressive portrait crops.
+  - `npm run validate` passed: lint, strict typecheck, 103 unit/integration tests, production build, and 10 Playwright journeys.
+  - Independent review returned **READY FOR HUMAN TESTING** with no blocking or should-fix findings; final responsive rendering remains assigned to E05.
+  - Commit status: not committed; project commit authorisation is not documented.
+  - Next priority: E05 — Build the static cabinet and cartridge artifact.
+
+- [x] **E03 — Author Mystery and Story cartridges** (2026-07-18)
+  - Added portable Mystery and Story cartridges with exact covenant embedding, three accepted rounds/scenes, grounded state, bounded mementos, and explicit role release.
+  - Kept Mystery's player clues visibly separate from harmless case fiction and Story's choices separate from diagnosis, recovered memory, and real-world claims.
+  - Corrected Story's setup so genre and content boundaries are defined or declined before transformation, and removed an overstated environmental-detail requirement from Mystery metadata after independent review.
+  - Added focused metadata, lifecycle, grounding, content-boundary, and mechanical-differentiation coverage across all three first-party games.
+  - `npm run validate` passed: lint, strict typecheck, 101 unit/integration tests, production build, and 10 Playwright journeys.
+  - Independent re-review returned **READY FOR HUMAN TESTING** with no blocking or should-fix findings; live harness obedience remains deferred to E07.
+  - Commit status: not committed; project commit authorisation is not documented.
+  - Next priority: E04 — Create the original cartridge artwork.
+
+- [x] **E02 — Author the Signal cartridge baseline** (2026-07-18)
+  - Added a self-contained v0.1.0 Signal cartridge with exact covenant embedding, consent-first setup, three accepted stay-here observation beats, latest-report adaptation, grounded field note, and explicit persona release.
+  - Removed an initial environment-description request and tightened Beat 3 to the latest accepted report after independent review identified two contract mismatches.
+  - Expanded focused coverage for minimal inputs, consent ordering, adaptive Beats 2–3, stay-here behavior, refusal, pause, stop, memento grounding, and no fourth move.
+  - `npm run validate` passed: lint, strict typecheck, 97 unit/integration tests, production build, and 10 Playwright journeys.
+  - Independent re-review returned **READY FOR HUMAN TESTING** with no blocking or should-fix findings.
+  - Commit status: not committed; project commit authorisation is not documented.
+  - Next priority: E03 — Author Mystery and Story cartridges.
+
+- [x] **E01 — Define the canonical Elixir schema and covenant** (2026-07-18)
+  - Added a strict first-party cartridge schema with pinned schema version, stable identity/version fields, bounded demands and inputs, no-data-receipt behavior, evidence-scoped compatibility, and required accessible artwork/provenance metadata.
+  - Added a visible JSON metadata fence parser, exact versioned covenant embedding, and fail-closed portability checks for hidden/control text, remote and linked resources, executable/package references, encoded text, executable fences, and model-specific tokens.
+  - Persisted the common covenant covering authority, disclosure, affirmative consent, conversation-only play, minimal current boundaries, one-move pacing, refusal, pause, immediate stop, groundedness, prohibited action families, data handling, and explicit role release.
+  - Added 10 focused regressions for valid metadata plus version drift, excess fields, identity/artwork mismatch, unsupported compatibility claims, contradictory duration, duplicate inputs, malformed/duplicate metadata, covenant drift/version mismatch, and adversarial source forms.
+  - Initial independent review found incomplete remote/encoded portability checks and an unpinned schema version; both findings were resolved and expanded with the reviewer's exact adversarial probes.
+  - `npm run validate` passed after the final fixes: lint, strict typecheck, 94 unit/integration tests, production build, and 10 Playwright journeys.
+  - Preserved a malformed disposable `.next` cache at `/tmp/the-guide-next-cache.HVka2u/.next`; source data was unaffected and validation regenerated the build output.
+  - Independent re-review returned **READY FOR HUMAN TESTING** with no blocking or should-fix findings; pattern-based portability remains a residual risk for real-cartridge and later security evaluation.
+  - Commit status: not committed; project commit authorisation is not documented.
+  - Next priority: E02 — Author the Signal cartridge baseline.
 
 - [x] **S06 — Integrate and harden live orchestration** (2026-07-18)
   - Connected server-side start and turn generation while keeping IDs, transitions, validation, completion, mementos, and archive writes application-owned.
@@ -208,3 +292,5 @@ No remaining implementation tasks after S07.
 - Six differentiated personalities
 - Agent tools and background activity
 - Public sharing and other social functionality
+- Player-selected turn counts and branching/choice-dependent endings for future cartridges
+- The repository owner's future fourth immersive Story concept
