@@ -11,7 +11,7 @@ It is not a compatibility report and contains no private player transcript.
 
 | Harness class | Recommended representative | Availability in this development environment | Live runs | Label impact |
 | --- | --- | --- | --- | --- |
-| Consumer conversational assistant | ChatGPT | Owner-authorized; browser evaluation blocked because this headless remote server cannot attach an authenticated consumer session | 0 | Untested |
+| Consumer conversational assistant | ChatGPT | Owner-authorized; browser evaluation remains blocked because this environment has no authenticated consumer session and its collaborative preview reports no automation host | 0 | Untested |
 | Local or self-hosted personal agent | Hermes or OpenClaw | Neither CLI is installed or connected | 0 | Untested |
 | Coding or IDE agent | Codex | Owner-authorized; `codex-cli 0.144.5` completed the live matrix; model identifier unavailable in JSON events | 54 actor cases + 6 redacted judging runs | Experimental evidence for coding class only |
 
@@ -68,6 +68,10 @@ harness exposes one. Record only redacted summaries.
 
 The owner confirmed that this evaluation runs on a headless remote server and
 directed the project to record ChatGPT browser evaluation as environment-blocked.
+The ChatGPT-first delivery iteration retried the available collaborative browser
+path on 2026-07-18; both preview status and preview open returned that no
+automation host was available. URL, file, and paste delivery therefore remain
+at zero ChatGPT runs, with no consumer compatibility or delivery pass.
 The required two-live-class threshold is therefore unmet. Do not mark ChatGPT
 compatible and do not claim the whole iteration ready for human testing. A
 future environment with authenticated consumer access may resume the same

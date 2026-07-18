@@ -146,7 +146,7 @@ button {
   text-decoration: none;
   cursor: pointer;
 }
-button:nth-child(2), .button-link { color: var(--ink); background: transparent; }
+.secondary-action, .button-link { color: var(--ink); background: transparent; }
 
 .how-it-works ol { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr)); gap: 1rem; padding-left: 1.25rem; }
 .how-it-works li { padding: 0.75rem; }
@@ -180,6 +180,8 @@ textarea {
   resize: vertical;
 }
 .versioned-link { overflow-wrap: anywhere; }
+.delivery-steps { max-width: 62rem; padding-left: 1.4rem; }
+.delivery-steps li { margin-block: 0.45rem; }
 .actions { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-block: 1rem; }
 .copy-status { min-height: 1.6em; color: var(--muted); }
 

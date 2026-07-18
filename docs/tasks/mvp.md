@@ -4,6 +4,7 @@ Source specifications:
 
 - `docs/specs/elixir-cartridge-and-first-cabinet.md`
 - `docs/specs/elixir-first-repository-pivot.md`
+- `docs/specs/chatgpt-first-elixir-delivery.md`
 
 ## Status
 
@@ -15,7 +16,12 @@ active tree under the approved repository-pivot specification.
 
 ## Active
 
-No local implementation task is active.
+- [ ] **D06 — Publish the authorized GitHub Pages alpha**
+  - Add the owner-approved personal, non-commercial alpha terms to the
+    repository and audited artifact.
+  - Publish the reviewed delivery scope through a draft PR, merge with explicit
+    authority, run the main-only manual Pages workflow, and verify the live
+    cabinet before starting ChatGPT evidence collection.
 
 ## Waiting on external evidence
 
@@ -35,6 +41,36 @@ No local implementation task is active.
   compatibility gate is satisfied.
 
 ## Completed
+
+- [x] **D05 — Independent ChatGPT-first delivery review** (2026-07-18)
+  - Initial review returned one blocking audit gap and two should-fix contract
+    gaps; development tightened remote-origin/collector rejection, shared strict
+    browser/Node ID and timestamp validation, and explicit time-windowed
+    acquisition aggregation.
+  - Re-review independently reran `npm run validate` and `git diff --check`,
+    found no remaining blocking or should-fix implementation issue, and returned
+    **NOT READY FOR HUMAN TESTING** solely because ChatGPT remains at zero live
+    runs and `untested`.
+  - Detailed evidence is in
+    `docs/evaluations/chatgpt-first-delivery-review.md`.
+
+- [x] **D01–D04 — Implement and validate ChatGPT-first delivery** (2026-07-18)
+  - Added strict event contract v1, deterministic browser runtime generation,
+    local in-page dispatch, rejection coverage, and acquisition-action fixtures.
+  - Made **Copy for ChatGPT** the dominant handoff while preserving immutable
+    URL, Markdown, complete-text, accessible denial, and no-JavaScript paths.
+  - Artifact audit now allowlists 15 static files and rejects transmission,
+    analytics, persistence, public logging, server, secret, and unexpected-file
+    markers; no cartridge, covenant, artwork, or versioned behavior changed.
+  - `npm run validate` passed after independent-review fixes: lint, strict
+    typecheck, 9 Vitest files with 51 tests, deterministic
+    15-file/6,167,559-byte artifact audit, and all 8
+    cabinet browser journeys.
+  - Visual inspection passed using the Playwright fallback because the T3
+    collaborative preview explicitly had no automation host. ChatGPT remains
+    environment-blocked with zero runs and no compatibility claim.
+  - Changes are uncommitted; no deployment, publication, release, domain, tag,
+    workflow trigger, push, or live analytics collection occurred.
 
 - [x] **A04 — Validate, independently review, and publish the cleanup PR** (2026-07-18)
   - Clean `npm ci` installed 159 packages with zero audit vulnerabilities.

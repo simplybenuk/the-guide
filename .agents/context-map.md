@@ -10,11 +10,15 @@
 
 - Product requirements: `docs/product-brief.md`
 - Cartridge/cabinet contract: `docs/specs/elixir-cartridge-and-first-cabinet.md`
+- ChatGPT-first delivery and local event contract:
+  `docs/specs/chatgpt-first-elixir-delivery.md`
 - Active repository boundary: `docs/specs/elixir-first-repository-pivot.md`
 - Architecture and trust boundaries: `docs/architecture.md` and
   `content/elixirs/covenant.md`
 - Planning: `docs/tasks/mvp.md`
 - Compatibility evidence: `docs/evaluations/elixir-harness-matrix.md`
+- Delivery review evidence:
+  `docs/evaluations/chatgpt-first-delivery-review.md`
 - Artwork provenance: `site/elixirs/assets/cartridges/manifest.json`
 
 ## Active implementation

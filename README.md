@@ -71,4 +71,8 @@ Compatibility labels therefore remain limited to completed evidence.
 
 ## License
 
-License to be decided. Resolve usage terms before public cartridge distribution.
+The public alpha is governed by the
+[alpha usage terms](./TERMS.md): personal, non-commercial testing is permitted;
+redistribution, modification, publication, commercial use, and incorporation
+into other products require prior written permission. All other rights are
+reserved.
