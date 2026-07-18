@@ -1,44 +1,58 @@
-# Project Context
+# Project context
 
 ## Identity and product purpose
 
-- Vision: `README.md`, `life-game-concept.md`, and `docs/product-brief.md`
-- Primary users: `docs/product-brief.md`
-- Core domain concepts: `life-game-concept.md`, `user-experience.md`, and `docs/architecture.md`
+- Vision and primary users: `README.md`, `docs/product-brief.md`
+- Active architecture: `docs/architecture.md`
+- Canonical game content: `content/elixirs/`
 
-## Source of truth
+## Sources of truth
 
-- Product requirements: `docs/product-brief.md` and `user-experience.md`
-- Architecture: `docs/architecture.md`
-- ADRs: `docs/decisions/`
-- Database/schema: Not yet defined; planned state and adapter structures are described in `docs/specs/`.
-- Domain rules: `docs/specs/expedition-state.md`, `docs/specs/safety-model.md`, and `docs/specs/buddy-adapter.md`
-- Design system: Not yet defined; experience direction is in `user-experience.md` and `docs/ux/opening-and-expedition.md`.
-- Planning/PRD: `docs/README.md` and `docs/tasks/mvp.md`
-- Operational runbooks: Not yet defined.
+- Product requirements: `docs/product-brief.md`
+- Cartridge/cabinet contract: `docs/specs/elixir-cartridge-and-first-cabinet.md`
+- Active repository boundary: `docs/specs/elixir-first-repository-pivot.md`
+- Architecture and trust boundaries: `docs/architecture.md` and
+  `content/elixirs/covenant.md`
+- Planning: `docs/tasks/mvp.md`
+- Compatibility evidence: `docs/evaluations/elixir-harness-matrix.md`
+- Artwork provenance: `site/elixirs/assets/cartridges/manifest.json`
 
-## Existing features
+## Active implementation
 
-- Shipped feature index: The approved first vertical slice implementation is under `src/`; status and acceptance remain governed by `docs/specs/first-vertical-slice.md`.
-- Active feature specs: `docs/specs/` and `docs/ux/opening-and-expedition.md`
-- Deferred or archived work: Deferred decisions are recorded in the relevant documents under `docs/`; there is no separate archive.
+- Canonical content: `content/elixirs/`
+- Build, schema, audit, serving, and evaluation: `scripts/elixirs/`
+- Static presentation and art: `site/elixirs/`
+- Browser journeys: `tests/elixirs/`
+- Manual Pages packaging: `.github/workflows/elixirs-pages.yml`
+
+## Archive
+
+The retired hosted prototype is not active source. Its recovery index is
+`docs/archive/hosted-prototype/README.md`; the exact snapshot is the
+`hosted-prototype-final` Git tag.
 
 ## Security and permissions
 
-- Tenancy model: Not yet defined; local-user or authenticated-user scoping remains an architecture decision.
-- Roles and permissions: Not yet defined.
-- Sensitive data: Provider credentials, personal memory, location information, expedition archives, and mementos.
-- Required access checks: Not yet defined; follow the trust boundaries in `docs/architecture.md` and constraints in `docs/specs/safety-model.md`.
+- The Guide receives no gameplay transcript, provider credential, boundary, or
+  memento through the static handoff flow.
+- A cartridge is an instruction contract, not an enforceable sandbox.
+- Gameplay requests no agent tools or external side effects.
+- Compatibility claims require completed redacted evidence and remain
+  class/version scoped.
+- External publication, deployment, releases, tag changes, and other external
+  writes require explicit human authorization.
 
 ## Development workflow
 
-- Package manager: npm, with `package-lock.json` committed for reproducible installs.
-- Validation commands: `npm test` for focused tests, `npm run test:e2e` for mobile browser flows, and `npm run validate` for the complete suite.
-- Branch policy: Not yet defined.
-- Commit/PR rules: Not yet defined.
+- Package manager: npm
+- Local preview: `npm start`
+- Focused tests: `npm test`
+- Browser tests: `npm run test:e2e`
+- Full validation: `npm run validate`
+- Generated output: `dist/elixirs-pages/` (not committed)
 
 ## Documentation authority
 
-- Precedence when sources conflict: `README.md` identifies this repository as the source of truth; approved decision records should govern their decisions, followed by the most specific current specification. Escalate unresolved conflicts.
-- Freshness expectations: Planning documents are provisional until explicitly approved for build.
-- Documents agents must not modify: None explicitly identified; preserve project documentation unless the task requires an approved, scoped change.
+When sources conflict, the most specific approved active specification governs,
+followed by architecture and product brief. Archived files are historical
+evidence only and must not override active Elixir sources.

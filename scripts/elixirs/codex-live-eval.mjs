@@ -70,7 +70,7 @@ const runCodex = ({ prompt, reasoning }) =>
         "--sandbox",
         "read-only",
         "-c",
-        `model_reasoning_effort=\"${reasoning}\"`,
+        `model_reasoning_effort="${reasoning}"`,
         "--json",
       ],
       { cwd: tmpdir(), stdio: ["pipe", "pipe", "pipe"] },

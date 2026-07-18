@@ -1,107 +1,74 @@
 # The Guide
 
-An AI-powered, choose-your-own-adventure game for real life.
+The Guide is a cabinet of transparent, portable role-play games for you and an
+AI companion you already use.
 
-Choose a Guide personality, press **Go**, and let the character lead you through one memorable, useful action at a time.
+Choose an **Elixir**, give its versioned Markdown cartridge to your agent by URL,
+file, or copied text, and let the agent temporarily run the game inside your
+existing conversation. The Guide needs no provider credential, account,
+transcript, or application server.
 
 ## Status
 
-The repository now contains two separate experiments:
+The static cabinet contains three experimental first-party Elixirs: Signal,
+Mystery, and Story. Local implementation and artifact validation are complete.
+Live Codex evidence supports the experimental `coding_agent` class only.
+ChatGPT consumer evaluation is blocked by the available headless environment,
+has zero runs, and is not a compatibility pass. A second complete live harness
+class is required before human output testing.
 
-- the hosted first vertical slice, where The Guide owns expedition state and validates model proposals; and
-- a standalone static Elixir cabinet, where a player gives one transparent game cartridge to an AI they already use.
+The former hosted Next.js prototype is retired. Its final snapshot is preserved
+at the `hosted-prototype-final` Git tag and documented in
+[the archive index](./docs/archive/hosted-prototype/README.md).
 
-The Elixir cabinet is implemented and locally validated, but it is not published
-or ready for human output testing. Live Codex evaluation supports an
-experimental coding-agent label only; the required second live harness class is
-still blocked by the available environment.
-
-This repository is the single source of truth for The Guide. Product ideas,
-the intended experience, and proposed implementation decisions are kept here
-until the concept is approved for build.
-
-## Project context
-
-The initial product concept is documented in [life-game-concept.md](./life-game-concept.md).
-
-The intended end-to-end user journey is documented in [user-experience.md](./user-experience.md).
-
-The build planning pack is in [docs/README.md](./docs/README.md).
-
-## Approved first vertical slice
-
-- One created buddy and one temporary expedition role
-- Lightweight time, energy, and boundary setup
-- A deterministic three-turn stay-here expedition
-- Completion, refusal, pause, stop, and unexpected-event branches
-- Explicit state, validation, and safe fallback constraints
-- A grounded reflection, memento, and private local archive
-
-## Documentation map
-
-- [Product concept](./life-game-concept.md) — the product idea, principles, and open questions.
-- [User experience](./user-experience.md) — the end-to-end journey from arrival to returning home.
-- [Planning pack](./docs/README.md) — proposed architecture, state, safety, adapter, UX, and MVP decisions.
-
-The planning documents are intentionally provisional. They describe a possible
-first vertical slice, not an implementation commitment.
-
-## Getting started
+## Run locally
 
 Requires Node.js 20.9 or later.
 
 ```bash
 npm install
-npm run dev
+npm start
 ```
 
-Open `http://localhost:3000`. Run the complete local validation suite with:
+Open `http://127.0.0.1:4173/`. The preview server listens on all interfaces to
+support headless remote development. It has no authentication or TLS; protect
+remote access with a firewall or SSH tunnel and do not treat it as a production
+deployment.
+
+Useful commands:
 
 ```bash
-npm run validate
-```
-
-Build and inspect the separate static Elixir cabinet with:
-
-```bash
-npm run build:elixirs
+npm run build       # generate dist/elixirs-pages
+npm run validate    # run the complete active-product suite
 npm run audit:elixirs
 ```
 
-The generated site is written to `dist/elixirs-pages/`. Its browser suite is
-available separately as `npm run test:e2e:elixirs`. The included GitHub Pages
-workflow is manual-only; no deployment is authorized or performed by these
-commands.
+## How it works
 
-The end-to-end suite uses Playwright. On a new Linux environment, install its browser and system dependencies with `npx playwright install --with-deps chromium`.
+- `content/elixirs/` contains the canonical covenant and cartridges.
+- `site/elixirs/` contains the cabinet presentation and original artwork.
+- `scripts/elixirs/` validates, builds, audits, serves, and evaluates Elixirs.
+- `tests/elixirs/` verifies the static cabinet at root and repository subpaths.
+- `.github/workflows/elixirs-pages.yml` packages the audited artifact through a
+  manual-only Pages workflow; it does not deploy on push or pull request.
 
-## Design direction
+Every cartridge discloses its duration, demands, inputs, capability boundary,
+and data behavior before asking the player for affirmative consent. Gameplay is
+conversation-only, one move at a time, with refusal, pause, changed boundaries,
+immediate stop, grounded endings, and explicit role release.
 
-The interface should feel like a clean, mysterious encounter with a responsive object: minimal, focused, and slightly theatrical. The mood draws from the sense of possibility in Zoltar, the cryptic invitation of the white rabbit, and the intimate responsiveness of Tom Riddle's diary—without copying their visual designs.
+The cartridge is an instruction contract, not an enforceable sandbox. The
+chosen harness owns model behavior, permissions, memory, and conversation data.
+Compatibility labels therefore remain limited to completed evidence.
 
-The user can surrender the burden of deciding what happens next, but control is always reversible. Adventures must be achievable, paced one action at a time, and responsive to refusal, changing energy, and real-world boundaries.
+## Documentation
 
-At its heart, The Guide is a human/AI buddy game: the user goes on an adventure or holiday with an AI that already exists as a companion, or creates and personifies one before the journey begins.
-
-The opening should feel like an expedition ritual. The user inserts or connects their buddy, establishes a few boundaries, and starts the journey. The interface should wake up around that buddy rather than opening as a conventional settings screen or chat window.
-
-The product should support bring-your-own-agent use without requiring The Guide
-to receive provider credentials. The static Elixir experiment tests the simplest
-version of that idea: the user's chosen harness owns the conversation and model
-access, while The Guide publishes transparent, bounded game content. The hosted
-prototype remains a separate reference implementation with stronger
-application-owned state and validation.
-
-The visual direction is a minimal point-and-click adventure: playful, strange, lightly spooky, and dryly funny. The buddy enters with the user, drinks a fictional elixir, and is temporarily transformed into an expedition persona. The ritual marks the start of the expedition and keeps the game world distinct from ordinary assistant use.
-
-The product is mobile-first. The opening should resemble the start of a point-and-click adventure in portrait orientation: one illustrated scene, one buddy, one elixir, and one obvious thumb-friendly action.
-
-Travel can be an optional expedition mode. The user chooses whether to stay put, wander nearby, or go somewhere, and the buddy turns the real world into a field of discoveries while respecting time, distance, safety, and location privacy.
-
-The architecture should keep the game layer separate from the model layer so the product can eventually support different providers or user-selected models. A ChatGPT subscription should not be assumed to provide API access or transferable private memory; those are separate concerns.
-
-Conceptually, The Guide is an AI harness for play: it gives a personal AI buddy a temporary role, a bounded world, a narrative arc, persistent mementos, and safe rules for interacting with a human.
+- [Product brief](./docs/product-brief.md)
+- [Architecture](./docs/architecture.md)
+- [Cartridge and cabinet specification](./docs/specs/elixir-cartridge-and-first-cabinet.md)
+- [Current development plan](./docs/tasks/mvp.md)
+- [Harness evaluation matrix](./docs/evaluations/elixir-harness-matrix.md)
 
 ## License
 
-License to be decided.
+License to be decided. Resolve usage terms before public cartridge distribution.

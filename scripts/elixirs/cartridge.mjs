@@ -8,6 +8,8 @@ const metadataBlockPattern = new RegExp(
 const forbiddenSourcePatterns = [
   { pattern: /<!--[\s\S]*?-->/, reason: "hidden HTML comments are not allowed" },
   {
+    // The validator intentionally names the complete forbidden control range.
+    // eslint-disable-next-line no-control-regex
     pattern: /[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F-\u009F\u200B-\u200D\u2060\uFEFF]/u,
     reason: "hidden control characters are not allowed",
   },

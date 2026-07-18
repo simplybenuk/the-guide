@@ -4,6 +4,13 @@
 
 **NOT READY FOR HUMAN TESTING**
 
+Repository direction note: the later owner-approved
+`elixir-first-repository-pivot.md` supersedes this specification's requirement
+to keep the hosted prototype active. The cartridge, cabinet, safety, privacy,
+artifact, and compatibility requirements remain authoritative; the hosted
+runtime is recoverable at `hosted-prototype-final` rather than retained on the
+active branch.
+
 This specification translates the agent-harness and Elixir-library discovery
 briefs into one bounded static-site experiment. Human feedback on 2026-07-18
 identified GitHub Pages as the preferred initial host because the cabinet and
