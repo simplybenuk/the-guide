@@ -8,6 +8,12 @@ The repository owner approved this specification for development on
 2026-07-18. Approval does not authorize public deployment, analytics
 collection, or a ChatGPT compatibility claim.
 
+The owner separately authorized a public GitHub Pages alpha and approved its
+personal, non-commercial usage terms on 2026-07-18. PR `#5` was merged and the
+reviewed static artifact was published at
+`https://simplybenuk.github.io/the-guide/`. That publication does not authorize
+analytics collection or establish a ChatGPT compatibility claim.
+
 Local implementation, full validation, and independent review completed on
 2026-07-18 with no remaining blocking or should-fix implementation finding.
 Human output testing remains blocked solely because ChatGPT has zero live runs
