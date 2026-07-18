@@ -49,6 +49,6 @@ const server = createServer((request, response) => {
   createReadStream(candidate).pipe(response);
 });
 
-server.listen(port, "127.0.0.1", () => {
+server.listen(port, "0.0.0.0", () => {
   process.stdout.write(`Static Elixir cabinet listening at http://127.0.0.1:${port}${normalizedBase}/\n`);
 });
