@@ -13,19 +13,33 @@ const expectedPaths = [
   "cartridges/mystery/0.1.0/elixir.md",
   "cartridges/signal/0.1.0/elixir.md",
   "cartridges/story/0.1.0/elixir.md",
+  "delivery-events.js",
   "elixirs/mystery/index.html",
   "elixirs/signal/index.html",
   "elixirs/story/index.html",
   "index.html",
   "styles.css",
+  "terms.md",
 ];
 
 const textExtensions = /\.(?:css|html|js|json|md)$/;
+const allowedAbsoluteUrls = new Set([
+  "https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement",
+]);
 const forbiddenText = [
   { label: "Next.js runtime", pattern: /\/_next\// },
   { label: "application API", pattern: /\/api\/(?:health|expedition)/ },
   { label: "runtime environment access", pattern: /process\.env|GUIDE_PROVIDER_/ },
-  { label: "browser persistence", pattern: /localStorage|indexedDB/ },
+  { label: "browser persistence", pattern: /localStorage|sessionStorage|indexedDB|serviceWorker/ },
+  {
+    label: "network-capable collector",
+    pattern: /navigator\.sendBeacon|XMLHttpRequest|\bfetch\s*\(|\bWebSocket\s*\(|\bEventSource\s*\(|\bimportScripts\s*\(|\bnew\s+Image\s*\(|document\.createElement\s*\(\s*["']script["']|document\.cookie/,
+  },
+  { label: "collector path", pattern: /\/(?:analytics|collect|events|telemetry)(?:[/?#"'])/i },
+  { label: "remote CSS resource", pattern: /url\(\s*["']?https?:\/\//i },
+  { label: "refresh redirect", pattern: /<meta\s+[^>]*http-equiv=["']?refresh/i },
+  { label: "analytics SDK", pattern: /google-analytics|googletagmanager|posthog|plausible\.io|segment\.com/i },
+  { label: "public event logging", pattern: /console\.(?:log|info|debug|table)\s*\(/ },
   { label: "private key", pattern: /-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----/ },
   { label: "GitHub credential", pattern: /(?:gh[pousr]_[A-Za-z0-9]{36,255}|github_pat_[A-Za-z0-9_]{60,255})/ },
   { label: "OpenAI credential", pattern: /sk-(?:proj-)?[A-Za-z0-9_-]{20,}/ },
@@ -75,6 +89,11 @@ export const auditElixirArtifact = ({ artifactDirectory }) => {
       for (const forbidden of forbiddenText) {
         if (forbidden.pattern.test(text)) {
           throw new Error(`${path} contains forbidden ${forbidden.label} content`);
+        }
+      }
+      for (const match of text.matchAll(/https?:\/\/[^\s"'<>)]*/g)) {
+        if (!allowedAbsoluteUrls.has(match[0])) {
+          throw new Error(`${path} contains unexpected remote origin: ${match[0]}`);
         }
       }
     }

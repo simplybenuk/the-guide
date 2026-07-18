@@ -36,18 +36,21 @@ describe("static Elixir cabinet build", () => {
       "cartridges/mystery/0.1.0/elixir.md",
       "cartridges/signal/0.1.0/elixir.md",
       "cartridges/story/0.1.0/elixir.md",
+      "delivery-events.js",
       "elixirs/mystery/index.html",
       "elixirs/signal/index.html",
       "elixirs/story/index.html",
       "index.html",
       "styles.css",
+      "terms.md",
     ]);
 
     const artifactText = listFiles(outputDirectory)
       .filter((path) => /\.(?:html|css|js|json|md)$/.test(path))
       .map(readOutput)
       .join("\n");
-    expect(artifactText).not.toMatch(/\/_next|\/api\/(?:health|expedition)|localStorage|GUIDE_PROVIDER_/);
+    expect(artifactText).not.toMatch(/\/_next|\/api\/(?:health|expedition)|localStorage|sessionStorage|GUIDE_PROVIDER_/);
+    expect(artifactText).not.toMatch(/sendBeacon|XMLHttpRequest|\bfetch\s*\(|console\.(?:log|info|debug|table)\s*\(/);
     expect(artifactText).not.toContain("react");
   });
 
@@ -63,6 +66,10 @@ describe("static Elixir cabinet build", () => {
       expect(detail).toContain(`../../cartridges/${slug}/0.1.0/elixir.md`);
       expect(detail).toContain("data-cartridge-source");
       expect(detail).toContain("View exactly what it says");
+      expect(detail).toContain('href="../../terms.md"');
+      expect(detail).toContain("Start this Elixir in ChatGPT");
+      expect(detail).toContain("Copy for ChatGPT");
+      expect(detail).toContain("Download Markdown");
     }
   });
 
@@ -91,6 +98,8 @@ describe("static Elixir cabinet build", () => {
     expect(index).toContain("<dd>The Guide</dd>");
     expect(index).toContain("The game happens in the agent harness you choose");
     expect(index).toContain("does not receive your game conversation");
+    expect(index).toContain('href="terms.md"');
+    expect(readOutput("terms.md")).toContain("personal, non-commercial alpha testing");
     expect(index).not.toMatch(/href="\/|src="\//);
 
     for (const asset of manifest.assets) {
@@ -118,11 +127,22 @@ describe("static Elixir cabinet build", () => {
       );
       expect(detail).toContain("Please read the complete The");
       expect(detail).toContain("Explain the game, its demands, capability boundary, and data behavior");
+      expect(detail).toContain("If you cannot retrieve it, say so rather than guessing");
       expect(detail).toContain("ask for my affirmative consent before you fictionally drink it");
       expect(detail).not.toContain("Please load The The");
       expect(detail).not.toMatch(/https?:\/\/[^\s<]+\/cartridges\//);
-      expect(detail).toContain("copy the versioned link address above");
+      expect(detail).toContain("select and copy the handoff message");
       expect(detail.match(/data-copy-action[^>]+hidden/g)).toHaveLength(2);
     }
+  });
+
+  it("emits a deterministic local-only delivery event runtime", () => {
+    const runtime = readOutput("delivery-events.js");
+    expect(runtime).toContain("the-guide:delivery-event");
+    expect(runtime).toContain("cabinet-delivery-v1");
+    expect(runtime).toContain("the-guide.elixir.signal@0.1.0");
+    expect(runtime).toContain("the-guide.elixir.mystery@0.1.0");
+    expect(runtime).toContain("the-guide.elixir.story@0.1.0");
+    expect(runtime).not.toMatch(/sendBeacon|XMLHttpRequest|\bfetch\s*\(|localStorage|sessionStorage|indexedDB/);
   });
 });

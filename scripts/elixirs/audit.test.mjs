@@ -23,9 +23,9 @@ afterEach(() => {
 describe("Elixir Pages artifact audit", () => {
   it("accepts the exact deterministic static artifact", () => {
     const result = auditElixirArtifact({ artifactDirectory: buildTemporaryArtifact() });
-    expect(result.fileCount).toBe(14);
+    expect(result.fileCount).toBe(16);
     expect(result.totalBytes).toBeGreaterThan(100_000);
-    expect(Object.keys(result.hashes)).toHaveLength(14);
+    expect(Object.keys(result.hashes)).toHaveLength(16);
   });
 
   it("rejects unexpected or missing files", () => {
@@ -47,10 +47,39 @@ describe("Elixir Pages artifact audit", () => {
     symlinkSync(resolve(linked, "index.html"), resolve(linked, "linked.html"));
     expect(() => auditElixirArtifact({ artifactDirectory: linked })).toThrow(/symbolic link/);
 
-    for (const marker of ["/_next/server.js", "/api/health", "process.env.SECRET", "localStorage"]) {
+    for (const marker of [
+      "/_next/server.js",
+      "/api/health",
+      "process.env.SECRET",
+      "localStorage",
+      "sessionStorage",
+      "navigator.sendBeacon('/events')",
+      "fetch('/events')",
+      "new WebSocket('wss://collector.example')",
+      "new EventSource('/stream')",
+      "new Image().src = '/pixel'",
+      "document.createElement('script')",
+      "document.cookie = 'id=123'",
+      "console.log('delivery event')",
+      "https://plausible.io/js/script.js",
+    ]) {
       const contaminated = buildTemporaryArtifact();
       appendFileSync(resolve(contaminated, "cabinet.js"), `\n// ${marker}\n`);
       expect(() => auditElixirArtifact({ artifactDirectory: contaminated })).toThrow(/forbidden/);
+    }
+  });
+
+  it("rejects unapproved origins, remote resources, and collector paths", () => {
+    for (const marker of [
+      '<script src="https://example.com/sdk.js"></script>',
+      '<img src="https://example.com/pixel.gif">',
+      '<form action="/collect/events"></form>',
+      'body { background: url("https://example.com/pixel.gif"); }',
+      '<meta http-equiv="refresh" content="0;url=https://example.com">',
+    ]) {
+      const contaminated = buildTemporaryArtifact();
+      appendFileSync(resolve(contaminated, "index.html"), `\n${marker}\n`);
+      expect(() => auditElixirArtifact({ artifactDirectory: contaminated })).toThrow(/forbidden|unexpected remote origin/);
     }
   });
 
