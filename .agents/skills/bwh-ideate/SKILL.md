@@ -17,9 +17,13 @@ Create enough shared understanding to begin a useful specification without prema
 2. Separate known facts, assumptions, and decisions still needed.
 3. Identify likely scope, non-goals, dependencies, risks, and success signals.
 4. Compare only the options that could materially change direction.
-5. Produce a concise discovery brief suitable for `bwh-spec`.
+5. Resolve the discovery location and format from the project adapter or established repository conventions. If neither defines one, use `docs/discovery/<descriptive-kebab-case-name>.md`. Stop and report a blocker instead if repository guardrails prohibit writing there.
+6. Write a concise discovery brief suitable for `bwh-spec` into the consuming repository. Include the problem and outcome, actors, known facts, assumptions, decisions needed, scope and non-goals, success signals, risks, dependencies, and materially different options.
+7. Read the persisted brief back and verify that its path and required contents are present. Do not report completion if the artifact was not created successfully.
 
 Ask focused questions only when their answers could change product direction, architecture, permissions, security, data, rollout, or recovery. Otherwise record an explicit assumption.
+
+The repository file is the authoritative output. Do not substitute a discovery brief published only in chat or duplicate the complete brief in the final response.
 
 ## Stop conditions
 
@@ -27,16 +31,13 @@ Stop before proposing a direction when the problem, primary actor, or desired ou
 
 ## Handoff
 
-Return the discovery brief, decisions needed, assumptions, non-goals, and the recommended next step: `bwh-spec`.
+Return a compact handoff with the repository-relative discovery path, a one-sentence outcome, material decisions still needed, and the recommended next step: `bwh-spec`.
 
 ## Output
 
-Return exactly these headings:
+Use one outcome sentence followed by at most four short bullets covering:
 
-- `discovery_brief`
-- `known_facts`
-- `assumptions`
-- `decisions_needed`
-- `scope_and_non_goals`
-- `risks_and_dependencies`
-- `recommended_next_step`
+- discovery artifact path
+- material assumptions or decisions still needed
+- persistence validation
+- recommended next step: `bwh-spec`

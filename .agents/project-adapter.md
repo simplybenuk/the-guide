@@ -23,6 +23,7 @@
 
 ## Planning and delivery
 
+- Discovery location and format: Markdown discovery briefs under `docs/discovery/`.
 - Spec location and format: Product and engineering specifications are Markdown files under `docs/specs/`; UX specifications are under `docs/ux/`.
 - PRD/task schema: The current ordered development plan is `docs/tasks/mvp.md`.
 - Progress log: Not yet defined.

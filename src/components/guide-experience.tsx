@@ -12,7 +12,6 @@ import {
   saveExpedition,
 } from "@/domain/archive";
 import {
-  createExpedition,
   pauseExpedition,
   resumeExpedition,
   stopExpedition,
@@ -53,12 +52,18 @@ export function GuideExperience() {
   const [boundaries, setBoundaries] = useState("");
   const [response, setResponse] = useState("");
   const [ritualStep, setRitualStep] = useState<RitualStep>("room_ready");
+  const [curiosityCollected, setCuriosityCollected] = useState(false);
   const [roomMessage, setRoomMessage] = useState("The room is quiet. Something glints on the table.");
   const [pendingTransformation, setPendingTransformation] = useState<boolean>();
   const [departureReady, setDepartureReady] = useState(false);
   const headingRef = useRef<HTMLHeadingElement>(null);
   const ritualResolvedRef = useRef(false);
   const expeditionCreatedRef = useRef(false);
+  const advanceInFlightRef = useRef(false);
+  const turnAbortRef = useRef<AbortController | null>(null);
+  const interactionEpochRef = useRef(0);
+  const startRequestRef = useRef<{ fingerprint: string; id: string } | null>(null);
+  const turnRequestRef = useRef<{ fingerprint: string; id: string } | null>(null);
 
   useEffect(() => {
     try {
@@ -126,6 +131,7 @@ export function GuideExperience() {
     setPendingTransformation(undefined);
     setDepartureReady(false);
     setRitualStep("room_ready");
+    setCuriosityCollected(false);
     setRoomMessage("The room is quiet. Something glints on the table.");
     setView("ritual");
   }
@@ -140,18 +146,37 @@ export function GuideExperience() {
     setView("transformation");
   }
 
-  function enterExpedition() {
+  async function enterExpedition() {
     if (!archive?.buddy || pendingTransformation === undefined || expeditionCreatedRef.current) return;
     expeditionCreatedRef.current = true;
+    setBusy(true);
     try {
-      const expedition = createExpedition({
+      const startPayload = {
         installationId: archive.installationId,
         buddy: archive.buddy,
         timeBudgetMinutes: timeBudget,
         energy,
-        boundaries: boundaries.split(/[,\n]/).slice(0, 8),
+        boundaries: boundaries.split(/[,\n]/).map((item) => item.trim()).filter(Boolean).slice(0, 8),
         transformed: pendingTransformation,
+      };
+      const fingerprint = JSON.stringify(startPayload);
+      if (startRequestRef.current?.fingerprint !== fingerprint) {
+        startRequestRef.current = { fingerprint, id: createUuid() };
+      }
+      const result = await fetch("/api/expedition/start", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          requestId: startRequestRef.current.id,
+          ...startPayload,
+        }),
       });
+      const payload: unknown = await result.json();
+      if (!result.ok || !payload || typeof payload !== "object" || !("state" in payload)) {
+        throw new Error("No safe opening instruction fits the boundaries you chose.");
+      }
+      const expedition = expeditionSchema.parse(payload.state);
+      startRequestRef.current = null;
       persist(saveExpedition(archive, expedition));
       void playSound("departure");
       setResponse("");
@@ -160,8 +185,10 @@ export function GuideExperience() {
     } catch (reason) {
       ritualResolvedRef.current = false;
       expeditionCreatedRef.current = false;
-      setError(reason instanceof Error ? reason.message : "No safe opening instruction is available.");
+      setError(reason instanceof Error ? reason.message : "No safe opening instruction fits the boundaries you chose.");
       setView("setup");
+    } finally {
+      setBusy(false);
     }
   }
 
@@ -170,6 +197,13 @@ export function GuideExperience() {
     setRitualStep("elixir_selected");
     void playSound("pickup");
     setRoomMessage("The elixir settles into your inventory. It is warm, though the room is cold.");
+  }
+
+  function collectCuriosity() {
+    if (curiosityCollected) return;
+    setCuriosityCollected(true);
+    void playSound("pickup");
+    setRoomMessage("A brass token slips into your inventory. It is pleasingly useless.");
   }
 
   function offerElixir() {
@@ -185,14 +219,35 @@ export function GuideExperience() {
   }
 
   async function advance(kind: "done" | "unexpected" | "not_possible") {
-    if (!archive?.activeExpedition || busy) return;
+    if (!archive?.activeExpedition || !archive.buddy || advanceInFlightRef.current) return;
+    advanceInFlightRef.current = true;
+    const epoch = interactionEpochRef.current;
+    const controller = new AbortController();
+    turnAbortRef.current = controller;
+    const fingerprint = JSON.stringify({
+      expeditionId: archive.activeExpedition.id,
+      turnNumber: archive.activeExpedition.turnNumber,
+      instructionId: archive.activeExpedition.currentInstruction?.id,
+      kind,
+      text: response,
+    });
+    if (turnRequestRef.current?.fingerprint !== fingerprint) {
+      turnRequestRef.current = { fingerprint, id: createUuid() };
+    }
     setBusy(true);
     setError("");
     try {
       const result = await fetch("/api/expedition/turn", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ state: archive.activeExpedition, kind, text: response }),
+        body: JSON.stringify({
+          requestId: turnRequestRef.current.id,
+          state: archive.activeExpedition,
+          buddy: archive.buddy,
+          kind,
+          text: response,
+        }),
+        signal: controller.signal,
       });
       const payload: unknown = await result.json();
       if (!result.ok || !payload || typeof payload !== "object" || !("state" in payload)) {
@@ -203,12 +258,18 @@ export function GuideExperience() {
         throw new Error(message);
       }
       const state = expeditionSchema.parse(payload.state);
+      if (interactionEpochRef.current !== epoch) return;
+      turnRequestRef.current = null;
       persist(saveExpedition(archive, state));
       setResponse("");
       if (state.status === "complete" || state.status === "stopped") setView("ending");
     } catch (reason) {
-      setError(reason instanceof Error ? reason.message : "The expedition could not advance.");
+      if (!(reason instanceof Error && reason.name === "AbortError")) {
+        setError("The expedition could not advance. Your response is still here; you can try again or stop.");
+      }
     } finally {
+      advanceInFlightRef.current = false;
+      if (turnAbortRef.current === controller) turnAbortRef.current = null;
       setBusy(false);
     }
   }
@@ -228,6 +289,9 @@ export function GuideExperience() {
     if (!window.confirm("End this expedition and return home? Your partial journey will be saved.")) {
       return;
     }
+    interactionEpochRef.current += 1;
+    turnAbortRef.current?.abort();
+    turnRequestRef.current = null;
     persist(saveExpedition(archive, stopExpedition(archive.activeExpedition)));
     setView("ending");
   }
@@ -263,7 +327,7 @@ export function GuideExperience() {
         <section className="panel creation-panel" aria-labelledby="buddy-title">
           <p className="eyebrow">A companion takes shape</p>
           <div className="dialogue-intro">
-            <PixelAsset kind="buddy" className="dialogue-portrait" />
+            <PixelAsset kind="buddy" className="dialogue-portrait" fallbackText="Your buddy" />
             <div className="dialogue-box">
               <h1 id="buddy-title" ref={headingRef} tabIndex={-1}>Who is waiting?</h1>
               <p>Give the traveller a name, a voice, and one curious habit. It will remember the shape you choose.</p>
@@ -289,7 +353,7 @@ export function GuideExperience() {
         <section className="panel boundary-panel" aria-labelledby="setup-title">
           <p className="eyebrow">Before the door opens</p>
           <div className="boundary-intro">
-            <PixelAsset kind="portal-dormant" className="boundary-portal" />
+            <PixelAsset kind="buddy" className="boundary-buddy" fallbackText={archive.buddy?.name ?? "Your buddy"} />
             <div>
               <h1 id="setup-title" ref={headingRef} tabIndex={-1}>Set the edges</h1>
               <p>The door listens for three things before it opens.</p>
@@ -300,6 +364,7 @@ export function GuideExperience() {
             <fieldset className="parchment-section"><legend>Energy</legend><div className="choice-row">{(["low", "medium", "high"] as const).map((level) => <label className="choice" key={level}><input type="radio" name="energy" checked={energy === level} onChange={() => setEnergy(level)} />{level}</label>)}</div></fieldset>
             <label>Hard limits <span>optional, separated by commas</span><textarea rows={3} maxLength={500} value={boundaries} onChange={(event) => setBoundaries(event.target.value)} placeholder="For example: no writing, no standing" /></label>
             <div className="boundary-card" aria-label="Expedition boundary summary"><strong>Stay here · {timeBudget} minutes · {energy} energy</strong><span>You can refuse, pause, or stop at any time.</span></div>
+            <p className="privacy-note">If live AI is enabled by the operator, your buddy traits, these limits, and this expedition&apos;s responses are sent to that provider. Other expeditions and archive records are not sent.</p>
             <p className="error" role="alert" aria-live="assertive">{error}</p>
             <button className="primary" type="submit">Prepare the elixir</button>
           </form>
@@ -314,33 +379,42 @@ export function GuideExperience() {
         <section className="panel ritual room-panel" aria-labelledby="ritual-title">
           <p className="eyebrow">The elixir room</p>
           <h1 id="ritual-title" ref={headingRef} tabIndex={-1}>Choose what happens next.</h1>
-          <div className="room-stage" aria-label="A mysterious room containing your buddy, an elixir, a sealed portal, an astrolabe, and a cabinet">
+          <div className="room-stage" aria-label="A single mysterious room containing your buddy, an elixir, a brass token, a sealed portal, an astrolabe, and a cabinet">
             <PixelAsset kind="room" className="room-backdrop" />
-            <button className="room-hotspot room-hotspot--elixir" type="button" onClick={pickUpElixir} disabled={ritualStep !== "room_ready"} aria-label={ritualStep === "room_ready" ? "Pick up elixir" : "Elixir is in inventory"}>
-              <PixelAsset kind="elixir" />
-              <span>{ritualStep === "room_ready" ? "Pick up" : "Taken"}</span>
-            </button>
+            {ritualStep === "room_ready" ? (
+              <button className="room-hotspot room-hotspot--elixir" type="button" onClick={pickUpElixir} aria-label="Pick up elixir">
+                <PixelAsset kind="elixir" />
+                <span className="hotspot-label">Elixir</span>
+              </button>
+            ) : null}
             <button className="room-hotspot room-hotspot--buddy" type="button" onClick={offerElixir} disabled={ritualStep !== "elixir_selected"} aria-label={`Offer elixir to ${archive.buddy?.name}`}>
               <PixelAsset kind="buddy" />
-              <span>{archive.buddy?.name}</span>
+              <span className="hotspot-label">{archive.buddy?.name}</span>
             </button>
-            <div className="room-object room-object--portal" aria-label="The portal is sealed">
-              <PixelAsset kind="portal-dormant" />
-              <span>Sealed</span>
-            </div>
-            <button className="room-hotspot room-hotspot--astrolabe" type="button" onClick={() => setRoomMessage("The brass rings describe a sky that does not belong to this world.")}>
-              <PixelAsset kind="astrolabe" />
-              <span>Inspect astrolabe</span>
+            {!curiosityCollected ? (
+              <button className="room-hotspot room-hotspot--token" type="button" onClick={collectCuriosity} aria-label="Collect brass token">
+                <span className="room-token-sprite" />
+                <span className="hotspot-label">Brass token</span>
+              </button>
+            ) : null}
+            <button className="room-hotspot room-hotspot--portal" type="button" onClick={() => setRoomMessage("The portal is sealed. It is waiting for the ritual to choose a path.")} aria-label="Inspect sealed portal">
+              <span className="hotspot-label">Sealed portal</span>
             </button>
-            <button className="room-hotspot room-hotspot--cabinet" type="button" onClick={() => setRoomMessage("The cabinet contains old maps, blank postcards, and one locked drawer.")}>
-              <PixelAsset kind="cabinet" />
-              <span>Inspect cabinet</span>
+            <button className="room-hotspot room-hotspot--astrolabe" type="button" onClick={() => setRoomMessage("The brass rings describe a sky that does not belong to this world.")} aria-label="Inspect astrolabe">
+              <span className="hotspot-label">Astrolabe</span>
+            </button>
+            <button className="room-hotspot room-hotspot--cabinet" type="button" onClick={() => setRoomMessage("The cabinet contains old maps, blank postcards, and one locked drawer.")} aria-label="Inspect cabinet">
+              <span className="hotspot-label">Cabinet</span>
             </button>
           </div>
           <p className="room-message" aria-live="polite">{roomMessage}</p>
           <div className="room-inventory" aria-label="Inventory">
             <strong>Inventory</strong>
-            {ritualStep === "elixir_selected" || ritualStep === "choice_open" ? <span className="inventory-item"><PixelAsset kind="elixir" />Elixir</span> : <span>Empty</span>}
+            <span className="inventory-items">
+              {ritualStep === "elixir_selected" || ritualStep === "choice_open" ? <span className="inventory-item"><PixelAsset kind="elixir" />Elixir</span> : null}
+              {curiosityCollected ? <span className="inventory-item"><span className="inventory-token" />Brass token</span> : null}
+              {ritualStep === "room_ready" && !curiosityCollected ? <span>Empty</span> : null}
+            </span>
           </div>
           {ritualStep === "choice_open" ? (
             <div className="ritual-choice">
@@ -369,7 +443,7 @@ export function GuideExperience() {
           </h1>
           <p aria-live="polite">{departureReady ? "The portal is active. Your expedition is ready." : "The portal gathers itself from the dark."}</p>
           {!departureReady ? <button className="ritual-shortcut" type="button" onClick={() => setDepartureReady(true)}>Skip transformation</button> : null}
-          <button className="primary departure-action" type="button" disabled={!departureReady} onClick={enterExpedition}>Enter expedition</button>
+          <button className="primary departure-action" type="button" disabled={!departureReady || busy} onClick={() => void enterExpedition()}>{busy ? "Opening signal…" : "Enter expedition"}</button>
         </section>
       </PixelGameShell>
     );
@@ -394,19 +468,18 @@ export function GuideExperience() {
         <section className="panel expedition quest-panel" aria-labelledby="instruction-title">
           <div className="quest-companion">
             <PixelAsset kind={expedition.transformed ? "buddy-transformed" : "buddy"} className="expedition-buddy" />
-            <header className="expedition-header"><span>Expedition {expedition.turnNumber + 1} of 3</span><span>{expedition.transformed ? "Expedition persona" : archive.buddy?.name}</span></header>
+            <header className="expedition-header"><span>{expedition.transformed ? "Expedition persona" : archive.buddy?.name}</span><span>Signal {expedition.turnNumber + 1} of 3</span></header>
           </div>
           <div className="quest-dialogue">
             <h1 id="instruction-title" ref={headingRef} tabIndex={-1}>{expedition.currentInstruction?.text}</h1>
-            <p className="effort">About {expedition.currentInstruction?.expectedMinutes} min · {expedition.currentInstruction?.physicalEffort} effort</p>
+            <p className="effort">{expedition.currentInstruction?.expectedMinutes} min · {expedition.currentInstruction?.physicalEffort} effort</p>
           </div>
           <form className="stack" onSubmit={(event) => { event.preventDefault(); void advance("done"); }}>
             <label>{expedition.currentInstruction?.responsePrompt}<textarea required rows={4} maxLength={240} value={response} onChange={(event) => setResponse(event.target.value)} /></label>
             <p className="error" role="alert" aria-live="polite">{error}</p>
             <button className="primary" disabled={busy} type="submit">{busy ? "Listening…" : "Done"}</button>
-            <button className="secondary" disabled={busy || !response.trim()} type="button" onClick={() => void advance("unexpected")}>Something unexpected happened</button>
           </form>
-          <div className="quiet-controls" aria-label="Expedition controls"><button type="button" disabled={busy} onClick={() => void advance("not_possible")}>Not possible</button><button type="button" disabled={busy} onClick={pause}>Pause</button><button type="button" disabled={busy} onClick={stop}>Stop</button></div>
+          <div className="quiet-controls" aria-label="Expedition controls"><button type="button" disabled={busy || !response.trim()} onClick={() => void advance("unexpected")}>Unexpected</button><button type="button" disabled={busy} onClick={() => void advance("not_possible")}>Not possible</button><button type="button" disabled={busy} onClick={pause}>Pause</button><button type="button" onClick={stop}>{busy ? "Stop waiting" : "Stop"}</button></div>
         </section>
       </PixelGameShell>
     );

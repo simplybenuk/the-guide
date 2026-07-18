@@ -45,6 +45,10 @@ Stores structured current state separately from narrative text. The state should
 
 Normalises different backends into a small interface. The first implementation should support a mock provider and an OpenAI-compatible HTTP endpoint. A future Hermes/OpenClaw adapter may map these calls to a local gateway or workspace.
 
+The current implementation selects deterministic mock or OpenAI-compatible mode exclusively from server environment variables. The provider receives bounded buddy traits, current limits, and at most two accepted instructions and observations. It never receives provider-owned state authority, the local archive, mementos, validation history, installation identity, or credentials from the browser.
+
+Start and turn actions require a stable client action ID. The single-instance server binds that identity to a SHA-256 payload fingerprint and caches the result briefly, so simultaneous submission and a retry after a lost response share one provider call. This cache is deliberately process-local for the current prototype; a distributed deployment must replace it with shared durable idempotency before horizontal scaling.
+
 ### Action Validator
 
 Checks proposed instructions for safety, effort, time, location, privacy, social risk, and clarity. It can reject, rewrite, or request a safer alternative.

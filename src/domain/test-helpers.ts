@@ -2,6 +2,7 @@ import { createExpedition } from "./engine";
 import type { Buddy, Expedition } from "./schemas";
 
 export const INSTALLATION_ID = "11111111-1111-4111-8111-111111111111";
+export const REQUEST_ID = "22222222-2222-4222-8222-222222222222";
 
 export const TEST_BUDDY: Buddy = {
   id: "buddy-1",

@@ -4,22 +4,92 @@ Source specifications:
 
 - `docs/specs/first-vertical-slice.md`
 - `docs/specs/playable-pixel-art-opening.md`
+- `docs/specs/ai-led-signal-expedition.md`
 
 ## Status
 
 **IN DEVELOPMENT**
 
-The first vertical slice was approved on 2026-07-16 and completed. The playable pixel-art opening specification was approved by the repository owner on 2026-07-17. Tasks are ordered by dependency and executed one bounded task per development run.
+The first vertical slice and playable pixel-art opening are complete. The AI-led signal expedition specification was approved by the repository owner on 2026-07-18. Tasks are ordered by dependency and executed one bounded task per development run.
 
 ## Active
 
-No task is active. P01–P09 are complete and the playable pixel-art opening is ready for human testing.
+- [ ] **S07 — Validate and prepare whole-iteration review**
+  - Full automated, security, simulated-provider, and final independent review evidence is complete.
+  - External dependency: configure the five server-only `GUIDE_PROVIDER_*` values, run the redacted live comparison, and complete real-phone human output testing.
+  - Final independent review found no code findings but returned **NOT READY FOR HUMAN TESTING** solely because that required live/human evidence is absent.
 
 ## Backlog
 
-No approved tasks remain.
+No remaining implementation tasks after S07.
 
 ## Completed
+
+- [x] **S06 — Integrate and harden live orchestration** (2026-07-18)
+  - Connected server-side start and turn generation while keeping IDs, transitions, validation, completion, mementos, and archive writes application-owned.
+  - Added deterministic fallback for provider failure and unsafe output, with redacted validation events and unchanged submitted state.
+  - Kept refusal and completion provider-free; retained pause and stop as local application controls.
+  - Added pre-expedition personal-data disclosure, minimal bounded provider context, generic client/server recovery errors, and a stop-waiting abort/race guard.
+  - Required stable per-action IDs, retained them through lost-response retries, scoped server deduplication by installation/expedition/turn, and bound identities to SHA-256 payload fingerprints.
+  - Prevented active-cache eviction and returned controlled conflict/capacity responses rather than starting duplicate work.
+  - `npm run validate` passed: lint, strict typecheck, 83 unit/integration tests, production build, and 10 Playwright journeys.
+  - Independent re-review returned **READY FOR HUMAN TESTING** with no blocking or should-fix findings.
+  - Residual boundary: deduplication is process-local for the current single-instance prototype; a stopped client discards late results while the one bounded server call may run until timeout.
+  - Next priority: S07 — Validate and prepare whole-iteration review.
+
+- [x] **S05 — Author transformation personas and signal-arc prompts** (2026-07-18)
+  - Added materially different ordinary-buddy and transformed-expedition-persona voice contracts.
+  - Encoded invitation, pursuit, revelation, and return beats with grounded-detail dependencies and stay-here constraints.
+  - Kept all user-authored buddy and journey values in an explicitly untrusted data payload rather than the privileged system message.
+  - Added prompt regressions for hostile buddy data, grounded phase directives, safety, originality, privacy, and strict JSON output boundaries.
+  - Resolved independent-review findings for prompt injection, invented opening details, and phase-contract coverage.
+  - `npm run validate` passed: lint, strict typecheck, 61 unit/integration tests, production build, and 9 Playwright journeys.
+  - Independent re-review returned **READY FOR HUMAN TESTING** with no blocking or should-fix findings.
+  - Next priority: S06 — Integrate and harden live orchestration.
+
+- [x] **S04 — Implement the server-configured OpenAI-compatible adapter** (2026-07-18)
+  - Added validated server-only provider configuration with deterministic mock as the default.
+  - Implemented one bounded Chat Completions-compatible request with no retries, explicit timeout, JSON response mode, and no tool definitions.
+  - Enforced a 32 KiB response limit, bounded choices/content, strict proposal parsing, and rejection of modern and legacy tool-call signals.
+  - Redacted failure handling distinguishes timeout, rate limit, unavailability, invalid output, and tool calls without exposing credentials or raw errors.
+  - Fixed independent-review findings for tool metadata, output bounds, transport classification, and timer cleanup; added focused regressions.
+  - Moved a malformed disposable `.next` cache to `/tmp/the-guide-next-cache.UTAg6v/.next`; source data was unaffected and the build regenerated valid output.
+  - `npm run validate` passed: lint, strict typecheck, 53 unit/integration tests, production build, and 9 Playwright journeys.
+  - Final independent re-review returned **READY FOR HUMAN TESTING** with no blocking or should-fix findings.
+  - Next priority: S05 — Author transformation personas and signal-arc prompts.
+
+- [x] **S03 — Define the live adapter schemas and fixtures** (2026-07-18)
+  - Added strict provider proposal, minimal context, start/turn request, result, and failure schemas.
+  - Prevented provider-owned IDs, state/status mutations, tool calls, and excess fields at the contract boundary.
+  - Limited outbound context to permitted buddy traits and the latest two accepted instructions/observations.
+  - Verified installation, expedition, buddy and observation IDs; memory policy; validation events; mementos; archive data; reflections; and timestamps are excluded.
+  - Added valid, invalid, failure, and privacy-boundary fixtures and tests.
+  - `npm run validate` passed: lint, strict typecheck, 45 unit/integration tests, production build, and 9 Playwright journeys.
+  - Independent review returned **READY FOR HUMAN TESTING** with no blocking or should-fix findings.
+  - Next priority: S04 — Implement the server-configured OpenAI-compatible adapter.
+
+- [x] **S02 — Simplify the active expedition screen** (2026-07-18)
+  - Reduced active play to one dominant instruction, response field, and Done action.
+  - Condensed buddy identity, signal progress, and effort into supporting metadata.
+  - Moved Unexpected, Not possible, Pause, and Stop into one quiet responsive secondary strip without changing semantics.
+  - Preserved 320px and 200% text operability after tightening intrinsic control sizing.
+  - `npm run validate` passed: lint, strict typecheck, 41 unit/integration tests, production build, and 9 Playwright journeys.
+  - Independent review returned **READY FOR HUMAN TESTING** with no blocking or should-fix findings.
+  - Commit status: not committed; project commit authorisation is not documented.
+  - Next priority: S03 — Define the live adapter schemas and fixtures.
+
+- [x] **S01 — Correct buddy and scene composition, including human-feedback revision** (2026-07-18)
+  - Added ordinary buddy art with an intentional name fallback during creation and boundary setup.
+  - Replaced the object grid with one illustrated scene containing scene-relative semantic hotspots and made the room use the full available phone width.
+  - Made the elixir and one optional brass token disappear from the scene when collected and appear in the visible ephemeral inventory.
+  - Kept the brass token deliberately inert and out of provider, domain, expedition, persistence, and archive state.
+  - Preserved optional inspections, narration, the ritual shortcut, 44px targets, keyboard operation, assistive-technology names, and the existing expedition/archive contracts.
+  - Prevented narrow-screen sound/title overlap and recorded 320px boundary, initial-room, and collected-room captures for visual evidence.
+  - `npm run validate` passed: lint, strict typecheck, 41 unit/integration tests, production build, and 9 Playwright journeys.
+  - Independent review of the human-feedback revision returned **READY FOR HUMAN TESTING** with no blocking or should-fix findings.
+  - Commit status: not committed; project commit authorisation is not documented.
+  - Human focus: touch discoverability of unlabeled scene objects and whether the full-width room feels appropriately immersive on a real phone.
+  - Next priority: S02 — Simplify the active expedition screen.
 
 - [x] **P09 — Run full validation and prepare independent review** (2026-07-17)
   - Added a completeness audit that matches every shipped pixel media file to a provenance-manifest entry.
