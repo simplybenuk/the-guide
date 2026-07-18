@@ -9,6 +9,7 @@ import { buildElixirSite } from "./build.mjs";
 
 const repositoryRoot = process.cwd();
 const outputDirectory = mkdtempSync(join(tmpdir(), "guide-elixirs-build-"));
+const sourceRevision = "1234567890abcdef1234567890abcdef12345678";
 
 const listFiles = (directory) =>
   readdirSync(directory, { withFileTypes: true })
@@ -22,7 +23,7 @@ const readOutput = (path) => readFileSync(resolve(outputDirectory, path), "utf8"
 const hash = (buffer) => createHash("sha256").update(buffer).digest("hex");
 
 describe("static Elixir cabinet build", () => {
-  beforeAll(() => buildElixirSite({ outputDirectory }));
+  beforeAll(() => buildElixirSite({ outputDirectory, sourceRevision }));
   afterAll(() => rmSync(outputDirectory, { recursive: true, force: true }));
 
   it("emits only the expected framework-free static tree", () => {
@@ -119,20 +120,26 @@ describe("static Elixir cabinet build", () => {
     }
   });
 
-  it("emits a complete no-JavaScript handoff and progressively enhanced copy controls", () => {
+  it("emits complete self-contained and pinned resolver prompts with progressive copy controls", () => {
     for (const slug of ["signal", "mystery", "story"]) {
       const detail = readOutput(`elixirs/${slug}/index.html`);
+      const canonical = readFileSync(resolve(repositoryRoot, `content/elixirs/${slug}.md`), "utf8");
+      const digest = createHash("sha256").update(canonical).digest("hex");
+      expect(detail).toContain("Delivery envelope: the-guide-elixir/1");
+      expect(detail).toContain(`UTF-8 bytes: ${Buffer.byteLength(canonical, "utf8")}`);
+      expect(detail).toContain(`SHA-256: ${digest}`);
+      expect(detail).toContain("&lt;&lt;&lt; BEGIN THE GUIDE ELIXIR CARTRIDGE &gt;&gt;&gt;");
+      expect(detail).toContain("&lt;&lt;&lt; END THE GUIDE ELIXIR CARTRIDGE &gt;&gt;&gt;");
+      expect(detail).toContain(`Published cartridge: ../../cartridges/${slug}/0.1.0/elixir.md`);
       expect(detail).toContain(
-        `before doing anything: ../../cartridges/${slug}/0.1.0/elixir.md`,
+        `https://raw.githubusercontent.com/simplybenuk/the-guide/${sourceRevision}/content/elixirs/${slug}.md`,
       );
-      expect(detail).toContain("Please read the complete The");
-      expect(detail).toContain("Explain the game, its demands, capability boundary, and data behavior");
-      expect(detail).toContain("If you cannot retrieve it, say so rather than guessing");
-      expect(detail).toContain("ask for my affirmative consent before you fictionally drink it");
-      expect(detail).not.toContain("Please load The The");
-      expect(detail).not.toMatch(/https?:\/\/[^\s<]+\/cartridges\//);
-      expect(detail).toContain("select and copy the handoff message");
-      expect(detail.match(/data-copy-action[^>]+hidden/g)).toHaveLength(2);
+      expect(detail).toContain(
+        `https://github.com/simplybenuk/the-guide/blob/${sourceRevision}/content/elixirs/${slug}.md`,
+      );
+      expect(detail).not.toMatch(/\/main\/|\bnpx\b/);
+      expect(detail).toContain("select and copy the complete prompt above");
+      expect(detail.match(/data-copy-action[^>]+hidden/g)).toHaveLength(3);
     }
   });
 

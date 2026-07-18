@@ -12,10 +12,12 @@ transcript, or application server.
 
 The static cabinet contains three experimental first-party Elixirs: Signal,
 Mystery, and Story. Local implementation and artifact validation are complete.
-Live Codex evidence supports the experimental `coding_agent` class only.
-ChatGPT consumer evaluation is blocked by the available headless environment,
-has zero runs, and is not a compatibility pass. A second complete live harness
-class is required before human output testing.
+Live Codex evidence supports the experimental `coding_agent` class only. One
+owner-observed ChatGPT attempt failed to retrieve the public Pages cartridge,
+using the ChatGPT mobile app on a Plus account in Instant mode. The underlying
+model identifier was not exposed, and this is not a complete evidence run or
+compatibility pass. A second complete live harness class is required before
+human output testing.
 
 The former hosted Next.js prototype is retired. Its final snapshot is preserved
 at the `hosted-prototype-final` Git tag and documented in

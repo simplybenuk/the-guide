@@ -59,10 +59,12 @@ authority, safety, data, consent, and role-release covenant.
 
 ## Current limitation
 
-Codex live evidence supports an experimental coding-agent label. ChatGPT is
-environment-blocked with zero runs and is not passed. The iteration requires a
-second complete consumer or personal-agent harness class before human output
-testing under the approved specification.
+Codex live evidence supports an experimental coding-agent label. One
+owner-observed ChatGPT URL attempt failed retrieval in the mobile app on a Plus
+account using Instant mode. The underlying model identifier was not exposed,
+and it is not a complete evidence run or compatibility pass. The iteration
+requires a second complete consumer or personal-agent harness class before
+human output testing under the approved specification.
 
 ## Non-goals
 

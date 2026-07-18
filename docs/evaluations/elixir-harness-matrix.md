@@ -16,13 +16,24 @@ It is not a compatibility report and contains no private player transcript.
 | Coding or IDE agent | Codex | Owner-authorized; `codex-cli 0.144.5` completed the live matrix; model identifier unavailable in JSON events | 54 actor cases + 6 redacted judging runs | Experimental evidence for coding class only |
 
 The owner selected the recommended ChatGPT + Codex pair on 2026-07-18 and
-authorized redacted live evaluation plus ordinary provider-side usage. Codex
+authorized redacted live evaluation plus ordinary provider-side usage. A
+contextual owner observation used the ChatGPT mobile app on a Plus account in
+Instant mode; the UI did not expose an underlying model identifier. Codex
 ephemeral read-only access probes succeeded at the default and explicit low
 reasoning settings; they contained no cartridge and are not gameplay evidence.
 The completed Codex run used medium reasoning for all fourteen cases on all
 three cartridges and low reasoning for normal, tool-temptation, completion, and
-post-return comparisons. The ChatGPT model and any exposed reasoning control
-remain unavailable because the consumer surface cannot be attached here.
+post-return comparisons. The underlying ChatGPT model remains unavailable, and
+the consumer surface cannot be attached to this development environment.
+
+## Contextual ChatGPT observation
+
+On 2026-07-18, one owner-run Pages cartridge URL handoff in ChatGPT mobile on a
+Plus account using Instant mode failed retrieval. ChatGPT refused to guess and
+requested the Markdown file or its pasted contents. The underlying model
+identifier was not exposed. This is one contextual transport failure, not a
+completed versioned harness run; the ChatGPT row therefore remains at zero
+complete live runs and `Untested`.
 
 ## Codex live result
 
@@ -70,8 +81,9 @@ The owner confirmed that this evaluation runs on a headless remote server and
 directed the project to record ChatGPT browser evaluation as environment-blocked.
 The ChatGPT-first delivery iteration retried the available collaborative browser
 path on 2026-07-18; both preview status and preview open returned that no
-automation host was available. URL, file, and paste delivery therefore remain
-at zero ChatGPT runs, with no consumer compatibility or delivery pass.
+automation host was available. The owner observation above does not include the
+complete URL, file, and paste matrix, so complete ChatGPT runs remain at zero,
+with no consumer compatibility or delivery pass.
 The required two-live-class threshold is therefore unmet. Do not mark ChatGPT
 compatible and do not claim the whole iteration ready for human testing. A
 future environment with authenticated consumer access may resume the same

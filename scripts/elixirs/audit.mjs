@@ -26,6 +26,29 @@ const textExtensions = /\.(?:css|html|js|json|md)$/;
 const allowedAbsoluteUrls = new Set([
   "https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement",
 ]);
+const allowedPinnedSourceUrls = [
+  /^https:\/\/raw\.githubusercontent\.com\/simplybenuk\/the-guide\/[0-9a-f]{40}\/content\/elixirs\/(?:signal|mystery|story)\.md$/,
+  /^https:\/\/github\.com\/simplybenuk\/the-guide\/blob\/[0-9a-f]{40}\/content\/elixirs\/(?:signal|mystery|story)\.md$/,
+];
+const isPinnedSourceUrl = (url) => allowedPinnedSourceUrls.some((pattern) => pattern.test(url));
+const isInsideResolverTextarea = (text, index) => {
+  const openingStart = text.lastIndexOf("<textarea", index);
+  if (openingStart < 0) return false;
+  const openingEnd = text.indexOf(">", openingStart);
+  if (openingEnd < 0 || openingEnd >= index) return false;
+  const closing = text.indexOf("</textarea>", openingEnd);
+  const openingTag = text.slice(openingStart, openingEnd + 1);
+  return closing > index && /^<textarea id="resolver-prompt-(?:signal|mystery|story)" data-resolver-prompt rows="10" readonly>$/.test(openingTag);
+};
+const isInsideOrdinaryAnchor = (text, index) => {
+  const openingStart = text.lastIndexOf("<a", index);
+  if (openingStart < 0) return false;
+  const openingEnd = text.indexOf(">", openingStart);
+  return openingEnd > index && /\bhref\s*=\s*["']?$/i.test(text.slice(openingStart, index));
+};
+const isAllowedAbsoluteUrl = ({ path, text, url, index }) =>
+  (path.endsWith(".html") && allowedAbsoluteUrls.has(url) && isInsideOrdinaryAnchor(text, index)) ||
+  (path.endsWith(".html") && isPinnedSourceUrl(url) && isInsideResolverTextarea(text, index));
 const forbiddenText = [
   { label: "Next.js runtime", pattern: /\/_next\// },
   { label: "application API", pattern: /\/api\/(?:health|expedition)/ },
@@ -37,9 +60,16 @@ const forbiddenText = [
   },
   { label: "collector path", pattern: /\/(?:analytics|collect|events|telemetry)(?:[/?#"'])/i },
   { label: "remote CSS resource", pattern: /url\(\s*["']?https?:\/\//i },
+  {
+    label: "remote active HTML attribute",
+    pattern: /<(?!a\b)[a-z][^>]*\b(?:src|srcset|href|action|data|poster)\s*=\s*["']?https?:\/\//i,
+  },
+  { label: "remote stylesheet resource", pattern: /<link\b[^>]*\bhref\s*=\s*["']?https?:\/\//i },
+  { label: "remote form action", pattern: /<form\b[^>]*\baction\s*=\s*["']?https?:\/\//i },
   { label: "refresh redirect", pattern: /<meta\s+[^>]*http-equiv=["']?refresh/i },
   { label: "analytics SDK", pattern: /google-analytics|googletagmanager|posthog|plausible\.io|segment\.com/i },
   { label: "public event logging", pattern: /console\.(?:log|info|debug|table)\s*\(/ },
+  { label: "package execution command", pattern: /\bnpx(?:\s|$)/i },
   { label: "private key", pattern: /-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----/ },
   { label: "GitHub credential", pattern: /(?:gh[pousr]_[A-Za-z0-9]{36,255}|github_pat_[A-Za-z0-9_]{60,255})/ },
   { label: "OpenAI credential", pattern: /sk-(?:proj-)?[A-Za-z0-9_-]{20,}/ },
@@ -92,7 +122,7 @@ export const auditElixirArtifact = ({ artifactDirectory }) => {
         }
       }
       for (const match of text.matchAll(/https?:\/\/[^\s"'<>)]*/g)) {
-        if (!allowedAbsoluteUrls.has(match[0])) {
+        if (!isAllowedAbsoluteUrl({ path, text, url: match[0], index: match.index })) {
           throw new Error(`${path} contains unexpected remote origin: ${match[0]}`);
         }
       }

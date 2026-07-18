@@ -62,8 +62,9 @@ describe("Elixir-first repository boundary", () => {
     expect(archive).not.toMatch(/reset\s+--hard/);
 
     const overview = text("README.md");
-    expect(overview).toContain("ChatGPT consumer evaluation is blocked");
-    expect(overview).toContain("zero runs");
-    expect(overview).toContain("not a compatibility pass");
+    expect(overview).toMatch(/One\s+owner-observed ChatGPT attempt failed/);
+    expect(overview).toMatch(
+      /not a complete evidence\s+run or\s+compatibility pass/,
+    );
   });
 });

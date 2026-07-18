@@ -7,11 +7,15 @@ const copyText = async (text) => {
   await navigator.clipboard.writeText(text);
 };
 
-const copyFailureResult = (error) =>
-  error?.name === "ClipboardUnavailableError" ? "unavailable" : "denied";
+const copyFailureResult = (error) => {
+  if (error?.name === "ClipboardUnavailableError") return "unavailable";
+  if (error?.name === "NotAllowedError" || error?.name === "SecurityError") return "denied";
+  return "failed";
+};
 
 for (const panel of document.querySelectorAll(".handoff-panel")) {
-  const handoff = panel.querySelector("[data-handoff]");
+  const chatgptPrompt = panel.querySelector("[data-chatgpt-prompt]");
+  const resolverPrompt = panel.querySelector("[data-resolver-prompt]");
   const cartridgeLink = panel.querySelector("[data-cartridge-url]");
   const cartridgeSource = document.querySelector("[data-cartridge-source]");
   const status = panel.querySelector("[data-copy-status]");
@@ -35,31 +39,58 @@ for (const panel of document.querySelectorAll(".handoff-panel")) {
   };
 
   cartridgeLink.textContent = absoluteCartridgeUrl;
-  handoff.value = handoff.value.replace(relativeCartridgeUrl, absoluteCartridgeUrl);
+  resolverPrompt.value = resolverPrompt.value.replace(relativeCartridgeUrl, absoluteCartridgeUrl);
   for (const action of panel.querySelectorAll("[data-copy-action]")) action.hidden = false;
 
-  const reportFailure = (selectable) => {
+  const reportFailure = (selectable, result) => {
     selectable.focus();
     if (typeof selectable.select === "function") selectable.select();
-    status.textContent = "Clipboard access was unavailable. The text is selected so you can copy it manually.";
+    status.textContent = result === "denied"
+      ? "Clipboard permission was denied. The text is selected so you can copy it manually."
+      : result === "unavailable"
+        ? "Clipboard access is unavailable. The text is selected so you can copy it manually."
+        : "Copying failed unexpectedly. The text is selected so you can copy it manually.";
   };
 
-  panel.querySelector("[data-copy-handoff]").addEventListener("click", async () => {
+  panel.querySelector("[data-copy-chatgpt]").addEventListener("click", async () => {
     try {
-      await copyText(handoff.value);
-      status.textContent = "Handoff copied. Paste it into a fresh ChatGPT conversation.";
+      await copyText(chatgptPrompt.value);
+      status.textContent = "Complete ChatGPT prompt copied. Paste it into a fresh conversation.";
       recordDelivery({
-        deliveryMethod: "handoff_message_copy",
+        deliveryMethod: "self_contained_prompt_copy",
         targetHarness: "chatgpt",
         result: "succeeded",
       });
     } catch (error) {
+      const result = copyFailureResult(error);
       recordDelivery({
-        deliveryMethod: "handoff_message_copy",
+        deliveryMethod: "self_contained_prompt_copy",
         targetHarness: "chatgpt",
-        result: copyFailureResult(error),
+        result,
       });
-      reportFailure(handoff);
+      reportFailure(chatgptPrompt, result);
+    }
+  });
+
+  panel.querySelector("[data-copy-resolver]").addEventListener("click", async () => {
+    try {
+      await copyText(resolverPrompt.value);
+      status.textContent = "Experimental agent prompt copied.";
+      recordDelivery({
+        deliveryMethod: "resolver_prompt_copy",
+        targetHarness: "unspecified",
+        result: "succeeded",
+      });
+    } catch (error) {
+      const result = copyFailureResult(error);
+      recordDelivery({
+        deliveryMethod: "resolver_prompt_copy",
+        targetHarness: "unspecified",
+        result,
+      });
+      const resolverPanel = resolverPrompt.closest("details");
+      resolverPanel.open = true;
+      reportFailure(resolverPrompt, result);
     }
   });
 
@@ -73,15 +104,20 @@ for (const panel of document.querySelectorAll(".handoff-panel")) {
         result: "succeeded",
       });
     } catch (error) {
+      const result = copyFailureResult(error);
       recordDelivery({
         deliveryMethod: "cartridge_text_copy",
         targetHarness: "unspecified",
-        result: copyFailureResult(error),
+        result,
       });
       const sourcePanel = cartridgeSource.closest("details");
       sourcePanel.open = true;
       cartridgeSource.parentElement.focus();
-      status.textContent = "Clipboard access was unavailable. The complete source is open below for manual copying.";
+      status.textContent = result === "denied"
+        ? "Clipboard permission was denied. The complete source is open below for manual copying."
+        : result === "unavailable"
+          ? "Clipboard access is unavailable. The complete source is open below for manual copying."
+          : "Copying failed unexpectedly. The complete source is open below for manual copying.";
     }
   });
 

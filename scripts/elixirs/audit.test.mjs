@@ -8,11 +8,12 @@ import { auditElixirArtifact } from "./audit.mjs";
 import { buildElixirSite } from "./build.mjs";
 
 const temporaryRoots = [];
+const sourceRevision = "1234567890abcdef1234567890abcdef12345678";
 const buildTemporaryArtifact = () => {
   const temporaryRoot = mkdtempSync(join(tmpdir(), "guide-elixirs-audit-"));
   temporaryRoots.push(temporaryRoot);
   const artifactDirectory = resolve(temporaryRoot, "artifact");
-  buildElixirSite({ outputDirectory: artifactDirectory });
+  buildElixirSite({ outputDirectory: artifactDirectory, sourceRevision });
   return artifactDirectory;
 };
 
@@ -61,6 +62,7 @@ describe("Elixir Pages artifact audit", () => {
       "document.createElement('script')",
       "document.cookie = 'id=123'",
       "console.log('delivery event')",
+      "npx untrusted-package",
       "https://plausible.io/js/script.js",
     ]) {
       const contaminated = buildTemporaryArtifact();
@@ -80,6 +82,67 @@ describe("Elixir Pages artifact audit", () => {
       const contaminated = buildTemporaryArtifact();
       appendFileSync(resolve(contaminated, "index.html"), `\n${marker}\n`);
       expect(() => auditElixirArtifact({ artifactDirectory: contaminated })).toThrow(/forbidden|unexpected remote origin/);
+    }
+  });
+
+  it("rejects mutable or non-first-party GitHub source URLs", () => {
+    for (const marker of [
+      "https://raw.githubusercontent.com/simplybenuk/the-guide/main/content/elixirs/story.md",
+      `https://raw.githubusercontent.com/other/the-guide/${sourceRevision}/content/elixirs/story.md`,
+      `https://github.com/simplybenuk/the-guide/blob/${sourceRevision}/content/elixirs/other.md`,
+    ]) {
+      const contaminated = buildTemporaryArtifact();
+      appendFileSync(resolve(contaminated, "index.html"), `\n${marker}\n`);
+      expect(() => auditElixirArtifact({ artifactDirectory: contaminated })).toThrow(/unexpected remote origin/);
+    }
+  });
+
+  it("rejects allowed source URLs when used as active remote resources", () => {
+    const pinned = `https://raw.githubusercontent.com/simplybenuk/the-guide/${sourceRevision}/content/elixirs/story.md`;
+    for (const marker of [
+      `<script src="${pinned}"></script>`,
+      `<img src="${pinned}">`,
+      `<img srcset="${pinned} 1x">`,
+      `<object data="${pinned}"></object>`,
+      `<embed src="${pinned}">`,
+      `<video poster="${pinned}"></video>`,
+      `<link rel="stylesheet" href="${pinned}">`,
+      `<form action="${pinned}"></form>`,
+      `<base href="${pinned}">`,
+    ]) {
+      const contaminated = buildTemporaryArtifact();
+      appendFileSync(resolve(contaminated, "index.html"), `\n${marker}\n`);
+      expect(() => auditElixirArtifact({ artifactDirectory: contaminated })).toThrow(/forbidden remote/);
+    }
+  });
+
+  it("allows pinned source literals only inside the experimental resolver textarea", () => {
+    const pinned = `https://raw.githubusercontent.com/simplybenuk/the-guide/${sourceRevision}/content/elixirs/story.md`;
+    for (const marker of [
+      `<p>${pinned}</p>`,
+      `<a href="${pinned}">source</a>`,
+      `<textarea>${pinned}</textarea>`,
+      `<textarea data-resolver-prompt-extra>${pinned}</textarea>`,
+      `<textarea title="data-resolver-prompt">${pinned}</textarea>`,
+      `<script type="application/json">{"source":"${pinned}"}</script>`,
+    ]) {
+      const contaminated = buildTemporaryArtifact();
+      appendFileSync(resolve(contaminated, "index.html"), `\n${marker}\n`);
+      expect(() => auditElixirArtifact({ artifactDirectory: contaminated })).toThrow(/unexpected remote origin/);
+    }
+  });
+
+  it("allows the GitHub privacy URL only as an ordinary user-followed anchor", () => {
+    const privacy = "https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement";
+    for (const marker of [
+      `<p>${privacy}</p>`,
+      `<script type="module">import "${privacy}"</script>`,
+      `<textarea>${privacy}</textarea>`,
+      `<a href="${privacy}" ping="${privacy}">privacy</a>`,
+    ]) {
+      const contaminated = buildTemporaryArtifact();
+      appendFileSync(resolve(contaminated, "index.html"), `\n${marker}\n`);
+      expect(() => auditElixirArtifact({ artifactDirectory: contaminated })).toThrow(/unexpected remote origin/);
     }
   });
 

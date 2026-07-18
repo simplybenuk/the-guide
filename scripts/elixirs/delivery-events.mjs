@@ -2,12 +2,13 @@ import { randomUUID } from "node:crypto";
 
 import { z } from "zod";
 
-export const deliveryEventContractVersion = "1.0.0";
+export const deliveryEventContractVersion = "1.1.0";
 export const deliveryEventName = "delivery_action_recorded";
 export const deliveryEventBrowserName = "the-guide:delivery-event";
 export const deliveryDeploymentRevision = "cabinet-delivery-v1";
 export const deliveryMethods = [
-  "handoff_message_copy",
+  "self_contained_prompt_copy",
+  "resolver_prompt_copy",
   "cartridge_text_copy",
   "cartridge_file_download",
 ];
@@ -57,7 +58,7 @@ export const deliveryEventSchema = z
     if (!copyResults.includes(event.result)) {
       context.addIssue({ code: "custom", path: ["result"], message: "Copy actions cannot claim an initiated result" });
     }
-    const expectedTarget = event.delivery_method === "handoff_message_copy" ? "chatgpt" : "unspecified";
+    const expectedTarget = event.delivery_method === "self_contained_prompt_copy" ? "chatgpt" : "unspecified";
     if (event.target_harness !== expectedTarget) {
       context.addIssue({ code: "custom", path: ["target_harness"], message: `Expected ${expectedTarget} for ${event.delivery_method}` });
     }
@@ -173,7 +174,7 @@ export const renderDeliveryEventBrowserRuntime = ({ validReferences, deploymentR
       return ["initiated", "unavailable", "failed"].includes(event.result) && event.target_harness === "unspecified";
     }
     if (!["succeeded", "denied", "unavailable", "failed"].includes(event.result)) return false;
-    return event.target_harness === (event.delivery_method === "handoff_message_copy" ? "chatgpt" : "unspecified");
+    return event.target_harness === (event.delivery_method === "self_contained_prompt_copy" ? "chatgpt" : "unspecified");
   };
 
   const record = (input) => {

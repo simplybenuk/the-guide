@@ -24,7 +24,7 @@ const create = (overrides = {}) =>
     {
       elixirId: "the-guide.elixir.story",
       elixirVersion: "0.1.0",
-      deliveryMethod: "handoff_message_copy",
+      deliveryMethod: "self_contained_prompt_copy",
       targetHarness: "chatgpt",
       result: "succeeded",
       ...overrides,
@@ -32,10 +32,10 @@ const create = (overrides = {}) =>
     options,
   );
 
-describe("delivery event contract v1", () => {
-  it("creates one strict, identity-free ChatGPT handoff event", () => {
+describe("delivery event contract v1.1", () => {
+  it("creates one strict, identity-free self-contained ChatGPT prompt event", () => {
     expect(create()).toEqual({
-      contract_version: "1.0.0",
+      contract_version: "1.1.0",
       event_id: "evt_123e4567-e89b-42d3-a456-426614174000",
       event_name: "delivery_action_recorded",
       occurred_at: "2026-07-18T15:00:00.000Z",
@@ -43,7 +43,7 @@ describe("delivery event contract v1", () => {
       channel: "cabinet_first",
       elixir_id: "the-guide.elixir.story",
       elixir_version: "0.1.0",
-      delivery_method: "handoff_message_copy",
+      delivery_method: "self_contained_prompt_copy",
       target_harness: "chatgpt",
       result: "succeeded",
       deployment_revision: "cabinet-delivery-v1",
@@ -53,6 +53,12 @@ describe("delivery event contract v1", () => {
   it("enforces method, result, and target semantics", () => {
     expect(() => create({ targetHarness: "unspecified" })).toThrow(/Expected chatgpt/);
     expect(() => create({ result: "initiated" })).toThrow(/cannot claim an initiated/);
+    expect(
+      create({ deliveryMethod: "resolver_prompt_copy", targetHarness: "unspecified" }).delivery_method,
+    ).toBe("resolver_prompt_copy");
+    expect(() => create({ deliveryMethod: "resolver_prompt_copy", targetHarness: "chatgpt" })).toThrow(
+      /Expected unspecified/,
+    );
     expect(() =>
       create({
         deliveryMethod: "cartridge_file_download",
@@ -73,6 +79,8 @@ describe("delivery event contract v1", () => {
     expect(() => deliveryEventSchema.parse({ ...create(), transcript: "private" })).toThrow();
     expect(() => create({ elixirVersion: "9.9.9" })).toThrow(/Unknown delivery event cartridge/);
     expect(() => create({ elixirId: "the-guide.elixir.unknown" })).toThrow(/Unknown delivery event cartridge/);
+    expect(() => validateDeliveryEvent({ ...create(), contract_version: "1.0.0" }, { validReferences })).toThrow();
+    expect(() => create({ deliveryMethod: "handoff_message_copy" })).toThrow();
   });
 
   it("rejects malformed IDs, timestamps, and public build identifiers", () => {
@@ -88,6 +96,7 @@ describe("delivery event contract v1", () => {
       create(),
       create(),
       create({ result: "denied" }),
+      create({ deliveryMethod: "resolver_prompt_copy", targetHarness: "unspecified" }),
       create({ deliveryMethod: "cartridge_text_copy", targetHarness: "unspecified" }),
       create({ deliveryMethod: "cartridge_file_download", targetHarness: "unspecified", result: "initiated" }),
       create({ deliveryMethod: "cartridge_file_download", targetHarness: "unspecified", result: "failed" }),
@@ -95,7 +104,7 @@ describe("delivery event contract v1", () => {
         {
           elixirId: "the-guide.elixir.story",
           elixirVersion: "0.1.0",
-          deliveryMethod: "handoff_message_copy",
+          deliveryMethod: "self_contained_prompt_copy",
           targetHarness: "chatgpt",
           result: "succeeded",
         },
@@ -131,7 +140,16 @@ describe("delivery event contract v1", () => {
       {
         elixir_id: "the-guide.elixir.story",
         elixir_version: "0.1.0",
-        delivery_method: "handoff_message_copy",
+        delivery_method: "resolver_prompt_copy",
+        target_harness: "unspecified",
+        window_start: "2026-07-18T00:00:00.000Z",
+        window_end: "2026-07-19T00:00:00.000Z",
+        actions: 1,
+      },
+      {
+        elixir_id: "the-guide.elixir.story",
+        elixir_version: "0.1.0",
+        delivery_method: "self_contained_prompt_copy",
         target_harness: "chatgpt",
         window_start: "2026-07-18T00:00:00.000Z",
         window_end: "2026-07-19T00:00:00.000Z",

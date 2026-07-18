@@ -5,6 +5,7 @@ Source specifications:
 - `docs/specs/elixir-cartridge-and-first-cabinet.md`
 - `docs/specs/elixir-first-repository-pivot.md`
 - `docs/specs/chatgpt-first-elixir-delivery.md`
+- `docs/specs/elixir-use-without-installing-delivery.md`
 
 ## Status
 
@@ -16,14 +17,15 @@ active tree under the approved repository-pivot specification.
 
 ## Active
 
-No implementation task is active. ChatGPT evidence collection is the next gate.
+No implementation task is active. E07 named ChatGPT evidence is the next gate.
 
 ## Waiting on external evidence
 
 - [ ] **E07 — Complete a second live harness class**
   - Codex evidence supports only the experimental `coding_agent` label.
-  - ChatGPT browser evaluation is environment-blocked with zero runs and is not
-    a compatibility pass.
+  - One owner-observed ChatGPT attempt failed Pages URL retrieval in the mobile
+    app on a Plus account using Instant mode. The underlying model identifier
+    was not exposed, and it is not a complete compatibility run.
   - Complete the versioned fixture matrix in one consumer or personal-agent
     harness, derive compatibility fail-closed, and repeat independent review.
 
@@ -36,6 +38,59 @@ No implementation task is active. ChatGPT evidence collection is the next gate.
   compatibility gate is satisfied.
 
 ## Completed
+
+- [x] **U05 — Independent review and handoff** (2026-07-18)
+  - Independent review found two initial blockers, two should-fix gaps, and
+    further active-resource/attribute variants through adversarial probes.
+  - Development resolved every finding and repeated the full suite. Final
+    independent validation passed 58 unit tests, the exact
+    16-file/6,205,296-byte audit, all 9 browser journeys, `git diff --check`,
+    and canonical cartridge/covenant/artwork immutability checks.
+  - No blocking or should-fix implementation finding remains. Overall status is
+    **NOT READY FOR HUMAN TESTING** solely because E07 lacks a complete second
+    named live harness class.
+  - Detailed evidence is in
+    `docs/evaluations/elixir-use-without-installing-review.md`.
+
+- [x] **U01–U04 — Implement and validate use-without-installing delivery** (2026-07-18)
+  - Added deterministic self-contained and resolver envelopes derived from
+    validated canonical bytes with exact ID/version/publisher, UTF-8 byte count,
+    SHA-256, reserved delimiters, final-line-feed validation, and commit-pinned
+    first-party GitHub source URLs.
+  - Replaced the URL-dependent primary action with a complete **Copy for
+    ChatGPT** payload; retained an experimental agent resolver, raw copy,
+    download, versioned URL, visible source, accessible clipboard recovery, and
+    no-JavaScript paths. No package command, installation, MCP, or runtime fetch
+    was introduced.
+  - Advanced the strict local-only event contract to `1.1.0` with separate
+    self-contained and resolver methods, preserved exact half-open-window
+    acquisition semantics, and added distinct denied, unavailable, and failed
+    clipboard results without transmission or persistence.
+  - The Pages workflow now injects the checked-out commit SHA. The artifact
+    audit permits only exact commit-pinned first-party raw/blob source literals
+    and rejects moving/unapproved GitHub sources and package execution commands.
+  - `npm run validate` passed after independent-review fixes: lint, strict
+    typecheck, 10 Vitest files with 58 tests, deterministic
+    16-file/6,205,296-byte artifact audit, and all 9
+    Playwright journeys. Final `git diff --check` also passed.
+  - Initial independent review found two blockers and two should-fix gaps.
+    Development reconciled current overview evidence assertions, restricted
+    resolver input to the exact cartridge path, rejected allowlisted source URLs
+    in active remote-resource contexts, distinguished visible denied/unavailable/
+    failed clipboard feedback, and added the requested negative fixtures.
+  - A second adversarial review found active `srcset`/`object`/`embed` variants.
+    The audit now permits pinned source literals only inside the labelled
+    resolver textarea and rejects the same URL everywhere else, independently
+    of the surrounding HTML attribute or tag.
+  - Final hardening requires the exact generated resolver-textarea opening tag,
+    preventing lookalike attributes or attribute-value token spoofing from
+    broadening the pinned-URL allowlist.
+  - Mobile visual inspection passed using the Playwright screenshot fallback;
+    the T3 collaborative preview explicitly had no automation host. Canonical
+    cartridge, covenant, artwork, and published gameplay sources are unchanged.
+  - Changes are uncommitted. No push, PR, deployment, release, tag, npm
+    publication, analytics collection, MCP service, or compatibility change
+    occurred. Named ChatGPT testing remains external evidence.
 
 - [x] **D06 — Publish the authorized GitHub Pages alpha** (2026-07-18)
   - Added the owner-approved personal, non-commercial alpha terms to the
