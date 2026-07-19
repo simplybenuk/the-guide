@@ -39,8 +39,10 @@ const storyScoreSchema = z.object({
     "Beat IDs must be unique"),
   stateFields: z.array(z.object({
     id: slug,
+    values: uniqueSlugs("State values must be unique").min(2).optional(),
+    default: slug.optional(),
     fallback: z.string().trim().min(1).max(240),
-  }).strict()).min(1).max(12).refine((values) => unique(values.map(({ id }) => id)),
+  }).strict()).min(1).max(12).refine((values) => unique(values.map(({ id }) => id)) && values.every((field) => !field.values || field.values.includes(field.default)),
     "State field IDs must be unique"),
   routes: z.array(z.object({
     id: slug,
@@ -73,6 +75,20 @@ const storyScoreSchema = z.object({
     fallback: z.boolean(),
   }).strict()).min(3).max(4).refine((values) => unique(values.map(({ id }) => id))
     && unique(values.map(({ priority }) => priority)), "Ending IDs and priorities must be unique"),
+  stateTransitions: z.array(z.object({
+    at: z.enum(["enter", "intent"]),
+    beat: slug,
+    intent: slug.nullable(),
+    when: z.array(z.object({ field: slug, values: uniqueSlugs("Transition condition values must be unique").min(1) }).strict()),
+    writes: z.array(z.object({ field: slug, value: slug }).strict()).min(1),
+    nextBeat: slug.nullable(),
+  }).strict()).default([]),
+  crisisRules: z.array(z.object({
+    id: slug,
+    beat: slug,
+    when: z.array(z.object({ field: slug, values: uniqueSlugs("Crisis condition values must be unique").min(1) }).strict()).min(1),
+    writes: z.array(z.object({ field: slug, value: slug }).strict()).min(1),
+  }).strict()).default([]),
   evaluationCaseIds: uniqueSlugs("Evaluation case IDs must be unique").min(1),
 }).strict();
 
@@ -180,6 +196,27 @@ const validateScoreGraph = (score) => {
     const read = score.beats.some(({ reads }) => reads.includes(field));
     if (!written || !read) throw new Error(`Authored state field needs both a writer and reader: ${field}`);
   }
+  const stateById = new Map(score.stateFields.map((field) => [field.id, field]));
+  const validateWritesAndConditions = (record, label) => {
+    if (!beatIdSet.has(record.beat)) throw new Error(`${label} references an unknown beat: ${record.beat}`);
+    for (const condition of record.when) {
+      const field = stateById.get(condition.field);
+      if (!field?.values || condition.values.some((value) => !field.values.includes(value))) throw new Error(`${label} has an unknown condition value: ${condition.field}`);
+    }
+    for (const write of record.writes) {
+      const field = stateById.get(write.field);
+      if (!field?.values || !field.values.includes(write.value)) throw new Error(`${label} has an unknown state write: ${write.field}=${write.value}`);
+    }
+    if (record.nextBeat && !beatIdSet.has(record.nextBeat)) throw new Error(`${label} has an unknown next beat: ${record.nextBeat}`);
+  };
+  for (const transition of score.stateTransitions) {
+    validateWritesAndConditions(transition, "State transition");
+    const beat = score.beats.find(({ id }) => id === transition.beat);
+    if (transition.at === "intent" && (!transition.intent || !beat.intents.includes(transition.intent))) throw new Error(`Intent transition is not declared by beat ${transition.beat}`);
+    if (transition.at === "enter" && transition.intent !== null) throw new Error(`Entry transition cannot declare an intent: ${transition.beat}`);
+  }
+  for (const rule of score.crisisRules) validateWritesAndConditions({ ...rule, nextBeat: null }, "Crisis rule");
+  if (score.crisisRules.length > 0 && !sameValues(score.crisisRules.map(({ id }) => id).toSorted(), score.crisisVariants.map(({ id }) => id).toSorted())) throw new Error("Crisis rules must cover every crisis variant exactly once.");
   for (const route of score.routes) {
     if (!beatIdSet.has(route.exclusiveBeat) || !beatIdSet.has(route.laterReadBeat)) {
       throw new Error(`Authored route references an unknown beat: ${route.id}`);
@@ -206,6 +243,9 @@ const validateScoreGraph = (score) => {
       }
       if (condition.field !== "final-commitment" && !ending.requiredStateFields.includes(condition.field)) {
         throw new Error(`Ending eligibility field is absent from requiredStateFields: ${ending.id}/${condition.field}`);
+      }
+      if (condition.field !== "final-commitment" && stateById.get(condition.field).values && condition.values.some((value) => !stateById.get(condition.field).values.includes(value))) {
+        throw new Error(`Ending eligibility has an undeclared state value: ${ending.id}/${condition.field}`);
       }
     }
   }
@@ -294,12 +334,13 @@ export function validateStoryAuthoringStructure(source, covenant, storyMetadata)
     }
   }
   const stateBlocks = labelledBlocks(sections.get("## State ledger"), "State field");
-  for (const { id } of score.stateFields) {
+  for (const { id, values, default: defaultValue } of score.stateFields) {
     const block = stateBlocks.get(id);
-    requireFields(block, `State field ${id}`, ["Write", "Read"]);
+    requireFields(block, `State field ${id}`, [...(values ? ["Values", "Default"] : []), "Write", "Read"]);
     const writers = score.beats.filter(({ writes }) => writes.includes(id)).map(({ id: beatId }) => beatId);
     const readers = score.beats.filter(({ reads }) => reads.includes(id)).map(({ id: beatId }) => beatId);
-    if (!sameValues(listField(block, "Write"), writers) || !sameValues(listField(block, "Read"), readers)) {
+    if (values && (!sameValues(listField(block, "Values"), values) || paragraphField(block, "Default") !== defaultValue)
+        || !sameValues(listField(block, "Write"), writers) || !sameValues(listField(block, "Read"), readers)) {
       throw new Error(`State field ${id} prose writers/readers must exactly match the story score.`);
     }
   }

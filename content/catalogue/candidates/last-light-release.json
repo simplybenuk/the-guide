@@ -1,0 +1,46 @@
+{
+  "schemaVersion": "1.0.0",
+  "state": "prepared_not_publishable",
+  "preparedAt": "2026-07-19",
+  "release": {
+    "elixirId": "the-guide.elixir.last-light",
+    "publisherId": "the-guide",
+    "slug": "last-light",
+    "version": "0.1.0",
+    "cartridgeSchemaVersion": "1.1.0",
+    "covenantVersion": "1.0.0",
+    "sourcePath": "content/elixirs/last-light.md",
+    "bytes": 31069,
+    "sha256": "69127f053fce873925956bb8d86d3385436b6c8e3202a8c78ea80c7e32bac165",
+    "canonicalPath": "cartridges/the-guide/last-light/0.1.0/elixir.md",
+    "legacyPaths": [
+      "cartridges/last-light/0.1.0/elixir.md"
+    ],
+    "artwork": [
+      {
+        "provenanceId": "art-last-light",
+        "path": "site/elixirs/assets/cartridges/last-light.png",
+        "bytes": 2089788,
+        "width": 1536,
+        "height": 1024,
+        "provenanceReference": "content/catalogue/provenance/last-light-artwork.md",
+        "sha256": "28fb7f014515c9a261a334131ef9e4931a0a98e2c0f04c27cb2463193a93e70d"
+      }
+    ],
+    "rightsReference": "TERMS.md",
+    "reviewReferences": [
+      "docs/specs/authored-story-catalogue-expansion.md",
+      "docs/evaluations/last-light-publication-validation.md"
+    ],
+    "compatibilityReferences": [
+      "docs/evaluations/elixir-harness-matrix.md"
+    ],
+    "statusAtPublication": "experimental"
+  },
+  "supersession": null,
+  "activationRequirements": [
+    "independent_review_passed",
+    "reviewed_commit_revision_bound",
+    "publication_explicitly_authorized"
+  ]
+}

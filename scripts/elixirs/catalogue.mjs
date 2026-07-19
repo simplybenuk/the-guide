@@ -138,7 +138,7 @@ const correctionSchema = z.object({
 const successorSchema = z.object({ elixirId, version: semanticVersion }).strict();
 const releaseStateSchema = z.object({
   version: semanticVersion,
-  lifecycle: z.enum(["published", "deprecated", "superseded", "withdrawn"]),
+  lifecycle: z.enum(["published", "deprecated", "superseded", "retired", "withdrawn"]),
   successor: successorSchema.nullable(),
 }).strict();
 const reviewSchema = z.object({ state: z.literal("reviewed"), date }).strict();
@@ -164,7 +164,7 @@ export const catalogueEntrySchema = z.object({
   publisherId: slug,
   slug,
   recommendedVersion: semanticVersion,
-  lifecycle: z.enum(["published", "deprecated", "superseded", "withdrawn"]),
+  lifecycle: z.enum(["published", "deprecated", "superseded", "retired", "withdrawn"]),
   title: z.string().trim().min(1).max(80),
   summary: z.string().trim().min(1).max(180),
   playerPromise: z.string().trim().min(1).max(240),
@@ -482,7 +482,7 @@ export const validateCatalogueRecords = ({
     }
     if (entry.successor && !releaseByKey.has(releaseKey(entry.successor))) throw new Error(`Unknown successor for ${entry.elixirId}`);
     if (["deprecated", "superseded"].includes(entry.lifecycle) && !entry.successor) throw new Error(`${entry.lifecycle} catalogue entry requires a successor: ${entry.elixirId}`);
-    if (entry.lifecycle === "published" && entry.successor) throw new Error(`Published catalogue entry cannot declare a successor: ${entry.elixirId}`);
+    if (["published", "retired"].includes(entry.lifecycle) && entry.successor) throw new Error(`${entry.lifecycle} catalogue entry cannot declare a successor: ${entry.elixirId}`);
     assertUnique(entry.releaseStates.map(({ version }) => version), `Release lifecycle versions for ${entry.elixirId}`);
     const entryReleases = releases.filter(({ elixirId: id }) => id === entry.elixirId);
     if (entry.releaseStates.length !== entryReleases.length || entryReleases.some(({ version }) => !entry.releaseStates.some((state) => state.version === version))) throw new Error(`Release lifecycle must cover every version of ${entry.elixirId}`);
@@ -490,7 +490,7 @@ export const validateCatalogueRecords = ({
       if (!releaseByKey.has(`${entry.elixirId}@${state.version}`)) throw new Error(`Release lifecycle references unknown version: ${entry.elixirId}@${state.version}`);
       if (state.successor && !releaseByKey.has(releaseKey(state.successor))) throw new Error(`Release lifecycle has unknown successor: ${entry.elixirId}@${state.version}`);
       if (["deprecated", "superseded"].includes(state.lifecycle) && !state.successor) throw new Error(`${state.lifecycle} release requires a successor: ${entry.elixirId}@${state.version}`);
-      if (state.lifecycle === "published" && state.successor) throw new Error(`Published release cannot declare a successor: ${entry.elixirId}@${state.version}`);
+      if (["published", "retired"].includes(state.lifecycle) && state.successor) throw new Error(`${state.lifecycle} release cannot declare a successor: ${entry.elixirId}@${state.version}`);
     }
     const recommendedState = entry.releaseStates.find(({ version }) => version === entry.recommendedVersion);
     if (recommendedState.lifecycle !== entry.lifecycle || JSON.stringify(recommendedState.successor) !== JSON.stringify(entry.successor)) throw new Error(`Catalogue lifecycle must match the recommended release: ${entry.elixirId}@${entry.recommendedVersion}`);
@@ -511,7 +511,7 @@ export const validateCatalogueRecords = ({
     for (const id of collection.elixirIds) {
       const entry = entryById.get(id);
       if (!entry) throw new Error(`Collection ${collection.id} references unknown Elixir: ${id}`);
-      if (entry.lifecycle === "withdrawn") throw new Error(`Collection ${collection.id} references withdrawn Elixir: ${id}`);
+      if (["retired", "withdrawn"].includes(entry.lifecycle)) throw new Error(`Collection ${collection.id} references unavailable Elixir: ${id}`);
     }
   }
   for (const withdrawal of withdrawals) {
@@ -596,7 +596,7 @@ export const createPublicCatalogueIndex = (catalogue) => {
   return Object.freeze(publicCatalogueIndexSchema.parse({
     schemaVersion: catalogue.schemaVersion,
     deploymentRevision: catalogue.deploymentRevision,
-    entries: catalogue.entries.filter(({ lifecycle }) => lifecycle !== "withdrawn").map((entry) => {
+    entries: catalogue.entries.filter(({ lifecycle }) => !["retired", "withdrawn"].includes(lifecycle)).map((entry) => {
       const release = releasesByKey.get(`${entry.elixirId}@${entry.recommendedVersion}`);
       const cartridge = catalogue.cartridges.find(({ release: value }) => releaseKey(value) === releaseKey(release));
       const derivedTaxonomyIds = [
@@ -698,7 +698,7 @@ export const relatedCatalogueEntries = (entries, currentId, limit = 3) => {
   const current = entries.find(({ elixirId: id }) => id === currentId);
   if (!current) throw new Error(`Unknown related-item source: ${currentId}`);
   return entries
-    .filter(({ elixirId: id, lifecycle }) => id !== currentId && lifecycle !== "withdrawn")
+    .filter(({ elixirId: id, lifecycle }) => id !== currentId && !["retired", "withdrawn"].includes(lifecycle))
     .map((entry) => {
       const shared = entry.taxonomyIds.filter((id) => current.taxonomyIds.includes(id));
       const differentMechanic = entry.mechanicId !== current.mechanicId;
@@ -743,13 +743,13 @@ export const deriveExpectedArtifactPaths = (catalogue) => {
     for (const legacyPath of release.legacyPaths) paths.add(legacyPath);
     paths.add(`elixirs/${release.slug}/versions/${release.version}/index.html`);
   }
-  for (const entry of catalogue.entries.filter(({ lifecycle }) => lifecycle !== "withdrawn")) paths.add(`elixirs/${entry.slug}/index.html`);
+  for (const entry of catalogue.entries.filter(({ lifecycle }) => !["retired", "withdrawn"].includes(lifecycle))) paths.add(`elixirs/${entry.slug}/index.html`);
   for (const collection of catalogue.collections) paths.add(`collections/${collection.id}/index.html`);
   for (const release of catalogue.releases) {
     release.reviewReferences.forEach((_, index) => paths.add(`evidence/${release.publisherId}/${release.slug}/${release.version}/review-${index + 1}.md`));
     release.compatibilityReferences.forEach((_, index) => paths.add(`evidence/${release.publisherId}/${release.slug}/${release.version}/compatibility-${index + 1}.md`));
   }
-  const publicEntryCount = catalogue.entries.filter(({ lifecycle }) => lifecycle !== "withdrawn").length;
+  const publicEntryCount = catalogue.entries.filter(({ lifecycle }) => !["retired", "withdrawn"].includes(lifecycle)).length;
   for (let page = 2; page <= Math.ceil(publicEntryCount / 24); page += 1) paths.add(`browse/page-${page}/index.html`);
   return [...paths].sort();
 };

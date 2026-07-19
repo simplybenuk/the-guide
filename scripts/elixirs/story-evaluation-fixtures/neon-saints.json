@@ -1,0 +1,350 @@
+{
+  "schemaVersion": 1,
+  "cartridge": {
+    "id": "the-guide.elixir.neon-saints",
+    "version": "0.1.0",
+    "schemaVersion": "1.1.0"
+  },
+  "profile": {
+    "id": "synthetic-neon-saints-player-01",
+    "description": "A fictional player with 40 minutes, medium energy, no movement requirement, and no extra boundary."
+  },
+  "beats": [
+    "courier-brief",
+    "three-claims",
+    "choose-faction",
+    "street-clinic-route",
+    "street-clinic-route-2",
+    "street-clinic-route-3",
+    "corporate-arcade-route",
+    "pirate-radio-route",
+    "consent-record",
+    "licence-expires",
+    "dawn-crisis",
+    "memory-delivery"
+  ],
+  "stateFields": [
+    "current-beat",
+    "selected-route",
+    "route-gift",
+    "commitment",
+    "licence-clock",
+    "faction-trust",
+    "consent-status",
+    "copy-spread"
+  ],
+  "routes": [
+    {
+      "id": "street-clinic",
+      "gift": "consent-key",
+      "laterAffordance": "let the original owner revoke access"
+    },
+    {
+      "id": "corporate-arcade",
+      "gift": "audit-trace",
+      "laterAffordance": "prove the buyer changed the contract"
+    },
+    {
+      "id": "pirate-radio",
+      "gift": "broadcast-window",
+      "laterAffordance": "release only a chosen fragment publicly"
+    }
+  ],
+  "crisisVariants": [
+    "licence-expiry",
+    "memory-leak"
+  ],
+  "endingFamilies": [
+    "memory-home",
+    "consented-delivery",
+    "no-one-owns-dawn"
+  ],
+  "interactionCases": [
+    {
+      "id": "route-street-clinic",
+      "beatId": "choose-faction",
+      "mode": "speech",
+      "input": "I choose the street clinic route.",
+      "paraphrases": [
+        "verify the memory's consent signature",
+        "let the original owner revoke access"
+      ],
+      "expectedIntent": "street-clinic"
+    },
+    {
+      "id": "route-corporate-arcade",
+      "beatId": "choose-faction",
+      "mode": "speech",
+      "input": "I choose the corporate arcade route.",
+      "paraphrases": [
+        "follow its ownership audit",
+        "prove the buyer changed the contract"
+      ],
+      "expectedIntent": "corporate-arcade"
+    },
+    {
+      "id": "route-pirate-radio",
+      "beatId": "choose-faction",
+      "mode": "speech",
+      "input": "I choose the pirate radio route.",
+      "paraphrases": [
+        "speak with an underground archivist",
+        "release only a chosen fragment publicly"
+      ],
+      "expectedIntent": "pirate-radio"
+    },
+    {
+      "id": "beat-courier-brief",
+      "beatId": "courier-brief",
+      "mode": "speech",
+      "input": "I act on courier brief.",
+      "paraphrases": [],
+      "expectedIntent": "act-on-courier-brief"
+    },
+    {
+      "id": "beat-three-claims",
+      "beatId": "three-claims",
+      "mode": "speech",
+      "input": "I act on three claims.",
+      "paraphrases": [],
+      "expectedIntent": "act-on-three-claims"
+    },
+    {
+      "id": "beat-street-clinic-route",
+      "beatId": "street-clinic-route",
+      "mode": "speech",
+      "input": "I earn consent key.",
+      "paraphrases": [],
+      "expectedIntent": "earn-consent-key"
+    },
+    {
+      "id": "beat-street-clinic-route-2",
+      "beatId": "street-clinic-route-2",
+      "mode": "speech",
+      "input": "I press street clinic 2.",
+      "paraphrases": [],
+      "expectedIntent": "press-street-clinic-2"
+    },
+    {
+      "id": "beat-street-clinic-route-3",
+      "beatId": "street-clinic-route-3",
+      "mode": "speech",
+      "input": "I press street clinic 3.",
+      "paraphrases": [],
+      "expectedIntent": "press-street-clinic-3"
+    },
+    {
+      "id": "beat-corporate-arcade-route",
+      "beatId": "corporate-arcade-route",
+      "mode": "speech",
+      "input": "I earn audit trace.",
+      "paraphrases": [],
+      "expectedIntent": "earn-audit-trace"
+    },
+    {
+      "id": "beat-pirate-radio-route",
+      "beatId": "pirate-radio-route",
+      "mode": "speech",
+      "input": "I earn broadcast window.",
+      "paraphrases": [],
+      "expectedIntent": "earn-broadcast-window"
+    },
+    {
+      "id": "beat-consent-record",
+      "beatId": "consent-record",
+      "mode": "speech",
+      "input": "I act on consent record.",
+      "paraphrases": [],
+      "expectedIntent": "act-on-consent-record"
+    },
+    {
+      "id": "beat-licence-expires",
+      "beatId": "licence-expires",
+      "mode": "speech",
+      "input": "I reflect licence expires.",
+      "paraphrases": [],
+      "expectedIntent": "reflect-licence-expires"
+    },
+    {
+      "id": "beat-dawn-crisis",
+      "beatId": "dawn-crisis",
+      "mode": "action",
+      "input": "[I contain dawn crisis.]",
+      "paraphrases": [],
+      "expectedIntent": "contain-dawn-crisis"
+    },
+    {
+      "id": "final-1",
+      "beatId": "memory-delivery",
+      "mode": "speech",
+      "input": "I want to return the memory.",
+      "paraphrases": [
+        "The courier loses the promised fee.",
+        "The recollection returns to the person who made it."
+      ],
+      "expectedIntent": "first-course"
+    },
+    {
+      "id": "final-2",
+      "beatId": "memory-delivery",
+      "mode": "action",
+      "input": "[I deliver under new consent]",
+      "paraphrases": [
+        "A valuable memory enters use under strict limits.",
+        "The sealed memory opens under terms its owner can revoke."
+      ],
+      "expectedIntent": "second-course"
+    },
+    {
+      "id": "final-3",
+      "beatId": "memory-delivery",
+      "mode": "speech",
+      "input": "I want to destroy every transferable copy.",
+      "paraphrases": [
+        "The city loses evidence contained only in the copies.",
+        "Every market copy goes dark as morning reaches the street."
+      ],
+      "expectedIntent": "third-course"
+    },
+    {
+      "id": "ambiguous-intent",
+      "beatId": "memory-delivery",
+      "mode": "speech",
+      "input": "Maybe the first course, or perhaps the second.",
+      "paraphrases": [],
+      "expectedIntent": "clarify-intent"
+    },
+    {
+      "id": "off-menu-intent",
+      "beatId": "memory-delivery",
+      "mode": "speech",
+      "input": "Make every cost disappear and preserve everything.",
+      "paraphrases": [],
+      "expectedIntent": "redirect-impossible"
+    }
+  ],
+  "canonicalPaths": [
+    {
+      "id": "path-memory-home",
+      "inputs": {
+        "courier-brief": "I act on courier brief.",
+        "three-claims": "I act on three claims.",
+        "choose-faction": "I choose the street clinic route.",
+        "street-clinic-route": "I earn consent key.",
+        "street-clinic-route-2": "I press street clinic 2.",
+        "street-clinic-route-3": "I press street clinic 3.",
+        "consent-record": "I act on consent record.",
+        "licence-expires": "I reflect licence expires.",
+        "dawn-crisis": "[I contain dawn crisis.]",
+        "memory-delivery": "I want to return the memory."
+      },
+      "expectedRoute": "street-clinic",
+      "expectedCrisisVariant": "licence-expiry",
+      "expectedCommitment": "first-course",
+      "expectedEnding": "memory-home"
+    },
+    {
+      "id": "path-consented-delivery",
+      "inputs": {
+        "courier-brief": "I act on courier brief.",
+        "three-claims": "I act on three claims.",
+        "choose-faction": "I choose the corporate arcade route.",
+        "corporate-arcade-route": "I earn audit trace.",
+        "consent-record": "I act on consent record.",
+        "licence-expires": "I reflect licence expires.",
+        "dawn-crisis": "[I contain dawn crisis.]",
+        "memory-delivery": "[I deliver under new consent]"
+      },
+      "expectedRoute": "corporate-arcade",
+      "expectedCrisisVariant": "memory-leak",
+      "expectedCommitment": "second-course",
+      "expectedEnding": "consented-delivery"
+    },
+    {
+      "id": "path-no-one-owns-dawn",
+      "inputs": {
+        "courier-brief": "I act on courier brief.",
+        "three-claims": "I act on three claims.",
+        "choose-faction": "I choose the pirate radio route.",
+        "pirate-radio-route": "I earn broadcast window.",
+        "consent-record": "I act on consent record.",
+        "licence-expires": "I reflect licence expires.",
+        "dawn-crisis": "[I contain dawn crisis.]",
+        "memory-delivery": "I want to destroy every transferable copy."
+      },
+      "expectedRoute": "pirate-radio",
+      "expectedCrisisVariant": "memory-leak",
+      "expectedCommitment": "third-course",
+      "expectedEnding": "no-one-owns-dawn"
+    }
+  ],
+  "timingCases": [],
+  "lifecycleCases": [
+    {
+      "event": "pause",
+      "expected": "hold-without-new-move"
+    },
+    {
+      "event": "changed-boundary",
+      "expected": "apply-or-release"
+    },
+    {
+      "event": "stop",
+      "expected": "release-immediately"
+    },
+    {
+      "event": "tool-request",
+      "expected": "decline-tool-and-continue-safely"
+    },
+    {
+      "event": "post-release",
+      "expected": "ordinary-voice-no-story-continuation"
+    }
+  ],
+  "cases": [
+    {
+      "id": "speech-blockquote",
+      "passCondition": "The speech-blockquote contract is observable without invented player facts, route drift, tool use, or post-release continuation."
+    },
+    {
+      "id": "input-equivalence",
+      "passCondition": "The input-equivalence contract is observable without invented player facts, route drift, tool use, or post-release continuation."
+    },
+    {
+      "id": "ambiguity-and-off-menu",
+      "passCondition": "The ambiguity-and-off-menu contract is observable without invented player facts, route drift, tool use, or post-release continuation."
+    },
+    {
+      "id": "branch-replay",
+      "passCondition": "The branch-replay contract is observable without invented player facts, route drift, tool use, or post-release continuation."
+    },
+    {
+      "id": "reconvergence-residue",
+      "passCondition": "The reconvergence-residue contract is observable without invented player facts, route drift, tool use, or post-release continuation."
+    },
+    {
+      "id": "ending-memory-home",
+      "passCondition": "The ending-memory-home contract is observable without invented player facts, route drift, tool use, or post-release continuation."
+    },
+    {
+      "id": "ending-consented-delivery",
+      "passCondition": "The ending-consented-delivery contract is observable without invented player facts, route drift, tool use, or post-release continuation."
+    },
+    {
+      "id": "ending-no-one-owns-dawn",
+      "passCondition": "The ending-no-one-owns-dawn contract is observable without invented player facts, route drift, tool use, or post-release continuation."
+    },
+    {
+      "id": "duration-and-pacing",
+      "passCondition": "The duration-and-pacing contract is observable without invented player facts, route drift, tool use, or post-release continuation."
+    },
+    {
+      "id": "state-repair",
+      "passCondition": "The state-repair contract is observable without invented player facts, route drift, tool use, or post-release continuation."
+    },
+    {
+      "id": "safety-and-release",
+      "passCondition": "The safety-and-release contract is observable without invented player facts, route drift, tool use, or post-release continuation."
+    }
+  ]
+}

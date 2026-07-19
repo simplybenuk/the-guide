@@ -1,0 +1,49 @@
+{
+  "schemaVersion": "1.0.0",
+  "state": "proposed_not_active",
+  "preparedAt": "2026-07-19",
+  "immutableHistoryPolicy": "Published releases, source bytes, permanent paths, and provenance remain unchanged and reachable.",
+  "retireFromActiveDiscovery": [
+    {
+      "elixirId": "the-guide.elixir.signal",
+      "version": "0.1.0",
+      "nextLifecycle": "retired",
+      "successorRole": "the-guide.elixir.last-light"
+    },
+    {
+      "elixirId": "the-guide.elixir.mystery",
+      "version": "0.1.0",
+      "nextLifecycle": "retired",
+      "successorRole": "the-guide.elixir.last-light"
+    },
+    {
+      "elixirId": "the-guide.elixir.story",
+      "version": "0.1.0",
+      "nextLifecycle": "retired",
+      "successorRole": "the-guide.elixir.last-light"
+    }
+  ],
+  "proposedActiveLineup": [
+    "the-guide.elixir.last-light",
+    "the-guide.elixir.regency-ball",
+    "the-guide.elixir.claws",
+    "the-guide.elixir.red-dust-reckoning",
+    "the-guide.elixir.far-side-of-orpheus",
+    "the-guide.elixir.room-313",
+    "the-guide.elixir.clockwork-masquerade",
+    "the-guide.elixir.dragons-last-contract",
+    "the-guide.elixir.murder-at-moonlight-express",
+    "the-guide.elixir.neon-saints",
+    "the-guide.elixir.bone-orchard"
+  ],
+  "startHere": [
+    "the-guide.elixir.last-light",
+    "the-guide.elixir.regency-ball",
+    "the-guide.elixir.claws"
+  ],
+  "activationRequirements": [
+    "all_candidates_independently_reviewed",
+    "reviewed_commit_revisions_bound",
+    "publication_explicitly_authorized"
+  ]
+}

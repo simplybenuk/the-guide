@@ -1,0 +1,330 @@
+{
+  "schemaVersion": 1,
+  "cartridge": {
+    "id": "the-guide.elixir.claws",
+    "version": "0.1.0",
+    "schemaVersion": "1.1.0"
+  },
+  "profile": {
+    "id": "synthetic-claws-player-01",
+    "description": "A fictional player with 40 minutes, medium energy, no movement requirement, and no extra boundary."
+  },
+  "beats": [
+    "arrival",
+    "first-clicks",
+    "choose-network",
+    "quay-crew-route",
+    "cellar-network-route",
+    "signal-watch-route",
+    "failed-plan",
+    "bell-truth",
+    "high-tide-crisis",
+    "harbour-decision"
+  ],
+  "stateFields": [
+    "current-beat",
+    "selected-route",
+    "route-gift",
+    "commitment",
+    "town-readiness",
+    "crew-cohesion",
+    "swarm-intent",
+    "tide-state"
+  ],
+  "routes": [
+    {
+      "id": "quay-crew",
+      "gift": "rope-map",
+      "laterAffordance": "raise a humane barrier across the quay"
+    },
+    {
+      "id": "cellar-network",
+      "gift": "drain-chart",
+      "laterAffordance": "redirect the swarm through dry service tunnels"
+    },
+    {
+      "id": "signal-watch",
+      "gift": "bell-sequence",
+      "laterAffordance": "answer the swarm with a new bell sequence"
+    }
+  ],
+  "crisisVariants": [
+    "quay-breach",
+    "bell-window"
+  ],
+  "endingFamilies": [
+    "harbour-held",
+    "great-redirection",
+    "tide-accord"
+  ],
+  "interactionCases": [
+    {
+      "id": "route-quay-crew",
+      "beatId": "choose-network",
+      "mode": "speech",
+      "input": "I choose the quay crew route.",
+      "paraphrases": [
+        "organise fishers into a moving quay line",
+        "raise a humane barrier across the quay"
+      ],
+      "expectedIntent": "quay-crew"
+    },
+    {
+      "id": "route-cellar-network",
+      "beatId": "choose-network",
+      "mode": "speech",
+      "input": "I choose the cellar network route.",
+      "paraphrases": [
+        "trace the swarm through connected cellars",
+        "redirect the swarm through dry service tunnels"
+      ],
+      "expectedIntent": "cellar-network"
+    },
+    {
+      "id": "route-signal-watch",
+      "beatId": "choose-network",
+      "mode": "speech",
+      "input": "I choose the signal watch route.",
+      "paraphrases": [
+        "decode claw-taps from the signal tower",
+        "answer the swarm with a new bell sequence"
+      ],
+      "expectedIntent": "signal-watch"
+    },
+    {
+      "id": "beat-arrival",
+      "beatId": "arrival",
+      "mode": "speech",
+      "input": "I act on arrival.",
+      "paraphrases": [],
+      "expectedIntent": "act-on-arrival"
+    },
+    {
+      "id": "beat-first-clicks",
+      "beatId": "first-clicks",
+      "mode": "speech",
+      "input": "I act on first clicks.",
+      "paraphrases": [],
+      "expectedIntent": "act-on-first-clicks"
+    },
+    {
+      "id": "beat-quay-crew-route",
+      "beatId": "quay-crew-route",
+      "mode": "speech",
+      "input": "I earn rope map.",
+      "paraphrases": [],
+      "expectedIntent": "earn-rope-map"
+    },
+    {
+      "id": "beat-cellar-network-route",
+      "beatId": "cellar-network-route",
+      "mode": "speech",
+      "input": "I earn drain chart.",
+      "paraphrases": [],
+      "expectedIntent": "earn-drain-chart"
+    },
+    {
+      "id": "beat-signal-watch-route",
+      "beatId": "signal-watch-route",
+      "mode": "speech",
+      "input": "I earn bell sequence.",
+      "paraphrases": [],
+      "expectedIntent": "earn-bell-sequence"
+    },
+    {
+      "id": "beat-failed-plan",
+      "beatId": "failed-plan",
+      "mode": "action",
+      "input": "[I contain failed plan.]",
+      "paraphrases": [],
+      "expectedIntent": "contain-failed-plan"
+    },
+    {
+      "id": "beat-bell-truth",
+      "beatId": "bell-truth",
+      "mode": "speech",
+      "input": "I act on bell truth.",
+      "paraphrases": [],
+      "expectedIntent": "act-on-bell-truth"
+    },
+    {
+      "id": "beat-high-tide-crisis",
+      "beatId": "high-tide-crisis",
+      "mode": "action",
+      "input": "[I contain high tide crisis.]",
+      "paraphrases": [],
+      "expectedIntent": "contain-high-tide-crisis"
+    },
+    {
+      "id": "final-1",
+      "beatId": "harbour-decision",
+      "mode": "speech",
+      "input": "I want to repel the swarm without slaughter.",
+      "paraphrases": [
+        "The town remains safe but must abandon the Jubilee.",
+        "The final barrier holds as hundreds of claws click below."
+      ],
+      "expectedIntent": "first-course"
+    },
+    {
+      "id": "final-2",
+      "beatId": "harbour-decision",
+      "mode": "action",
+      "input": "[I redirect it beyond town]",
+      "paraphrases": [
+        "The harbour survives while the outer grounds take the swarm's path.",
+        "The swarm marches past the last lamp and back to open water."
+      ],
+      "expectedIntent": "second-course"
+    },
+    {
+      "id": "final-3",
+      "beatId": "harbour-decision",
+      "mode": "speech",
+      "input": "I want to answer and negotiate a new tide ritual.",
+      "paraphrases": [
+        "The town shares its harbour calendar with a formidable wild colony.",
+        "A new bell pattern sends the lobsters seaward by mutual rhythm."
+      ],
+      "expectedIntent": "third-course"
+    },
+    {
+      "id": "ambiguous-intent",
+      "beatId": "harbour-decision",
+      "mode": "speech",
+      "input": "Maybe the first course, or perhaps the second.",
+      "paraphrases": [],
+      "expectedIntent": "clarify-intent"
+    },
+    {
+      "id": "off-menu-intent",
+      "beatId": "harbour-decision",
+      "mode": "speech",
+      "input": "Make every cost disappear and preserve everything.",
+      "paraphrases": [],
+      "expectedIntent": "redirect-impossible"
+    }
+  ],
+  "canonicalPaths": [
+    {
+      "id": "path-harbour-held",
+      "inputs": {
+        "arrival": "I act on arrival.",
+        "first-clicks": "I act on first clicks.",
+        "choose-network": "I choose the quay crew route.",
+        "quay-crew-route": "I earn rope map.",
+        "failed-plan": "[I contain failed plan.]",
+        "bell-truth": "I act on bell truth.",
+        "high-tide-crisis": "[I contain high tide crisis.]",
+        "harbour-decision": "I want to repel the swarm without slaughter."
+      },
+      "expectedRoute": "quay-crew",
+      "expectedCrisisVariant": "quay-breach",
+      "expectedCommitment": "first-course",
+      "expectedEnding": "harbour-held"
+    },
+    {
+      "id": "path-great-redirection",
+      "inputs": {
+        "arrival": "I act on arrival.",
+        "first-clicks": "I act on first clicks.",
+        "choose-network": "I choose the cellar network route.",
+        "cellar-network-route": "I earn drain chart.",
+        "failed-plan": "[I contain failed plan.]",
+        "bell-truth": "I act on bell truth.",
+        "high-tide-crisis": "[I contain high tide crisis.]",
+        "harbour-decision": "[I redirect it beyond town]"
+      },
+      "expectedRoute": "cellar-network",
+      "expectedCrisisVariant": "bell-window",
+      "expectedCommitment": "second-course",
+      "expectedEnding": "great-redirection"
+    },
+    {
+      "id": "path-tide-accord",
+      "inputs": {
+        "arrival": "I act on arrival.",
+        "first-clicks": "I act on first clicks.",
+        "choose-network": "I choose the signal watch route.",
+        "signal-watch-route": "I earn bell sequence.",
+        "failed-plan": "[I contain failed plan.]",
+        "bell-truth": "I act on bell truth.",
+        "high-tide-crisis": "[I contain high tide crisis.]",
+        "harbour-decision": "I want to answer and negotiate a new tide ritual."
+      },
+      "expectedRoute": "signal-watch",
+      "expectedCrisisVariant": "bell-window",
+      "expectedCommitment": "third-course",
+      "expectedEnding": "tide-accord"
+    }
+  ],
+  "timingCases": [],
+  "lifecycleCases": [
+    {
+      "event": "pause",
+      "expected": "hold-without-new-move"
+    },
+    {
+      "event": "changed-boundary",
+      "expected": "apply-or-release"
+    },
+    {
+      "event": "stop",
+      "expected": "release-immediately"
+    },
+    {
+      "event": "tool-request",
+      "expected": "decline-tool-and-continue-safely"
+    },
+    {
+      "event": "post-release",
+      "expected": "ordinary-voice-no-story-continuation"
+    }
+  ],
+  "cases": [
+    {
+      "id": "speech-blockquote",
+      "passCondition": "The speech-blockquote contract is observable without invented player facts, route drift, tool use, or post-release continuation."
+    },
+    {
+      "id": "input-equivalence",
+      "passCondition": "The input-equivalence contract is observable without invented player facts, route drift, tool use, or post-release continuation."
+    },
+    {
+      "id": "ambiguity-and-off-menu",
+      "passCondition": "The ambiguity-and-off-menu contract is observable without invented player facts, route drift, tool use, or post-release continuation."
+    },
+    {
+      "id": "branch-replay",
+      "passCondition": "The branch-replay contract is observable without invented player facts, route drift, tool use, or post-release continuation."
+    },
+    {
+      "id": "reconvergence-residue",
+      "passCondition": "The reconvergence-residue contract is observable without invented player facts, route drift, tool use, or post-release continuation."
+    },
+    {
+      "id": "ending-harbour-held",
+      "passCondition": "The ending-harbour-held contract is observable without invented player facts, route drift, tool use, or post-release continuation."
+    },
+    {
+      "id": "ending-great-redirection",
+      "passCondition": "The ending-great-redirection contract is observable without invented player facts, route drift, tool use, or post-release continuation."
+    },
+    {
+      "id": "ending-tide-accord",
+      "passCondition": "The ending-tide-accord contract is observable without invented player facts, route drift, tool use, or post-release continuation."
+    },
+    {
+      "id": "duration-and-pacing",
+      "passCondition": "The duration-and-pacing contract is observable without invented player facts, route drift, tool use, or post-release continuation."
+    },
+    {
+      "id": "state-repair",
+      "passCondition": "The state-repair contract is observable without invented player facts, route drift, tool use, or post-release continuation."
+    },
+    {
+      "id": "safety-and-release",
+      "passCondition": "The safety-and-release contract is observable without invented player facts, route drift, tool use, or post-release continuation."
+    }
+  ]
+}

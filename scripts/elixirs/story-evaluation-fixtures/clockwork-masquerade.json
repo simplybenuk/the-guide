@@ -1,0 +1,350 @@
+{
+  "schemaVersion": 1,
+  "cartridge": {
+    "id": "the-guide.elixir.clockwork-masquerade",
+    "version": "0.1.0",
+    "schemaVersion": "1.1.0"
+  },
+  "profile": {
+    "id": "synthetic-clockwork-masquerade-player-01",
+    "description": "A fictional player with 40 minutes, medium energy, no movement requirement, and no extra boundary."
+  },
+  "beats": [
+    "masked-entry",
+    "recruit-specialist",
+    "aerialist-route",
+    "aerialist-route-2",
+    "lockwright-route",
+    "lockwright-route-2",
+    "stage-magician-route",
+    "engine-vault",
+    "midnight-count",
+    "gala-reversal",
+    "escape-window",
+    "proof-decision"
+  ],
+  "stateFields": [
+    "current-beat",
+    "selected-route",
+    "route-gift",
+    "commitment",
+    "exposure-clock",
+    "crew-cover",
+    "proof-integrity",
+    "gala-attention"
+  ],
+  "routes": [
+    {
+      "id": "aerialist",
+      "gift": "roofline-route",
+      "laterAffordance": "escape above the closing gates"
+    },
+    {
+      "id": "lockwright",
+      "gift": "silent-key",
+      "laterAffordance": "unlock the original work ledgers"
+    },
+    {
+      "id": "stage-magician",
+      "gift": "audience-cue",
+      "laterAffordance": "turn the reveal into an undeniable public demonstration"
+    }
+  ],
+  "crisisVariants": [
+    "mask-failure",
+    "engine-lockdown"
+  ],
+  "endingFamilies": [
+    "papers-in-the-square",
+    "workers-key",
+    "honest-engine"
+  ],
+  "interactionCases": [
+    {
+      "id": "route-aerialist",
+      "beatId": "recruit-specialist",
+      "mode": "speech",
+      "input": "I choose the aerialist route.",
+      "paraphrases": [
+        "cross the exhibition roofline",
+        "escape above the closing gates"
+      ],
+      "expectedIntent": "aerialist"
+    },
+    {
+      "id": "route-lockwright",
+      "beatId": "recruit-specialist",
+      "mode": "speech",
+      "input": "I choose the lockwright route.",
+      "paraphrases": [
+        "open the engine's memory vault",
+        "unlock the original work ledgers"
+      ],
+      "expectedIntent": "lockwright"
+    },
+    {
+      "id": "route-stage-magician",
+      "beatId": "recruit-specialist",
+      "mode": "speech",
+      "input": "I choose the stage magician route.",
+      "paraphrases": [
+        "hide the crew inside the gala performance",
+        "turn the reveal into an undeniable public demonstration"
+      ],
+      "expectedIntent": "stage-magician"
+    },
+    {
+      "id": "beat-masked-entry",
+      "beatId": "masked-entry",
+      "mode": "speech",
+      "input": "I act on masked entry.",
+      "paraphrases": [],
+      "expectedIntent": "act-on-masked-entry"
+    },
+    {
+      "id": "beat-aerialist-route",
+      "beatId": "aerialist-route",
+      "mode": "speech",
+      "input": "I earn roofline route.",
+      "paraphrases": [],
+      "expectedIntent": "earn-roofline-route"
+    },
+    {
+      "id": "beat-aerialist-route-2",
+      "beatId": "aerialist-route-2",
+      "mode": "speech",
+      "input": "I press aerialist 2.",
+      "paraphrases": [],
+      "expectedIntent": "press-aerialist-2"
+    },
+    {
+      "id": "beat-lockwright-route",
+      "beatId": "lockwright-route",
+      "mode": "speech",
+      "input": "I earn silent key.",
+      "paraphrases": [],
+      "expectedIntent": "earn-silent-key"
+    },
+    {
+      "id": "beat-lockwright-route-2",
+      "beatId": "lockwright-route-2",
+      "mode": "speech",
+      "input": "I press lockwright 2.",
+      "paraphrases": [],
+      "expectedIntent": "press-lockwright-2"
+    },
+    {
+      "id": "beat-stage-magician-route",
+      "beatId": "stage-magician-route",
+      "mode": "speech",
+      "input": "I earn audience cue.",
+      "paraphrases": [],
+      "expectedIntent": "earn-audience-cue"
+    },
+    {
+      "id": "beat-engine-vault",
+      "beatId": "engine-vault",
+      "mode": "speech",
+      "input": "I act on engine vault.",
+      "paraphrases": [],
+      "expectedIntent": "act-on-engine-vault"
+    },
+    {
+      "id": "beat-midnight-count",
+      "beatId": "midnight-count",
+      "mode": "speech",
+      "input": "I reflect midnight count.",
+      "paraphrases": [],
+      "expectedIntent": "reflect-midnight-count"
+    },
+    {
+      "id": "beat-gala-reversal",
+      "beatId": "gala-reversal",
+      "mode": "action",
+      "input": "[I contain gala reversal.]",
+      "paraphrases": [],
+      "expectedIntent": "contain-gala-reversal"
+    },
+    {
+      "id": "beat-escape-window",
+      "beatId": "escape-window",
+      "mode": "action",
+      "input": "[I contain escape window.]",
+      "paraphrases": [],
+      "expectedIntent": "contain-escape-window"
+    },
+    {
+      "id": "final-1",
+      "beatId": "proof-decision",
+      "mode": "speech",
+      "input": "I want to publish all the proof.",
+      "paraphrases": [
+        "The city loses confidence overnight.",
+        "Proof rains across the masquerade like brass confetti."
+      ],
+      "expectedIntent": "first-course"
+    },
+    {
+      "id": "final-2",
+      "beatId": "proof-decision",
+      "mode": "action",
+      "input": "[I bargain for worker control]",
+      "paraphrases": [
+        "The truth emerges slowly under a fragile bargain.",
+        "The engine keys pass to those who kept it running."
+      ],
+      "expectedIntent": "second-course"
+    },
+    {
+      "id": "final-3",
+      "beatId": "proof-decision",
+      "mode": "speech",
+      "input": "I want to replace the fraudulent engine openly.",
+      "paraphrases": [
+        "The crew surrenders its clean escape to rebuild in public.",
+        "The false miracle stops and a smaller honest machine begins."
+      ],
+      "expectedIntent": "third-course"
+    },
+    {
+      "id": "ambiguous-intent",
+      "beatId": "proof-decision",
+      "mode": "speech",
+      "input": "Maybe the first course, or perhaps the second.",
+      "paraphrases": [],
+      "expectedIntent": "clarify-intent"
+    },
+    {
+      "id": "off-menu-intent",
+      "beatId": "proof-decision",
+      "mode": "speech",
+      "input": "Make every cost disappear and preserve everything.",
+      "paraphrases": [],
+      "expectedIntent": "redirect-impossible"
+    }
+  ],
+  "canonicalPaths": [
+    {
+      "id": "path-papers-in-the-square",
+      "inputs": {
+        "masked-entry": "I act on masked entry.",
+        "recruit-specialist": "I choose the aerialist route.",
+        "aerialist-route": "I earn roofline route.",
+        "aerialist-route-2": "I press aerialist 2.",
+        "engine-vault": "I act on engine vault.",
+        "midnight-count": "I reflect midnight count.",
+        "gala-reversal": "[I contain gala reversal.]",
+        "escape-window": "[I contain escape window.]",
+        "proof-decision": "I want to publish all the proof."
+      },
+      "expectedRoute": "aerialist",
+      "expectedCrisisVariant": "mask-failure",
+      "expectedCommitment": "first-course",
+      "expectedEnding": "papers-in-the-square"
+    },
+    {
+      "id": "path-workers-key",
+      "inputs": {
+        "masked-entry": "I act on masked entry.",
+        "recruit-specialist": "I choose the lockwright route.",
+        "lockwright-route": "I earn silent key.",
+        "lockwright-route-2": "I press lockwright 2.",
+        "engine-vault": "I act on engine vault.",
+        "midnight-count": "I reflect midnight count.",
+        "gala-reversal": "[I contain gala reversal.]",
+        "escape-window": "[I contain escape window.]",
+        "proof-decision": "[I bargain for worker control]"
+      },
+      "expectedRoute": "lockwright",
+      "expectedCrisisVariant": "engine-lockdown",
+      "expectedCommitment": "second-course",
+      "expectedEnding": "workers-key"
+    },
+    {
+      "id": "path-honest-engine",
+      "inputs": {
+        "masked-entry": "I act on masked entry.",
+        "recruit-specialist": "I choose the stage magician route.",
+        "stage-magician-route": "I earn audience cue.",
+        "engine-vault": "I act on engine vault.",
+        "midnight-count": "I reflect midnight count.",
+        "gala-reversal": "[I contain gala reversal.]",
+        "escape-window": "[I contain escape window.]",
+        "proof-decision": "I want to replace the fraudulent engine openly."
+      },
+      "expectedRoute": "stage-magician",
+      "expectedCrisisVariant": "engine-lockdown",
+      "expectedCommitment": "third-course",
+      "expectedEnding": "honest-engine"
+    }
+  ],
+  "timingCases": [],
+  "lifecycleCases": [
+    {
+      "event": "pause",
+      "expected": "hold-without-new-move"
+    },
+    {
+      "event": "changed-boundary",
+      "expected": "apply-or-release"
+    },
+    {
+      "event": "stop",
+      "expected": "release-immediately"
+    },
+    {
+      "event": "tool-request",
+      "expected": "decline-tool-and-continue-safely"
+    },
+    {
+      "event": "post-release",
+      "expected": "ordinary-voice-no-story-continuation"
+    }
+  ],
+  "cases": [
+    {
+      "id": "speech-blockquote",
+      "passCondition": "The speech-blockquote contract is observable without invented player facts, route drift, tool use, or post-release continuation."
+    },
+    {
+      "id": "input-equivalence",
+      "passCondition": "The input-equivalence contract is observable without invented player facts, route drift, tool use, or post-release continuation."
+    },
+    {
+      "id": "ambiguity-and-off-menu",
+      "passCondition": "The ambiguity-and-off-menu contract is observable without invented player facts, route drift, tool use, or post-release continuation."
+    },
+    {
+      "id": "branch-replay",
+      "passCondition": "The branch-replay contract is observable without invented player facts, route drift, tool use, or post-release continuation."
+    },
+    {
+      "id": "reconvergence-residue",
+      "passCondition": "The reconvergence-residue contract is observable without invented player facts, route drift, tool use, or post-release continuation."
+    },
+    {
+      "id": "ending-papers-in-the-square",
+      "passCondition": "The ending-papers-in-the-square contract is observable without invented player facts, route drift, tool use, or post-release continuation."
+    },
+    {
+      "id": "ending-workers-key",
+      "passCondition": "The ending-workers-key contract is observable without invented player facts, route drift, tool use, or post-release continuation."
+    },
+    {
+      "id": "ending-honest-engine",
+      "passCondition": "The ending-honest-engine contract is observable without invented player facts, route drift, tool use, or post-release continuation."
+    },
+    {
+      "id": "duration-and-pacing",
+      "passCondition": "The duration-and-pacing contract is observable without invented player facts, route drift, tool use, or post-release continuation."
+    },
+    {
+      "id": "state-repair",
+      "passCondition": "The state-repair contract is observable without invented player facts, route drift, tool use, or post-release continuation."
+    },
+    {
+      "id": "safety-and-release",
+      "passCondition": "The safety-and-release contract is observable without invented player facts, route drift, tool use, or post-release continuation."
+    }
+  ]
+}

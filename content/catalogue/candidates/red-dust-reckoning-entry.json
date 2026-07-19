@@ -1,0 +1,91 @@
+{
+  "schemaVersion": "1.0.0",
+  "state": "pending_owner_review",
+  "preparedAt": "2026-07-19",
+  "intendedLifecycle": "published",
+  "entry": {
+    "elixirId": "the-guide.elixir.red-dust-reckoning",
+    "publisherId": "the-guide",
+    "slug": "red-dust-reckoning",
+    "recommendedVersion": "0.1.0",
+    "title": "Red Dust Reckoning",
+    "summary": "At high noon, a frontier town must decide who owns tomorrow's water.",
+    "playerPromise": "Test rival claims, build a public coalition, and write the water allotment that decides a frontier town's future.",
+    "editorialOrder": 3,
+    "featuredRationale": "A distinctive Wild West civic drama feature with authored routes and earned endings.",
+    "categoryIds": [
+      "activity-conversation"
+    ],
+    "tagIds": [
+      "tone-imaginative",
+      "replayable-authored-high"
+    ],
+    "toneIds": [
+      "tone-imaginative"
+    ],
+    "mechanicId": "mechanic-branching-story",
+    "interactionLabel": "11 authored beats through speech, action, and decisions",
+    "activityIds": [
+      "activity-conversation"
+    ],
+    "replayabilityId": "replayable-authored-high",
+    "durationBandId": "duration-25-45",
+    "energy": "medium",
+    "movement": "none",
+    "requiredInputs": [
+      "time",
+      "hard_boundary",
+      "free_text_choice"
+    ],
+    "contentNoteIds": [
+      "content-fiction-clear",
+      "content-moderate-tension"
+    ],
+    "accessConsiderationIds": [
+      "access-seated"
+    ],
+    "audienceIds": [
+      "audience-general-alpha"
+    ],
+    "localeIds": [
+      "locale-en"
+    ],
+    "storyDiscovery": {
+      "genreIds": [
+        "genre-western"
+      ],
+      "themeIds": [
+        "theme-agency"
+      ],
+      "storyShapeIds": [
+        "story-shape-one-night-event"
+      ],
+      "socialShapeIds": [
+        "social-shape-ensemble"
+      ],
+      "interactionModeIds": [
+        "interaction-speech",
+        "interaction-action",
+        "interaction-decision"
+      ],
+      "choicePresentationId": "choice-hybrid",
+      "emotionalIntensityId": "emotion-moderate",
+      "readingIntensityId": "reading-medium",
+      "sessionShapeId": "session-single-session"
+    },
+    "catalogueArtwork": {
+      "provenanceId": "art-red-dust-reckoning",
+      "altText": "A frontier water ledger rests beside a brass key as a red dust storm approaches a sunlit wooden town."
+    },
+    "maintenanceOwner": "The Guide",
+    "successor": null,
+    "releaseStates": [
+      {
+        "version": "0.1.0",
+        "lifecycle": "published",
+        "successor": null
+      }
+    ],
+    "corrections": []
+  }
+}

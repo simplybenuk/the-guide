@@ -1,0 +1,46 @@
+{
+  "schemaVersion": "1.0.0",
+  "state": "prepared_not_publishable",
+  "preparedAt": "2026-07-19",
+  "release": {
+    "elixirId": "the-guide.elixir.bone-orchard",
+    "publisherId": "the-guide",
+    "slug": "bone-orchard",
+    "version": "0.1.0",
+    "cartridgeSchemaVersion": "1.1.0",
+    "covenantVersion": "1.0.0",
+    "sourcePath": "content/elixirs/bone-orchard.md",
+    "bytes": 47474,
+    "sha256": "aa3d6312c88751da16fe06fb0f8f6048777362a7b71c595d0d8646df142e77ca",
+    "canonicalPath": "cartridges/the-guide/bone-orchard/0.1.0/elixir.md",
+    "legacyPaths": [
+      "cartridges/bone-orchard/0.1.0/elixir.md"
+    ],
+    "artwork": [
+      {
+        "provenanceId": "art-bone-orchard",
+        "path": "site/elixirs/assets/cartridges/bone-orchard.png",
+        "bytes": 2955097,
+        "width": 1536,
+        "height": 1024,
+        "provenanceReference": "content/catalogue/provenance/bone-orchard-artwork.md",
+        "sha256": "f404320920ba04c354d522b28a86eca68ca08fc268c01d1a773c49e86fbcb69d"
+      }
+    ],
+    "rightsReference": "TERMS.md",
+    "reviewReferences": [
+      "docs/specs/authored-story-catalogue-expansion.md",
+      "docs/evaluations/bone-orchard-publication-validation.md"
+    ],
+    "compatibilityReferences": [
+      "docs/evaluations/elixir-harness-matrix.md"
+    ],
+    "statusAtPublication": "experimental"
+  },
+  "supersession": null,
+  "activationRequirements": [
+    "independent_review_passed",
+    "reviewed_commit_revision_bound",
+    "publication_explicitly_authorized"
+  ]
+}

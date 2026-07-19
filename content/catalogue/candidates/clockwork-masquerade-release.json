@@ -1,0 +1,46 @@
+{
+  "schemaVersion": "1.0.0",
+  "state": "prepared_not_publishable",
+  "preparedAt": "2026-07-19",
+  "release": {
+    "elixirId": "the-guide.elixir.clockwork-masquerade",
+    "publisherId": "the-guide",
+    "slug": "clockwork-masquerade",
+    "version": "0.1.0",
+    "cartridgeSchemaVersion": "1.1.0",
+    "covenantVersion": "1.0.0",
+    "sourcePath": "content/elixirs/clockwork-masquerade.md",
+    "bytes": 46945,
+    "sha256": "e85b16ebe9896f34347b1816fc5ed2a06ba323f901d697127d476c776b17679e",
+    "canonicalPath": "cartridges/the-guide/clockwork-masquerade/0.1.0/elixir.md",
+    "legacyPaths": [
+      "cartridges/clockwork-masquerade/0.1.0/elixir.md"
+    ],
+    "artwork": [
+      {
+        "provenanceId": "art-clockwork-masquerade",
+        "path": "site/elixirs/assets/cartridges/clockwork-masquerade.png",
+        "bytes": 2838648,
+        "width": 1536,
+        "height": 1024,
+        "provenanceReference": "content/catalogue/provenance/clockwork-masquerade-artwork.md",
+        "sha256": "9910199919692edb0d1171d307b03a47fc398dcb7cc47dfc2c0075dedfbee4c6"
+      }
+    ],
+    "rightsReference": "TERMS.md",
+    "reviewReferences": [
+      "docs/specs/authored-story-catalogue-expansion.md",
+      "docs/evaluations/clockwork-masquerade-publication-validation.md"
+    ],
+    "compatibilityReferences": [
+      "docs/evaluations/elixir-harness-matrix.md"
+    ],
+    "statusAtPublication": "experimental"
+  },
+  "supersession": null,
+  "activationRequirements": [
+    "independent_review_passed",
+    "reviewed_commit_revision_bound",
+    "publication_explicitly_authorized"
+  ]
+}

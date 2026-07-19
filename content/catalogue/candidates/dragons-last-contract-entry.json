@@ -1,0 +1,91 @@
+{
+  "schemaVersion": "1.0.0",
+  "state": "pending_owner_review",
+  "preparedAt": "2026-07-19",
+  "intendedLifecycle": "published",
+  "entry": {
+    "elixirId": "the-guide.elixir.dragons-last-contract",
+    "publisherId": "the-guide",
+    "slug": "dragons-last-contract",
+    "recommendedVersion": "0.1.0",
+    "title": "The Dragon's Last Contract",
+    "summary": "Every spoken promise has a magical cost at the mountain's final treaty table.",
+    "playerPromise": "Rewrite the last treaty between a dragon and a mountain city before an incomplete legend becomes permanent law.",
+    "editorialOrder": 7,
+    "featuredRationale": "A distinctive high fantasy negotiation feature with authored routes and earned endings.",
+    "categoryIds": [
+      "activity-conversation"
+    ],
+    "tagIds": [
+      "tone-imaginative",
+      "replayable-authored-high"
+    ],
+    "toneIds": [
+      "tone-imaginative"
+    ],
+    "mechanicId": "mechanic-branching-story",
+    "interactionLabel": "12 authored beats through speech, action, and decisions",
+    "activityIds": [
+      "activity-conversation"
+    ],
+    "replayabilityId": "replayable-authored-high",
+    "durationBandId": "duration-25-45",
+    "energy": "medium",
+    "movement": "none",
+    "requiredInputs": [
+      "time",
+      "hard_boundary",
+      "free_text_choice"
+    ],
+    "contentNoteIds": [
+      "content-fiction-clear",
+      "content-moderate-tension"
+    ],
+    "accessConsiderationIds": [
+      "access-seated"
+    ],
+    "audienceIds": [
+      "audience-general-alpha"
+    ],
+    "localeIds": [
+      "locale-en"
+    ],
+    "storyDiscovery": {
+      "genreIds": [
+        "genre-fantasy"
+      ],
+      "themeIds": [
+        "theme-agency"
+      ],
+      "storyShapeIds": [
+        "story-shape-one-night-event"
+      ],
+      "socialShapeIds": [
+        "social-shape-ensemble"
+      ],
+      "interactionModeIds": [
+        "interaction-speech",
+        "interaction-action",
+        "interaction-decision"
+      ],
+      "choicePresentationId": "choice-hybrid",
+      "emotionalIntensityId": "emotion-moderate",
+      "readingIntensityId": "reading-medium",
+      "sessionShapeId": "session-single-session"
+    },
+    "catalogueArtwork": {
+      "provenanceId": "art-dragons-last-contract",
+      "altText": "An ageing dragon and a mountain delegation face a glowing contract across a stone treaty table."
+    },
+    "maintenanceOwner": "The Guide",
+    "successor": null,
+    "releaseStates": [
+      {
+        "version": "0.1.0",
+        "lifecycle": "published",
+        "successor": null
+      }
+    ],
+    "corrections": []
+  }
+}

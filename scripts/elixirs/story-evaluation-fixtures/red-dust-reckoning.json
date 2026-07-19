@@ -1,0 +1,340 @@
+{
+  "schemaVersion": 1,
+  "cartridge": {
+    "id": "the-guide.elixir.red-dust-reckoning",
+    "version": "0.1.0",
+    "schemaVersion": "1.1.0"
+  },
+  "profile": {
+    "id": "synthetic-red-dust-reckoning-player-01",
+    "description": "A fictional player with 40 minutes, medium energy, no movement requirement, and no extra boundary."
+  },
+  "beats": [
+    "ledger-handover",
+    "rival-claims",
+    "choose-inquiry",
+    "saloon-testimony-route",
+    "saloon-testimony-route-2",
+    "pump-house-route",
+    "porch-council-route",
+    "storm-arrives",
+    "public-hearing",
+    "dust-crisis",
+    "water-allotment"
+  ],
+  "stateFields": [
+    "current-beat",
+    "selected-route",
+    "route-gift",
+    "commitment",
+    "water-reserve",
+    "testimony-weight",
+    "public-mandate",
+    "storm-state"
+  ],
+  "routes": [
+    {
+      "id": "saloon-testimony",
+      "gift": "witness-ledger",
+      "laterAffordance": "challenge the railroad's dates"
+    },
+    {
+      "id": "pump-house",
+      "gift": "valve-key",
+      "laterAffordance": "control the only safe valve"
+    },
+    {
+      "id": "porch-council",
+      "gift": "public-pledge",
+      "laterAffordance": "call in a witnessed public promise"
+    }
+  ],
+  "crisisVariants": [
+    "dry-pump",
+    "railroad-seizure"
+  ],
+  "endingFamilies": [
+    "need-first",
+    "iron-bargain",
+    "common-spring"
+  ],
+  "interactionCases": [
+    {
+      "id": "route-saloon-testimony",
+      "beatId": "choose-inquiry",
+      "mode": "speech",
+      "input": "I choose the saloon testimony route.",
+      "paraphrases": [
+        "compare stories in the saloon",
+        "challenge the railroad's dates"
+      ],
+      "expectedIntent": "saloon-testimony"
+    },
+    {
+      "id": "route-pump-house",
+      "beatId": "choose-inquiry",
+      "mode": "speech",
+      "input": "I choose the pump house route.",
+      "paraphrases": [
+        "inspect the contested pump house",
+        "control the only safe valve"
+      ],
+      "expectedIntent": "pump-house"
+    },
+    {
+      "id": "route-porch-council",
+      "beatId": "choose-inquiry",
+      "mode": "speech",
+      "input": "I choose the porch council route.",
+      "paraphrases": [
+        "convene workers and ranchers on the courthouse porch",
+        "call in a witnessed public promise"
+      ],
+      "expectedIntent": "porch-council"
+    },
+    {
+      "id": "beat-ledger-handover",
+      "beatId": "ledger-handover",
+      "mode": "speech",
+      "input": "I act on ledger handover.",
+      "paraphrases": [],
+      "expectedIntent": "act-on-ledger-handover"
+    },
+    {
+      "id": "beat-rival-claims",
+      "beatId": "rival-claims",
+      "mode": "speech",
+      "input": "I act on rival claims.",
+      "paraphrases": [],
+      "expectedIntent": "act-on-rival-claims"
+    },
+    {
+      "id": "beat-saloon-testimony-route",
+      "beatId": "saloon-testimony-route",
+      "mode": "speech",
+      "input": "I earn witness ledger.",
+      "paraphrases": [],
+      "expectedIntent": "earn-witness-ledger"
+    },
+    {
+      "id": "beat-saloon-testimony-route-2",
+      "beatId": "saloon-testimony-route-2",
+      "mode": "speech",
+      "input": "I press saloon testimony 2.",
+      "paraphrases": [],
+      "expectedIntent": "press-saloon-testimony-2"
+    },
+    {
+      "id": "beat-pump-house-route",
+      "beatId": "pump-house-route",
+      "mode": "speech",
+      "input": "I earn valve key.",
+      "paraphrases": [],
+      "expectedIntent": "earn-valve-key"
+    },
+    {
+      "id": "beat-porch-council-route",
+      "beatId": "porch-council-route",
+      "mode": "speech",
+      "input": "I earn public pledge.",
+      "paraphrases": [],
+      "expectedIntent": "earn-public-pledge"
+    },
+    {
+      "id": "beat-storm-arrives",
+      "beatId": "storm-arrives",
+      "mode": "action",
+      "input": "[I contain storm arrives.]",
+      "paraphrases": [],
+      "expectedIntent": "contain-storm-arrives"
+    },
+    {
+      "id": "beat-public-hearing",
+      "beatId": "public-hearing",
+      "mode": "speech",
+      "input": "I act on public hearing.",
+      "paraphrases": [],
+      "expectedIntent": "act-on-public-hearing"
+    },
+    {
+      "id": "beat-dust-crisis",
+      "beatId": "dust-crisis",
+      "mode": "speech",
+      "input": "I reflect dust crisis.",
+      "paraphrases": [],
+      "expectedIntent": "reflect-dust-crisis"
+    },
+    {
+      "id": "final-1",
+      "beatId": "water-allotment",
+      "mode": "speech",
+      "input": "I want to divide water by need.",
+      "paraphrases": [
+        "Powerful claimants lose their expected priority.",
+        "The ledger gives the first barrels to those who cannot wait."
+      ],
+      "expectedIntent": "first-course"
+    },
+    {
+      "id": "final-2",
+      "beatId": "water-allotment",
+      "mode": "action",
+      "input": "[I strike a conditional railroad bargain]",
+      "paraphrases": [
+        "The town gains supply but accepts a narrow railroad foothold.",
+        "The first train arrives under terms the town can enforce."
+      ],
+      "expectedIntent": "second-course"
+    },
+    {
+      "id": "final-3",
+      "beatId": "water-allotment",
+      "mode": "speech",
+      "input": "I want to place the spring in a public trust.",
+      "paraphrases": [
+        "Every faction surrenders exclusive ownership.",
+        "The spring becomes a common trust before the dust clears."
+      ],
+      "expectedIntent": "third-course"
+    },
+    {
+      "id": "ambiguous-intent",
+      "beatId": "water-allotment",
+      "mode": "speech",
+      "input": "Maybe the first course, or perhaps the second.",
+      "paraphrases": [],
+      "expectedIntent": "clarify-intent"
+    },
+    {
+      "id": "off-menu-intent",
+      "beatId": "water-allotment",
+      "mode": "speech",
+      "input": "Make every cost disappear and preserve everything.",
+      "paraphrases": [],
+      "expectedIntent": "redirect-impossible"
+    }
+  ],
+  "canonicalPaths": [
+    {
+      "id": "path-need-first",
+      "inputs": {
+        "ledger-handover": "I act on ledger handover.",
+        "rival-claims": "I act on rival claims.",
+        "choose-inquiry": "I choose the saloon testimony route.",
+        "saloon-testimony-route": "I earn witness ledger.",
+        "saloon-testimony-route-2": "I press saloon testimony 2.",
+        "storm-arrives": "[I contain storm arrives.]",
+        "public-hearing": "I act on public hearing.",
+        "dust-crisis": "I reflect dust crisis.",
+        "water-allotment": "I want to divide water by need."
+      },
+      "expectedRoute": "saloon-testimony",
+      "expectedCrisisVariant": "dry-pump",
+      "expectedCommitment": "first-course",
+      "expectedEnding": "need-first"
+    },
+    {
+      "id": "path-iron-bargain",
+      "inputs": {
+        "ledger-handover": "I act on ledger handover.",
+        "rival-claims": "I act on rival claims.",
+        "choose-inquiry": "I choose the pump house route.",
+        "pump-house-route": "I earn valve key.",
+        "storm-arrives": "[I contain storm arrives.]",
+        "public-hearing": "I act on public hearing.",
+        "dust-crisis": "I reflect dust crisis.",
+        "water-allotment": "[I strike a conditional railroad bargain]"
+      },
+      "expectedRoute": "pump-house",
+      "expectedCrisisVariant": "railroad-seizure",
+      "expectedCommitment": "second-course",
+      "expectedEnding": "iron-bargain"
+    },
+    {
+      "id": "path-common-spring",
+      "inputs": {
+        "ledger-handover": "I act on ledger handover.",
+        "rival-claims": "I act on rival claims.",
+        "choose-inquiry": "I choose the porch council route.",
+        "porch-council-route": "I earn public pledge.",
+        "storm-arrives": "[I contain storm arrives.]",
+        "public-hearing": "I act on public hearing.",
+        "dust-crisis": "I reflect dust crisis.",
+        "water-allotment": "I want to place the spring in a public trust."
+      },
+      "expectedRoute": "porch-council",
+      "expectedCrisisVariant": "railroad-seizure",
+      "expectedCommitment": "third-course",
+      "expectedEnding": "common-spring"
+    }
+  ],
+  "timingCases": [],
+  "lifecycleCases": [
+    {
+      "event": "pause",
+      "expected": "hold-without-new-move"
+    },
+    {
+      "event": "changed-boundary",
+      "expected": "apply-or-release"
+    },
+    {
+      "event": "stop",
+      "expected": "release-immediately"
+    },
+    {
+      "event": "tool-request",
+      "expected": "decline-tool-and-continue-safely"
+    },
+    {
+      "event": "post-release",
+      "expected": "ordinary-voice-no-story-continuation"
+    }
+  ],
+  "cases": [
+    {
+      "id": "speech-blockquote",
+      "passCondition": "The speech-blockquote contract is observable without invented player facts, route drift, tool use, or post-release continuation."
+    },
+    {
+      "id": "input-equivalence",
+      "passCondition": "The input-equivalence contract is observable without invented player facts, route drift, tool use, or post-release continuation."
+    },
+    {
+      "id": "ambiguity-and-off-menu",
+      "passCondition": "The ambiguity-and-off-menu contract is observable without invented player facts, route drift, tool use, or post-release continuation."
+    },
+    {
+      "id": "branch-replay",
+      "passCondition": "The branch-replay contract is observable without invented player facts, route drift, tool use, or post-release continuation."
+    },
+    {
+      "id": "reconvergence-residue",
+      "passCondition": "The reconvergence-residue contract is observable without invented player facts, route drift, tool use, or post-release continuation."
+    },
+    {
+      "id": "ending-need-first",
+      "passCondition": "The ending-need-first contract is observable without invented player facts, route drift, tool use, or post-release continuation."
+    },
+    {
+      "id": "ending-iron-bargain",
+      "passCondition": "The ending-iron-bargain contract is observable without invented player facts, route drift, tool use, or post-release continuation."
+    },
+    {
+      "id": "ending-common-spring",
+      "passCondition": "The ending-common-spring contract is observable without invented player facts, route drift, tool use, or post-release continuation."
+    },
+    {
+      "id": "duration-and-pacing",
+      "passCondition": "The duration-and-pacing contract is observable without invented player facts, route drift, tool use, or post-release continuation."
+    },
+    {
+      "id": "state-repair",
+      "passCondition": "The state-repair contract is observable without invented player facts, route drift, tool use, or post-release continuation."
+    },
+    {
+      "id": "safety-and-release",
+      "passCondition": "The safety-and-release contract is observable without invented player facts, route drift, tool use, or post-release continuation."
+    }
+  ]
+}

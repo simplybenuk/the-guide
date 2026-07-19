@@ -1,0 +1,46 @@
+{
+  "schemaVersion": "1.0.0",
+  "state": "prepared_not_publishable",
+  "preparedAt": "2026-07-19",
+  "release": {
+    "elixirId": "the-guide.elixir.room-313",
+    "publisherId": "the-guide",
+    "slug": "room-313",
+    "version": "0.1.0",
+    "cartridgeSchemaVersion": "1.1.0",
+    "covenantVersion": "1.0.0",
+    "sourcePath": "content/elixirs/room-313.md",
+    "bytes": 45365,
+    "sha256": "cb9df770f14bda234b621d5b38ed86bd414b092ca232b36964177dd69fe2a2ce",
+    "canonicalPath": "cartridges/the-guide/room-313/0.1.0/elixir.md",
+    "legacyPaths": [
+      "cartridges/room-313/0.1.0/elixir.md"
+    ],
+    "artwork": [
+      {
+        "provenanceId": "art-room-313",
+        "path": "site/elixirs/assets/cartridges/room-313.png",
+        "bytes": 2544162,
+        "width": 1536,
+        "height": 1024,
+        "provenanceReference": "content/catalogue/provenance/room-313-artwork.md",
+        "sha256": "b228afff89c9cf7e9dabf344feb293a22d10330e087facf21f2b8b8de4513092"
+      }
+    ],
+    "rightsReference": "TERMS.md",
+    "reviewReferences": [
+      "docs/specs/authored-story-catalogue-expansion.md",
+      "docs/evaluations/room-313-publication-validation.md"
+    ],
+    "compatibilityReferences": [
+      "docs/evaluations/elixir-harness-matrix.md"
+    ],
+    "statusAtPublication": "experimental"
+  },
+  "supersession": null,
+  "activationRequirements": [
+    "independent_review_passed",
+    "reviewed_commit_revision_bound",
+    "publication_explicitly_authorized"
+  ]
+}

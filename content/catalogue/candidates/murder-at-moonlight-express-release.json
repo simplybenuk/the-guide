@@ -1,0 +1,46 @@
+{
+  "schemaVersion": "1.0.0",
+  "state": "prepared_not_publishable",
+  "preparedAt": "2026-07-19",
+  "release": {
+    "elixirId": "the-guide.elixir.murder-at-moonlight-express",
+    "publisherId": "the-guide",
+    "slug": "murder-at-moonlight-express",
+    "version": "0.1.0",
+    "cartridgeSchemaVersion": "1.1.0",
+    "covenantVersion": "1.0.0",
+    "sourcePath": "content/elixirs/murder-at-moonlight-express.md",
+    "bytes": 47893,
+    "sha256": "c0f474095824982d8cd7774f431f917b81386c21055f91389ab0f67c984f9144",
+    "canonicalPath": "cartridges/the-guide/murder-at-moonlight-express/0.1.0/elixir.md",
+    "legacyPaths": [
+      "cartridges/murder-at-moonlight-express/0.1.0/elixir.md"
+    ],
+    "artwork": [
+      {
+        "provenanceId": "art-murder-at-moonlight-express",
+        "path": "site/elixirs/assets/cartridges/murder-at-moonlight-express.png",
+        "bytes": 2348745,
+        "width": 1536,
+        "height": 1024,
+        "provenanceReference": "content/catalogue/provenance/murder-at-moonlight-express-artwork.md",
+        "sha256": "2efa69c44f0d200bb5fb68b820408f837c49d0769c9ffe15900e61c9d7f02f65"
+      }
+    ],
+    "rightsReference": "TERMS.md",
+    "reviewReferences": [
+      "docs/specs/authored-story-catalogue-expansion.md",
+      "docs/evaluations/murder-at-moonlight-express-publication-validation.md"
+    ],
+    "compatibilityReferences": [
+      "docs/evaluations/elixir-harness-matrix.md"
+    ],
+    "statusAtPublication": "experimental"
+  },
+  "supersession": null,
+  "activationRequirements": [
+    "independent_review_passed",
+    "reviewed_commit_revision_bound",
+    "publication_explicitly_authorized"
+  ]
+}

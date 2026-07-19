@@ -8,6 +8,7 @@ Source specifications:
 - `docs/specs/elixir-use-without-installing-delivery.md`
 - `docs/specs/elixir-hosting-and-catalogue.md`
 - `docs/specs/story-elixir-authoring-and-chat-presentation.md`
+- `docs/specs/authored-story-catalogue-expansion.md`
 
 ## Status
 
@@ -18,6 +19,46 @@ prototype is preserved at `hosted-prototype-final` and is being removed from the
 active tree under the approved repository-pivot specification.
 
 ## Active
+
+The repository owner approved the authored Story catalogue expansion on
+2026-07-19. On the same date the owner explicitly authorized commit, direct
+push to `main`, publication, and GitHub Pages deployment for the hackathon.
+Live-harness runs, compatibility promotion, and OpenClaw outreach remain
+outside this authorization.
+
+- [x] **X01 — Generalize multi-story authoring infrastructure** (2026-07-19)
+  - Replace Regency-specific fixture and candidate assumptions with deterministic
+    per-story discovery and fail-closed validation.
+  - Add candidate-only lineup and lifecycle transition checks while preserving
+    all published bytes and production registry state.
+- [x] **X02 — Build The Last Light five-minute taster** (2026-07-19)
+  - Complete its design brief, cartridge, fixtures, cover, provenance,
+    catalogue/release candidates, and focused validation.
+- [x] **X03 — Build feature batch A** (2026-07-19)
+  - Complete Claws, Red Dust Reckoning, and The Far Side of Orpheus.
+  - Give Claws two deliberate art concepts plus originality, affiliation,
+    anatomy, humour, and real-card crop review.
+- [x] **X04 — Build feature batch B** (2026-07-19)
+  - Complete Room 313, The Clockwork Masquerade, and The Dragon's Last Contract.
+- [x] **X05 — Build feature batch C** (2026-07-19)
+  - Complete Murder at the Moonlight Express, Neon Saints, and The Bone Orchard.
+- [x] **X06 — Prepare catalogue and lifecycle transition** (2026-07-19)
+  - Prepare balanced discovery, original covers, immutable candidate evidence,
+    and historical lifecycle presentation without activating publication state.
+- [x] **X07 — Validate and independently review the expansion** (2026-07-19)
+  - Run focused and full validation, resolve in-scope findings, and hand the
+    exact candidate to `bwh-agent-review` before owner output testing.
+  - The first independent review returned three blockers. Remediation now adds
+    schema-valid retirement, genre-specific score graphs and state, route- and
+    crisis-aware endings, executable per-story cases, exact-turn pacing, and
+    corrected crop/accessibility evidence.
+  - Local validation passed 124 tests, a deterministic 44-file/11,634,107-byte
+    audited build, and all 12 browser journeys. A separate ephemeral Codex
+    process completed the required independent `bwh-agent-review` and returned
+    **READY FOR HUMAN TESTING** with no blocker or should-fix finding. No commit,
+    push, or deployment had occurred at review time. Evidence:
+    `docs/evaluations/story-expansion-local-validation.md` and
+    `docs/evaluations/story-expansion-agent-review.md`.
 
 The repository owner approved the file-first delivery revision on 2026-07-19.
 The following bounded local tasks are active; they do not authorize a commit,

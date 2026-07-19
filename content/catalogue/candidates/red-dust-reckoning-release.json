@@ -1,0 +1,46 @@
+{
+  "schemaVersion": "1.0.0",
+  "state": "prepared_not_publishable",
+  "preparedAt": "2026-07-19",
+  "release": {
+    "elixirId": "the-guide.elixir.red-dust-reckoning",
+    "publisherId": "the-guide",
+    "slug": "red-dust-reckoning",
+    "version": "0.1.0",
+    "cartridgeSchemaVersion": "1.1.0",
+    "covenantVersion": "1.0.0",
+    "sourcePath": "content/elixirs/red-dust-reckoning.md",
+    "bytes": 45859,
+    "sha256": "e980d0ba6ab01bdf4c3a858cb6e84f5da3fb6ca943267c1480e3b009f504c68f",
+    "canonicalPath": "cartridges/the-guide/red-dust-reckoning/0.1.0/elixir.md",
+    "legacyPaths": [
+      "cartridges/red-dust-reckoning/0.1.0/elixir.md"
+    ],
+    "artwork": [
+      {
+        "provenanceId": "art-red-dust-reckoning",
+        "path": "site/elixirs/assets/cartridges/red-dust-reckoning.png",
+        "bytes": 2686542,
+        "width": 1536,
+        "height": 1024,
+        "provenanceReference": "content/catalogue/provenance/red-dust-reckoning-artwork.md",
+        "sha256": "823c34410970382b597a91a72b48a1394d6cde01902aecd79286b7defc8fb8db"
+      }
+    ],
+    "rightsReference": "TERMS.md",
+    "reviewReferences": [
+      "docs/specs/authored-story-catalogue-expansion.md",
+      "docs/evaluations/red-dust-reckoning-publication-validation.md"
+    ],
+    "compatibilityReferences": [
+      "docs/evaluations/elixir-harness-matrix.md"
+    ],
+    "statusAtPublication": "experimental"
+  },
+  "supersession": null,
+  "activationRequirements": [
+    "independent_review_passed",
+    "reviewed_commit_revision_bound",
+    "publication_explicitly_authorized"
+  ]
+}

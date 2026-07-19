@@ -1,0 +1,350 @@
+{
+  "schemaVersion": 1,
+  "cartridge": {
+    "id": "the-guide.elixir.murder-at-moonlight-express",
+    "version": "0.1.0",
+    "schemaVersion": "1.1.0"
+  },
+  "profile": {
+    "id": "synthetic-murder-at-moonlight-express-player-01",
+    "description": "A fictional player with 45 minutes, medium energy, no movement requirement, and no extra boundary."
+  },
+  "beats": [
+    "train-stops",
+    "locked-room",
+    "suspect-round",
+    "choose-investigation",
+    "baggage-car-route",
+    "dining-salon-route",
+    "dining-salon-route-2",
+    "roof-mechanism-route",
+    "roof-mechanism-route-2",
+    "reconstruction",
+    "second-crime",
+    "truth-at-daybreak"
+  ],
+  "stateFields": [
+    "current-beat",
+    "selected-route",
+    "route-gift",
+    "commitment",
+    "clue-integrity",
+    "witness-credibility",
+    "case-theory",
+    "escape-window"
+  ],
+  "routes": [
+    {
+      "id": "baggage-car",
+      "gift": "false-trunk",
+      "laterAffordance": "prove how a body-sized shape moved"
+    },
+    {
+      "id": "dining-salon",
+      "gift": "timed-alibi",
+      "laterAffordance": "break the conspiracy's shared timeline"
+    },
+    {
+      "id": "roof-mechanism",
+      "gift": "wire-mark",
+      "laterAffordance": "demonstrate the locked-room method"
+    }
+  ],
+  "crisisVariants": [
+    "evidence-tampered",
+    "second-crime"
+  ],
+  "endingFamilies": [
+    "full-reconstruction",
+    "separated-truths",
+    "last-private-act"
+  ],
+  "interactionCases": [
+    {
+      "id": "route-baggage-car",
+      "beatId": "choose-investigation",
+      "mode": "speech",
+      "input": "I choose the baggage car route.",
+      "paraphrases": [
+        "inspect the illusionist's touring trunks",
+        "prove how a body-sized shape moved"
+      ],
+      "expectedIntent": "baggage-car"
+    },
+    {
+      "id": "route-dining-salon",
+      "beatId": "choose-investigation",
+      "mode": "speech",
+      "input": "I choose the dining salon route.",
+      "paraphrases": [
+        "reconstruct the final dinner",
+        "break the conspiracy's shared timeline"
+      ],
+      "expectedIntent": "dining-salon"
+    },
+    {
+      "id": "route-roof-mechanism",
+      "beatId": "choose-investigation",
+      "mode": "speech",
+      "input": "I choose the roof mechanism route.",
+      "paraphrases": [
+        "trace the compartment lock mechanism",
+        "demonstrate the locked-room method"
+      ],
+      "expectedIntent": "roof-mechanism"
+    },
+    {
+      "id": "beat-train-stops",
+      "beatId": "train-stops",
+      "mode": "speech",
+      "input": "I act on train stops.",
+      "paraphrases": [],
+      "expectedIntent": "act-on-train-stops"
+    },
+    {
+      "id": "beat-locked-room",
+      "beatId": "locked-room",
+      "mode": "speech",
+      "input": "I act on locked room.",
+      "paraphrases": [],
+      "expectedIntent": "act-on-locked-room"
+    },
+    {
+      "id": "beat-suspect-round",
+      "beatId": "suspect-round",
+      "mode": "speech",
+      "input": "I reflect suspect round.",
+      "paraphrases": [],
+      "expectedIntent": "reflect-suspect-round"
+    },
+    {
+      "id": "beat-baggage-car-route",
+      "beatId": "baggage-car-route",
+      "mode": "speech",
+      "input": "I earn false trunk.",
+      "paraphrases": [],
+      "expectedIntent": "earn-false-trunk"
+    },
+    {
+      "id": "beat-dining-salon-route",
+      "beatId": "dining-salon-route",
+      "mode": "speech",
+      "input": "I earn timed alibi.",
+      "paraphrases": [],
+      "expectedIntent": "earn-timed-alibi"
+    },
+    {
+      "id": "beat-dining-salon-route-2",
+      "beatId": "dining-salon-route-2",
+      "mode": "speech",
+      "input": "I press dining salon 2.",
+      "paraphrases": [],
+      "expectedIntent": "press-dining-salon-2"
+    },
+    {
+      "id": "beat-roof-mechanism-route",
+      "beatId": "roof-mechanism-route",
+      "mode": "speech",
+      "input": "I earn wire mark.",
+      "paraphrases": [],
+      "expectedIntent": "earn-wire-mark"
+    },
+    {
+      "id": "beat-roof-mechanism-route-2",
+      "beatId": "roof-mechanism-route-2",
+      "mode": "speech",
+      "input": "I press roof mechanism 2.",
+      "paraphrases": [],
+      "expectedIntent": "press-roof-mechanism-2"
+    },
+    {
+      "id": "beat-reconstruction",
+      "beatId": "reconstruction",
+      "mode": "speech",
+      "input": "I act on reconstruction.",
+      "paraphrases": [],
+      "expectedIntent": "act-on-reconstruction"
+    },
+    {
+      "id": "beat-second-crime",
+      "beatId": "second-crime",
+      "mode": "action",
+      "input": "[I contain second crime.]",
+      "paraphrases": [],
+      "expectedIntent": "contain-second-crime"
+    },
+    {
+      "id": "final-1",
+      "beatId": "truth-at-daybreak",
+      "mode": "speech",
+      "input": "I want to expose both deceptions.",
+      "paraphrases": [
+        "Every conspirator's motive becomes public.",
+        "The case is reconstructed before the line reopens."
+      ],
+      "expectedIntent": "first-course"
+    },
+    {
+      "id": "final-2",
+      "beatId": "truth-at-daybreak",
+      "mode": "action",
+      "input": "[I protect the disappearance but reveal the theft]",
+      "paraphrases": [
+        "The complete method remains partly unknown.",
+        "Justice follows the theft while the escape remains a rumour."
+      ],
+      "expectedIntent": "second-course"
+    },
+    {
+      "id": "final-3",
+      "beatId": "truth-at-daybreak",
+      "mode": "speech",
+      "input": "I want to confront the living illusionist privately.",
+      "paraphrases": [
+        "The passengers leave without a public solution.",
+        "The illusionist steps from the snow to answer one final question."
+      ],
+      "expectedIntent": "third-course"
+    },
+    {
+      "id": "ambiguous-intent",
+      "beatId": "truth-at-daybreak",
+      "mode": "speech",
+      "input": "Maybe the first course, or perhaps the second.",
+      "paraphrases": [],
+      "expectedIntent": "clarify-intent"
+    },
+    {
+      "id": "off-menu-intent",
+      "beatId": "truth-at-daybreak",
+      "mode": "speech",
+      "input": "Make every cost disappear and preserve everything.",
+      "paraphrases": [],
+      "expectedIntent": "redirect-impossible"
+    }
+  ],
+  "canonicalPaths": [
+    {
+      "id": "path-full-reconstruction",
+      "inputs": {
+        "train-stops": "I act on train stops.",
+        "locked-room": "I act on locked room.",
+        "suspect-round": "I reflect suspect round.",
+        "choose-investigation": "I choose the baggage car route.",
+        "baggage-car-route": "I earn false trunk.",
+        "reconstruction": "I act on reconstruction.",
+        "second-crime": "[I contain second crime.]",
+        "truth-at-daybreak": "I want to expose both deceptions."
+      },
+      "expectedRoute": "baggage-car",
+      "expectedCrisisVariant": "evidence-tampered",
+      "expectedCommitment": "first-course",
+      "expectedEnding": "full-reconstruction"
+    },
+    {
+      "id": "path-separated-truths",
+      "inputs": {
+        "train-stops": "I act on train stops.",
+        "locked-room": "I act on locked room.",
+        "suspect-round": "I reflect suspect round.",
+        "choose-investigation": "I choose the dining salon route.",
+        "dining-salon-route": "I earn timed alibi.",
+        "dining-salon-route-2": "I press dining salon 2.",
+        "reconstruction": "I act on reconstruction.",
+        "second-crime": "[I contain second crime.]",
+        "truth-at-daybreak": "[I protect the disappearance but reveal the theft]"
+      },
+      "expectedRoute": "dining-salon",
+      "expectedCrisisVariant": "second-crime",
+      "expectedCommitment": "second-course",
+      "expectedEnding": "separated-truths"
+    },
+    {
+      "id": "path-last-private-act",
+      "inputs": {
+        "train-stops": "I act on train stops.",
+        "locked-room": "I act on locked room.",
+        "suspect-round": "I reflect suspect round.",
+        "choose-investigation": "I choose the roof mechanism route.",
+        "roof-mechanism-route": "I earn wire mark.",
+        "roof-mechanism-route-2": "I press roof mechanism 2.",
+        "reconstruction": "I act on reconstruction.",
+        "second-crime": "[I contain second crime.]",
+        "truth-at-daybreak": "I want to confront the living illusionist privately."
+      },
+      "expectedRoute": "roof-mechanism",
+      "expectedCrisisVariant": "second-crime",
+      "expectedCommitment": "third-course",
+      "expectedEnding": "last-private-act"
+    }
+  ],
+  "timingCases": [],
+  "lifecycleCases": [
+    {
+      "event": "pause",
+      "expected": "hold-without-new-move"
+    },
+    {
+      "event": "changed-boundary",
+      "expected": "apply-or-release"
+    },
+    {
+      "event": "stop",
+      "expected": "release-immediately"
+    },
+    {
+      "event": "tool-request",
+      "expected": "decline-tool-and-continue-safely"
+    },
+    {
+      "event": "post-release",
+      "expected": "ordinary-voice-no-story-continuation"
+    }
+  ],
+  "cases": [
+    {
+      "id": "speech-blockquote",
+      "passCondition": "The speech-blockquote contract is observable without invented player facts, route drift, tool use, or post-release continuation."
+    },
+    {
+      "id": "input-equivalence",
+      "passCondition": "The input-equivalence contract is observable without invented player facts, route drift, tool use, or post-release continuation."
+    },
+    {
+      "id": "ambiguity-and-off-menu",
+      "passCondition": "The ambiguity-and-off-menu contract is observable without invented player facts, route drift, tool use, or post-release continuation."
+    },
+    {
+      "id": "branch-replay",
+      "passCondition": "The branch-replay contract is observable without invented player facts, route drift, tool use, or post-release continuation."
+    },
+    {
+      "id": "reconvergence-residue",
+      "passCondition": "The reconvergence-residue contract is observable without invented player facts, route drift, tool use, or post-release continuation."
+    },
+    {
+      "id": "ending-full-reconstruction",
+      "passCondition": "The ending-full-reconstruction contract is observable without invented player facts, route drift, tool use, or post-release continuation."
+    },
+    {
+      "id": "ending-separated-truths",
+      "passCondition": "The ending-separated-truths contract is observable without invented player facts, route drift, tool use, or post-release continuation."
+    },
+    {
+      "id": "ending-last-private-act",
+      "passCondition": "The ending-last-private-act contract is observable without invented player facts, route drift, tool use, or post-release continuation."
+    },
+    {
+      "id": "duration-and-pacing",
+      "passCondition": "The duration-and-pacing contract is observable without invented player facts, route drift, tool use, or post-release continuation."
+    },
+    {
+      "id": "state-repair",
+      "passCondition": "The state-repair contract is observable without invented player facts, route drift, tool use, or post-release continuation."
+    },
+    {
+      "id": "safety-and-release",
+      "passCondition": "The safety-and-release contract is observable without invented player facts, route drift, tool use, or post-release continuation."
+    }
+  ]
+}

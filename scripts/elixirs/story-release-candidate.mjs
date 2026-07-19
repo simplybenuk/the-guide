@@ -70,7 +70,7 @@ export const storyReleaseCandidateSchema = z.object({
     "reviewed_commit_revision_bound",
     "live_harness_evidence_recorded",
     "publication_explicitly_authorized",
-  ])).length(4).refine((values) => new Set(values).size === values.length,
+  ])).min(3).max(4).refine((values) => new Set(values).size === values.length,
     "Activation requirements must be unique"),
 }).strict();
 

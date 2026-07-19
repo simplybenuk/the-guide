@@ -1,0 +1,350 @@
+{
+  "schemaVersion": 1,
+  "cartridge": {
+    "id": "the-guide.elixir.bone-orchard",
+    "version": "0.1.0",
+    "schemaVersion": "1.1.0"
+  },
+  "profile": {
+    "id": "synthetic-bone-orchard-player-01",
+    "description": "A fictional player with 45 minutes, medium energy, no movement requirement, and no extra boundary."
+  },
+  "beats": [
+    "orchard-gate",
+    "living-name",
+    "choose-witness",
+    "root-cellar-route",
+    "family-table-route",
+    "family-table-route-2",
+    "family-table-route-3",
+    "boundary-stones-route",
+    "harvest-table",
+    "older-bargain",
+    "harvest-crisis",
+    "name-the-grove"
+  ],
+  "stateFields": [
+    "current-beat",
+    "selected-route",
+    "route-gift",
+    "commitment",
+    "village-memory",
+    "family-standing",
+    "bargain-form",
+    "harvest-pressure"
+  ],
+  "routes": [
+    {
+      "id": "root-cellar",
+      "gift": "first-carving",
+      "laterAffordance": "identify the first deliberate erasure"
+    },
+    {
+      "id": "family-table",
+      "gift": "missing-place",
+      "laterAffordance": "restore a place at the harvest table"
+    },
+    {
+      "id": "boundary-stones",
+      "gift": "older-bargain",
+      "laterAffordance": "invoke the bargain that predates the current ritual"
+    }
+  ],
+  "crisisVariants": [
+    "name-spreads",
+    "harvest-begins"
+  ],
+  "endingFamilies": [
+    "truthful-roots",
+    "felled-bargain",
+    "chosen-grove"
+  ],
+  "interactionCases": [
+    {
+      "id": "route-root-cellar",
+      "beatId": "choose-witness",
+      "mode": "speech",
+      "input": "I choose the root cellar route.",
+      "paraphrases": [
+        "read names beneath the oldest roots",
+        "identify the first deliberate erasure"
+      ],
+      "expectedIntent": "root-cellar"
+    },
+    {
+      "id": "route-family-table",
+      "beatId": "choose-witness",
+      "mode": "speech",
+      "input": "I choose the family table route.",
+      "paraphrases": [
+        "hear three families dispute the living name",
+        "restore a place at the harvest table"
+      ],
+      "expectedIntent": "family-table"
+    },
+    {
+      "id": "route-boundary-stones",
+      "beatId": "choose-witness",
+      "mode": "speech",
+      "input": "I choose the boundary stones route.",
+      "paraphrases": [
+        "walk the orchard's marked boundary",
+        "invoke the bargain that predates the current ritual"
+      ],
+      "expectedIntent": "boundary-stones"
+    },
+    {
+      "id": "beat-orchard-gate",
+      "beatId": "orchard-gate",
+      "mode": "speech",
+      "input": "I act on orchard gate.",
+      "paraphrases": [],
+      "expectedIntent": "act-on-orchard-gate"
+    },
+    {
+      "id": "beat-living-name",
+      "beatId": "living-name",
+      "mode": "speech",
+      "input": "I act on living name.",
+      "paraphrases": [],
+      "expectedIntent": "act-on-living-name"
+    },
+    {
+      "id": "beat-root-cellar-route",
+      "beatId": "root-cellar-route",
+      "mode": "speech",
+      "input": "I earn first carving.",
+      "paraphrases": [],
+      "expectedIntent": "earn-first-carving"
+    },
+    {
+      "id": "beat-family-table-route",
+      "beatId": "family-table-route",
+      "mode": "speech",
+      "input": "I earn missing place.",
+      "paraphrases": [],
+      "expectedIntent": "earn-missing-place"
+    },
+    {
+      "id": "beat-family-table-route-2",
+      "beatId": "family-table-route-2",
+      "mode": "speech",
+      "input": "I press family table 2.",
+      "paraphrases": [],
+      "expectedIntent": "press-family-table-2"
+    },
+    {
+      "id": "beat-family-table-route-3",
+      "beatId": "family-table-route-3",
+      "mode": "speech",
+      "input": "I press family table 3.",
+      "paraphrases": [],
+      "expectedIntent": "press-family-table-3"
+    },
+    {
+      "id": "beat-boundary-stones-route",
+      "beatId": "boundary-stones-route",
+      "mode": "speech",
+      "input": "I earn older bargain.",
+      "paraphrases": [],
+      "expectedIntent": "earn-older-bargain"
+    },
+    {
+      "id": "beat-harvest-table",
+      "beatId": "harvest-table",
+      "mode": "speech",
+      "input": "I reflect harvest table.",
+      "paraphrases": [],
+      "expectedIntent": "reflect-harvest-table"
+    },
+    {
+      "id": "beat-older-bargain",
+      "beatId": "older-bargain",
+      "mode": "speech",
+      "input": "I act on older bargain.",
+      "paraphrases": [],
+      "expectedIntent": "act-on-older-bargain"
+    },
+    {
+      "id": "beat-harvest-crisis",
+      "beatId": "harvest-crisis",
+      "mode": "action",
+      "input": "[I contain harvest crisis.]",
+      "paraphrases": [],
+      "expectedIntent": "contain-harvest-crisis"
+    },
+    {
+      "id": "final-1",
+      "beatId": "name-the-grove",
+      "mode": "speech",
+      "input": "I want to preserve the orchard with honest names.",
+      "paraphrases": [
+        "The village must name harms it preferred to forget.",
+        "The living name fades only after its place is restored."
+      ],
+      "expectedIntent": "first-course"
+    },
+    {
+      "id": "final-2",
+      "beatId": "name-the-grove",
+      "mode": "action",
+      "input": "[I end the harvest bargain]",
+      "paraphrases": [
+        "The dead lose a familiar communal ritual.",
+        "The white tree falls and no new name appears."
+      ],
+      "expectedIntent": "second-course"
+    },
+    {
+      "id": "final-3",
+      "beatId": "name-the-grove",
+      "mode": "speech",
+      "input": "I want to turn remembrance into a voluntary rite.",
+      "paraphrases": [
+        "Some families refuse the new voluntary remembrance.",
+        "The grove remains, but no name is carved without consent."
+      ],
+      "expectedIntent": "third-course"
+    },
+    {
+      "id": "ambiguous-intent",
+      "beatId": "name-the-grove",
+      "mode": "speech",
+      "input": "Maybe the first course, or perhaps the second.",
+      "paraphrases": [],
+      "expectedIntent": "clarify-intent"
+    },
+    {
+      "id": "off-menu-intent",
+      "beatId": "name-the-grove",
+      "mode": "speech",
+      "input": "Make every cost disappear and preserve everything.",
+      "paraphrases": [],
+      "expectedIntent": "redirect-impossible"
+    }
+  ],
+  "canonicalPaths": [
+    {
+      "id": "path-truthful-roots",
+      "inputs": {
+        "orchard-gate": "I act on orchard gate.",
+        "living-name": "I act on living name.",
+        "choose-witness": "I choose the root cellar route.",
+        "root-cellar-route": "I earn first carving.",
+        "harvest-table": "I reflect harvest table.",
+        "older-bargain": "I act on older bargain.",
+        "harvest-crisis": "[I contain harvest crisis.]",
+        "name-the-grove": "I want to preserve the orchard with honest names."
+      },
+      "expectedRoute": "root-cellar",
+      "expectedCrisisVariant": "name-spreads",
+      "expectedCommitment": "first-course",
+      "expectedEnding": "truthful-roots"
+    },
+    {
+      "id": "path-felled-bargain",
+      "inputs": {
+        "orchard-gate": "I act on orchard gate.",
+        "living-name": "I act on living name.",
+        "choose-witness": "I choose the family table route.",
+        "family-table-route": "I earn missing place.",
+        "family-table-route-2": "I press family table 2.",
+        "family-table-route-3": "I press family table 3.",
+        "harvest-table": "I reflect harvest table.",
+        "older-bargain": "I act on older bargain.",
+        "harvest-crisis": "[I contain harvest crisis.]",
+        "name-the-grove": "[I end the harvest bargain]"
+      },
+      "expectedRoute": "family-table",
+      "expectedCrisisVariant": "harvest-begins",
+      "expectedCommitment": "second-course",
+      "expectedEnding": "felled-bargain"
+    },
+    {
+      "id": "path-chosen-grove",
+      "inputs": {
+        "orchard-gate": "I act on orchard gate.",
+        "living-name": "I act on living name.",
+        "choose-witness": "I choose the boundary stones route.",
+        "boundary-stones-route": "I earn older bargain.",
+        "harvest-table": "I reflect harvest table.",
+        "older-bargain": "I act on older bargain.",
+        "harvest-crisis": "[I contain harvest crisis.]",
+        "name-the-grove": "I want to turn remembrance into a voluntary rite."
+      },
+      "expectedRoute": "boundary-stones",
+      "expectedCrisisVariant": "harvest-begins",
+      "expectedCommitment": "third-course",
+      "expectedEnding": "chosen-grove"
+    }
+  ],
+  "timingCases": [],
+  "lifecycleCases": [
+    {
+      "event": "pause",
+      "expected": "hold-without-new-move"
+    },
+    {
+      "event": "changed-boundary",
+      "expected": "apply-or-release"
+    },
+    {
+      "event": "stop",
+      "expected": "release-immediately"
+    },
+    {
+      "event": "tool-request",
+      "expected": "decline-tool-and-continue-safely"
+    },
+    {
+      "event": "post-release",
+      "expected": "ordinary-voice-no-story-continuation"
+    }
+  ],
+  "cases": [
+    {
+      "id": "speech-blockquote",
+      "passCondition": "The speech-blockquote contract is observable without invented player facts, route drift, tool use, or post-release continuation."
+    },
+    {
+      "id": "input-equivalence",
+      "passCondition": "The input-equivalence contract is observable without invented player facts, route drift, tool use, or post-release continuation."
+    },
+    {
+      "id": "ambiguity-and-off-menu",
+      "passCondition": "The ambiguity-and-off-menu contract is observable without invented player facts, route drift, tool use, or post-release continuation."
+    },
+    {
+      "id": "branch-replay",
+      "passCondition": "The branch-replay contract is observable without invented player facts, route drift, tool use, or post-release continuation."
+    },
+    {
+      "id": "reconvergence-residue",
+      "passCondition": "The reconvergence-residue contract is observable without invented player facts, route drift, tool use, or post-release continuation."
+    },
+    {
+      "id": "ending-truthful-roots",
+      "passCondition": "The ending-truthful-roots contract is observable without invented player facts, route drift, tool use, or post-release continuation."
+    },
+    {
+      "id": "ending-felled-bargain",
+      "passCondition": "The ending-felled-bargain contract is observable without invented player facts, route drift, tool use, or post-release continuation."
+    },
+    {
+      "id": "ending-chosen-grove",
+      "passCondition": "The ending-chosen-grove contract is observable without invented player facts, route drift, tool use, or post-release continuation."
+    },
+    {
+      "id": "duration-and-pacing",
+      "passCondition": "The duration-and-pacing contract is observable without invented player facts, route drift, tool use, or post-release continuation."
+    },
+    {
+      "id": "state-repair",
+      "passCondition": "The state-repair contract is observable without invented player facts, route drift, tool use, or post-release continuation."
+    },
+    {
+      "id": "safety-and-release",
+      "passCondition": "The safety-and-release contract is observable without invented player facts, route drift, tool use, or post-release continuation."
+    }
+  ]
+}

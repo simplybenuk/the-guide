@@ -1,0 +1,46 @@
+{
+  "schemaVersion": "1.0.0",
+  "state": "prepared_not_publishable",
+  "preparedAt": "2026-07-19",
+  "release": {
+    "elixirId": "the-guide.elixir.claws",
+    "publisherId": "the-guide",
+    "slug": "claws",
+    "version": "0.1.0",
+    "cartridgeSchemaVersion": "1.1.0",
+    "covenantVersion": "1.0.0",
+    "sourcePath": "content/elixirs/claws.md",
+    "bytes": 44122,
+    "sha256": "5ca44a478589f13c79891eea0cc70e318bd2fce115318295fd325a00e86238dc",
+    "canonicalPath": "cartridges/the-guide/claws/0.1.0/elixir.md",
+    "legacyPaths": [
+      "cartridges/claws/0.1.0/elixir.md"
+    ],
+    "artwork": [
+      {
+        "provenanceId": "art-claws",
+        "path": "site/elixirs/assets/cartridges/claws.png",
+        "bytes": 2698755,
+        "width": 1536,
+        "height": 1024,
+        "provenanceReference": "content/catalogue/provenance/claws-artwork.md",
+        "sha256": "524c97fd0c05951c1baca929bbfdd22f7bee0805d7b1174f1c34c7e691bae0f4"
+      }
+    ],
+    "rightsReference": "TERMS.md",
+    "reviewReferences": [
+      "docs/specs/authored-story-catalogue-expansion.md",
+      "docs/evaluations/claws-publication-validation.md"
+    ],
+    "compatibilityReferences": [
+      "docs/evaluations/elixir-harness-matrix.md"
+    ],
+    "statusAtPublication": "experimental"
+  },
+  "supersession": null,
+  "activationRequirements": [
+    "independent_review_passed",
+    "reviewed_commit_revision_bound",
+    "publication_explicitly_authorized"
+  ]
+}

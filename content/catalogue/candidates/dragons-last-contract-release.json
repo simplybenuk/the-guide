@@ -1,0 +1,46 @@
+{
+  "schemaVersion": "1.0.0",
+  "state": "prepared_not_publishable",
+  "preparedAt": "2026-07-19",
+  "release": {
+    "elixirId": "the-guide.elixir.dragons-last-contract",
+    "publisherId": "the-guide",
+    "slug": "dragons-last-contract",
+    "version": "0.1.0",
+    "cartridgeSchemaVersion": "1.1.0",
+    "covenantVersion": "1.0.0",
+    "sourcePath": "content/elixirs/dragons-last-contract.md",
+    "bytes": 47172,
+    "sha256": "e2bccaabbebfbac625a639c8f27d1db9644d45b33c63a4dea0b417cafa89b0ab",
+    "canonicalPath": "cartridges/the-guide/dragons-last-contract/0.1.0/elixir.md",
+    "legacyPaths": [
+      "cartridges/dragons-last-contract/0.1.0/elixir.md"
+    ],
+    "artwork": [
+      {
+        "provenanceId": "art-dragons-last-contract",
+        "path": "site/elixirs/assets/cartridges/dragons-last-contract.png",
+        "bytes": 2893361,
+        "width": 1536,
+        "height": 1024,
+        "provenanceReference": "content/catalogue/provenance/dragons-last-contract-artwork.md",
+        "sha256": "85a78dd7ca4e29a7383883b2d4a04f9e0ae8921593b17a87a131048219e8eb27"
+      }
+    ],
+    "rightsReference": "TERMS.md",
+    "reviewReferences": [
+      "docs/specs/authored-story-catalogue-expansion.md",
+      "docs/evaluations/dragons-last-contract-publication-validation.md"
+    ],
+    "compatibilityReferences": [
+      "docs/evaluations/elixir-harness-matrix.md"
+    ],
+    "statusAtPublication": "experimental"
+  },
+  "supersession": null,
+  "activationRequirements": [
+    "independent_review_passed",
+    "reviewed_commit_revision_bound",
+    "publication_explicitly_authorized"
+  ]
+}

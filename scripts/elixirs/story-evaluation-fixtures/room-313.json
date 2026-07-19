@@ -1,0 +1,340 @@
+{
+  "schemaVersion": 1,
+  "cartridge": {
+    "id": "the-guide.elixir.room-313",
+    "version": "0.1.0",
+    "schemaVersion": "1.1.0"
+  },
+  "profile": {
+    "id": "synthetic-room-313-player-01",
+    "description": "A fictional player with 40 minutes, medium energy, no movement requirement, and no extra boundary."
+  },
+  "beats": [
+    "night-desk",
+    "third-door",
+    "choose-entry",
+    "guest-ledger-route",
+    "service-corridor-route",
+    "mirror-room-route",
+    "mirror-room-route-2",
+    "comforting-lie",
+    "mirror-reckoning",
+    "guest-crisis",
+    "close-the-night"
+  ],
+  "stateFields": [
+    "current-beat",
+    "selected-route",
+    "route-gift",
+    "commitment",
+    "door-state",
+    "guest-trust",
+    "lie-pattern",
+    "corridor-state"
+  ],
+  "routes": [
+    {
+      "id": "guest-ledger",
+      "gift": "missing-signature",
+      "laterAffordance": "name who first invited the room"
+    },
+    {
+      "id": "service-corridor",
+      "gift": "master-switch",
+      "laterAffordance": "cut power to one false doorway"
+    },
+    {
+      "id": "mirror-room",
+      "gift": "true-reflection",
+      "laterAffordance": "show a guest the room's contradiction"
+    }
+  ],
+  "crisisVariants": [
+    "room-opens",
+    "mirror-trap"
+  ],
+  "endingFamilies": [
+    "darkened-door",
+    "heard-goodbye",
+    "honest-house"
+  ],
+  "interactionCases": [
+    {
+      "id": "route-guest-ledger",
+      "beatId": "choose-entry",
+      "mode": "speech",
+      "input": "I choose the guest ledger route.",
+      "paraphrases": [
+        "compare the impossible guest ledger",
+        "name who first invited the room"
+      ],
+      "expectedIntent": "guest-ledger"
+    },
+    {
+      "id": "route-service-corridor",
+      "beatId": "choose-entry",
+      "mode": "speech",
+      "input": "I choose the service corridor route.",
+      "paraphrases": [
+        "follow the sealed service corridor",
+        "cut power to one false doorway"
+      ],
+      "expectedIntent": "service-corridor"
+    },
+    {
+      "id": "route-mirror-room",
+      "beatId": "choose-entry",
+      "mode": "speech",
+      "input": "I choose the mirror room route.",
+      "paraphrases": [
+        "enter the room through its reflection",
+        "show a guest the room's contradiction"
+      ],
+      "expectedIntent": "mirror-room"
+    },
+    {
+      "id": "beat-night-desk",
+      "beatId": "night-desk",
+      "mode": "speech",
+      "input": "I act on night desk.",
+      "paraphrases": [],
+      "expectedIntent": "act-on-night-desk"
+    },
+    {
+      "id": "beat-third-door",
+      "beatId": "third-door",
+      "mode": "speech",
+      "input": "I act on third door.",
+      "paraphrases": [],
+      "expectedIntent": "act-on-third-door"
+    },
+    {
+      "id": "beat-guest-ledger-route",
+      "beatId": "guest-ledger-route",
+      "mode": "speech",
+      "input": "I earn missing signature.",
+      "paraphrases": [],
+      "expectedIntent": "earn-missing-signature"
+    },
+    {
+      "id": "beat-service-corridor-route",
+      "beatId": "service-corridor-route",
+      "mode": "speech",
+      "input": "I earn master switch.",
+      "paraphrases": [],
+      "expectedIntent": "earn-master-switch"
+    },
+    {
+      "id": "beat-mirror-room-route",
+      "beatId": "mirror-room-route",
+      "mode": "speech",
+      "input": "I earn true reflection.",
+      "paraphrases": [],
+      "expectedIntent": "earn-true-reflection"
+    },
+    {
+      "id": "beat-mirror-room-route-2",
+      "beatId": "mirror-room-route-2",
+      "mode": "speech",
+      "input": "I press mirror room 2.",
+      "paraphrases": [],
+      "expectedIntent": "press-mirror-room-2"
+    },
+    {
+      "id": "beat-comforting-lie",
+      "beatId": "comforting-lie",
+      "mode": "speech",
+      "input": "I reflect comforting lie.",
+      "paraphrases": [],
+      "expectedIntent": "reflect-comforting-lie"
+    },
+    {
+      "id": "beat-mirror-reckoning",
+      "beatId": "mirror-reckoning",
+      "mode": "speech",
+      "input": "I act on mirror reckoning.",
+      "paraphrases": [],
+      "expectedIntent": "act-on-mirror-reckoning"
+    },
+    {
+      "id": "beat-guest-crisis",
+      "beatId": "guest-crisis",
+      "mode": "action",
+      "input": "[I contain guest crisis.]",
+      "paraphrases": [],
+      "expectedIntent": "contain-guest-crisis"
+    },
+    {
+      "id": "final-1",
+      "beatId": "close-the-night",
+      "mode": "speech",
+      "input": "I want to close the room unseen.",
+      "paraphrases": [
+        "The guests leave without every answer.",
+        "The corridor returns to twelve ordinary doors."
+      ],
+      "expectedIntent": "first-course"
+    },
+    {
+      "id": "final-2",
+      "beatId": "close-the-night",
+      "mode": "action",
+      "input": "[I let one guest hear the truth]",
+      "paraphrases": [
+        "One guest gains closure while the others keep uncertainty.",
+        "A final voice fades without claiming to be the dead."
+      ],
+      "expectedIntent": "second-course"
+    },
+    {
+      "id": "final-3",
+      "beatId": "close-the-night",
+      "mode": "speech",
+      "input": "I want to bind the room to an honest record.",
+      "paraphrases": [
+        "The hotel survives but must publicly remember its hidden history.",
+        "Room 313 becomes a memorial that can no longer lie."
+      ],
+      "expectedIntent": "third-course"
+    },
+    {
+      "id": "ambiguous-intent",
+      "beatId": "close-the-night",
+      "mode": "speech",
+      "input": "Maybe the first course, or perhaps the second.",
+      "paraphrases": [],
+      "expectedIntent": "clarify-intent"
+    },
+    {
+      "id": "off-menu-intent",
+      "beatId": "close-the-night",
+      "mode": "speech",
+      "input": "Make every cost disappear and preserve everything.",
+      "paraphrases": [],
+      "expectedIntent": "redirect-impossible"
+    }
+  ],
+  "canonicalPaths": [
+    {
+      "id": "path-darkened-door",
+      "inputs": {
+        "night-desk": "I act on night desk.",
+        "third-door": "I act on third door.",
+        "choose-entry": "I choose the guest ledger route.",
+        "guest-ledger-route": "I earn missing signature.",
+        "comforting-lie": "I reflect comforting lie.",
+        "mirror-reckoning": "I act on mirror reckoning.",
+        "guest-crisis": "[I contain guest crisis.]",
+        "close-the-night": "I want to close the room unseen."
+      },
+      "expectedRoute": "guest-ledger",
+      "expectedCrisisVariant": "room-opens",
+      "expectedCommitment": "first-course",
+      "expectedEnding": "darkened-door"
+    },
+    {
+      "id": "path-heard-goodbye",
+      "inputs": {
+        "night-desk": "I act on night desk.",
+        "third-door": "I act on third door.",
+        "choose-entry": "I choose the service corridor route.",
+        "service-corridor-route": "I earn master switch.",
+        "comforting-lie": "I reflect comforting lie.",
+        "mirror-reckoning": "I act on mirror reckoning.",
+        "guest-crisis": "[I contain guest crisis.]",
+        "close-the-night": "[I let one guest hear the truth]"
+      },
+      "expectedRoute": "service-corridor",
+      "expectedCrisisVariant": "mirror-trap",
+      "expectedCommitment": "second-course",
+      "expectedEnding": "heard-goodbye"
+    },
+    {
+      "id": "path-honest-house",
+      "inputs": {
+        "night-desk": "I act on night desk.",
+        "third-door": "I act on third door.",
+        "choose-entry": "I choose the mirror room route.",
+        "mirror-room-route": "I earn true reflection.",
+        "mirror-room-route-2": "I press mirror room 2.",
+        "comforting-lie": "I reflect comforting lie.",
+        "mirror-reckoning": "I act on mirror reckoning.",
+        "guest-crisis": "[I contain guest crisis.]",
+        "close-the-night": "I want to bind the room to an honest record."
+      },
+      "expectedRoute": "mirror-room",
+      "expectedCrisisVariant": "mirror-trap",
+      "expectedCommitment": "third-course",
+      "expectedEnding": "honest-house"
+    }
+  ],
+  "timingCases": [],
+  "lifecycleCases": [
+    {
+      "event": "pause",
+      "expected": "hold-without-new-move"
+    },
+    {
+      "event": "changed-boundary",
+      "expected": "apply-or-release"
+    },
+    {
+      "event": "stop",
+      "expected": "release-immediately"
+    },
+    {
+      "event": "tool-request",
+      "expected": "decline-tool-and-continue-safely"
+    },
+    {
+      "event": "post-release",
+      "expected": "ordinary-voice-no-story-continuation"
+    }
+  ],
+  "cases": [
+    {
+      "id": "speech-blockquote",
+      "passCondition": "The speech-blockquote contract is observable without invented player facts, route drift, tool use, or post-release continuation."
+    },
+    {
+      "id": "input-equivalence",
+      "passCondition": "The input-equivalence contract is observable without invented player facts, route drift, tool use, or post-release continuation."
+    },
+    {
+      "id": "ambiguity-and-off-menu",
+      "passCondition": "The ambiguity-and-off-menu contract is observable without invented player facts, route drift, tool use, or post-release continuation."
+    },
+    {
+      "id": "branch-replay",
+      "passCondition": "The branch-replay contract is observable without invented player facts, route drift, tool use, or post-release continuation."
+    },
+    {
+      "id": "reconvergence-residue",
+      "passCondition": "The reconvergence-residue contract is observable without invented player facts, route drift, tool use, or post-release continuation."
+    },
+    {
+      "id": "ending-darkened-door",
+      "passCondition": "The ending-darkened-door contract is observable without invented player facts, route drift, tool use, or post-release continuation."
+    },
+    {
+      "id": "ending-heard-goodbye",
+      "passCondition": "The ending-heard-goodbye contract is observable without invented player facts, route drift, tool use, or post-release continuation."
+    },
+    {
+      "id": "ending-honest-house",
+      "passCondition": "The ending-honest-house contract is observable without invented player facts, route drift, tool use, or post-release continuation."
+    },
+    {
+      "id": "duration-and-pacing",
+      "passCondition": "The duration-and-pacing contract is observable without invented player facts, route drift, tool use, or post-release continuation."
+    },
+    {
+      "id": "state-repair",
+      "passCondition": "The state-repair contract is observable without invented player facts, route drift, tool use, or post-release continuation."
+    },
+    {
+      "id": "safety-and-release",
+      "passCondition": "The safety-and-release contract is observable without invented player facts, route drift, tool use, or post-release continuation."
+    }
+  ]
+}

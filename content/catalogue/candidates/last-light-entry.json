@@ -1,0 +1,91 @@
+{
+  "schemaVersion": "1.0.0",
+  "state": "pending_owner_review",
+  "preparedAt": "2026-07-19",
+  "intendedLifecycle": "published",
+  "entry": {
+    "elixirId": "the-guide.elixir.last-light",
+    "publisherId": "the-guide",
+    "slug": "last-light",
+    "recommendedVersion": "0.1.0",
+    "title": "The Last Light",
+    "summary": "One failing beacon, one final message, and five minutes to decide what its light should mean.",
+    "playerPromise": "Choose the last message of a failing waystation and see one small detail change who answers.",
+    "editorialOrder": 1,
+    "featuredRationale": "A complete five-minute introduction to authored interactive stories.",
+    "categoryIds": [
+      "activity-conversation"
+    ],
+    "tagIds": [
+      "tone-imaginative",
+      "replayable-authored-high"
+    ],
+    "toneIds": [
+      "tone-imaginative"
+    ],
+    "mechanicId": "mechanic-branching-story",
+    "interactionLabel": "3 authored beats through speech, action, and decisions",
+    "activityIds": [
+      "activity-conversation"
+    ],
+    "replayabilityId": "replayable-authored-moderate",
+    "durationBandId": "duration-under-15",
+    "energy": "low",
+    "movement": "none",
+    "requiredInputs": [
+      "time",
+      "hard_boundary",
+      "free_text_choice"
+    ],
+    "contentNoteIds": [
+      "content-fiction-clear",
+      "content-moderate-tension"
+    ],
+    "accessConsiderationIds": [
+      "access-seated"
+    ],
+    "audienceIds": [
+      "audience-general-alpha"
+    ],
+    "localeIds": [
+      "locale-en"
+    ],
+    "storyDiscovery": {
+      "genreIds": [
+        "genre-science-fiction"
+      ],
+      "themeIds": [
+        "theme-agency"
+      ],
+      "storyShapeIds": [
+        "story-shape-one-night-event"
+      ],
+      "socialShapeIds": [
+        "social-shape-ensemble"
+      ],
+      "interactionModeIds": [
+        "interaction-speech",
+        "interaction-action",
+        "interaction-decision"
+      ],
+      "choicePresentationId": "choice-hybrid",
+      "emotionalIntensityId": "emotion-gentle",
+      "readingIntensityId": "reading-low",
+      "sessionShapeId": "session-single-session"
+    },
+    "catalogueArtwork": {
+      "provenanceId": "art-last-light",
+      "altText": "A lone waystation beacon sends one warm ray across a blue star field as its surrounding lights fade."
+    },
+    "maintenanceOwner": "The Guide",
+    "successor": null,
+    "releaseStates": [
+      {
+        "version": "0.1.0",
+        "lifecycle": "published",
+        "successor": null
+      }
+    ],
+    "corrections": []
+  }
+}

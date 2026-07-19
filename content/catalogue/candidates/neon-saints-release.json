@@ -1,0 +1,46 @@
+{
+  "schemaVersion": "1.0.0",
+  "state": "prepared_not_publishable",
+  "preparedAt": "2026-07-19",
+  "release": {
+    "elixirId": "the-guide.elixir.neon-saints",
+    "publisherId": "the-guide",
+    "slug": "neon-saints",
+    "version": "0.1.0",
+    "cartridgeSchemaVersion": "1.1.0",
+    "covenantVersion": "1.0.0",
+    "sourcePath": "content/elixirs/neon-saints.md",
+    "bytes": 47264,
+    "sha256": "514a1a085165d7c90fa4c2e7e71acb98d2b04475e0484a1bf6812192bf590bb2",
+    "canonicalPath": "cartridges/the-guide/neon-saints/0.1.0/elixir.md",
+    "legacyPaths": [
+      "cartridges/neon-saints/0.1.0/elixir.md"
+    ],
+    "artwork": [
+      {
+        "provenanceId": "art-neon-saints",
+        "path": "site/elixirs/assets/cartridges/neon-saints.png",
+        "bytes": 3030850,
+        "width": 1536,
+        "height": 1024,
+        "provenanceReference": "content/catalogue/provenance/neon-saints-artwork.md",
+        "sha256": "e924849140dd7d5695c5d2a8219118bae8d8d4b574dc2a1b81ce2d22c934be15"
+      }
+    ],
+    "rightsReference": "TERMS.md",
+    "reviewReferences": [
+      "docs/specs/authored-story-catalogue-expansion.md",
+      "docs/evaluations/neon-saints-publication-validation.md"
+    ],
+    "compatibilityReferences": [
+      "docs/evaluations/elixir-harness-matrix.md"
+    ],
+    "statusAtPublication": "experimental"
+  },
+  "supersession": null,
+  "activationRequirements": [
+    "independent_review_passed",
+    "reviewed_commit_revision_bound",
+    "publication_explicitly_authorized"
+  ]
+}

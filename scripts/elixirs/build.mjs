@@ -193,7 +193,7 @@ const renderPagination = ({ page, pages, nested = false }) => {
 };
 
 const renderIndex = (catalogue) => {
-  const publicEntries = catalogue.entries.filter(({ lifecycle }) => lifecycle !== "withdrawn");
+  const publicEntries = catalogue.entries.filter(({ lifecycle }) => !["retired", "withdrawn"].includes(lifecycle));
   const spotlight = publicEntries.find(({ featuredRationale }) => featuredRationale) ?? publicEntries[0];
   return renderDocument({
     title: "The Guide — Interactive stories",
@@ -224,7 +224,7 @@ const renderIndex = (catalogue) => {
 
 const renderBrowsePage = ({ catalogue, page, pages }) => {
   const index = createPublicCatalogueIndex(catalogue);
-  const publicEntries = catalogue.entries.filter(({ lifecycle }) => lifecycle !== "withdrawn");
+  const publicEntries = catalogue.entries.filter(({ lifecycle }) => !["retired", "withdrawn"].includes(lifecycle));
   const entries = publicEntries.slice((page - 1) * cataloguePageSize, page * cataloguePageSize);
   const nested = page > 1;
   const rootPrefix = nested ? "../../" : "../";
@@ -296,6 +296,9 @@ const renderTrustFacts = ({ entry, release, metadata, catalogue }) => {
 };
 
 const renderLifecycleNotice = ({ entry, state = entry, catalogue, hrefPrefix, versionRoute = false }) => {
+  if (state.lifecycle === "retired") {
+    return `<aside class="lifecycle-notice" aria-labelledby="lifecycle-title-${entry.slug}"><p class="eyebrow">retired</p><h2 id="lifecycle-title-${entry.slug}">This historical game has left active discovery</h2><p>The immutable cartridge and release facts remain inspectable, but The Guide no longer recommends this game for new play.</p></aside>`;
+  }
   if (state.lifecycle === "withdrawn") {
     const successor = state.successor ? catalogue.entries.find(({ elixirId }) => elixirId === state.successor.elixirId) : null;
     const successorLink = successor ? ` Use <a href="${hrefPrefix}${successor.slug}/versions/${state.successor.version}/">${escapeHtml(successor.title)} ${state.successor.version}</a> instead.` : "";
@@ -379,7 +382,7 @@ export const buildElixirSite = ({
 } = {}) => {
   validateSourceRevision(sourceRevision);
   const activeDownloadMetadata = catalogue.entries
-    .filter(({ lifecycle }) => lifecycle !== "withdrawn")
+    .filter(({ lifecycle }) => !["retired", "withdrawn"].includes(lifecycle))
     .map((entry) => {
       const release = catalogue.releases.find(({ elixirId, version }) => elixirId === entry.elixirId && version === entry.recommendedVersion);
       const cartridge = catalogue.cartridges.find(({ release: candidate }) => releaseKey(candidate) === releaseKey(release));
@@ -420,7 +423,7 @@ export const buildElixirSite = ({
   write(".nojekyll", "");
   copy("TERMS.md", "terms.md");
   write("index.html", renderIndex(catalogue));
-  const publicEntryCount = catalogue.entries.filter(({ lifecycle }) => lifecycle !== "withdrawn").length;
+  const publicEntryCount = catalogue.entries.filter(({ lifecycle }) => !["retired", "withdrawn"].includes(lifecycle)).length;
   const cataloguePages = Math.ceil(publicEntryCount / cataloguePageSize);
   write("browse/index.html", renderBrowsePage({ catalogue, page: 1, pages: cataloguePages }));
   for (let page = 2; page <= cataloguePages; page += 1) write(`browse/page-${page}/index.html`, renderBrowsePage({ catalogue, page, pages: cataloguePages }));
@@ -428,7 +431,7 @@ export const buildElixirSite = ({
   copy("site/elixirs/styles.css", "styles.css");
   copy("site/elixirs/catalogue.js", "catalogue.js");
   write("delivery-events.js", renderDeliveryEventBrowserRuntime({
-    validReferences: catalogue.entries.filter(({ lifecycle }) => lifecycle !== "withdrawn").map(({ elixirId: id, recommendedVersion: version }) => ({ id, version })),
+    validReferences: catalogue.entries.filter(({ lifecycle }) => !["retired", "withdrawn"].includes(lifecycle)).map(({ elixirId: id, recommendedVersion: version }) => ({ id, version })),
     deploymentRevision: deliveryDeploymentRevision,
   }));
   write(`skills/${agentElixirArchiveName}`, createAgentElixirArchive({ repositoryRoot }));
@@ -453,7 +456,7 @@ export const buildElixirSite = ({
     write(`elixirs/${release.slug}/versions/${release.version}/index.html`, renderVersion({ entry, release, releaseState, metadata: cartridge.metadata, catalogue }));
   }
 
-  for (const entry of catalogue.entries.filter(({ lifecycle }) => lifecycle !== "withdrawn")) {
+  for (const entry of catalogue.entries.filter(({ lifecycle }) => !["retired", "withdrawn"].includes(lifecycle))) {
     const release = releaseByKey.get(`${entry.elixirId}@${entry.recommendedVersion}`);
     const cartridge = cartridgeByKey.get(releaseKey(release));
     write(`elixirs/${entry.slug}/index.html`, renderDetail({ entry, release, ...cartridge, catalogue, index: publicIndex }));

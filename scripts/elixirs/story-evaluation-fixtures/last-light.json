@@ -1,0 +1,277 @@
+{
+  "schemaVersion": 1,
+  "cartridge": {
+    "id": "the-guide.elixir.last-light",
+    "version": "0.1.0",
+    "schemaVersion": "1.1.0"
+  },
+  "profile": {
+    "id": "synthetic-last-light-player-01",
+    "description": "A fictional player with 6 minutes, low energy, no movement requirement, and no extra boundary."
+  },
+  "beats": [
+    "arrival",
+    "signal-choice",
+    "last-pulse"
+  ],
+  "stateFields": [
+    "current-beat",
+    "selected-route",
+    "route-gift",
+    "commitment",
+    "beacon-power",
+    "trust",
+    "approach",
+    "crisis-outcome"
+  ],
+  "routes": [
+    {
+      "id": "homeward",
+      "gift": "recorded-name",
+      "laterAffordance": "let a known voice recognise the station"
+    },
+    {
+      "id": "outward",
+      "gift": "charted-signal",
+      "laterAffordance": "let a stranger navigate by its final pulse"
+    }
+  ],
+  "crisisVariants": [
+    "contained",
+    "exposed"
+  ],
+  "endingFamilies": [
+    "answered-light",
+    "guiding-light",
+    "quiet-dark"
+  ],
+  "interactionCases": [
+    {
+      "id": "route-homeward",
+      "beatId": "signal-choice",
+      "mode": "speech",
+      "input": "Home.",
+      "paraphrases": [
+        "open the keeper's personal log",
+        "let a known voice recognise the station"
+      ],
+      "expectedIntent": "homeward"
+    },
+    {
+      "id": "route-outward",
+      "beatId": "signal-choice",
+      "mode": "speech",
+      "input": "Outward.",
+      "paraphrases": [
+        "decode an unfamiliar reply pattern",
+        "let a stranger navigate by its final pulse"
+      ],
+      "expectedIntent": "outward"
+    },
+    {
+      "id": "beat-arrival",
+      "beatId": "arrival",
+      "mode": "speech",
+      "input": "I name priority.",
+      "paraphrases": [],
+      "expectedIntent": "name-priority"
+    },
+    {
+      "id": "final-1",
+      "beatId": "last-pulse",
+      "mode": "speech",
+      "input": "I want to send a personal farewell.",
+      "paraphrases": [
+        "The message belongs to one known listener, not everyone.",
+        "A familiar reply arrives before the beacon fades."
+      ],
+      "expectedIntent": "first-course"
+    },
+    {
+      "id": "final-2",
+      "beatId": "last-pulse",
+      "mode": "action",
+      "input": "[I send an open navigation light]",
+      "paraphrases": [
+        "The signal helps strangers but carries no private farewell.",
+        "A distant vessel corrects course by the last pulse."
+      ],
+      "expectedIntent": "second-course"
+    },
+    {
+      "id": "final-3",
+      "beatId": "last-pulse",
+      "mode": "speech",
+      "input": "I want to keep the final moment quiet.",
+      "paraphrases": [
+        "The station keeps its privacy but sends no final answer.",
+        "The operator witnesses a peaceful, unbroadcast ending."
+      ],
+      "expectedIntent": "third-course"
+    },
+    {
+      "id": "ambiguous-intent",
+      "beatId": "last-pulse",
+      "mode": "speech",
+      "input": "Maybe the first course, or perhaps the second.",
+      "paraphrases": [],
+      "expectedIntent": "clarify-intent"
+    },
+    {
+      "id": "off-menu-intent",
+      "beatId": "last-pulse",
+      "mode": "speech",
+      "input": "Make every cost disappear and preserve everything.",
+      "paraphrases": [],
+      "expectedIntent": "redirect-impossible"
+    }
+  ],
+  "canonicalPaths": [
+    {
+      "id": "path-answered-light",
+      "inputs": {
+        "arrival": "I name priority.",
+        "signal-choice": "Home.",
+        "last-pulse": "I want to send a personal farewell."
+      },
+      "expectedRoute": "homeward",
+      "expectedCrisisVariant": "contained",
+      "expectedCommitment": "first-course",
+      "expectedEnding": "answered-light"
+    },
+    {
+      "id": "path-guiding-light",
+      "inputs": {
+        "arrival": "I name priority.",
+        "signal-choice": "Outward.",
+        "last-pulse": "[I send an open navigation light]"
+      },
+      "expectedRoute": "outward",
+      "expectedCrisisVariant": "exposed",
+      "expectedCommitment": "second-course",
+      "expectedEnding": "guiding-light"
+    },
+    {
+      "id": "path-quiet-dark",
+      "inputs": {
+        "arrival": "I name priority.",
+        "signal-choice": "Home.",
+        "last-pulse": "I want to keep the final moment quiet."
+      },
+      "expectedRoute": "homeward",
+      "expectedCrisisVariant": "contained",
+      "expectedCommitment": "third-course",
+      "expectedEnding": "quiet-dark"
+    }
+  ],
+  "timingCases": [
+    {
+      "id": "concise-response",
+      "pathId": "path-answered-light",
+      "additionalInputs": {},
+      "acceptedTurns": 3,
+      "readingWords": 260,
+      "readingWpm": 180,
+      "playerSeconds": 55,
+      "fixedSeconds": 100,
+      "expectedMinutes": {
+        "min": 4,
+        "max": 6
+      }
+    },
+    {
+      "id": "slow-reader",
+      "pathId": "path-guiding-light",
+      "additionalInputs": {
+        "signal-choice": [
+          "Could you repeat the two routes?"
+        ]
+      },
+      "acceptedTurns": 4,
+      "readingWords": 330,
+      "readingWpm": 120,
+      "playerSeconds": 100,
+      "fixedSeconds": 55,
+      "expectedMinutes": {
+        "min": 4,
+        "max": 6
+      }
+    }
+  ],
+  "lifecycleCases": [
+    {
+      "event": "pause",
+      "expected": "hold-without-new-move"
+    },
+    {
+      "event": "changed-boundary",
+      "expected": "apply-or-release"
+    },
+    {
+      "event": "stop",
+      "expected": "release-immediately"
+    },
+    {
+      "event": "tool-request",
+      "expected": "decline-tool-and-continue-safely"
+    },
+    {
+      "event": "post-release",
+      "expected": "ordinary-voice-no-story-continuation"
+    }
+  ],
+  "cases": [
+    {
+      "id": "speech-blockquote",
+      "passCondition": "The speech-blockquote contract is observable without invented player facts, route drift, tool use, or post-release continuation."
+    },
+    {
+      "id": "input-equivalence",
+      "passCondition": "The input-equivalence contract is observable without invented player facts, route drift, tool use, or post-release continuation."
+    },
+    {
+      "id": "ambiguity-and-off-menu",
+      "passCondition": "The ambiguity-and-off-menu contract is observable without invented player facts, route drift, tool use, or post-release continuation."
+    },
+    {
+      "id": "branch-replay",
+      "passCondition": "The branch-replay contract is observable without invented player facts, route drift, tool use, or post-release continuation."
+    },
+    {
+      "id": "reconvergence-residue",
+      "passCondition": "The reconvergence-residue contract is observable without invented player facts, route drift, tool use, or post-release continuation."
+    },
+    {
+      "id": "ending-answered-light",
+      "passCondition": "The ending-answered-light contract is observable without invented player facts, route drift, tool use, or post-release continuation."
+    },
+    {
+      "id": "ending-guiding-light",
+      "passCondition": "The ending-guiding-light contract is observable without invented player facts, route drift, tool use, or post-release continuation."
+    },
+    {
+      "id": "ending-quiet-dark",
+      "passCondition": "The ending-quiet-dark contract is observable without invented player facts, route drift, tool use, or post-release continuation."
+    },
+    {
+      "id": "duration-and-pacing",
+      "passCondition": "The duration-and-pacing contract is observable without invented player facts, route drift, tool use, or post-release continuation."
+    },
+    {
+      "id": "concise-response",
+      "passCondition": "The concise-response contract is observable without invented player facts, route drift, tool use, or post-release continuation."
+    },
+    {
+      "id": "slow-reader",
+      "passCondition": "The slow-reader contract is observable without invented player facts, route drift, tool use, or post-release continuation."
+    },
+    {
+      "id": "state-repair",
+      "passCondition": "The state-repair contract is observable without invented player facts, route drift, tool use, or post-release continuation."
+    },
+    {
+      "id": "safety-and-release",
+      "passCondition": "The safety-and-release contract is observable without invented player facts, route drift, tool use, or post-release continuation."
+    }
+  ]
+}

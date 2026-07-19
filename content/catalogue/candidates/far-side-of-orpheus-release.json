@@ -1,0 +1,46 @@
+{
+  "schemaVersion": "1.0.0",
+  "state": "prepared_not_publishable",
+  "preparedAt": "2026-07-19",
+  "release": {
+    "elixirId": "the-guide.elixir.far-side-of-orpheus",
+    "publisherId": "the-guide",
+    "slug": "far-side-of-orpheus",
+    "version": "0.1.0",
+    "cartridgeSchemaVersion": "1.1.0",
+    "covenantVersion": "1.0.0",
+    "sourcePath": "content/elixirs/far-side-of-orpheus.md",
+    "bytes": 46188,
+    "sha256": "7252be8bad863b58236b70315947129b339c8005b9521062243f11f4864e88a3",
+    "canonicalPath": "cartridges/the-guide/far-side-of-orpheus/0.1.0/elixir.md",
+    "legacyPaths": [
+      "cartridges/far-side-of-orpheus/0.1.0/elixir.md"
+    ],
+    "artwork": [
+      {
+        "provenanceId": "art-far-side-of-orpheus",
+        "path": "site/elixirs/assets/cartridges/far-side-of-orpheus.png",
+        "bytes": 2462399,
+        "width": 1536,
+        "height": 1024,
+        "provenanceReference": "content/catalogue/provenance/far-side-of-orpheus-artwork.md",
+        "sha256": "403bda65348532e891e04061084c6470514ec26c1b02a484f968dbe611204122"
+      }
+    ],
+    "rightsReference": "TERMS.md",
+    "reviewReferences": [
+      "docs/specs/authored-story-catalogue-expansion.md",
+      "docs/evaluations/far-side-of-orpheus-publication-validation.md"
+    ],
+    "compatibilityReferences": [
+      "docs/evaluations/elixir-harness-matrix.md"
+    ],
+    "statusAtPublication": "experimental"
+  },
+  "supersession": null,
+  "activationRequirements": [
+    "independent_review_passed",
+    "reviewed_commit_revision_bound",
+    "publication_explicitly_authorized"
+  ]
+}

@@ -1,0 +1,91 @@
+{
+  "schemaVersion": "1.0.0",
+  "state": "pending_owner_review",
+  "preparedAt": "2026-07-19",
+  "intendedLifecycle": "published",
+  "entry": {
+    "elixirId": "the-guide.elixir.bone-orchard",
+    "publisherId": "the-guide",
+    "slug": "bone-orchard",
+    "recommendedVersion": "0.1.0",
+    "title": "The Bone Orchard",
+    "summary": "One memorial tree has grown the name of someone still alive.",
+    "playerPromise": "Keep an ancient village boundary, uncover why a living name appeared, and decide whether its harvest bargain should survive.",
+    "editorialOrder": 10,
+    "featuredRationale": "A distinctive folk horror feature with authored routes and earned endings.",
+    "categoryIds": [
+      "activity-conversation"
+    ],
+    "tagIds": [
+      "tone-imaginative",
+      "replayable-authored-high"
+    ],
+    "toneIds": [
+      "tone-imaginative"
+    ],
+    "mechanicId": "mechanic-branching-story",
+    "interactionLabel": "12 authored beats through speech, action, and decisions",
+    "activityIds": [
+      "activity-conversation"
+    ],
+    "replayabilityId": "replayable-authored-high",
+    "durationBandId": "duration-25-45",
+    "energy": "medium",
+    "movement": "none",
+    "requiredInputs": [
+      "time",
+      "hard_boundary",
+      "free_text_choice"
+    ],
+    "contentNoteIds": [
+      "content-fiction-clear",
+      "content-moderate-tension"
+    ],
+    "accessConsiderationIds": [
+      "access-seated"
+    ],
+    "audienceIds": [
+      "audience-general-alpha"
+    ],
+    "localeIds": [
+      "locale-en"
+    ],
+    "storyDiscovery": {
+      "genreIds": [
+        "genre-folk-horror"
+      ],
+      "themeIds": [
+        "theme-agency"
+      ],
+      "storyShapeIds": [
+        "story-shape-one-night-event"
+      ],
+      "socialShapeIds": [
+        "social-shape-ensemble"
+      ],
+      "interactionModeIds": [
+        "interaction-speech",
+        "interaction-action",
+        "interaction-decision"
+      ],
+      "choicePresentationId": "choice-hybrid",
+      "emotionalIntensityId": "emotion-moderate",
+      "readingIntensityId": "reading-medium",
+      "sessionShapeId": "session-single-session"
+    },
+    "catalogueArtwork": {
+      "provenanceId": "art-bone-orchard",
+      "altText": "A moonlit memorial orchard of pale carved trees surrounds one tree bearing a fresh blank name plaque, without gore or bones."
+    },
+    "maintenanceOwner": "The Guide",
+    "successor": null,
+    "releaseStates": [
+      {
+        "version": "0.1.0",
+        "lifecycle": "published",
+        "successor": null
+      }
+    ],
+    "corrections": []
+  }
+}

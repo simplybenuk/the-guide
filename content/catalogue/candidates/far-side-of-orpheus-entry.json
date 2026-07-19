@@ -1,0 +1,91 @@
+{
+  "schemaVersion": "1.0.0",
+  "state": "pending_owner_review",
+  "preparedAt": "2026-07-19",
+  "intendedLifecycle": "published",
+  "entry": {
+    "elixirId": "the-guide.elixir.far-side-of-orpheus",
+    "publisherId": "the-guide",
+    "slug": "far-side-of-orpheus",
+    "recommendedVersion": "0.1.0",
+    "title": "The Far Side of Orpheus",
+    "summary": "A damaged research ship receives its own distress call twelve minutes early.",
+    "playerPromise": "Hold a divided crew together and decide whether to close, preserve, or exploit a message from the ship's near future.",
+    "editorialOrder": 4,
+    "featuredRationale": "A distinctive hard science fiction time-loop drama feature with authored routes and earned endings.",
+    "categoryIds": [
+      "activity-conversation"
+    ],
+    "tagIds": [
+      "tone-imaginative",
+      "replayable-authored-high"
+    ],
+    "toneIds": [
+      "tone-imaginative"
+    ],
+    "mechanicId": "mechanic-branching-story",
+    "interactionLabel": "11 authored beats through speech, action, and decisions",
+    "activityIds": [
+      "activity-conversation"
+    ],
+    "replayabilityId": "replayable-authored-high",
+    "durationBandId": "duration-25-45",
+    "energy": "medium",
+    "movement": "none",
+    "requiredInputs": [
+      "time",
+      "hard_boundary",
+      "free_text_choice"
+    ],
+    "contentNoteIds": [
+      "content-fiction-clear",
+      "content-moderate-tension"
+    ],
+    "accessConsiderationIds": [
+      "access-seated"
+    ],
+    "audienceIds": [
+      "audience-general-alpha"
+    ],
+    "localeIds": [
+      "locale-en"
+    ],
+    "storyDiscovery": {
+      "genreIds": [
+        "genre-science-fiction"
+      ],
+      "themeIds": [
+        "theme-agency"
+      ],
+      "storyShapeIds": [
+        "story-shape-one-night-event"
+      ],
+      "socialShapeIds": [
+        "social-shape-ensemble"
+      ],
+      "interactionModeIds": [
+        "interaction-speech",
+        "interaction-action",
+        "interaction-decision"
+      ],
+      "choicePresentationId": "choice-hybrid",
+      "emotionalIntensityId": "emotion-moderate",
+      "readingIntensityId": "reading-medium",
+      "sessionShapeId": "session-single-session"
+    },
+    "catalogueArtwork": {
+      "provenanceId": "art-far-side-of-orpheus",
+      "altText": "A damaged research vessel arcs behind a black moon while a duplicate distress waveform glows ahead of it."
+    },
+    "maintenanceOwner": "The Guide",
+    "successor": null,
+    "releaseStates": [
+      {
+        "version": "0.1.0",
+        "lifecycle": "published",
+        "successor": null
+      }
+    ],
+    "corrections": []
+  }
+}

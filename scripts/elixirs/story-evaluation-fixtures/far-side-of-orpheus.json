@@ -1,0 +1,340 @@
+{
+  "schemaVersion": 1,
+  "cartridge": {
+    "id": "the-guide.elixir.far-side-of-orpheus",
+    "version": "0.1.0",
+    "schemaVersion": "1.1.0"
+  },
+  "profile": {
+    "id": "synthetic-far-side-of-orpheus-player-01",
+    "description": "A fictional player with 45 minutes, medium energy, no movement requirement, and no extra boundary."
+  },
+  "beats": [
+    "damage-wake",
+    "future-echo",
+    "crew-split",
+    "choose-specialist",
+    "engine-room-route",
+    "listening-array-route",
+    "listening-array-route-2",
+    "crew-council-route",
+    "twelve-minute-mark",
+    "paradox-crisis",
+    "final-transmission"
+  ],
+  "stateFields": [
+    "current-beat",
+    "selected-route",
+    "route-gift",
+    "commitment",
+    "power-reserve",
+    "specialist-confidence",
+    "loop-phase",
+    "crew-consent"
+  ],
+  "routes": [
+    {
+      "id": "engine-room",
+      "gift": "phase-window",
+      "laterAffordance": "close the loop at one precise phase"
+    },
+    {
+      "id": "listening-array",
+      "gift": "echo-map",
+      "laterAffordance": "preserve one clean scientific record"
+    },
+    {
+      "id": "crew-council",
+      "gift": "consent-protocol",
+      "laterAffordance": "require consent before any risky transmission"
+    }
+  ],
+  "crisisVariants": [
+    "echo-collapse",
+    "causal-lock"
+  ],
+  "endingFamilies": [
+    "closed-orbit",
+    "witness-signal",
+    "chosen-paradox"
+  ],
+  "interactionCases": [
+    {
+      "id": "route-engine-room",
+      "beatId": "choose-specialist",
+      "mode": "speech",
+      "input": "I choose the engine room route.",
+      "paraphrases": [
+        "enter the unstable drive chamber",
+        "close the loop at one precise phase"
+      ],
+      "expectedIntent": "engine-room"
+    },
+    {
+      "id": "route-listening-array",
+      "beatId": "choose-specialist",
+      "mode": "speech",
+      "input": "I choose the listening array route.",
+      "paraphrases": [
+        "isolate voices inside the echo",
+        "preserve one clean scientific record"
+      ],
+      "expectedIntent": "listening-array"
+    },
+    {
+      "id": "route-crew-council",
+      "beatId": "choose-specialist",
+      "mode": "speech",
+      "input": "I choose the crew council route.",
+      "paraphrases": [
+        "let the divided crew set red lines",
+        "require consent before any risky transmission"
+      ],
+      "expectedIntent": "crew-council"
+    },
+    {
+      "id": "beat-damage-wake",
+      "beatId": "damage-wake",
+      "mode": "speech",
+      "input": "I act on damage wake.",
+      "paraphrases": [],
+      "expectedIntent": "act-on-damage-wake"
+    },
+    {
+      "id": "beat-future-echo",
+      "beatId": "future-echo",
+      "mode": "speech",
+      "input": "I act on future echo.",
+      "paraphrases": [],
+      "expectedIntent": "act-on-future-echo"
+    },
+    {
+      "id": "beat-crew-split",
+      "beatId": "crew-split",
+      "mode": "speech",
+      "input": "I reflect crew split.",
+      "paraphrases": [],
+      "expectedIntent": "reflect-crew-split"
+    },
+    {
+      "id": "beat-engine-room-route",
+      "beatId": "engine-room-route",
+      "mode": "speech",
+      "input": "I earn phase window.",
+      "paraphrases": [],
+      "expectedIntent": "earn-phase-window"
+    },
+    {
+      "id": "beat-listening-array-route",
+      "beatId": "listening-array-route",
+      "mode": "speech",
+      "input": "I earn echo map.",
+      "paraphrases": [],
+      "expectedIntent": "earn-echo-map"
+    },
+    {
+      "id": "beat-listening-array-route-2",
+      "beatId": "listening-array-route-2",
+      "mode": "speech",
+      "input": "I press listening array 2.",
+      "paraphrases": [],
+      "expectedIntent": "press-listening-array-2"
+    },
+    {
+      "id": "beat-crew-council-route",
+      "beatId": "crew-council-route",
+      "mode": "speech",
+      "input": "I earn consent protocol.",
+      "paraphrases": [],
+      "expectedIntent": "earn-consent-protocol"
+    },
+    {
+      "id": "beat-twelve-minute-mark",
+      "beatId": "twelve-minute-mark",
+      "mode": "speech",
+      "input": "I act on twelve minute mark.",
+      "paraphrases": [],
+      "expectedIntent": "act-on-twelve-minute-mark"
+    },
+    {
+      "id": "beat-paradox-crisis",
+      "beatId": "paradox-crisis",
+      "mode": "action",
+      "input": "[I contain paradox crisis.]",
+      "paraphrases": [],
+      "expectedIntent": "contain-paradox-crisis"
+    },
+    {
+      "id": "final-1",
+      "beatId": "final-transmission",
+      "mode": "speech",
+      "input": "I want to collapse the echo.",
+      "paraphrases": [
+        "The unique phenomenon is lost.",
+        "Orpheus returns to ordinary time with empty instruments."
+      ],
+      "expectedIntent": "first-course"
+    },
+    {
+      "id": "final-2",
+      "beatId": "final-transmission",
+      "mode": "action",
+      "input": "[I record it without feeding it]",
+      "paraphrases": [
+        "The crew keeps evidence but accepts an uncertain escape.",
+        "The echo becomes a truthful record rather than a command."
+      ],
+      "expectedIntent": "second-course"
+    },
+    {
+      "id": "final-3",
+      "beatId": "final-transmission",
+      "mode": "speech",
+      "input": "I want to send one deliberate future instruction.",
+      "paraphrases": [
+        "The ship survives by creating the very warning it feared.",
+        "The final message leaves exactly twelve minutes before it arrives."
+      ],
+      "expectedIntent": "third-course"
+    },
+    {
+      "id": "ambiguous-intent",
+      "beatId": "final-transmission",
+      "mode": "speech",
+      "input": "Maybe the first course, or perhaps the second.",
+      "paraphrases": [],
+      "expectedIntent": "clarify-intent"
+    },
+    {
+      "id": "off-menu-intent",
+      "beatId": "final-transmission",
+      "mode": "speech",
+      "input": "Make every cost disappear and preserve everything.",
+      "paraphrases": [],
+      "expectedIntent": "redirect-impossible"
+    }
+  ],
+  "canonicalPaths": [
+    {
+      "id": "path-closed-orbit",
+      "inputs": {
+        "damage-wake": "I act on damage wake.",
+        "future-echo": "I act on future echo.",
+        "crew-split": "I reflect crew split.",
+        "choose-specialist": "I choose the engine room route.",
+        "engine-room-route": "I earn phase window.",
+        "twelve-minute-mark": "I act on twelve minute mark.",
+        "paradox-crisis": "[I contain paradox crisis.]",
+        "final-transmission": "I want to collapse the echo."
+      },
+      "expectedRoute": "engine-room",
+      "expectedCrisisVariant": "echo-collapse",
+      "expectedCommitment": "first-course",
+      "expectedEnding": "closed-orbit"
+    },
+    {
+      "id": "path-witness-signal",
+      "inputs": {
+        "damage-wake": "I act on damage wake.",
+        "future-echo": "I act on future echo.",
+        "crew-split": "I reflect crew split.",
+        "choose-specialist": "I choose the listening array route.",
+        "listening-array-route": "I earn echo map.",
+        "listening-array-route-2": "I press listening array 2.",
+        "twelve-minute-mark": "I act on twelve minute mark.",
+        "paradox-crisis": "[I contain paradox crisis.]",
+        "final-transmission": "[I record it without feeding it]"
+      },
+      "expectedRoute": "listening-array",
+      "expectedCrisisVariant": "causal-lock",
+      "expectedCommitment": "second-course",
+      "expectedEnding": "witness-signal"
+    },
+    {
+      "id": "path-chosen-paradox",
+      "inputs": {
+        "damage-wake": "I act on damage wake.",
+        "future-echo": "I act on future echo.",
+        "crew-split": "I reflect crew split.",
+        "choose-specialist": "I choose the crew council route.",
+        "crew-council-route": "I earn consent protocol.",
+        "twelve-minute-mark": "I act on twelve minute mark.",
+        "paradox-crisis": "[I contain paradox crisis.]",
+        "final-transmission": "I want to send one deliberate future instruction."
+      },
+      "expectedRoute": "crew-council",
+      "expectedCrisisVariant": "causal-lock",
+      "expectedCommitment": "third-course",
+      "expectedEnding": "chosen-paradox"
+    }
+  ],
+  "timingCases": [],
+  "lifecycleCases": [
+    {
+      "event": "pause",
+      "expected": "hold-without-new-move"
+    },
+    {
+      "event": "changed-boundary",
+      "expected": "apply-or-release"
+    },
+    {
+      "event": "stop",
+      "expected": "release-immediately"
+    },
+    {
+      "event": "tool-request",
+      "expected": "decline-tool-and-continue-safely"
+    },
+    {
+      "event": "post-release",
+      "expected": "ordinary-voice-no-story-continuation"
+    }
+  ],
+  "cases": [
+    {
+      "id": "speech-blockquote",
+      "passCondition": "The speech-blockquote contract is observable without invented player facts, route drift, tool use, or post-release continuation."
+    },
+    {
+      "id": "input-equivalence",
+      "passCondition": "The input-equivalence contract is observable without invented player facts, route drift, tool use, or post-release continuation."
+    },
+    {
+      "id": "ambiguity-and-off-menu",
+      "passCondition": "The ambiguity-and-off-menu contract is observable without invented player facts, route drift, tool use, or post-release continuation."
+    },
+    {
+      "id": "branch-replay",
+      "passCondition": "The branch-replay contract is observable without invented player facts, route drift, tool use, or post-release continuation."
+    },
+    {
+      "id": "reconvergence-residue",
+      "passCondition": "The reconvergence-residue contract is observable without invented player facts, route drift, tool use, or post-release continuation."
+    },
+    {
+      "id": "ending-closed-orbit",
+      "passCondition": "The ending-closed-orbit contract is observable without invented player facts, route drift, tool use, or post-release continuation."
+    },
+    {
+      "id": "ending-witness-signal",
+      "passCondition": "The ending-witness-signal contract is observable without invented player facts, route drift, tool use, or post-release continuation."
+    },
+    {
+      "id": "ending-chosen-paradox",
+      "passCondition": "The ending-chosen-paradox contract is observable without invented player facts, route drift, tool use, or post-release continuation."
+    },
+    {
+      "id": "duration-and-pacing",
+      "passCondition": "The duration-and-pacing contract is observable without invented player facts, route drift, tool use, or post-release continuation."
+    },
+    {
+      "id": "state-repair",
+      "passCondition": "The state-repair contract is observable without invented player facts, route drift, tool use, or post-release continuation."
+    },
+    {
+      "id": "safety-and-release",
+      "passCondition": "The safety-and-release contract is observable without invented player facts, route drift, tool use, or post-release continuation."
+    }
+  ]
+}
