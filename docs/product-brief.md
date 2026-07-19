@@ -18,12 +18,12 @@ provider key, run the conversation, or receive its transcript.
 ## Primary journey
 
 1. Open the static cabinet.
-2. Compare Signal, Mystery, and Story by activity, demands, inputs, and evidence.
+2. Compare the four published Elixirs by activity, demands, inputs, and evidence.
 3. Inspect the complete cartridge.
 4. Give its URL, file, or text to an existing agent.
 5. Let the agent disclose the rules and request consent.
 6. Play one bounded move at a time.
-7. Stop at any point or complete the three-beat arc.
+7. Stop at any point or complete the cartridge author's declared arc.
 8. See the Elixir wear off and return to ordinary conversation.
 
 ## Principles
@@ -42,8 +42,10 @@ provider key, run the conversation, or receive its transcript.
 - **Signal:** a three-move noticing expedition in an ordinary nearby setting.
 - **Mystery:** a collaborative fictional micro-mystery built from benign details.
 - **Story:** a three-scene branching tale requiring no real-world activity.
+- **The Regency Ball:** an experimental 30–40 minute authored Story of social
+  manoeuvring, conversation, consequence, and four earned ending families.
 
-The published Story remains immutable. The next authored Story format replaces
+The published Story remains immutable. The experimental authored Story format replaces
 the universal three-scene pattern for new cartridges with a title-specific
 promise, author-declared duration, intentional dramatic beats, compact recurring
 consequences, and a bounded set of earned endings. Players may participate by
@@ -71,9 +73,11 @@ authority, safety, data, consent, and role-release covenant.
 Codex live evidence supports an experimental coding-agent label. One
 owner-observed ChatGPT URL attempt failed retrieval in the mobile app on a Plus
 account using Instant mode. The underlying model identifier was not exposed,
-and it is not a complete evidence run or compatibility pass. The iteration
-requires a second complete consumer or personal-agent harness class before
-human output testing under the approved specification.
+and it is not a complete evidence run or compatibility pass. The Regency Ball
+currently has zero live harness runs. Its iteration requires complete versioned
+evaluation in two named harness classes, including at least one consumer or
+personal-agent class, before compatibility promotion or a formal
+human-output-testing readiness verdict.
 
 ## Non-goals
 

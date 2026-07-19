@@ -24,9 +24,9 @@ afterEach(() => {
 describe("Elixir Pages artifact audit", () => {
   it("accepts the exact deterministic static artifact", () => {
     const result = auditElixirArtifact({ artifactDirectory: buildTemporaryArtifact() });
-    expect(result.fileCount).toBe(34);
+    expect(result.fileCount).toBe(42);
     expect(result.totalBytes).toBeGreaterThan(100_000);
-    expect(Object.keys(result.hashes)).toHaveLength(34);
+    expect(Object.keys(result.hashes)).toHaveLength(42);
   });
 
   it("rejects unexpected or missing files", () => {

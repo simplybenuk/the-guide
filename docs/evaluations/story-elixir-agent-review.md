@@ -4,6 +4,11 @@ Date: 2026-07-19
 Scope: S01–S07 local implementation  
 Verdict: **NOT READY FOR HUMAN TESTING solely because E07 is incomplete**
 
+Historical note: this document records the pre-publication review snapshot.
+The later owner-authorized experimental registration is validated separately in
+`story-elixir-publication-validation.md` and does not change this review's
+compatibility verdict.
+
 The local implementation has no remaining blocking or should-fix finding and is
 ready for owner code/content review. Formal output testing and compatibility
 promotion remain gated by separately authorized named live-harness evidence.

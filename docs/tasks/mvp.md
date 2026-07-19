@@ -19,13 +19,12 @@ active tree under the approved repository-pivot specification.
 
 ## Active
 
-No local authored-Story implementation task remains. The exact candidate is
-ready for owner code/content review; E07 remains a separate external-evidence
-gate before formal human output testing or compatibility promotion.
-
-The H09–H11 catalogue refinement is ready for owner output testing; overall
-gameplay remains gated by E07 below. The approved authored-Story iteration is
-local-only until its separate review, evidence, and publication gates pass.
+The owner explicitly authorized commit, push, and an experimental GitHub Pages
+release of The Regency Ball on 2026-07-19 so live harness evidence can be
+collected. Production registration is additive: the original Story remains
+published and unsuperseded. Deployment and live URL verification are in
+progress. E07 remains the gate before compatibility promotion or a formal
+`READY FOR HUMAN TESTING` verdict.
 
 ## Hosting and catalogue backlog
 
@@ -33,13 +32,15 @@ No approved hosting/catalogue implementation task remains after H11.
 
 ## Waiting on external evidence
 
-- [ ] **E07 — Complete a second live harness class**
-  - Codex evidence supports only the experimental `coding_agent` label.
+- [ ] **E07 — Complete Regency evidence in two live harness classes**
+  - Existing Codex evidence covers Signal, Mystery, and generic Story only; The
+    Regency Ball currently has zero live harness runs and zero tested classes.
   - One owner-observed ChatGPT attempt failed Pages URL retrieval in the mobile
     app on a Plus account using Instant mode. The underlying model identifier
     was not exposed, and it is not a complete compatibility run.
-  - Complete the versioned fixture matrix in one consumer or personal-agent
-    harness, derive compatibility fail-closed, and repeat independent review.
+  - Complete The Regency Ball's versioned fixture matrix in two named harness
+    classes, including at least one consumer or personal-agent harness; derive
+    compatibility fail-closed and repeat independent review.
 
 ## Backlog
 
@@ -342,7 +343,9 @@ No approved hosting/catalogue implementation task remains after H11.
   - `npm run validate` passed: lint, strict typecheck, 42 Elixir tests, deterministic 14-file/6,160,225-byte artifact audit, and all 7 cabinet browser journeys.
   - `git diff --check`, local/remote recovery-tag resolution, framework-dependency inventory, no-artifact `npm start`, and cartridge/artwork immutability checks passed.
   - Independent review found no blocking or should-fix cleanup finding and declared the work ready for human cleanup-PR review.
-  - Overall product status remains **NOT READY FOR HUMAN TESTING** solely because E07 still requires a second complete live harness class; ChatGPT remains environment-blocked and unpassed.
+  - Overall product status remains **NOT READY FOR HUMAN TESTING** under the
+    evidence rules current at this handoff; ChatGPT remains environment-blocked
+    and unpassed.
 
 - [x] **A03 — Remove the hosted runtime** (2026-07-18)
   - Removed hosted source, APIs, browser archive, provider configuration, pixel/audio assets, hosted tests, environment template, and Next.js configuration.

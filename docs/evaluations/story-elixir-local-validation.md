@@ -4,6 +4,10 @@ Date: 2026-07-19
 Scope: S01–S06 local implementation  
 Status: passed locally; not published and not compatibility-promoted
 
+Historical note: this document records the pre-publication candidate snapshot.
+The later owner-authorized experimental registration is validated separately in
+`story-elixir-publication-validation.md`; compatibility remains unpromoted.
+
 ## Exact candidate evidence
 
 - Cartridge: `content/elixirs/regency-ball.md`

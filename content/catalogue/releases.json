@@ -60,6 +60,26 @@
       "reviewReferences": ["docs/evaluations/elixir-final-validation.md"],
       "compatibilityReferences": ["docs/evaluations/elixir-harness-matrix.md"],
       "statusAtPublication": "experimental"
+    },
+    {
+      "elixirId": "the-guide.elixir.regency-ball",
+      "publisherId": "the-guide",
+      "slug": "regency-ball",
+      "version": "0.1.0",
+      "cartridgeSchemaVersion": "1.1.0",
+      "covenantVersion": "1.0.0",
+      "sourcePath": "content/elixirs/regency-ball.md",
+      "bytes": 53292,
+      "sha256": "7ca92ecd00c04b6300f1ebc32656c208cc79f0e508bbd02732aaa48c6abf049c",
+      "sourceRevision": "838193ac6c1a49afc1f572ce222f4f0e0376606f",
+      "publishedAt": "2026-07-19",
+      "canonicalPath": "cartridges/the-guide/regency-ball/0.1.0/elixir.md",
+      "legacyPaths": ["cartridges/regency-ball/0.1.0/elixir.md"],
+      "artwork": [{ "provenanceId": "art-regency-ball", "sha256": "5a553a6f1f384ef171a5c5d15a4c8ed26600a783ddad0ed54ed4bbc6e2abc270" }],
+      "rightsReference": "TERMS.md",
+      "reviewReferences": ["docs/evaluations/story-elixir-publication-validation.md", "docs/evaluations/story-elixir-agent-review.md"],
+      "compatibilityReferences": ["docs/evaluations/elixir-harness-matrix.md"],
+      "statusAtPublication": "experimental"
     }
   ]
 }

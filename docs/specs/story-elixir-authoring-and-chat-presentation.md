@@ -8,7 +8,18 @@ The repository owner approved this specification for development on 2026-07-19.
 S01–S07 local implementation and independent review completed on 2026-07-19
 with no remaining local blocking or should-fix finding. The exact candidate is
 ready for owner code/content review. Formal human output testing remains blocked
-solely by the separately authorized named live-harness evidence in E07.
+solely by the separately authorized Regency-specific live-harness evidence in
+E07. The Regency Ball currently has zero live harness runs; it requires complete
+versioned evaluation in two named harness classes, including at least one
+consumer or personal-agent class.
+
+On 2026-07-19 the repository owner explicitly authorized commit, push, and an
+experimental GitHub Pages publication so they can collect the missing live
+harness evidence. This is a narrow lifecycle refinement: local and independent
+review plus immutable source/provenance binding are sufficient for an
+`experimental` live-test release. E07 remains mandatory before any compatibility
+promotion or `READY FOR HUMAN TESTING` verdict. The generic Story release remains
+published and is not superseded by this refinement.
 
 ## Objective and scope
 
@@ -811,9 +822,10 @@ the chat transcript or execute the story.
 4. Independent agent review checks implementation against this specification.
 5. Only after review readiness and separate authorization may named live harness
    evaluation occur.
-6. Only after local and required live evidence, rights/provenance review, and
-   explicit human publication authorization may a release-ledger entry be added
-   and deployed.
+6. After local and independent review, rights/provenance review, immutable
+   source-revision binding, and explicit human publication authorization, a
+   release may be registered and deployed as `experimental` to collect required
+   live evidence. Compatibility promotion still requires that evidence.
 7. Only after the new release is valid and authorized may generic Story be
    marked superseded with an exact successor.
 8. Rollback before publication removes or reverts the unreleased additive work.
@@ -1194,5 +1206,6 @@ single-session experience, hybrid speech/action/decision interaction, four
 ending families, and semantic Markdown speaker presentation.
 
 Local implementation is complete and independently reviewed. The workflow state
-is **NOT READY FOR HUMAN TESTING** solely because E07 has not been authorized or
-completed; no compatibility or publication claim follows from local validation.
+is **NOT READY FOR HUMAN TESTING** solely because E07 has not been completed.
+The owner-authorized experimental Pages release exists to enable that evidence;
+no compatibility claim follows from local validation or publication alone.

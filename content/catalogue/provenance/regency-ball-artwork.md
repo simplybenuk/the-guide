@@ -1,7 +1,7 @@
-# The Regency Ball artwork — staged provenance
+# The Regency Ball artwork — provenance
 
-Status: staged for local review; not registered in the production artwork
-manifest and not published.
+Status: reviewed and registered in the production artwork manifest for the
+owner-authorized experimental live-test release.
 
 - Provenance ID: `art-regency-ball`
 - Path: `site/elixirs/assets/cartridges/regency-ball.png`

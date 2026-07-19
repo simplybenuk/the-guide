@@ -11,9 +11,19 @@ const inputs = () => ({
   candidateDocument: readJson("content/catalogue/candidates/regency-ball-release.json"),
   catalogueCandidateDocument: readJson("content/catalogue/candidates/regency-ball-entry.json"),
   releasesDocument: readJson("content/catalogue/releases.json"),
-  collections: ["start-here", "three-ways-to-play", "low-energy"].map(
-    (id) => readJson(`content/catalogue/collections/${id}.json`),
-  ),
+  collections: ["start-here", "three-ways-to-play", "low-energy"].map((id) => {
+    const collection = readJson(`content/catalogue/collections/${id}.json`);
+    if (id === "start-here") {
+      collection.elixirIds = collection.elixirIds.filter(
+        (elixirId) => elixirId !== "the-guide.elixir.regency-ball",
+      );
+    }
+    if (id === "three-ways-to-play") {
+      collection.elixirIds = collection.elixirIds.map((elixirId) =>
+        elixirId === "the-guide.elixir.regency-ball" ? "the-guide.elixir.story" : elixirId);
+    }
+    return collection;
+  }),
   repositoryRoot: root,
 });
 

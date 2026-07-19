@@ -47,7 +47,7 @@ for (const basePath of ["/", "/the-guide/"]) {
     await expect(page.getByRole("heading", { name: "Choose an Elixir. Let your agent drink the story." })).toBeVisible();
     await expect(page.locator("[data-spotlight]")).toHaveCount(1);
     await expect(page.locator("[data-shelf]")).toHaveCount(3);
-    await expect(page.locator("[data-catalogue-entry]")).toHaveCount(9);
+    await expect(page.locator("[data-catalogue-entry]")).toHaveCount(10);
     await expect(page.getByRole("link", { name: "Browse all Elixirs" })).toBeVisible();
     await expect(page.getByText("This cabinet does not receive your game conversation", { exact: false })).toBeVisible();
     await expect(page.getByRole("link", { name: "Read the alpha usage terms" })).toHaveAttribute("href", "terms.md");
@@ -384,13 +384,13 @@ test("searches, filters, sorts, and clears locally without persisting the query"
   await expect(page.getByRole("status")).toHaveText("1 Elixir shown.");
   expect(page.url()).toContain("filter=mechanic-noticing");
   await page.getByRole("button", { name: "Clear search and filters" }).click();
-  await expect(page.getByRole("status")).toHaveText("3 Elixirs shown.");
+  await expect(page.getByRole("status")).toHaveText("4 Elixirs shown.");
   await expect(search).toBeFocused();
   expect(new URL(page.url()).search).toBe("");
 
   await page.getByRole("combobox", { name: "Sort" }).selectOption("title");
   const titles = await page.locator("[data-catalogue-entry]:not([hidden]) h3").allTextContents();
-  expect(titles).toEqual(["The Mystery Elixir", "The Signal Elixir", "The Story Elixir"]);
+  expect(titles).toEqual(["The Mystery Elixir", "The Regency Ball", "The Signal Elixir", "The Story Elixir"]);
   expect(requestedUrls.every((url) => url.startsWith("http://127.0.0.1:4173/"))).toBe(true);
   expect(await page.evaluate(() => ({ local: localStorage.length, session: sessionStorage.length }))).toEqual({ local: 0, session: 0 });
 });
@@ -400,7 +400,7 @@ test("exposes editorial collections, explainable related items, and immutable re
   const startShelf = page.locator("[data-shelf]").filter({ has: page.getByRole("heading", { name: "Start here" }) });
   await startShelf.getByRole("link", { name: "View collection" }).click();
   await expect(page.getByRole("heading", { name: "Start here" })).toBeVisible();
-  await expect(page.getByRole("article")).toHaveCount(3);
+  await expect(page.getByRole("article")).toHaveCount(4);
   await expect(page.getByText("Curated by The Guide")).toBeVisible();
 
   await page.goto("/the-guide/elixirs/signal/");
@@ -410,7 +410,7 @@ test("exposes editorial collections, explainable related items, and immutable re
   const evidenceResponse = await request.get(new URL(await compatibilityEvidence.getAttribute("href") ?? "", page.url()).href);
   expect(evidenceResponse.ok()).toBe(true);
   expect(await evidenceResponse.text()).toContain("Elixir cross-harness evaluation matrix");
-  await expect(page.getByText("different mechanic", { exact: false })).toHaveCount(2);
+  await expect(page.getByText("different mechanic", { exact: false })).toHaveCount(3);
   await page.getByRole("link", { name: "View this version’s immutable paths and history" }).click();
   await expect(page.getByRole("heading", { name: "The Signal Elixir 0.1.0" })).toBeVisible();
   await expect(page.getByText("1c371b5813f6d93f37cabe486337f2680928f3e2ae5c19d4e86d40328f597cbb")).toBeVisible();
@@ -427,12 +427,12 @@ test("keeps the complete static catalogue browseable without JavaScript", async 
   const page = await context.newPage();
   await page.goto("http://127.0.0.1:4173/the-guide/");
   await expect(page.locator("[data-spotlight]")).toHaveCount(1);
-  await expect(page.locator("[data-catalogue-entry]")).toHaveCount(9);
+  await expect(page.locator("[data-catalogue-entry]")).toHaveCount(10);
   await expect(page.getByRole("searchbox")).toHaveCount(0);
-  await page.getByRole("link", { name: /Search and filter all 3 Elixirs/ }).click();
+  await page.getByRole("link", { name: /Search and filter all 4 Elixirs/ }).click();
   await expect(page.getByRole("heading", { name: "Browse all Elixirs" })).toBeVisible();
   await expect(page.getByRole("searchbox")).toBeVisible();
-  await expect(page.getByRole("article")).toHaveCount(3);
+  await expect(page.getByRole("article")).toHaveCount(4);
   await page.goto("http://127.0.0.1:4173/the-guide/");
   const lowEnergyShelf = page.locator("[data-shelf]").filter({ has: page.getByRole("heading", { name: "Low-energy play" }) });
   await lowEnergyShelf.getByRole("link", { name: "View collection" }).click();

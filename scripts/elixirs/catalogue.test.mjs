@@ -39,6 +39,19 @@ const documents = () => ({
 
 const regencyCandidateCatalogue = () => {
   const candidate = documents();
+  candidate.releasesDocument.releases = candidate.releasesDocument.releases.filter(
+    ({ elixirId }) => elixirId !== "the-guide.elixir.regency-ball",
+  );
+  candidate.catalogueDocument.entries = candidate.catalogueDocument.entries.filter(
+    ({ elixirId }) => elixirId !== "the-guide.elixir.regency-ball",
+  );
+  candidate.artworkManifest.assets = candidate.artworkManifest.assets.filter(
+    ({ id }) => id !== "art-regency-ball",
+  );
+  for (const collection of candidate.collections) {
+    collection.elixirIds = collection.elixirIds.filter((id) => id !== "the-guide.elixir.regency-ball");
+    if (collection.id === "three-ways-to-play") collection.elixirIds.push("the-guide.elixir.story");
+  }
   const candidateEntry = storyCatalogueCandidateSchema.parse(
     readJson("content/catalogue/candidates/regency-ball-entry.json"),
   );
@@ -103,17 +116,19 @@ const regencyCandidateCatalogue = () => {
 };
 
 describe("Elixir catalogue contracts", () => {
-  it("loads a strict registry bound to the exact three published releases", () => {
+  it("loads a strict registry bound to the exact four published releases", () => {
     const catalogue = loadCatalogue();
     expect(catalogue.entries.map(({ elixirId, recommendedVersion }) => `${elixirId}@${recommendedVersion}`)).toEqual([
       "the-guide.elixir.signal@0.1.0",
       "the-guide.elixir.mystery@0.1.0",
       "the-guide.elixir.story@0.1.0",
+      "the-guide.elixir.regency-ball@0.1.0",
     ]);
     expect(catalogue.releases.map(({ bytes, sha256 }) => ({ bytes, sha256 }))).toEqual([
       { bytes: 8307, sha256: "1c371b5813f6d93f37cabe486337f2680928f3e2ae5c19d4e86d40328f597cbb" },
       { bytes: 8288, sha256: "f02cc863fb1a7cabd137c7980c2206e947313fa0e010926d1754bb5cb7f2b093" },
       { bytes: 8108, sha256: "48f4cb4f2b9cbca8c4ce04ba844b12cfb28a6a2e5398cb211ad827e04d6874d9" },
+      { bytes: 53292, sha256: "7ca92ecd00c04b6300f1ebc32656c208cc79f0e508bbd02732aaa48c6abf049c" },
     ]);
     for (const { release, source } of catalogue.cartridges) {
       expect(Buffer.byteLength(source, "utf8")).toBe(release.bytes);
@@ -176,7 +191,7 @@ describe("Elixir catalogue contracts", () => {
 
   it("enforces append-only release history against a trusted base document", () => {
     const base = documents().releasesDocument;
-    expect(compareReleaseLedgers(base, structuredClone(base))).toEqual({ retained: 3, appended: 0 });
+    expect(compareReleaseLedgers(base, structuredClone(base))).toEqual({ retained: 4, appended: 0 });
 
     const append = structuredClone(base);
     append.releases.push({
@@ -188,7 +203,7 @@ describe("Elixir catalogue contracts", () => {
       canonicalPath: "cartridges/the-guide/lantern/0.2.0/elixir.md",
       legacyPaths: [],
     });
-    expect(compareReleaseLedgers(base, append)).toEqual({ retained: 3, appended: 1 });
+    expect(compareReleaseLedgers(base, append)).toEqual({ retained: 4, appended: 1 });
 
     const changed = structuredClone(base);
     changed.releases[0].sha256 = "0".repeat(64);
@@ -231,15 +246,16 @@ describe("Elixir catalogue contracts", () => {
     const index = createPublicCatalogueIndex(loadCatalogue());
     expect(Object.keys(index)).toEqual(["schemaVersion", "deploymentRevision", "entries"]);
     expect(JSON.stringify(index)).not.toMatch(/sourcePath|reviewReferences|compatibilityReferences|transcript|prompt/i);
-    expect(searchCatalogue(index.entries, "story").map(({ slug }) => slug)).toEqual(["story", "mystery"]);
+    expect(searchCatalogue(index.entries, "story").map(({ slug }) => slug)).toEqual(["story", "regency-ball", "mystery"]);
     expect(searchCatalogue(index.entries, "deduction").map(({ slug }) => slug)).toEqual(["mystery"]);
-    expect(searchCatalogue(index.entries, "The Guide")).toHaveLength(3);
-    expect(searchCatalogue(index.entries, "").map(({ slug }) => slug)).toEqual(["signal", "mystery", "story"]);
+    expect(searchCatalogue(index.entries, "The Guide")).toHaveLength(4);
+    expect(searchCatalogue(index.entries, "").map(({ slug }) => slug)).toEqual(["signal", "mystery", "story", "regency-ball"]);
     expect(filterCatalogue(index.entries, { mechanic: ["mechanic-noticing"], tone: [] }).map(({ slug }) => slug)).toEqual(["signal"]);
     expect(filterCatalogue(index.entries, { activity: ["activity-conversation"], tone: ["tone-curious", "tone-playful"] }).map(({ slug }) => slug)).toEqual(["signal", "mystery"]);
     expect(relatedCatalogueEntries(index.entries, "the-guide.elixir.signal")).toEqual([
       expect.objectContaining({ entry: expect.objectContaining({ slug: "mystery" }), differentMechanic: true }),
       expect.objectContaining({ entry: expect.objectContaining({ slug: "story" }), differentMechanic: true }),
+      expect.objectContaining({ entry: expect.objectContaining({ slug: "regency-ball" }), differentMechanic: true }),
     ]);
   });
 
@@ -359,7 +375,7 @@ describe("Elixir catalogue contracts", () => {
     withdrawal.tombstoneSha256 = createHash("sha256").update(renderWithdrawalTombstone({ withdrawal, release })).digest("hex");
     fixture.withdrawalsDocument.withdrawals.push(withdrawal);
     const validated = validateCatalogueRecords(fixture);
-    expect(createPublicCatalogueIndex(validated).entries.map(({ slug }) => slug)).toEqual(["mystery", "story"]);
+    expect(createPublicCatalogueIndex(validated).entries.map(({ slug }) => slug)).toEqual(["mystery", "story", "regency-ball"]);
 
     const tampered = structuredClone(fixture);
     tampered.withdrawalsDocument.withdrawals[0].tombstoneSha256 = "f".repeat(64);
