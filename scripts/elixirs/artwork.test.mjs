@@ -64,4 +64,22 @@ describe("Elixir cartridge artwork", () => {
       });
     }
   });
+
+  it("stages complete original Regency artwork and provenance before release registration", () => {
+    const image = readFileSync(resolve(root, "site/elixirs/assets/cartridges/regency-ball.png"));
+    const hash = createHash("sha256").update(image).digest("hex");
+    const provenance = readFileSync(resolve(root, "content/catalogue/provenance/regency-ball-artwork.md"), "utf8");
+
+    expect(pngDimensions(image)).toEqual({ width: 1536, height: 1024 });
+    expect(hash).toBe("5a553a6f1f384ef171a5c5d15a4c8ed26600a783ddad0ed54ed4bbc6e2abc270");
+    for (const required of [
+      "art-regency-ball",
+      "OpenAI built-in image generation",
+      "2026-07-19",
+      "site/elixirs/assets/cartridges/story.png",
+      "be8da2a8d9fa5e8a723d1cdb6f72ef37526201f6602e21e5b9607f7278fed4ba",
+      hash,
+    ]) expect(provenance).toContain(required);
+    expect(manifest.assets.some(({ id }) => id === "art-regency-ball")).toBe(false);
+  });
 });

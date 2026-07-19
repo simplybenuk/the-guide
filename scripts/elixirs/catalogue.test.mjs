@@ -22,6 +22,7 @@ import {
 } from "./catalogue.mjs";
 import { auditElixirArtifact } from "./audit.mjs";
 import { buildElixirSite } from "./build.mjs";
+import { storyCatalogueCandidateSchema } from "./story-release-candidate.mjs";
 
 const root = process.cwd();
 const readJson = (path) => JSON.parse(readFileSync(resolve(root, path), "utf8"));
@@ -35,6 +36,71 @@ const documents = () => ({
   withdrawalsDocument: readJson("content/catalogue/withdrawals.json"),
   artworkManifest: readJson("site/elixirs/assets/cartridges/manifest.json"),
 });
+
+const regencyCandidateCatalogue = () => {
+  const candidate = documents();
+  const candidateEntry = storyCatalogueCandidateSchema.parse(
+    readJson("content/catalogue/candidates/regency-ball-entry.json"),
+  );
+  // Local static-preview fixture only. No reviewed state is persisted or accepted
+  // by release preparation; production registration remains separately gated.
+  const entry = {
+    ...candidateEntry.entry,
+    lifecycle: candidateEntry.intendedLifecycle,
+    review: { state: "reviewed", date: candidateEntry.preparedAt },
+  };
+  const source = readFileSync(resolve(root, "content/elixirs/regency-ball.md"), "utf8");
+  const artwork = readFileSync(resolve(root, "site/elixirs/assets/cartridges/regency-ball.png"));
+  const sourceSha256 = createHash("sha256").update(source).digest("hex");
+  const artworkSha256 = createHash("sha256").update(artwork).digest("hex");
+
+  candidate.releasesDocument.releases.push({
+    elixirId: entry.elixirId,
+    publisherId: entry.publisherId,
+    slug: entry.slug,
+    version: entry.recommendedVersion,
+    cartridgeSchemaVersion: "1.1.0",
+    covenantVersion: "1.0.0",
+    sourcePath: "content/elixirs/regency-ball.md",
+    bytes: Buffer.byteLength(source, "utf8"),
+    sha256: sourceSha256,
+    sourceRevision: "0".repeat(40),
+    publishedAt: "2026-07-19",
+    canonicalPath: "cartridges/the-guide/regency-ball/0.1.0/elixir.md",
+    legacyPaths: ["cartridges/regency-ball/0.1.0/elixir.md"],
+    artwork: [{ provenanceId: "art-regency-ball", sha256: artworkSha256 }],
+    rightsReference: "TERMS.md",
+    reviewReferences: ["docs/specs/story-elixir-authoring-and-chat-presentation.md"],
+    compatibilityReferences: ["docs/evaluations/elixir-harness-matrix.md"],
+    statusAtPublication: "experimental",
+  });
+  candidate.catalogueDocument.entries.push(entry);
+  for (const collection of candidate.collections.filter(({ id }) =>
+    ["start-here", "three-ways-to-play"].includes(id))) {
+    collection.elixirIds = collection.elixirIds.map((id) =>
+      id === "the-guide.elixir.story" ? entry.elixirId : id);
+    collection.updatedAt = "2026-07-19";
+  }
+  candidate.artworkManifest.assets.push({
+    id: "art-regency-ball",
+    path: "assets/cartridges/regency-ball.png",
+    kind: "visual",
+    source: "OpenAI built-in image generation from a project-authored production prompt",
+    author: "OpenAI image generation, directed by The Guide project",
+    license: "Generated for this project; use governed by the applicable OpenAI terms",
+    dimensions: { width: 1536, height: 1024 },
+    generatedAt: "2026-07-19",
+    generationMode: "Original generation with current cartridge art as loose style references",
+    referenceAsset: {
+      availability: "active",
+      path: "site/elixirs/assets/cartridges/story.png",
+      sha256: "be8da2a8d9fa5e8a723d1cdb6f72ef37526201f6602e21e5b9607f7278fed4ba",
+    },
+    promptSummary: "Original pixel-art Regency ballroom still life with no people or readable text.",
+    sha256: artworkSha256,
+  });
+  return validateCatalogueRecords(candidate);
+};
 
 describe("Elixir catalogue contracts", () => {
   it("loads a strict registry bound to the exact three published releases", () => {
@@ -175,6 +241,62 @@ describe("Elixir catalogue contracts", () => {
       expect.objectContaining({ entry: expect.objectContaining({ slug: "mystery" }), differentMechanic: true }),
       expect.objectContaining({ entry: expect.objectContaining({ slug: "story" }), differentMechanic: true }),
     ]);
+  });
+
+  it("projects spoiler-safe authored Story discovery into static browsing and detail facts", () => {
+    const catalogue = regencyCandidateCatalogue();
+    const index = createPublicCatalogueIndex(catalogue);
+    const regency = index.entries.find(({ slug }) => slug === "regency-ball");
+
+    expect(regency.story).toEqual({
+      playerRole: "An adult guest whose family expects one advantageous match at a grand fictional ball.",
+      interactionModes: ["speech", "action", "decision"],
+      choicePresentation: "hybrid",
+      emotionalIntensity: "moderate",
+      readingIntensity: "medium",
+      endingDescription: "Four distinct endings shaped by obligation, trust, public truth, and the final waltz.",
+      replayLevel: "high",
+      replayPromise: "Three first-dance routes reveal different conversations and later ways to change the ball.",
+      sessionShape: "single_session",
+    });
+    expect(regency.taxonomyIds).toEqual(expect.arrayContaining([
+      "genre-romance",
+      "story-shape-one-night-event",
+      "interaction-speech",
+      "interaction-action",
+      "interaction-decision",
+      "emotion-moderate",
+      "session-single-session",
+    ]));
+    expect(searchCatalogue(index.entries, "courtship").map(({ slug }) => slug)).toContain("regency-ball");
+    expect(filterCatalogue(index.entries, { genre: ["genre-romance"] }).map(({ slug }) => slug)).toEqual(["regency-ball"]);
+
+    const outputDirectory = mkdtempSync(join(tmpdir(), "the-guide-regency-catalogue-"));
+    try {
+      buildElixirSite({ outputDirectory, sourceRevision: "0".repeat(40), catalogue });
+      const detail = readFileSync(resolve(outputDirectory, "elixirs/regency-ball/index.html"), "utf8");
+      const browse = readFileSync(resolve(outputDirectory, "browse/index.html"), "utf8");
+      const home = readFileSync(resolve(outputDirectory, "index.html"), "utf8");
+      const startHere = readFileSync(resolve(outputDirectory, "collections/start-here/index.html"), "utf8");
+      const threeWays = readFileSync(resolve(outputDirectory, "collections/three-ways-to-play/index.html"), "utf8");
+      expect(detail).toContain("Story experience");
+      expect(detail).toContain("How you participate");
+      expect(detail).toContain("speech, action, decision");
+      expect(detail).toContain("Four distinct endings");
+      expect(detail).toContain(
+        "Three first-dance routes reveal different conversations and later ways to change the ball.",
+      );
+      expect(browse).toContain("data-filter-facet=\"genre\"");
+      expect(browse).toContain("data-filter-id=\"interaction-speech\"");
+      expect(home).toContain("The Regency Ball");
+      expect(home).toContain("Start here");
+      expect(home).toContain("Three ways to play");
+      expect(startHere).toContain("The Regency Ball");
+      expect(threeWays).toContain("The Regency Ball");
+      expect(() => auditElixirArtifact({ artifactDirectory: outputDirectory, catalogue })).not.toThrow();
+    } finally {
+      rmSync(outputDirectory, { recursive: true, force: true });
+    }
   });
 
   it("renders an explicit non-playable withdrawal tombstone", () => {

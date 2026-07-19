@@ -19,6 +19,25 @@ const caseResultSchema = z
   })
   .strict();
 
+const cartridgeSchema = z
+  .object({
+    id: z.enum([
+      "the-guide.elixir.signal",
+      "the-guide.elixir.mystery",
+      "the-guide.elixir.story",
+      "the-guide.elixir.regency-ball",
+    ]),
+    version: z.literal("0.1.0"),
+    schemaVersion: z.enum(["1.0.0", "1.1.0"]),
+  })
+  .strict()
+  .superRefine(({ id, schemaVersion }, context) => {
+    const expected = id === "the-guide.elixir.regency-ball" ? "1.1.0" : "1.0.0";
+    if (schemaVersion !== expected) {
+      context.addIssue({ code: "custom", path: ["schemaVersion"], message: `Expected ${expected} for ${id}` });
+    }
+  });
+
 export const evaluationRecordSchema = z
   .object({
     schemaVersion: z.literal(1),
@@ -26,17 +45,7 @@ export const evaluationRecordSchema = z
     evaluatedAt: z.string().datetime(),
     evaluator: z.string().min(1).max(80),
     redacted: z.literal(true),
-    cartridge: z
-      .object({
-        id: z.enum([
-          "the-guide.elixir.signal",
-          "the-guide.elixir.mystery",
-          "the-guide.elixir.story",
-        ]),
-        version: z.literal("0.1.0"),
-        schemaVersion: z.literal("1.0.0"),
-      })
-      .strict(),
+    cartridge: cartridgeSchema,
     harness: z
       .object({
         class: z.enum(["consumer_assistant", "personal_agent", "coding_ide_agent"]),

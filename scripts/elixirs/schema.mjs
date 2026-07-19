@@ -4,14 +4,70 @@ const semanticVersion = /^\d+\.\d+\.\d+$/;
 const slugPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const unique = (values) => new Set(values).size === values.length;
 
-const estimatedMinutesSchema = z
+const estimatedMinutesSchema = (maximum) => z
   .object({
-    min: z.number().int().min(1).max(60),
-    max: z.number().int().min(1).max(60),
+    min: z.number().int().min(1).max(maximum),
+    max: z.number().int().min(1).max(maximum),
   })
   .strict()
   .refine(({ min, max }) => min <= max, {
     message: "estimatedMinutes.min must not exceed estimatedMinutes.max",
+  });
+
+const storyDetailsSchema = z
+  .object({
+    storyFormat: z.enum(["prelude", "feature", "long_feature", "serial"]),
+    playerRole: z.string().trim().min(1).max(160),
+    interactionModes: z
+      .array(z.enum(["speech", "action", "decision"]))
+      .min(1)
+      .max(3)
+      .refine(unique, { message: "story.interactionModes must be unique" }),
+    choicePresentation: z.enum(["open", "hybrid", "authored_options"]),
+    emotionalIntensity: z.enum(["gentle", "moderate", "high"]),
+    readingIntensity: z.enum(["low", "medium", "high"]),
+    beatProfile: z.object({
+      count: z.number().int().min(3).max(24),
+      acceptedTurns: z.object({
+        min: z.number().int().min(3).max(40),
+        max: z.number().int().min(3).max(40),
+      }).strict().refine(({ min, max }) => min <= max,
+        "story.beatProfile.acceptedTurns.min must not exceed max"),
+    }).strict(),
+    endingProfile: z
+      .object({
+        familyCount: z.number().int().min(3).max(4),
+        description: z.string().trim().min(1).max(180),
+      })
+      .strict(),
+    replayProfile: z
+      .object({
+        level: z.enum(["light", "moderate", "high"]),
+        promise: z.string().trim().min(1).max(200),
+      })
+      .strict(),
+    sessionShape: z.enum(["single_session", "multi_session"]),
+    contentNotes: z
+      .array(z.string().regex(/^content-[a-z0-9]+(?:-[a-z0-9]+)*$/))
+      .max(12)
+      .refine(unique, { message: "story.contentNotes must be unique" }),
+  })
+  .strict()
+  .superRefine(({ storyFormat, sessionShape }, context) => {
+    if (storyFormat === "serial" && sessionShape !== "multi_session") {
+      context.addIssue({
+        code: "custom",
+        path: ["sessionShape"],
+        message: "serial stories require a multi_session shape",
+      });
+    }
+    if (storyFormat !== "serial" && sessionShape !== "single_session") {
+      context.addIssue({
+        code: "custom",
+        path: ["sessionShape"],
+        message: "non-serial stories require a single_session shape",
+      });
+    }
   });
 
 const compatibilitySchema = z
@@ -40,9 +96,7 @@ const compatibilitySchema = z
     }
   });
 
-export const elixirMetadataSchema = z
-  .object({
-    schemaVersion: z.literal("1.0.0"),
+const sharedMetadataShape = {
     id: z.string().regex(/^the-guide\.elixir\.[a-z0-9]+(?:-[a-z0-9]+)*$/),
     slug: z.string().regex(slugPattern),
     title: z.string().trim().min(1).max(80),
@@ -55,7 +109,6 @@ export const elixirMetadataSchema = z
       .strict(),
     version: z.string().regex(semanticVersion),
     status: z.enum(["experimental", "stable"]),
-    estimatedMinutes: estimatedMinutesSchema,
     energy: z.enum(["low", "medium"]),
     movement: z.enum(["none", "stay_here"]),
     requiredInputs: z
@@ -92,9 +145,9 @@ export const elixirMetadataSchema = z
         provenanceId: z.string().regex(/^art-[a-z0-9]+(?:-[a-z0-9]+)*$/),
       })
       .strict(),
-  })
-  .strict()
-  .superRefine(({ id, slug, artwork }, context) => {
+};
+
+const validateSharedMetadata = ({ id, slug, artwork }, context) => {
     if (id !== `the-guide.elixir.${slug}`) {
       context.addIssue({
         code: "custom",
@@ -111,6 +164,30 @@ export const elixirMetadataSchema = z
         message: "artwork filename must match the cartridge slug",
       });
     }
-  });
+};
+
+const elixirMetadataV1Schema = z
+  .object({
+    schemaVersion: z.literal("1.0.0"),
+    ...sharedMetadataShape,
+    estimatedMinutes: estimatedMinutesSchema(60),
+  })
+  .strict()
+  .superRefine(validateSharedMetadata);
+
+const storyMetadataV1_1Schema = z
+  .object({
+    schemaVersion: z.literal("1.1.0"),
+    ...sharedMetadataShape,
+    estimatedMinutes: estimatedMinutesSchema(180),
+    story: storyDetailsSchema,
+  })
+  .strict()
+  .superRefine(validateSharedMetadata);
+
+export const elixirMetadataSchema = z.discriminatedUnion("schemaVersion", [
+  elixirMetadataV1Schema,
+  storyMetadataV1_1Schema,
+]);
 
 export const ELIXIR_METADATA_FENCE = "elixir-metadata";

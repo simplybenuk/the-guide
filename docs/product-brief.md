@@ -43,6 +43,15 @@ provider key, run the conversation, or receive its transcript.
 - **Mystery:** a collaborative fictional micro-mystery built from benign details.
 - **Story:** a three-scene branching tale requiring no real-world activity.
 
+The published Story remains immutable. The next authored Story format replaces
+the universal three-scene pattern for new cartridges with a title-specific
+promise, author-declared duration, intentional dramatic beats, compact recurring
+consequences, and a bounded set of earned endings. Players may participate by
+speaking to characters, describing actions, making explicit decisions, or
+combining them. A consistent chat presentation labels the narrator, named
+characters, the current turn, and optional approaches without requiring a
+provider-specific interface.
+
 Each cartridge has distinct original artwork and embeds the same versioned
 authority, safety, data, consent, and role-release covenant.
 

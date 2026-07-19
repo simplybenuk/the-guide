@@ -18,9 +18,15 @@ Canonical Markdown cartridges + original artwork
 
 ### Canonical content
 
-`content/elixirs/` contains one versioned common covenant and exactly three
-self-contained Markdown cartridges. Strict metadata binds identity, version,
-demands, inputs, compatibility evidence, and artwork provenance to each source.
+`content/elixirs/` contains one versioned common covenant, three immutable
+published cartridges, and additive release candidates. Strict metadata binds
+identity, version, demands, inputs, compatibility evidence, and artwork
+provenance to each source. Authored Story candidates use schema `1.1.0`: their
+experience contract declares player role, speech/action/decision interaction,
+choice presentation, intensity, endings, replay promise, and session shape.
+Their source prescribes ordered beats, compact state, reconvergence, ending
+eligibility, and semantic narrator/character labels while leaving prose
+realisation to the model.
 
 `content/catalogue/` is the strict publication registry for those immutable
 sources. Publisher, release-ledger, discovery, taxonomy, collection, and
@@ -31,6 +37,10 @@ version, while exhaustive release-version lifecycle records allow an older
 version to be superseded or withdrawn without hiding a newer live recommendation.
 Artwork provenance separately records active references and exact archived Git
 references, including recoverable path, revision, object, bytes, and digest.
+Uncommitted Story releases live under `content/catalogue/candidates/`; their
+exact source/artwork digests and proposed supersession are validated locally,
+but they intentionally omit a reviewed source revision and cannot enter the
+production registry before review, compatibility, and publication gates pass.
 
 ### Static cabinet
 

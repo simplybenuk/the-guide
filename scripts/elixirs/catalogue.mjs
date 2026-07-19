@@ -143,6 +143,17 @@ const releaseStateSchema = z.object({
 }).strict();
 const reviewSchema = z.object({ state: z.literal("reviewed"), date }).strict();
 const requiredInput = z.enum(["time", "energy", "hard_boundary", "environment_detail", "genre_boundary", "free_text_choice"]);
+const storyDiscoverySchema = z.object({
+  genreIds: uniqueArray(slug, "Story genre IDs must be unique").min(1),
+  themeIds: uniqueArray(slug, "Story theme IDs must be unique").min(1),
+  storyShapeIds: uniqueArray(slug, "Story shape IDs must be unique").min(1),
+  socialShapeIds: uniqueArray(slug, "Story social-shape IDs must be unique").min(1),
+  interactionModeIds: uniqueArray(slug, "Story interaction-mode IDs must be unique").min(1),
+  choicePresentationId: slug,
+  emotionalIntensityId: slug,
+  readingIntensityId: slug,
+  sessionShapeId: slug,
+}).strict();
 
 export const catalogueEntrySchema = z.object({
   elixirId,
@@ -170,6 +181,7 @@ export const catalogueEntrySchema = z.object({
   accessConsiderationIds: uniqueArray(slug, "Access IDs must be unique"),
   audienceIds: uniqueArray(slug, "Audience IDs must be unique").min(1),
   localeIds: uniqueArray(slug, "Locale IDs must be unique").min(1),
+  storyDiscovery: storyDiscoverySchema.optional(),
   review: reviewSchema,
   maintenanceOwner: z.string().trim().min(1).max(80),
   successor: successorSchema.nullable(),
@@ -183,7 +195,12 @@ export const catalogueDocumentSchema = z.object({
   entries: z.array(catalogueEntrySchema),
 }).strict();
 
-const facet = z.enum(["duration", "energy", "movement", "mechanic", "tone", "activity", "input", "replayability", "content_note", "access", "audience", "locale"]);
+const facet = z.enum([
+  "duration", "energy", "movement", "mechanic", "tone", "activity", "input",
+  "replayability", "content_note", "access", "audience", "locale", "genre",
+  "theme", "story_shape", "social_shape", "interaction_mode",
+  "choice_presentation", "emotional_intensity", "reading_intensity", "session_shape",
+]);
 export const taxonomyDocumentSchema = z.object({
   schemaVersion: catalogueVersion,
   values: z.array(z.object({
@@ -267,6 +284,18 @@ const taxonomyFields = {
   localeIds: "locale",
 };
 
+const storyTaxonomyFields = {
+  genreIds: "genre",
+  themeIds: "theme",
+  storyShapeIds: "story_shape",
+  socialShapeIds: "social_shape",
+  interactionModeIds: "interaction_mode",
+  choicePresentationId: "choice_presentation",
+  emotionalIntensityId: "emotional_intensity",
+  readingIntensityId: "reading_intensity",
+  sessionShapeId: "session_shape",
+};
+
 const valuesFor = (entry, key) => Array.isArray(entry[key]) ? entry[key] : [entry[key]];
 
 export const publicCatalogueEntrySchema = z.object({
@@ -299,6 +328,17 @@ export const publicCatalogueEntrySchema = z.object({
   taxonomyIds: z.array(slug),
   labels: z.array(z.string().trim().min(1).max(80)),
   searchTerms: z.array(z.string().trim().min(1).max(80)),
+  story: z.object({
+    playerRole: z.string().trim().min(1).max(160),
+    interactionModes: z.array(z.enum(["speech", "action", "decision"])),
+    choicePresentation: z.enum(["open", "hybrid", "authored_options"]),
+    emotionalIntensity: z.enum(["gentle", "moderate", "high"]),
+    readingIntensity: z.enum(["low", "medium", "high"]),
+    endingDescription: z.string().trim().min(1).max(180),
+    replayLevel: z.enum(["light", "moderate", "high"]),
+    replayPromise: z.string().trim().min(1).max(200),
+    sessionShape: z.enum(["single_session", "multi_session"]),
+  }).strict().optional(),
 }).strict();
 
 export const publicCatalogueIndexSchema = z.object({
@@ -398,6 +438,33 @@ export const validateCatalogueRecords = ({
         if (!value) throw new Error(`Unknown taxonomy ID ${id} in ${entry.elixirId}`);
         if (expectedFacet && value.facet !== expectedFacet) throw new Error(`Taxonomy facet mismatch for ${id} in ${entry.elixirId}`);
         if (value.lifecycle !== "active") throw new Error(`Deprecated taxonomy ID ${id} requires migration`);
+      }
+    }
+    if (Boolean(cartridge.metadata.story) !== Boolean(entry.storyDiscovery)) {
+      throw new Error(`Story discovery metadata presence differs from cartridge: ${entry.elixirId}`);
+    }
+    if (entry.storyDiscovery) {
+      for (const [field, expectedFacet] of Object.entries(storyTaxonomyFields)) {
+        for (const id of valuesFor(entry.storyDiscovery, field)) {
+          const value = taxonomyById.get(id);
+          if (!value) throw new Error(`Unknown Story taxonomy ID ${id} in ${entry.elixirId}`);
+          if (value.facet !== expectedFacet) throw new Error(`Story taxonomy facet mismatch for ${id} in ${entry.elixirId}`);
+          if (value.lifecycle !== "active") throw new Error(`Deprecated Story taxonomy ID ${id} requires migration`);
+        }
+      }
+      const story = cartridge.metadata.story;
+      const expectedInteractionIds = story.interactionModes.map((mode) => `interaction-${mode.replaceAll("_", "-")}`);
+      if (JSON.stringify(entry.storyDiscovery.interactionModeIds) !== JSON.stringify(expectedInteractionIds)) {
+        throw new Error(`Story interaction modes differ from cartridge: ${entry.elixirId}`);
+      }
+      if (entry.storyDiscovery.choicePresentationId !== `choice-${story.choicePresentation.replaceAll("_", "-")}` ||
+          entry.storyDiscovery.emotionalIntensityId !== `emotion-${story.emotionalIntensity}` ||
+          entry.storyDiscovery.readingIntensityId !== `reading-${story.readingIntensity}` ||
+          entry.storyDiscovery.sessionShapeId !== `session-${story.sessionShape.replaceAll("_", "-")}`) {
+        throw new Error(`Story discovery projection differs from cartridge: ${entry.elixirId}`);
+      }
+      if (JSON.stringify(entry.contentNoteIds) !== JSON.stringify(story.contentNotes)) {
+        throw new Error(`Story content notes differ from cartridge: ${entry.elixirId}`);
       }
     }
     if (entry.successor && !releaseByKey.has(releaseKey(entry.successor))) throw new Error(`Unknown successor for ${entry.elixirId}`);
@@ -530,6 +597,7 @@ export const createPublicCatalogueIndex = (catalogue) => {
         ...entry.categoryIds, ...entry.tagIds, ...entry.toneIds, entry.mechanicId,
         ...entry.activityIds, entry.replayabilityId, entry.durationBandId,
         ...entry.contentNoteIds, ...entry.accessConsiderationIds, ...entry.audienceIds, ...entry.localeIds,
+        ...(entry.storyDiscovery ? Object.keys(storyTaxonomyFields).flatMap((field) => valuesFor(entry.storyDiscovery, field)) : []),
       ])];
       return Object.freeze({
         elixirId: entry.elixirId,
@@ -561,6 +629,19 @@ export const createPublicCatalogueIndex = (catalogue) => {
         taxonomyIds: publicTaxonomyIds,
         labels: publicTaxonomyIds.map((id) => taxonomyById.get(id).label),
         searchTerms: publicTaxonomyIds.flatMap((id) => [taxonomyById.get(id).label, ...taxonomyById.get(id).synonyms]),
+        ...(cartridge.metadata.story ? {
+          story: {
+            playerRole: cartridge.metadata.story.playerRole,
+            interactionModes: cartridge.metadata.story.interactionModes,
+            choicePresentation: cartridge.metadata.story.choicePresentation,
+            emotionalIntensity: cartridge.metadata.story.emotionalIntensity,
+            readingIntensity: cartridge.metadata.story.readingIntensity,
+            endingDescription: cartridge.metadata.story.endingProfile.description,
+            replayLevel: cartridge.metadata.story.replayProfile.level,
+            replayPromise: cartridge.metadata.story.replayProfile.promise,
+            sessionShape: cartridge.metadata.story.sessionShape,
+          },
+        } : {}),
       });
     }),
   }));

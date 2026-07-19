@@ -19,13 +19,9 @@ active tree under the approved repository-pivot specification.
 
 ## Active
 
-- [ ] **S01 — Define Story authoring and metadata contracts**
-  - Add strict, optional Story-specific metadata that leaves Signal, Mystery,
-    and immutable Story `0.1.0` behaviour unchanged.
-  - Define and validate the transparent cartridge sections for interaction
-    moments, beats, state, branches, endings, presentation, and evaluation.
-  - Add focused passing and fail-closed fixtures; then run required validation
-    and hand the bounded task to independent agent review.
+No local authored-Story implementation task remains. The exact candidate is
+ready for owner code/content review; E07 remains a separate external-evidence
+gate before formal human output testing or compatibility promotion.
 
 The H09–H11 catalogue refinement is ready for owner output testing; overall
 gameplay remains gated by E07 below. The approved authored-Story iteration is
@@ -47,18 +43,107 @@ No approved hosting/catalogue implementation task remains after H11.
 
 ## Backlog
 
-- [ ] **S02 — Add Story chat presentation validation**
-- [ ] **S03 — Author The Regency Ball dramatic score and artwork**
-- [ ] **S04 — Implement narrative and interaction evaluation**
-- [ ] **S05 — Extend catalogue discovery**
-- [ ] **S06 — Prepare local release and supersession evidence**
-- [ ] **S07 — Independently review and, if separately authorized, evaluate live
-  harnesses**
 - Human-test premise comprehension, cartridge differentiation, drinking and
   return, response relevance, stop behavior, and clean role release after the
   compatibility gate is satisfied.
 
 ## Completed
+
+- [x] **S07 — Independently review local implementation** (2026-07-19)
+  - Independent review ran four adversarial passes. Development resolved shallow
+    score validation, descriptive-only evaluation, candidate artwork/review
+    state gaps, prose/score semantic drift, unbound ending costs/callbacks, and
+    incoherent crisis/final-commitment combinations.
+  - Final review found no remaining local blocking or should-fix issue and
+    confirmed the candidate is ready for owner code/content review.
+  - Full validation passed 98 tests, the exact 34-file/6,333,568-byte audit, all
+    13 browser journeys, immutable published hashes, and `git diff --check`.
+  - Verdict remains **NOT READY FOR HUMAN TESTING solely because E07 is
+    incomplete and unauthorized**. No external harness run or write occurred.
+    Detailed evidence: `docs/evaluations/story-elixir-agent-review.md`.
+
+- [x] **S05 — Extend catalogue discovery** (2026-07-19)
+  - Added strict Story genre, theme, shape, social, interaction, choice,
+    intensity, and session facets plus spoiler-safe public projection of role,
+    participation, endings, replay promise, and session shape.
+  - Added a standard accessible Story-experience detail section and local browse
+    filters. A candidate-only build replaces generic Story in `start-here` and
+    `three-ways-to-play`, then passes the real static build and artifact audit
+    without altering production catalogue state.
+  - Catalogue, build, artwork, evaluation, content, and lint checks passed all
+    35 focused tests before the full validation gate.
+
+- [x] **S06 — Prepare local release and supersession evidence** (2026-07-19)
+  - Bound the exact 53,292-byte cartridge and 2,616,876-byte artwork to a strict
+    `prepared_not_publishable` record; verified the immutable generic Story
+    predecessor and exact successor/collection transition; added fail-closed
+    drift tests.
+  - Updated the product and architecture descriptions for additive authored
+    Story candidates. Recorded local validation and rollback evidence in
+    `docs/evaluations/story-elixir-local-validation.md`.
+  - Full `npm run validate` passed lint, strict typecheck, 15 Vitest files with
+    98 tests, the deterministic 34-file/6,333,568-byte build and audit, and all
+    13 mobile Chromium browser journeys. `git diff --check` and all three
+    published cartridge digests passed.
+  - Changes remain local and uncommitted. Production releases, catalogue,
+    collections, withdrawals, and artwork manifest are unchanged; no external
+    harness, publication, deployment, or compatibility promotion occurred.
+
+- [x] **S03 — Author The Regency Ball dramatic score and artwork** (2026-07-19)
+  - Authored the self-contained schema `1.1.0` cartridge with a fixed fictional
+    adult cast, consent/setup, eight beats, three route-specific conversations,
+    nine compact state fields, visible reconvergence residue, two crisis
+    variants, four deterministic ending families, dance-card recap/memento,
+    presentation contract, evaluation cases, and exact release.
+  - Generated a distinct original 1536×1024 RGB pixel-art ballroom still life
+    with the OpenAI built-in image tool using the existing cartridge art only as
+    loose style references. Recorded prompt summary, source, authorship, licence,
+    active reference digest, dimensions, and final SHA-256 in provenance.
+  - Focused cartridge, content, artwork, and lint checks passed 25 tests. Full
+    catalogue validation is intentionally deferred until S05–S06 add the new
+    release and recommendation records together; no external publication
+    occurred.
+
+- [x] **S04 — Implement narrative and interaction evaluation** (2026-07-19)
+  - Added a strict evaluation deck and route matrix bound to the reference
+    cartridge, including equivalent speech/action/decision/combined inputs,
+    branch replay, reconvergence residue, state repair, safety, and release.
+  - Added a deterministic four-ending oracle with public-reckoning overlap
+    priority and fail-closed drift tests for beats, route gifts, endings, and
+    metadata counts. Extended redacted evaluation identity support for schema
+    `1.1.0` without changing existing records.
+  - Focused story/evaluation/content checks passed all 18 tests. Changes remain
+    local and uncommitted.
+
+- [x] **S02 — Add Story chat presentation validation** (2026-07-19)
+  - Added fail-closed authored-source requirements for standalone Narrator,
+    Character Name, Your turn, and optional Possible approaches labels; quoted
+    dialogue; one interaction focus; plain-text fallback; natural speech/action/
+    decision input; and the rule that the model never speaks for the player.
+  - Added negative fixtures for every required presentation semantic. Focused
+    cartridge/content checks passed 21 tests and the full unit suite passed all
+    83 tests across 13 files.
+  - Changes remain uncommitted and local. Next priority: S03.
+
+- [x] **S01 — Define Story authoring and metadata contracts** (2026-07-19)
+  - Added a strict cartridge schema `1.1.0` for authored Stories with nested
+    format, player-role, interaction-mode, choice-presentation, intensity,
+    ending, replay, session-shape, and content-note metadata. Existing schema
+    `1.0.0` remains strict and rejects the new object, preserving all current
+    release behaviour.
+  - Added deterministic authored-Story structure validation for twelve ordered,
+    non-empty transparent sections and stable labelled interaction, state, beat,
+    ending, and evaluation blocks; documented the authoring convention beside
+    canonical cartridge sources.
+  - Focused validation passed 20 tests across cartridge and current-content
+    contracts. Full `npm run validate` passed lint, typecheck, 13 Vitest files
+    with 82 tests, the deterministic 34-file/6,333,353-byte build and audit, and
+    all 13 mobile Chromium browser journeys. `git diff --check` passed, and the
+    Signal, Mystery, and Story SHA-256 digests exactly match the release ledger.
+  - Changes remain uncommitted and undeployed. No cartridge, covenant, release
+    ledger, artwork, catalogue recommendation, compatibility label, external
+    harness, or publication state changed.
+  - Next priority: independent S01 review, then S02 chat-presentation validation.
 
 - [x] **H11 — Validate and independently review collection-led discovery**
   (2026-07-19)
