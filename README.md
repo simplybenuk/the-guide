@@ -10,8 +10,11 @@ transcript, or application server.
 
 ## Status
 
-The static cabinet contains three experimental first-party Elixirs: Signal,
-Mystery, and Story. Local implementation and artifact validation are complete.
+The static catalogue contains three experimental first-party Elixirs: Signal,
+Mystery, and Story. A strict registry binds immutable releases to exact bytes
+and paths; local search, filters, editorial collections, and explainable related
+items use only public catalogue metadata and send no search or gameplay data.
+Local implementation and artifact validation are complete.
 Live Codex evidence supports the experimental `coding_agent` class only. One
 owner-observed ChatGPT attempt failed to retrieve the public Pages cartridge,
 using the ChatGPT mobile app on a Plus account in Instant mode. The underlying
@@ -43,16 +46,22 @@ Useful commands:
 npm run build       # generate dist/elixirs-pages
 npm run validate    # run the complete active-product suite
 npm run audit:elixirs
+npm run audit:releases -- --base-revision=<40-character-reviewed-commit> --bootstrap-ledger-sha256=<externally-approved-release-sha256> --approved-withdrawals-sha256=<externally-approved-withdrawal-sha256>
 ```
 
 ## How it works
 
 - `content/elixirs/` contains the canonical covenant and cartridges.
+- `content/catalogue/` contains publisher, immutable release, taxonomy,
+  collection, lifecycle, and discovery records.
 - `site/elixirs/` contains the cabinet presentation and original artwork.
 - `scripts/elixirs/` validates, builds, audits, serves, and evaluates Elixirs.
 - `tests/elixirs/` verifies the static cabinet at root and repository subpaths.
 - `.github/workflows/elixirs-pages.yml` packages the audited artifact through a
-  manual-only Pages workflow; it does not deploy on push or pull request.
+  manual-only Pages workflow. It fails closed unless the externally controlled
+  `ELIXIR_LEDGER_BASE_REVISION`, `ELIXIR_BOOTSTRAP_LEDGER_SHA256`, and
+  `ELIXIR_APPROVED_WITHDRAWALS_SHA256` repository variables are configured,
+  and it does not deploy on push or pull request.
 
 Every cartridge discloses its duration, demands, inputs, capability boundary,
 and data behavior before asking the player for affirmative consent. Gameplay is

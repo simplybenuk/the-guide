@@ -6,6 +6,7 @@ import { join, relative, resolve } from "node:path";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 
 import { buildElixirSite } from "./build.mjs";
+import { loadCatalogue } from "./catalogue.mjs";
 
 const repositoryRoot = process.cwd();
 const outputDirectory = mkdtempSync(join(tmpdir(), "guide-elixirs-build-"));
@@ -33,14 +34,32 @@ describe("static Elixir cabinet build", () => {
       "assets/cartridges/mystery.png",
       "assets/cartridges/signal.png",
       "assets/cartridges/story.png",
+      "browse/index.html",
       "cabinet.js",
       "cartridges/mystery/0.1.0/elixir.md",
       "cartridges/signal/0.1.0/elixir.md",
       "cartridges/story/0.1.0/elixir.md",
+      "cartridges/the-guide/mystery/0.1.0/elixir.md",
+      "cartridges/the-guide/signal/0.1.0/elixir.md",
+      "cartridges/the-guide/story/0.1.0/elixir.md",
+      "catalogue-index.json",
+      "catalogue.js",
+      "collections/low-energy/index.html",
+      "collections/start-here/index.html",
+      "collections/three-ways-to-play/index.html",
       "delivery-events.js",
       "elixirs/mystery/index.html",
+      "elixirs/mystery/versions/0.1.0/index.html",
       "elixirs/signal/index.html",
+      "elixirs/signal/versions/0.1.0/index.html",
       "elixirs/story/index.html",
+      "elixirs/story/versions/0.1.0/index.html",
+      "evidence/the-guide/mystery/0.1.0/compatibility-1.md",
+      "evidence/the-guide/mystery/0.1.0/review-1.md",
+      "evidence/the-guide/signal/0.1.0/compatibility-1.md",
+      "evidence/the-guide/signal/0.1.0/review-1.md",
+      "evidence/the-guide/story/0.1.0/compatibility-1.md",
+      "evidence/the-guide/story/0.1.0/review-1.md",
       "index.html",
       "styles.css",
       "terms.md",
@@ -61,9 +80,13 @@ describe("static Elixir cabinet build", () => {
       const emitted = readFileSync(
         resolve(outputDirectory, `cartridges/${slug}/0.1.0/elixir.md`),
       );
+      const namespaced = readFileSync(
+        resolve(outputDirectory, `cartridges/the-guide/${slug}/0.1.0/elixir.md`),
+      );
       const detail = readOutput(`elixirs/${slug}/index.html`);
 
       expect(emitted.equals(canonical)).toBe(true);
+      expect(namespaced.equals(canonical)).toBe(true);
       expect(detail).toContain(`../../cartridges/${slug}/0.1.0/elixir.md`);
       expect(detail).toContain("data-cartridge-source");
       expect(detail).toContain("View exactly what it says");
@@ -74,29 +97,42 @@ describe("static Elixir cabinet build", () => {
     }
   });
 
-  it("copies artwork without alteration and exposes complete comparison metadata", () => {
+  it("emits a metadata-only public index, collections, and immutable version records", () => {
+    const index = JSON.parse(readOutput("catalogue-index.json"));
+    expect(index.schemaVersion).toBe("1.0.0");
+    expect(index.deploymentRevision).toBe("catalogue-v1");
+    expect(index.entries).toHaveLength(3);
+    expect(JSON.stringify(index)).not.toMatch(/sourcePath|reviewReferences|compatibilityReferences|cartridge source|transcript/i);
+    expect(readOutput("collections/start-here/index.html")).toContain("Three distinct ways");
+    expect(readOutput("elixirs/signal/versions/0.1.0/index.html")).toContain(
+      "1c371b5813f6d93f37cabe486337f2680928f3e2ae5c19d4e86d40328f597cbb",
+    );
+    expect(readOutput("elixirs/signal/index.html")).toContain('href="../../evidence/the-guide/signal/0.1.0/review-1.md"');
+    expect(readOutput("elixirs/signal/index.html")).toContain('href="../../evidence/the-guide/signal/0.1.0/compatibility-1.md"');
+    expect(readOutput("evidence/the-guide/signal/0.1.0/compatibility-1.md")).toContain("Elixir cross-harness evaluation matrix");
+    expect(readOutput("index.html")).not.toContain("data-catalogue-search");
+    expect(readOutput("index.html")).toContain("data-spotlight");
+    expect(readOutput("browse/index.html")).toContain("data-catalogue-search");
+    expect(readOutput("browse/index.html")).toContain('type="application/json"');
+    expect(readOutput("catalogue.js")).not.toMatch(/fetch\s*\(|localStorage|sessionStorage|indexedDB/);
+  });
+
+  it("copies artwork without alteration and keeps discovery cards compact", () => {
     const manifest = JSON.parse(readOutput("assets/cartridges/manifest.json"));
     const index = readOutput("index.html");
+    const browse = readOutput("browse/index.html");
+    const detail = readOutput("elixirs/signal/index.html");
 
-    expect((index.match(/<article class="elixir-card/g) ?? [])).toHaveLength(3);
-    for (const label of [
-      "Shape",
-      "Time",
-      "Energy",
-      "Movement",
-      "Player input",
-      "Capability",
-      "Data behavior",
-      "Version",
-      "Publisher",
-      "Status",
-      "Compatibility",
-    ]) {
-      expect((index.match(new RegExp(`<dt>${label}</dt>`, "g")) ?? [])).toHaveLength(3);
-    }
-    expect(index).toContain("conversation only");
-    expect(index).toContain("provider processing: user chosen harness");
-    expect(index).toContain("<dd>The Guide</dd>");
+    expect((index.match(/data-spotlight/g) ?? [])).toHaveLength(1);
+    expect((index.match(/data-shelf(?:\s|>)/g) ?? [])).toHaveLength(3);
+    expect((index.match(/<article class="elixir-card/g) ?? [])).toHaveLength(9);
+    expect((browse.match(/<article class="elixir-card/g) ?? [])).toHaveLength(3);
+    expect(index).not.toContain("<dt>");
+    expect(browse).not.toContain("<dt>");
+    expect((browse.match(/<ul class="fit-signals"/g) ?? [])).toHaveLength(3);
+    expect(detail).toContain("Before you play");
+    expect(detail).toContain("The Guide receives");
+    expect(detail).toContain("Publisher, review, and provenance");
     expect(index).toContain("The game happens in the agent harness you choose");
     expect(index).toContain("does not receive your game conversation");
     expect(index).toContain('href="terms.md"');
@@ -151,5 +187,16 @@ describe("static Elixir cabinet build", () => {
     expect(runtime).toContain("the-guide.elixir.mystery@0.1.0");
     expect(runtime).toContain("the-guide.elixir.story@0.1.0");
     expect(runtime).not.toMatch(/sendBeacon|XMLHttpRequest|\bfetch\s*\(|localStorage|sessionStorage|indexedDB/);
+  });
+
+  it("rejects raw asset paths that attempt to escape source or artifact roots", () => {
+    const malicious = structuredClone(loadCatalogue());
+    malicious.artworkManifest.assets[0].path = "../../../../outside.png";
+    const maliciousOutput = mkdtempSync(join(tmpdir(), "guide-malicious-build-"));
+    try {
+      expect(() => buildElixirSite({ outputDirectory: maliciousOutput, sourceRevision, catalogue: malicious })).toThrow(/escapes its approved root/);
+    } finally {
+      rmSync(maliciousOutput, { recursive: true, force: true });
+    }
   });
 });

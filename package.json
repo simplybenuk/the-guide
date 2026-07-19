@@ -10,6 +10,7 @@
     "build": "npm run build:elixirs",
     "build:elixirs": "node scripts/elixirs/build.mjs",
     "audit:elixirs": "node scripts/elixirs/audit.mjs dist/elixirs-pages",
+    "audit:releases": "node scripts/elixirs/release-ledger.mjs",
     "start": "npm run build && npm run audit:elixirs && npm run start:elixirs",
     "start:elixirs": "node scripts/elixirs/serve.mjs --root dist/elixirs-pages --port 4173",
     "lint": "eslint . --max-warnings=0",

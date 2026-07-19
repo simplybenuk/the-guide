@@ -22,18 +22,34 @@ Canonical Markdown cartridges + original artwork
 self-contained Markdown cartridges. Strict metadata binds identity, version,
 demands, inputs, compatibility evidence, and artwork provenance to each source.
 
+`content/catalogue/` is the strict publication registry for those immutable
+sources. Publisher, release-ledger, discovery, taxonomy, collection, and
+withdrawal records are validated together. The ledger binds every published
+ID/version to exact bytes and paths; mutable editorial catalogue state cannot
+rewrite cartridge history. Entry lifecycle describes the currently recommended
+version, while exhaustive release-version lifecycle records allow an older
+version to be superseded or withdrawn without hiding a newer live recommendation.
+Artwork provenance separately records active references and exact archived Git
+references, including recoverable path, revision, object, bytes, and digest.
+
 ### Static cabinet
 
-`site/elixirs/` contains first-party HTML-generation inputs, CSS, progressive
-clipboard JavaScript, and project-owned artwork. The cabinet remains usable
-without JavaScript for comparison, source inspection, and download.
+`site/elixirs/` contains first-party HTML-generation inputs, CSS, local
+search/filter and progressive clipboard JavaScript, and project-owned artwork.
+The generated catalogue includes static collection and version-history pages
+and remains usable without JavaScript for browsing, comparison, source
+inspection, and download. Search terms remain in page memory and are neither
+persisted nor transmitted.
 
 ### Build and audit
 
-`scripts/elixirs/` parses and validates canonical content, emits the standalone
-artifact, rejects unexpected or unsafe files, serves local previews, and defines
-redacted cross-harness evidence. The artifact contains no server bundle, API,
-runtime environment, credential, database, or transcript receiver.
+`scripts/elixirs/` parses and cross-validates canonical content and catalogue
+records, enforces append-only release history against an explicit reviewed Git
+revision, emits the exact registry-derived
+artifact tree, rejects unexpected or unsafe files, serves local previews, and
+defines redacted cross-harness evidence. The artifact contains no server
+bundle, API, runtime environment, credential, database, analytics collector, or
+transcript receiver.
 
 ### Third-party harness
 
@@ -59,7 +75,12 @@ an enforceable sandbox.
 
 The deterministic output under `dist/elixirs-pages/` is suitable for GitHub
 Pages or another static host. The repository workflow is manual-only,
-least-privilege, and uploads only the audited artifact. Enabling Pages, running
+least-privilege, reads its release-ledger base from a repository-controlled
+variable and its bootstrap digest from a second externally controlled variable
+outside the candidate tree. A third external digest authorizes the exact
+append-only withdrawal ledger. The workflow fails closed when required trust
+input is absent and uploads
+only the audited artifact. Enabling Pages, running
 deployment, changing domains, or publishing cartridges requires explicit human
 authorization and resolved usage terms.
 

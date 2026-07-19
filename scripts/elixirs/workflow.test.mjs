@@ -35,6 +35,14 @@ describe("manual Elixir Pages workflow", () => {
     expect(workflow).toContain("path: dist/elixirs-pages");
     expect(workflow).toContain("include-hidden-files: true");
     expect(workflow).not.toContain("secrets.");
+    expect(workflow).not.toContain("ledger_base_revision:");
+    expect(workflow).not.toContain("inputs.ledger_base_revision");
+    expect(workflow).toContain("fetch-depth: 0");
+    expect(workflow).toContain('npm run audit:releases -- --base-revision="$ELIXIR_LEDGER_BASE_REVISION" --bootstrap-ledger-sha256="$ELIXIR_BOOTSTRAP_LEDGER_SHA256" --approved-withdrawals-sha256="$ELIXIR_APPROVED_WITHDRAWALS_SHA256"');
+    expect(workflow).toContain("ELIXIR_LEDGER_BASE_REVISION: ${{ vars.ELIXIR_LEDGER_BASE_REVISION }}");
+    expect(workflow).toContain("ELIXIR_BOOTSTRAP_LEDGER_SHA256: ${{ vars.ELIXIR_BOOTSTRAP_LEDGER_SHA256 }}");
+    expect(workflow).toContain("ELIXIR_APPROVED_WITHDRAWALS_SHA256: ${{ vars.ELIXIR_APPROVED_WITHDRAWALS_SHA256 }}");
+    expect(workflow).not.toContain("vars.ELIXIR_LEDGER_BASE_REVISION ||");
   });
 
   it("pins reviewed official action majors and links build to protected deployment", () => {

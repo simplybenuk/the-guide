@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "1.0.0",
+  "deploymentRevision": "catalogue-v1",
+  "entries": [
+    {
+      "elixirId": "the-guide.elixir.signal", "publisherId": "the-guide", "slug": "signal", "recommendedVersion": "0.1.0", "lifecycle": "published",
+      "title": "The Signal Elixir", "summary": "A short noticing expedition through an ordinary nearby setting.", "playerPromise": "Follow three grounded signals and return with a field note made from what you actually noticed.",
+      "editorialOrder": 1, "featuredRationale": "A gentle place to begin with grounded attention.", "categoryIds": ["activity-nearby"], "tagIds": ["tone-curious", "replayable-variable"],
+      "toneIds": ["tone-curious"], "mechanicId": "mechanic-noticing", "interactionLabel": "Three grounded noticing moves", "activityIds": ["activity-nearby", "activity-conversation"], "replayabilityId": "replayable-variable", "durationBandId": "duration-under-15",
+      "energy": "low", "movement": "stay_here", "requiredInputs": ["time", "energy", "hard_boundary"], "contentNoteIds": [], "accessConsiderationIds": ["access-seated"], "audienceIds": ["audience-general-alpha"], "localeIds": ["locale-en"],
+      "review": { "state": "reviewed", "date": "2026-07-18" }, "maintenanceOwner": "The Guide", "successor": null, "releaseStates": [{ "version": "0.1.0", "lifecycle": "published", "successor": null }], "corrections": []
+    },
+    {
+      "elixirId": "the-guide.elixir.mystery", "publisherId": "the-guide", "slug": "mystery", "recommendedVersion": "0.1.0", "lifecycle": "published",
+      "title": "The Mystery Elixir", "summary": "A collaborative micro-mystery made from harmless ordinary clues.", "playerPromise": "Build and solve a tiny fictional case with your agent without pretending the story is true.",
+      "editorialOrder": 2, "featuredRationale": "For playful collaboration with a clear fiction boundary.", "categoryIds": ["activity-conversation"], "tagIds": ["tone-playful", "replayable-variable"],
+      "toneIds": ["tone-playful"], "mechanicId": "mechanic-clue-building", "interactionLabel": "Three collaborative clue rounds", "activityIds": ["activity-conversation"], "replayabilityId": "replayable-variable", "durationBandId": "duration-under-15",
+      "energy": "low", "movement": "stay_here", "requiredInputs": ["time", "energy", "hard_boundary", "free_text_choice"], "contentNoteIds": ["content-fiction-clear"], "accessConsiderationIds": ["access-seated"], "audienceIds": ["audience-general-alpha"], "localeIds": ["locale-en"],
+      "review": { "state": "reviewed", "date": "2026-07-18" }, "maintenanceOwner": "The Guide", "successor": null, "releaseStates": [{ "version": "0.1.0", "lifecycle": "published", "successor": null }], "corrections": []
+    },
+    {
+      "elixirId": "the-guide.elixir.story", "publisherId": "the-guide", "slug": "story", "recommendedVersion": "0.1.0", "lifecycle": "published",
+      "title": "The Story Elixir", "summary": "A three-scene branching tale created in conversation with your agent.", "playerPromise": "Step into a short shared fiction whose next scene responds to the choices you make.",
+      "editorialOrder": 3, "featuredRationale": "For a complete choice-shaped fiction without real-world activity.", "categoryIds": ["activity-conversation"], "tagIds": ["tone-imaginative", "replayable-variable"],
+      "toneIds": ["tone-imaginative"], "mechanicId": "mechanic-branching-story", "interactionLabel": "Three choice-shaped story scenes", "activityIds": ["activity-conversation"], "replayabilityId": "replayable-variable", "durationBandId": "duration-under-15",
+      "energy": "low", "movement": "none", "requiredInputs": ["time", "hard_boundary", "genre_boundary", "free_text_choice"], "contentNoteIds": ["content-fiction-clear"], "accessConsiderationIds": ["access-seated"], "audienceIds": ["audience-general-alpha"], "localeIds": ["locale-en"],
+      "review": { "state": "reviewed", "date": "2026-07-18" }, "maintenanceOwner": "The Guide", "successor": null, "releaseStates": [{ "version": "0.1.0", "lifecycle": "published", "successor": null }], "corrections": []
+    }
+  ]
+}

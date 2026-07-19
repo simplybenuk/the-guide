@@ -24,9 +24,9 @@ afterEach(() => {
 describe("Elixir Pages artifact audit", () => {
   it("accepts the exact deterministic static artifact", () => {
     const result = auditElixirArtifact({ artifactDirectory: buildTemporaryArtifact() });
-    expect(result.fileCount).toBe(16);
+    expect(result.fileCount).toBe(34);
     expect(result.totalBytes).toBeGreaterThan(100_000);
-    expect(Object.keys(result.hashes)).toHaveLength(16);
+    expect(Object.keys(result.hashes)).toHaveLength(34);
   });
 
   it("rejects unexpected or missing files", () => {
@@ -172,5 +172,15 @@ describe("Elixir Pages artifact audit", () => {
       "\nchanged\n",
     );
     expect(() => auditElixirArtifact({ artifactDirectory })).toThrow(/differs from canonical bytes/);
+  });
+
+  it("rejects namespaced cartridge divergence and catalogue projection tampering", () => {
+    const namespaced = buildTemporaryArtifact();
+    appendFileSync(resolve(namespaced, "cartridges/the-guide/story/0.1.0/elixir.md"), "\nchanged\n");
+    expect(() => auditElixirArtifact({ artifactDirectory: namespaced })).toThrow(/differs from canonical bytes/);
+
+    const catalogue = buildTemporaryArtifact();
+    appendFileSync(resolve(catalogue, "catalogue-index.json"), " ");
+    expect(() => auditElixirArtifact({ artifactDirectory: catalogue })).toThrow(/differs from validated projection/);
   });
 });

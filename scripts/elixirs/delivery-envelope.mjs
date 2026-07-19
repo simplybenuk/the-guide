@@ -68,15 +68,30 @@ ${source}${cartridgeClosingMarker}
 ${renderCompletionInstruction()}`;
 };
 
-export const createResolverPrompt = ({ metadata, source, cartridgeUrl, sourceRevision }) => {
+export const createResolverPrompt = ({
+  metadata,
+  source,
+  cartridgeUrl,
+  sourceRevision,
+  contentPath = `content/elixirs/${metadata.slug}.md`,
+}) => {
   assertMetadata(metadata);
   validateSourceRevision(sourceRevision);
-  const expectedCartridgeUrl = `../../cartridges/${metadata.slug}/${metadata.version}/elixir.md`;
-  if (cartridgeUrl !== expectedCartridgeUrl) {
-    throw new Error(`Resolver cartridge URL must be exactly ${expectedCartridgeUrl}`);
+  const allowedCartridgeUrls = [
+    `../../cartridges/${metadata.slug}/${metadata.version}/elixir.md`,
+    `../../cartridges/the-guide/${metadata.slug}/${metadata.version}/elixir.md`,
+  ];
+  if (!allowedCartridgeUrls.includes(cartridgeUrl)) {
+    throw new Error(`Resolver cartridge URL must be exactly an approved versioned path for ${metadata.slug}@${metadata.version}`);
   }
   const integrity = getCartridgeIntegrity(source);
-  const contentPath = `content/elixirs/${metadata.slug}.md`;
+  const allowedContentPaths = [
+    `content/elixirs/${metadata.slug}.md`,
+    `content/elixirs/releases/the-guide/${metadata.slug}/${metadata.version}/elixir.md`,
+  ];
+  if (!allowedContentPaths.includes(contentPath)) {
+    throw new Error(`Resolver content path is not approved for ${metadata.slug}@${metadata.version}`);
+  }
   const rawUrl = `https://raw.githubusercontent.com/${repositoryOwner}/${repositoryName}/${sourceRevision}/${contentPath}`;
   const blobUrl = `https://github.com/${repositoryOwner}/${repositoryName}/blob/${sourceRevision}/${contentPath}`;
 

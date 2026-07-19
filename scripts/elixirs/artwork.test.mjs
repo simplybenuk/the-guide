@@ -23,7 +23,7 @@ const pngDimensions = (buffer) => {
 
 describe("Elixir cartridge artwork", () => {
   it("ships a complete unique 3:2 PNG for every cartridge", () => {
-    expect(manifest.schemaVersion).toBe(1);
+    expect(manifest.schemaVersion).toBe(2);
     expect(manifest.assets).toHaveLength(3);
 
     const hashes = manifest.assets.map((asset) => {
@@ -57,6 +57,11 @@ describe("Elixir cartridge artwork", () => {
       expect(provenance.license).toBeTruthy();
       expect(provenance.generatedAt).toMatch(/^\d{4}-\d{2}-\d{2}$/);
       expect(provenance.promptSummary).toBeTruthy();
+      expect(provenance.referenceAsset).toMatchObject({
+        availability: "archived_git",
+        path: "public/assets/pixel/expedition-atlas.png",
+        sha256: "d9ce9af9cf088319e599184595d32fe70e5a33e5d42b4e9b8067b671f28a68cc",
+      });
     }
   });
 });

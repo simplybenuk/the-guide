@@ -3,67 +3,50 @@ import { lstatSync, readFileSync, readdirSync } from "node:fs";
 import { relative, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 
-const expectedPaths = [
-  ".nojekyll",
-  "assets/cartridges/manifest.json",
-  "assets/cartridges/mystery.png",
-  "assets/cartridges/signal.png",
-  "assets/cartridges/story.png",
-  "cabinet.js",
-  "cartridges/mystery/0.1.0/elixir.md",
-  "cartridges/signal/0.1.0/elixir.md",
-  "cartridges/story/0.1.0/elixir.md",
-  "delivery-events.js",
-  "elixirs/mystery/index.html",
-  "elixirs/signal/index.html",
-  "elixirs/story/index.html",
-  "index.html",
-  "styles.css",
-  "terms.md",
-];
+import {
+  createPublicCatalogueIndex,
+  deriveExpectedArtifactPaths,
+  loadCatalogue,
+  renderWithdrawalTombstone,
+} from "./catalogue.mjs";
 
+const defaultCatalogue = loadCatalogue();
 const textExtensions = /\.(?:css|html|js|json|md)$/;
 const allowedAbsoluteUrls = new Set([
   "https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement",
 ]);
-const allowedPinnedSourceUrls = [
-  /^https:\/\/raw\.githubusercontent\.com\/simplybenuk\/the-guide\/[0-9a-f]{40}\/content\/elixirs\/(?:signal|mystery|story)\.md$/,
-  /^https:\/\/github\.com\/simplybenuk\/the-guide\/blob\/[0-9a-f]{40}\/content\/elixirs\/(?:signal|mystery|story)\.md$/,
-];
-const isPinnedSourceUrl = (url) => allowedPinnedSourceUrls.some((pattern) => pattern.test(url));
-const isInsideResolverTextarea = (text, index) => {
+const escapeRegex = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+const isInsideResolverTextarea = (text, index, resolverSlugs) => {
   const openingStart = text.lastIndexOf("<textarea", index);
   if (openingStart < 0) return false;
   const openingEnd = text.indexOf(">", openingStart);
   if (openingEnd < 0 || openingEnd >= index) return false;
   const closing = text.indexOf("</textarea>", openingEnd);
   const openingTag = text.slice(openingStart, openingEnd + 1);
-  return closing > index && /^<textarea id="resolver-prompt-(?:signal|mystery|story)" data-resolver-prompt rows="10" readonly>$/.test(openingTag);
+  const match = openingTag.match(/^<textarea id="resolver-prompt-([a-z0-9]+(?:-[a-z0-9]+)*)" data-resolver-prompt rows="10" readonly>$/);
+  return closing > index && match && resolverSlugs.has(match[1]);
 };
+
 const isInsideOrdinaryAnchor = (text, index) => {
   const openingStart = text.lastIndexOf("<a", index);
   if (openingStart < 0) return false;
   const openingEnd = text.indexOf(">", openingStart);
-  return openingEnd > index && /\bhref\s*=\s*["']?$/i.test(text.slice(openingStart, index));
+  return openingEnd > index && /\bhref\s*=\s*["']?$/.test(text.slice(openingStart, index));
 };
-const isAllowedAbsoluteUrl = ({ path, text, url, index }) =>
+
+const isAllowedAbsoluteUrl = ({ path, text, url, index, allowedPinnedSourceUrls, resolverSlugs }) =>
   (path.endsWith(".html") && allowedAbsoluteUrls.has(url) && isInsideOrdinaryAnchor(text, index)) ||
-  (path.endsWith(".html") && isPinnedSourceUrl(url) && isInsideResolverTextarea(text, index));
+  (path.endsWith(".html") && allowedPinnedSourceUrls.some((pattern) => pattern.test(url)) && isInsideResolverTextarea(text, index, resolverSlugs));
+
 const forbiddenText = [
   { label: "Next.js runtime", pattern: /\/_next\// },
   { label: "application API", pattern: /\/api\/(?:health|expedition)/ },
   { label: "runtime environment access", pattern: /process\.env|GUIDE_PROVIDER_/ },
   { label: "browser persistence", pattern: /localStorage|sessionStorage|indexedDB|serviceWorker/ },
-  {
-    label: "network-capable collector",
-    pattern: /navigator\.sendBeacon|XMLHttpRequest|\bfetch\s*\(|\bWebSocket\s*\(|\bEventSource\s*\(|\bimportScripts\s*\(|\bnew\s+Image\s*\(|document\.createElement\s*\(\s*["']script["']|document\.cookie/,
-  },
+  { label: "network-capable collector", pattern: /navigator\.sendBeacon|XMLHttpRequest|\bfetch\s*\(|\bWebSocket\s*\(|\bEventSource\s*\(|\bimportScripts\s*\(|\bnew\s+Image\s*\(|document\.createElement\s*\(\s*["']script["']|document\.cookie/ },
   { label: "collector path", pattern: /\/(?:analytics|collect|events|telemetry)(?:[/?#"'])/i },
   { label: "remote CSS resource", pattern: /url\(\s*["']?https?:\/\//i },
-  {
-    label: "remote active HTML attribute",
-    pattern: /<(?!a\b)[a-z][^>]*\b(?:src|srcset|href|action|data|poster)\s*=\s*["']?https?:\/\//i,
-  },
+  { label: "remote active HTML attribute", pattern: /<(?!a\b)[a-z][^>]*\b(?:src|srcset|href|action|data|poster)\s*=\s*["']?https?:\/\//i },
   { label: "remote stylesheet resource", pattern: /<link\b[^>]*\bhref\s*=\s*["']?https?:\/\//i },
   { label: "remote form action", pattern: /<form\b[^>]*\baction\s*=\s*["']?https?:\/\//i },
   { label: "refresh redirect", pattern: /<meta\s+[^>]*http-equiv=["']?refresh/i },
@@ -77,36 +60,34 @@ const forbiddenText = [
   { label: "Google API key", pattern: /AIza[A-Za-z0-9_-]{35}/ },
   { label: "Slack credential", pattern: /xox[baprs]-[A-Za-z0-9-]{20,}/ },
   { label: "bearer credential", pattern: /Authorization\s*:\s*Bearer\s+[A-Za-z0-9._~+/-]{20,}/i },
-  {
-    label: "assigned credential",
-    pattern: /(?:api[_-]?key|access[_-]?token|auth[_-]?token|client[_-]?secret|password)\s*[:=]\s*["'][^"'\r\n]{12,}["']/i,
-  },
+  { label: "assigned credential", pattern: /(?:api[_-]?key|access[_-]?token|auth[_-]?token|client[_-]?secret|password)\s*[:=]\s*["'][^"'\r\n]{12,}["']/i },
   { label: "local absolute path", pattern: /(?:\/home\/|\/root\/|[A-Z]:\\Users\\)/ },
 ];
 
-const walk = (root, directory = root) =>
-  readdirSync(directory).flatMap((name) => {
-    const path = resolve(directory, name);
-    const stat = lstatSync(path);
-    if (stat.isSymbolicLink()) throw new Error(`Artifact contains symbolic link: ${relative(root, path)}`);
-    if (stat.isDirectory()) return walk(root, path);
-    if (!stat.isFile()) throw new Error(`Artifact contains unsupported entry: ${relative(root, path)}`);
-    return [relative(root, path).split(sep).join("/")];
-  });
+const walk = (root, directory = root) => readdirSync(directory).flatMap((name) => {
+  const path = resolve(directory, name);
+  const stat = lstatSync(path);
+  if (stat.isSymbolicLink()) throw new Error(`Artifact contains symbolic link: ${relative(root, path)}`);
+  if (stat.isDirectory()) return walk(root, path);
+  if (!stat.isFile()) throw new Error(`Artifact contains unsupported entry: ${relative(root, path)}`);
+  return [relative(root, path).split(sep).join("/")];
+});
 
-export const auditElixirArtifact = ({ artifactDirectory }) => {
+export const auditElixirArtifact = ({ artifactDirectory, catalogue = defaultCatalogue }) => {
   const root = resolve(artifactDirectory);
+  const expectedPaths = deriveExpectedArtifactPaths(catalogue);
+  const allowedPinnedSourceUrls = catalogue.releases.flatMap(({ sourcePath }) => [
+    new RegExp(`^https://raw\\.githubusercontent\\.com/simplybenuk/the-guide/[0-9a-f]{40}/${escapeRegex(sourcePath)}$`),
+    new RegExp(`^https://github\\.com/simplybenuk/the-guide/blob/[0-9a-f]{40}/${escapeRegex(sourcePath)}$`),
+  ]);
+  const resolverSlugs = new Set(catalogue.releases.map(({ slug }) => slug));
   const paths = walk(root).sort();
   if (JSON.stringify(paths) !== JSON.stringify(expectedPaths)) {
     const unexpected = paths.filter((path) => !expectedPaths.includes(path));
     const missing = expectedPaths.filter((path) => !paths.includes(path));
-    throw new Error(
-      `Artifact allowlist mismatch. Unexpected: ${unexpected.join(", ") || "none"}. Missing: ${missing.join(", ") || "none"}.`,
-    );
+    throw new Error(`Artifact allowlist mismatch. Unexpected: ${unexpected.join(", ") || "none"}. Missing: ${missing.join(", ") || "none"}.`);
   }
-
-  const noJekyll = readFileSync(resolve(root, ".nojekyll"));
-  if (noJekyll.length !== 0) throw new Error(".nojekyll must be an empty marker file");
+  if (readFileSync(resolve(root, ".nojekyll")).length !== 0) throw new Error(".nojekyll must be an empty marker file");
 
   let totalBytes = 0;
   const hashes = {};
@@ -114,41 +95,36 @@ export const auditElixirArtifact = ({ artifactDirectory }) => {
     const contents = readFileSync(resolve(root, path));
     totalBytes += contents.length;
     hashes[path] = createHash("sha256").update(contents).digest("hex");
-    if (textExtensions.test(path)) {
-      const text = contents.toString("utf8");
-      for (const forbidden of forbiddenText) {
-        if (forbidden.pattern.test(text)) {
-          throw new Error(`${path} contains forbidden ${forbidden.label} content`);
-        }
-      }
-      for (const match of text.matchAll(/https?:\/\/[^\s"'<>)]*/g)) {
-        if (!isAllowedAbsoluteUrl({ path, text, url: match[0], index: match.index })) {
-          throw new Error(`${path} contains unexpected remote origin: ${match[0]}`);
-        }
-      }
+    if (!textExtensions.test(path)) continue;
+    const text = contents.toString("utf8");
+    for (const forbidden of forbiddenText) {
+      if (forbidden.pattern.test(text)) throw new Error(`${path} contains forbidden ${forbidden.label} content`);
+    }
+    for (const match of text.matchAll(/https?:\/\/[^\s"'<>)]*/g)) {
+      if (!isAllowedAbsoluteUrl({ path, text, url: match[0], index: match.index, allowedPinnedSourceUrls, resolverSlugs })) throw new Error(`${path} contains unexpected remote origin: ${match[0]}`);
     }
   }
 
-  if (totalBytes > 25 * 1024 * 1024) {
-    throw new Error(`Artifact exceeds the 25 MiB project limit: ${totalBytes} bytes`);
-  }
+  if (totalBytes > 25 * 1024 * 1024) throw new Error(`Artifact exceeds the 25 MiB project limit: ${totalBytes} bytes`);
 
-  for (const slug of ["signal", "mystery", "story"]) {
-    const canonical = readFileSync(resolve(process.cwd(), `content/elixirs/${slug}.md`));
-    const emittedPath = `cartridges/${slug}/0.1.0/elixir.md`;
-    const canonicalHash = createHash("sha256").update(canonical).digest("hex");
-    if (hashes[emittedPath] !== canonicalHash) {
-      throw new Error(`Emitted ${slug} cartridge differs from canonical bytes`);
+  const withdrawalByKey = new Map(catalogue.withdrawals.map((value) => [`${value.elixirId}@${value.version}`, value]));
+  for (const { release, source } of catalogue.cartridges) {
+    const withdrawal = withdrawalByKey.get(`${release.elixirId}@${release.version}`);
+    const expected = withdrawal ? renderWithdrawalTombstone({ withdrawal, release }) : source;
+    const expectedHash = createHash("sha256").update(expected).digest("hex");
+    for (const path of [release.canonicalPath, ...release.legacyPaths]) {
+      if (hashes[path] !== expectedHash) throw new Error(`Emitted ${release.slug} cartridge differs from canonical bytes or approved tombstone`);
     }
   }
 
-  return { fileCount: paths.length, totalBytes, hashes };
+  const expectedIndex = `${JSON.stringify(createPublicCatalogueIndex(catalogue), null, 2)}\n`;
+  if (readFileSync(resolve(root, "catalogue-index.json"), "utf8") !== expectedIndex) throw new Error("Public catalogue index differs from validated projection");
+
+  return { fileCount: paths.length, totalBytes, hashes, expectedPaths };
 };
 
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   const artifactDirectory = resolve(process.argv[2] ?? "dist/elixirs-pages");
   const result = auditElixirArtifact({ artifactDirectory });
-  process.stdout.write(
-    `Audited ${result.fileCount} allowlisted static files (${result.totalBytes} bytes) at ${artifactDirectory}\n`,
-  );
+  process.stdout.write(`Audited ${result.fileCount} allowlisted static files (${result.totalBytes} bytes) at ${artifactDirectory}\n`);
 }

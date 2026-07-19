@@ -6,6 +6,8 @@ Source specifications:
 - `docs/specs/elixir-first-repository-pivot.md`
 - `docs/specs/chatgpt-first-elixir-delivery.md`
 - `docs/specs/elixir-use-without-installing-delivery.md`
+- `docs/specs/elixir-hosting-and-catalogue.md`
+- `docs/specs/story-elixir-authoring-and-chat-presentation.md`
 
 ## Status
 
@@ -17,7 +19,21 @@ active tree under the approved repository-pivot specification.
 
 ## Active
 
-No implementation task is active. E07 named ChatGPT evidence is the next gate.
+- [ ] **S01 — Define Story authoring and metadata contracts**
+  - Add strict, optional Story-specific metadata that leaves Signal, Mystery,
+    and immutable Story `0.1.0` behaviour unchanged.
+  - Define and validate the transparent cartridge sections for interaction
+    moments, beats, state, branches, endings, presentation, and evaluation.
+  - Add focused passing and fail-closed fixtures; then run required validation
+    and hand the bounded task to independent agent review.
+
+The H09–H11 catalogue refinement is ready for owner output testing; overall
+gameplay remains gated by E07 below. The approved authored-Story iteration is
+local-only until its separate review, evidence, and publication gates pass.
+
+## Hosting and catalogue backlog
+
+No approved hosting/catalogue implementation task remains after H11.
 
 ## Waiting on external evidence
 
@@ -31,13 +47,114 @@ No implementation task is active. E07 named ChatGPT evidence is the next gate.
 
 ## Backlog
 
-- Define and develop the owner-proposed fourth immersive cartridge through a
-  separately approved cartridge specification.
+- [ ] **S02 — Add Story chat presentation validation**
+- [ ] **S03 — Author The Regency Ball dramatic score and artwork**
+- [ ] **S04 — Implement narrative and interaction evaluation**
+- [ ] **S05 — Extend catalogue discovery**
+- [ ] **S06 — Prepare local release and supersession evidence**
+- [ ] **S07 — Independently review and, if separately authorized, evaluate live
+  harnesses**
 - Human-test premise comprehension, cartridge differentiation, drinking and
   return, response relevance, stop behavior, and clean role release after the
   compatibility gate is satisfied.
 
 ## Completed
+
+- [x] **H11 — Validate and independently review collection-led discovery**
+  (2026-07-19)
+  - Full `npm run validate` passed: lint, strict typecheck, 13 Vitest files with
+    79 tests, deterministic build, exact 34-file/6,333,353-byte artifact audit,
+    and all 13 mobile Chromium browser journeys.
+  - Independent review repeated focused and full validation, measured the
+    500-entry browser fixture at 2.5 ms search and 1.4 ms filtering, passed
+    `git diff --check`, and found no blocking or should-fix refinement finding.
+  - Direct desktop and Pixel-sized Playwright evidence confirms the editorial
+    spotlight, compact shelves, next-card mobile cues, dedicated browse view,
+    and contained page width. T3 preview was unavailable; the installed
+    fallback skill also lacked its executable.
+  - Catalogue refinement is **READY FOR HUMAN TESTING**. Human focus is shelf
+    repetition/editorial feel with three items, mobile shelf cues, `/browse/`
+    discoverability, and whether compact cards provide enough selection detail.
+  - Changes remain uncommitted and undeployed. E07 remains a separate overall
+    gameplay-compatibility gate.
+
+- [x] **H09–H10 — Implement collection-led discovery and bounded shelves**
+  (2026-07-19)
+  - Replaced the exhaustive root grid with one deterministic editorial
+    spotlight and three collection-backed horizontal shelves; no root search or
+    complete catalogue feed remains.
+  - Added `/browse/` as the complete static first page for local search,
+    filtering, sorting, 24-item progressive results, and static pagination.
+  - Replaced listing fact grids with compact artwork-led cards containing a
+    promise, exactly three controlled fit signals, and factual status; complete
+    demands and trust evidence remain on detail/version pages.
+  - Shelf controls enhance native touch/trackpad overflow without autoplay,
+    looping, focus traps, persistence, remote code, or a carousel dependency;
+    no-JavaScript item, collection, browse, detail, and delivery links remain.
+  - Production root rendering is collection-bounded. Both 100- and 500-entry
+    production-shaped fixtures render one spotlight plus only three shelf cards,
+    while `/browse/` retains every entry and the 500-entry interaction timings
+    remain below one animation frame.
+  - Changes remain uncommitted and undeployed. Cartridge/artwork bytes, delivery
+    event `1.1.0`, compatibility, privacy, and publication authority are
+    unchanged.
+
+- [x] **H08 — Independent review and human handoff** (2026-07-19)
+  - Six independent review passes progressively exposed and resolved path,
+    protected-ledger, version-lifecycle, withdrawal-recovery, tombstone-link,
+    scale, evidence-navigation, and artwork-provenance defects.
+  - Final independent review found no blocking or should-fix catalogue finding
+    and returned **READY FOR HUMAN TESTING** for this workstream.
+  - Final validation passed 78 unit tests, the exact 33-file/6,323,373-byte
+    production audit, all 13 browser journeys, protected release/withdrawal
+    ledger probes, archive-provenance verification, and `git diff --check`.
+  - Changes remain uncommitted and undeployed. The three required external
+    publication variables remain absent and fail closed; E07 remains separate.
+
+- [x] **H02–H07 — Implement and validate static hosting and catalogue** (2026-07-18)
+  - Seeded strict first-party publisher, release ledger, catalogue, taxonomy,
+    three editorial collections, and empty withdrawal records without changing
+    cartridge, covenant, or artwork bytes.
+  - Refactored build/audit from hard-coded cartridges to a cross-validated
+    registry-derived 33-file artifact. Each release emits byte-identical
+    publisher-qualified and permanent legacy paths; deterministic tombstone
+    fixtures cover explicitly authorized withdrawal.
+  - Added metadata-only public index, static collection and immutable-version
+    pages, local deterministic search, OR-within/AND-across filters, controlled
+    share URLs, accessible clearing/no-result states, factual trust records,
+    and explainable related items. Search remains in page memory.
+  - Independent reviews exposed artwork traversal/symlink/reference gaps,
+    candidate-base authority, mutable withdrawal history, contradictory
+    successor state, entry-wide lifecycle, non-navigable evidence, and
+    scale-helper/metric gaps. Development remediated each with strict realpath
+    and provenance checks, fail-closed external release/withdrawal anchors,
+    release-version lifecycle, path-labelled host-portable exact-version and
+    catalogue-fallback tombstone links, navigable audited evidence, and a
+    bounded 24-card renderer.
+  - The 500-entry production-shaped fixture validates and builds 500 strict
+    releases through the real stack: 21 pages, 3,030 files, 18,562,233 bytes,
+    487.7 ms validation, 1,230.3 ms build, 1,113.4 ms audit, 3.3 ms browser
+    search, and 2.3 ms browser filtering. Synthetic content is excluded from production.
+  - Full post-remediation validation passed: lint, strict typecheck, 13 Vitest
+    files with 78 tests, exact 33-file/6,323,373-byte audit, and all 13 mobile/
+    root/subpath/no-JavaScript/scale Playwright journeys. Protected-base audit,
+    `git diff --check`, and exact cartridge/artwork SHA-256 checks passed. The
+    three external ledger variables remain an intentionally unconfigured,
+    fail-closed publication precondition outside development authority.
+  - T3 collaborative preview reported no available automation host; Playwright
+    provided the approved browser fallback. Changes remain uncommitted; no
+    push, PR, deployment, publication, analytics, backend, account, creator
+    intake, or compatibility change occurred.
+
+- [x] **H01 — Freeze baseline and define catalogue contracts** (2026-07-18)
+  - Added strict publisher, release, catalogue, taxonomy, collection, and
+    withdrawal records bound to the exact current cartridge/artwork bytes,
+    provenance, review, and compatibility evidence.
+  - Added append-only ledger comparison, public-index projection, deterministic
+    local search/filter/related rules, withdrawal tombstone rendering, and a
+    500-entry metadata fixture.
+  - Focused validation passed: 6 catalogue contract tests. Changes remain
+    uncommitted; no publication or external data boundary occurred.
 
 - [x] **U05 — Independent review and handoff** (2026-07-18)
   - Independent review found two initial blockers, two should-fix gaps, and

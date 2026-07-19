@@ -1,0 +1,11 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "three-ways-to-play",
+  "title": "Three ways to play",
+  "summary": "Compare grounded noticing, collaborative clues, and branching fiction.",
+  "curator": "The Guide",
+  "elixirIds": ["the-guide.elixir.signal", "the-guide.elixir.mystery", "the-guide.elixir.story"],
+  "lifecycle": "published",
+  "publishedAt": "2026-07-18",
+  "updatedAt": "2026-07-18"
+}

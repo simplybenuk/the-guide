@@ -21,13 +21,22 @@ export default defineConfig({
     trace: "retain-on-failure",
     launchOptions: browserEnvironment ? { env: browserEnvironment } : undefined,
   },
-  webServer: {
-    command:
-      "npm run build && node scripts/elixirs/serve.mjs --root dist/elixirs-pages --port 4173 --base-path /the-guide",
-    url: "http://127.0.0.1:4173/the-guide/",
-    reuseExistingServer: false,
-    timeout: 120_000,
-  },
+  webServer: [
+    {
+      command:
+        "npm run build && node scripts/elixirs/serve.mjs --root dist/elixirs-pages --port 4173 --base-path /the-guide",
+      url: "http://127.0.0.1:4173/the-guide/",
+      reuseExistingServer: false,
+      timeout: 120_000,
+    },
+    {
+      command:
+        "node scripts/elixirs/catalogue-scale.mjs dist/elixirs-scale-pages && node scripts/elixirs/serve.mjs --root dist/elixirs-scale-pages --port 4174 --base-path /scale",
+      url: "http://127.0.0.1:4174/scale/",
+      reuseExistingServer: false,
+      timeout: 120_000,
+    },
+  ],
   projects: [
     {
       name: "mobile-chromium",

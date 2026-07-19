@@ -20,6 +20,8 @@ jobs:
     steps:
       - name: Check out reviewed source
         uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
 
       - name: Set up Node.js
         uses: actions/setup-node@v7
@@ -32,6 +34,15 @@ jobs:
 
       - name: Run cartridge and static-site tests
         run: npm test
+
+      - name: Enforce append-only release ledger against protected base
+        run: npm run audit:releases -- --base-revision="$ELIXIR_LEDGER_BASE_REVISION" --bootstrap-ledger-sha256="$ELIXIR_BOOTSTRAP_LEDGER_SHA256" --approved-withdrawals-sha256="$ELIXIR_APPROVED_WITHDRAWALS_SHA256"
+        env:
+          # All values are controlled outside the candidate tree. The command
+          # fails closed when required release or withdrawal authority is absent.
+          ELIXIR_LEDGER_BASE_REVISION: ${{ vars.ELIXIR_LEDGER_BASE_REVISION }}
+          ELIXIR_BOOTSTRAP_LEDGER_SHA256: ${{ vars.ELIXIR_BOOTSTRAP_LEDGER_SHA256 }}
+          ELIXIR_APPROVED_WITHDRAWALS_SHA256: ${{ vars.ELIXIR_APPROVED_WITHDRAWALS_SHA256 }}
 
       - name: Build standalone static cabinet
         run: npm run build:elixirs

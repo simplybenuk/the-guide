@@ -1,0 +1,24 @@
+{
+  "schemaVersion": "1.0.0",
+  "values": [
+    { "id": "duration-under-15", "facet": "duration", "label": "Under 15 minutes", "definition": "Expected to finish in fewer than fifteen minutes.", "synonyms": ["short", "quick"], "lifecycle": "active", "replacementId": null },
+    { "id": "energy-low", "facet": "energy", "label": "Low energy", "definition": "Designed for a low-energy player state.", "synonyms": ["gentle", "easy"], "lifecycle": "active", "replacementId": null },
+    { "id": "movement-none", "facet": "movement", "label": "No movement", "definition": "Can be played without changing physical position.", "synonyms": ["seated", "still"], "lifecycle": "active", "replacementId": null },
+    { "id": "movement-stay-here", "facet": "movement", "label": "Stay nearby", "definition": "May use ordinary nearby details while the player stays in one safe place.", "synonyms": ["nearby", "in place"], "lifecycle": "active", "replacementId": null },
+    { "id": "mechanic-noticing", "facet": "mechanic", "label": "Grounded noticing", "definition": "The player responds to ordinary details they actually notice.", "synonyms": ["observe", "attention"], "lifecycle": "active", "replacementId": null },
+    { "id": "mechanic-clue-building", "facet": "mechanic", "label": "Collaborative clues", "definition": "Player and agent separate real observations from harmless fictional clues.", "synonyms": ["mystery", "deduction"], "lifecycle": "active", "replacementId": null },
+    { "id": "mechanic-branching-story", "facet": "mechanic", "label": "Branching story", "definition": "Player choices materially change a bounded fictional arc.", "synonyms": ["choices", "narrative"], "lifecycle": "active", "replacementId": null },
+    { "id": "tone-curious", "facet": "tone", "label": "Curious", "definition": "Invites gentle curiosity without claims of certainty.", "synonyms": ["wonder", "explore"], "lifecycle": "active", "replacementId": null },
+    { "id": "tone-playful", "facet": "tone", "label": "Playful", "definition": "Uses light fictional play rather than serious real-world claims.", "synonyms": ["fun", "light"], "lifecycle": "active", "replacementId": null },
+    { "id": "tone-imaginative", "facet": "tone", "label": "Imaginative", "definition": "Centres collaborative fiction and creative choices.", "synonyms": ["creative", "fantasy"], "lifecycle": "active", "replacementId": null },
+    { "id": "activity-nearby", "facet": "activity", "label": "Nearby setting", "definition": "Uses only an ordinary setting already around the player.", "synonyms": ["room", "environment"], "lifecycle": "active", "replacementId": null },
+    { "id": "activity-conversation", "facet": "activity", "label": "Conversation only", "definition": "The complete activity happens in the current conversation.", "synonyms": ["chat", "no tools"], "lifecycle": "active", "replacementId": null },
+    { "id": "input-boundary", "facet": "input", "label": "A hard boundary", "definition": "The player may state or decline a content boundary before play.", "synonyms": ["limits", "avoid"], "lifecycle": "active", "replacementId": null },
+    { "id": "input-free-choice", "facet": "input", "label": "Free-text choices", "definition": "The player supplies short choices in their own words.", "synonyms": ["choice", "response"], "lifecycle": "active", "replacementId": null },
+    { "id": "replayable-variable", "facet": "replayability", "label": "Changes each play", "definition": "Different safe observations or choices can shape a new bounded run.", "synonyms": ["replay", "different"], "lifecycle": "active", "replacementId": null },
+    { "id": "content-fiction-clear", "facet": "content_note", "label": "Clearly fictional framing", "definition": "Fiction remains distinct from real-world claims, diagnosis, or recovered memory.", "synonyms": ["fiction", "not real"], "lifecycle": "active", "replacementId": null },
+    { "id": "access-seated", "facet": "access", "label": "Can be played seated", "definition": "No standing or travel is required.", "synonyms": ["seated", "mobility"], "lifecycle": "active", "replacementId": null },
+    { "id": "audience-general-alpha", "facet": "audience", "label": "General alpha audience", "definition": "First-party personal alpha testing under the published terms.", "synonyms": ["general"], "lifecycle": "active", "replacementId": null },
+    { "id": "locale-en", "facet": "locale", "label": "English", "definition": "Published and reviewed in English.", "synonyms": ["en"], "lifecycle": "active", "replacementId": null }
+  ]
+}
