@@ -14,10 +14,15 @@ import {
   renderDeliveryEventBrowserRuntime,
 } from "./delivery-events.mjs";
 import {
-  createResolverPrompt,
-  createSelfContainedPrompt,
+  createCartridgeDownloadName,
+  createLauncherPrompt,
+  validateUniqueCartridgeDownloadNames,
   validateSourceRevision,
 } from "./delivery-envelope.mjs";
+import {
+  agentElixirArchiveName,
+  createAgentElixirArchive,
+} from "./skill-archive.mjs";
 
 const repositoryRoot = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
 export const cataloguePageSize = 24;
@@ -70,7 +75,7 @@ const renderDocument = ({ title, depth = 0, body }) => {
 
 const privacyNotice = (depth = 0) => `<aside class="trust-note" aria-labelledby="privacy-title">
   <p class="eyebrow" id="privacy-title">The trust boundary</p>
-  <p>The game happens in the agent harness you choose. Your provider may process that conversation under its own terms. This cabinet does not receive your game conversation, search, boundaries, memento, credentials, or agent memory.</p>
+  <p>The game happens in the agent harness you choose. Your provider may process that conversation under its own terms. The Guide does not receive your game conversation, search, boundaries, memento, credentials, or agent memory.</p>
   <p>GitHub may process ordinary request and repository data when it hosts these static files. <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement">Read GitHub’s privacy statement</a>.</p>
   <p>This experimental release is for personal, non-commercial alpha testing. <a href="${"../".repeat(depth)}terms.md">Read the alpha usage terms</a>.</p>
 </aside>`;
@@ -92,7 +97,18 @@ const compactCardView = ({ entry, catalogue }) => {
     ...entry.contentNoteIds, ...entry.accessConsiderationIds, ...entry.audienceIds, ...entry.localeIds,
     ...(entry.storyDiscovery ? Object.values(entry.storyDiscovery).flat() : []),
   ])].join(" ");
-  return { release, metadata, mechanic, taxonomyIds };
+  const artwork = entry.catalogueArtwork
+    ? (() => {
+        const asset = catalogue.artworkManifest.assets.find(({ id }) => id === entry.catalogueArtwork.provenanceId);
+        return {
+          path: asset.path,
+          width: asset.dimensions.width,
+          height: asset.dimensions.height,
+          altText: entry.catalogueArtwork.altText,
+        };
+      })()
+    : metadata.artwork;
+  return { release, metadata, artwork, mechanic, taxonomyIds };
 };
 
 const renderFitSignals = ({ entry, metadata, mechanic }) => `<ul class="fit-signals" aria-label="Elixir fit">
@@ -102,9 +118,9 @@ const renderFitSignals = ({ entry, metadata, mechanic }) => `<ul class="fit-sign
 </ul>`;
 
 const renderCompactCard = ({ entry, catalogue, hrefPrefix = "./" }) => {
-  const { release, metadata, mechanic, taxonomyIds } = compactCardView({ entry, catalogue });
+  const { release, metadata, artwork, mechanic, taxonomyIds } = compactCardView({ entry, catalogue });
   return `<article class="elixir-card compact-card elixir-${entry.slug}" data-catalogue-entry data-elixir-id="${escapeHtml(entry.elixirId)}" data-taxonomy-ids="${escapeHtml(taxonomyIds)}">
-    <img src="${hrefPrefix}${escapeHtml(metadata.artwork.path)}" width="${metadata.artwork.width}" height="${metadata.artwork.height}" alt="${escapeHtml(metadata.artwork.altText)}" loading="lazy">
+    <img src="${hrefPrefix}${escapeHtml(artwork.path)}" width="${artwork.width}" height="${artwork.height}" alt="${escapeHtml(artwork.altText)}" loading="lazy">
     <div class="card-body">
       <p class="eyebrow">${escapeHtml(mechanic)}</p>
       <h3>${escapeHtml(entry.title)}</h3>
@@ -117,17 +133,17 @@ const renderCompactCard = ({ entry, catalogue, hrefPrefix = "./" }) => {
 };
 
 const renderSpotlight = ({ entry, catalogue }) => {
-  const { release, metadata, mechanic } = compactCardView({ entry, catalogue });
+  const { release, metadata, artwork, mechanic } = compactCardView({ entry, catalogue });
   return `<article class="spotlight elixir-${entry.slug}" data-spotlight>
-    <div class="spotlight-art"><img src="./${escapeHtml(metadata.artwork.path)}" width="${metadata.artwork.width}" height="${metadata.artwork.height}" alt="${escapeHtml(metadata.artwork.altText)}"></div>
+    <div class="spotlight-art"><img src="./${escapeHtml(artwork.path)}" width="${artwork.width}" height="${artwork.height}" alt="${escapeHtml(artwork.altText)}"></div>
     <div class="spotlight-body">
-      <p class="eyebrow">Editorial spotlight · ${escapeHtml(mechanic)}</p>
+      <p class="eyebrow">Featured story · ${escapeHtml(mechanic)}</p>
       <h2>${escapeHtml(entry.title)}</h2>
       <p class="lede">${escapeHtml(entry.playerPromise)}</p>
       <p>${escapeHtml(entry.featuredRationale)}</p>
       ${renderFitSignals({ entry, metadata, mechanic })}
       <p class="card-status">${escapeHtml(release.statusAtPublication)} · ${escapeHtml(entry.lifecycle)} · not ranked by popularity</p>
-      <div class="actions"><a class="primary-action" href="./elixirs/${entry.slug}/">Explore ${escapeHtml(entry.title)}</a><a class="button-link" href="./browse/">Browse all Elixirs</a></div>
+      <div class="actions"><a class="primary-action" href="./elixirs/${entry.slug}/">View ${escapeHtml(entry.title)}</a><a class="button-link" href="./browse/">Browse all stories</a></div>
     </div>
   </article>`;
 };
@@ -136,7 +152,7 @@ const renderShelf = ({ collection, catalogue }) => {
   const titleId = `collection-${collection.id}`;
   return `<section class="catalogue-shelf" data-shelf aria-labelledby="${titleId}">
     <div class="shelf-heading">
-      <div><p class="eyebrow">Editorial collection</p><h2 id="${titleId}">${escapeHtml(collection.title)}</h2><p>${escapeHtml(collection.summary)}</p></div>
+      <div><p class="eyebrow">Story collection</p><h2 id="${titleId}">${escapeHtml(collection.title)}</h2><p>${escapeHtml(collection.summary)}</p></div>
       <a href="./collections/${collection.id}/">View collection</a>
     </div>
     <div class="shelf-controls" aria-label="${escapeHtml(collection.title)} shelf controls">
@@ -180,29 +196,29 @@ const renderIndex = (catalogue) => {
   const publicEntries = catalogue.entries.filter(({ lifecycle }) => lifecycle !== "withdrawn");
   const spotlight = publicEntries.find(({ featuredRationale }) => featuredRationale) ?? publicEntries[0];
   return renderDocument({
-    title: "The Elixir Cabinet — The Guide",
+    title: "The Guide — Interactive stories",
     body: `<header class="site-header">
-  <a class="wordmark" href="./" aria-current="page">The Guide <span>Elixir Cabinet</span></a>
+  <a class="wordmark" href="./" aria-current="page">The Guide <span>Interactive stories</span></a>
 </header>
 <main id="main" tabindex="-1">
   <section class="hero" aria-labelledby="cabinet-title">
-    <p class="eyebrow">A game for you and your agent</p>
-    <h1 id="cabinet-title">Choose an Elixir. Let your agent drink the story.</h1>
-    <p class="lede">Browse curated ways to play, inspect exactly what each cartridge says, then copy the complete game into ChatGPT or another agent you trust. Discovery stays private; gameplay stays in your chosen harness.</p>
-    <p><a class="button-link" href="./browse/#catalogue-search">Search and filter all ${publicEntries.length} Elixirs</a></p>
+    <p class="eyebrow">Interactive stories for you and your AI</p>
+    <h1 id="cabinet-title">Choose a story. Shape what happens.</h1>
+    <p class="lede">Explore original stories you play in conversation. Pick a title, download its cartridge, then attach the complete experience to a new chat with an agent you trust.</p>
+    <p><a class="button-link" href="./browse/#catalogue-search">Browse all ${publicEntries.length} stories</a></p>
   </section>
   ${renderSpotlight({ entry: spotlight, catalogue })}
   <section class="shelf-library" aria-labelledby="collections-title">
-    <div class="section-heading"><div><p class="eyebrow">Curated first-party catalogue</p><h2 id="collections-title">Find your next way to play</h2></div><p>These shelves are editorial—not based on private play, tracking, or popularity.</p></div>
+    <div class="section-heading"><div><p class="eyebrow">The collection</p><h2 id="collections-title">Find something to play</h2></div><p>Curated by people, never ranked from private play, tracking, or popularity.</p></div>
     ${catalogue.collections.map((collection) => renderShelf({ collection, catalogue })).join("\n")}
   </section>
   <section class="how-it-works" aria-labelledby="how-title">
-    <p class="eyebrow">No special protocol</p><h2 id="how-title">Inspect, hand over, play</h2>
-    <ol><li><strong>Choose.</strong> Compare the promise, demands, and shape.</li><li><strong>Inspect.</strong> Read the complete instructions and trust evidence.</li><li><strong>Hand over.</strong> Copy the complete prompt or use a fallback.</li><li><strong>Consent.</strong> The agent explains the game and asks first.</li></ol>
+    <p class="eyebrow">No special protocol</p><h2 id="how-title">Download, attach, play</h2>
+    <ol><li><strong>Choose.</strong> Compare the promise, demands, and shape.</li><li><strong>Download.</strong> Save the clearly named Markdown cartridge.</li><li><strong>Attach.</strong> Add it to a new chat and send the short prompt.</li><li><strong>Consent.</strong> The agent explains the game and asks first.</li></ol>
   </section>
   ${privacyNotice()}
 </main>
-<footer><p>Experimental first-party cartridges from The Guide. Conversation-only; no gameplay tools required.</p></footer>`,
+<footer><p>Original interactive stories from The Guide. Played in conversation; no gameplay tools required.</p></footer>`,
   });
 };
 
@@ -228,12 +244,12 @@ const renderBrowsePage = ({ catalogue, page, pages }) => {
     <script id="catalogue-data" type="application/json">${publicJson(index)}</script>
   </section>` : `<div class="card-grid compact-grid">${entries.map((entry) => renderCompactCard({ entry, catalogue, hrefPrefix: rootPrefix })).join("\n")}</div>${renderPagination({ page, pages, nested: true })}`;
   return renderDocument({
-    title: `Elixir catalogue page ${page} — The Guide`,
+    title: `Story catalogue page ${page} — The Guide`,
     depth: nested ? 2 : 1,
-    body: `<header class="site-header"><a class="wordmark" href="${rootPrefix}">The Guide <span>Elixir Cabinet</span></a></header>
+    body: `<header class="site-header"><a class="wordmark" href="${rootPrefix}">The Guide <span>Interactive stories</span></a></header>
 <main id="main" tabindex="-1">
   <nav aria-label="Breadcrumb"><a href="${rootPrefix}">Home</a> <span aria-hidden="true">/</span> ${page === 1 ? "Browse all Elixirs" : `Browse page ${page}`}</nav>
-  <section class="hero"><p class="eyebrow">Complete first-party catalogue</p><h1 id="browse-title">${page === 1 ? "Browse all Elixirs" : `Elixir catalogue page ${page}`}</h1><p class="lede">Search and filter locally, or follow the static pages through every published Elixir.</p></section>
+  <section class="hero"><p class="eyebrow">All stories</p><h1 id="browse-title">${page === 1 ? "Browse all stories" : `Story catalogue page ${page}`}</h1><p class="lede">Search by mood, format, time, or the kind of choice you want to make.</p></section>
   ${controls}
   ${privacyNotice(nested ? 2 : 1)}
 </main><footer><p><a href="${rootPrefix}">Return to editorial discovery</a></p></footer>`,
@@ -241,22 +257,23 @@ const renderBrowsePage = ({ catalogue, page, pages }) => {
 };
 
 const renderCollection = ({ collection, catalogue }) => renderDocument({
-  title: `${collection.title} — The Elixir Cabinet`,
+  title: `${collection.title} — The Guide`,
   depth: 2,
-  body: `<header class="site-header"><a class="wordmark" href="../../">The Guide <span>Elixir Cabinet</span></a></header>
+  body: `<header class="site-header"><a class="wordmark" href="../../">The Guide <span>Interactive stories</span></a></header>
 <main id="main" tabindex="-1">
-  <nav aria-label="Breadcrumb"><a href="../../">All Elixirs</a> <span aria-hidden="true">/</span> ${escapeHtml(collection.title)}</nav>
+  <nav aria-label="Breadcrumb"><a href="../../">All stories</a> <span aria-hidden="true">/</span> ${escapeHtml(collection.title)}</nav>
   <section class="hero"><p class="eyebrow">Editorial collection</p><h1>${escapeHtml(collection.title)}</h1><p class="lede">${escapeHtml(collection.summary)}</p><p>Curated by ${escapeHtml(collection.curator)} · Updated ${collection.updatedAt}</p></section>
   <div class="card-grid compact-grid">${collection.elixirIds.map((id) => renderCompactCard({ entry: catalogue.entries.find(({ elixirId }) => elixirId === id), catalogue, hrefPrefix: "../../" })).join("\n")}</div>
   ${privacyNotice(2)}
-</main><footer><p><a href="../../">Return to all Elixirs</a></p></footer>`,
+</main><footer><p><a href="../../">Return to all stories</a></p></footer>`,
 });
 
 const renderTrustFacts = ({ entry, release, metadata, catalogue }) => {
   const publisher = catalogue.publishers.find(({ publisherId }) => publisherId === entry.publisherId);
   const contentNotes = entry.contentNoteIds.map((id) => catalogue.taxonomy.find((value) => value.id === id)?.label).filter(Boolean);
-  return `<section class="trust-panel" aria-labelledby="trust-title">
-    <p class="eyebrow">Factual trust record</p><h2 id="trust-title">Publisher, review, and provenance</h2>
+  return `<details class="trust-panel disclosure-panel">
+    <summary>Version, safety, and provenance</summary>
+    <div class="disclosure-content"><h2>Factual trust record</h2>
     <dl class="fact-grid">
       <div><dt>Publisher</dt><dd>${escapeHtml(publisher.displayName)} · first party</dd></div>
       <div><dt>Release</dt><dd>${release.version} · ${release.statusAtPublication}</dd></div>
@@ -274,7 +291,8 @@ const renderTrustFacts = ({ entry, release, metadata, catalogue }) => {
       <div><dt>Content notes</dt><dd>${escapeHtml(contentNotes.join(", ") || "No additional catalogue note")}</dd></div>
     </dl>
     <p><a href="versions/${release.version}/">View this version’s immutable paths and history</a></p>
-  </section>`;
+    </div>
+  </details>`;
 };
 
 const renderLifecycleNotice = ({ entry, state = entry, catalogue, hrefPrefix, versionRoute = false }) => {
@@ -290,51 +308,46 @@ const renderLifecycleNotice = ({ entry, state = entry, catalogue, hrefPrefix, ve
   return `<aside class="lifecycle-notice" aria-labelledby="lifecycle-title-${entry.slug}"><p class="eyebrow">${state.lifecycle}</p><h2 id="lifecycle-title-${entry.slug}">Use the maintained successor</h2><p>This historical version remains inspectable, but The Guide recommends <a href="${successorHref}">${escapeHtml(successor.title)} ${state.successor.version}</a> before starting play.</p></aside>`;
 };
 
-const renderDetail = ({ entry, release, metadata, source, sourceRevision, catalogue, index }) => {
+const renderDetail = ({ entry, release, metadata, source, catalogue, index }) => {
   const deliveryPath = release.legacyPaths[0] ?? release.canonicalPath;
   const cartridgePath = `../../${deliveryPath}`;
+  const downloadName = createCartridgeDownloadName(metadata);
   const requiredInputs = metadata.requiredInputs.map(formatToken).join(", ");
-  const chatgptPrompt = createSelfContainedPrompt({ metadata, source });
-  const resolverPrompt = createResolverPrompt({ metadata, source, cartridgeUrl: cartridgePath, sourceRevision, contentPath: release.sourcePath });
+  const prompt = createLauncherPrompt();
   const mechanic = catalogue.taxonomy.find(({ id }) => id === entry.mechanicId).label;
   const related = relatedCatalogueEntries(index.entries, entry.elixirId);
-  const storyFacts = metadata.story ? `<section class="detail-facts" aria-labelledby="story-facts-title"><h2 id="story-facts-title">Story experience</h2><dl class="fact-grid">
-      <div><dt>Your role</dt><dd>${escapeHtml(metadata.story.playerRole)}</dd></div>
-      <div><dt>How you participate</dt><dd>${escapeHtml(metadata.story.interactionModes.map(formatToken).join(", "))}</dd></div>
-      <div><dt>Choice style</dt><dd>${escapeHtml(formatToken(metadata.story.choicePresentation))}</dd></div>
-      <div><dt>Emotional intensity</dt><dd>${escapeHtml(metadata.story.emotionalIntensity)}</dd></div>
-      <div><dt>Reading intensity</dt><dd>${escapeHtml(metadata.story.readingIntensity)}</dd></div>
-      <div><dt>Session</dt><dd>${escapeHtml(formatToken(metadata.story.sessionShape))}</dd></div>
-      <div><dt>Endings</dt><dd>${escapeHtml(metadata.story.endingProfile.description)}</dd></div>
-      <div><dt>Replay</dt><dd>${escapeHtml(`${metadata.story.replayProfile.level}: ${metadata.story.replayProfile.promise}`)}</dd></div>
-    </dl></section>` : "";
+  const artwork = compactCardView({ entry, catalogue }).artwork;
+  const participation = metadata.story
+    ? metadata.story.interactionModes.map(formatToken).join(", ")
+    : entry.interactionLabel;
+  const playerNeedLabel = metadata.story ? "Your role" : "You provide";
+  const playerNeed = metadata.story ? metadata.story.playerRole : requiredInputs;
   return renderDocument({
-    title: `${metadata.title} — The Elixir Cabinet`, depth: 2,
-    body: `<header class="site-header"><a class="wordmark" href="../../">The Guide <span>Elixir Cabinet</span></a></header>
+    title: `${metadata.title} — The Guide`, depth: 2,
+    body: `<header class="site-header"><a class="wordmark" href="../../">The Guide <span>Interactive stories</span></a></header>
 <main id="main" tabindex="-1">
-  <nav aria-label="Breadcrumb"><a href="../../">All Elixirs</a> <span aria-hidden="true">/</span> ${escapeHtml(metadata.title)}</nav>
+  <nav aria-label="Breadcrumb"><a href="../../">All stories</a> <span aria-hidden="true">/</span> ${escapeHtml(metadata.title)}</nav>
   <article class="detail elixir-${metadata.slug}">
-    <div class="detail-art"><img src="../../${escapeHtml(metadata.artwork.path)}" width="${metadata.artwork.width}" height="${metadata.artwork.height}" alt="${escapeHtml(metadata.artwork.altText)}"></div>
-    <div class="detail-intro"><p class="eyebrow">${escapeHtml(mechanic)}</p><h1>${escapeHtml(metadata.title)}</h1><p class="lede">${escapeHtml(metadata.playerPromise)}</p><p>${escapeHtml(entry.featuredRationale)}</p><div class="badges" aria-label="Cartridge status"><span>v${metadata.version}</span><span>${metadata.status}</span><span>${metadata.compatibility.status} compatibility</span><span>${entry.lifecycle}</span></div></div>
-    <section class="detail-facts" aria-labelledby="facts-title"><h2 id="facts-title">Before you play</h2><dl class="fact-grid">
-      <div><dt>Game shape</dt><dd>${escapeHtml(entry.interactionLabel)}</dd></div><div><dt>Expected time</dt><dd>${metadata.estimatedMinutes.min}–${metadata.estimatedMinutes.max} minutes</dd></div><div><dt>Energy</dt><dd>${metadata.energy}</dd></div><div><dt>Movement</dt><dd>${formatToken(metadata.movement)}</dd></div><div><dt>Player input</dt><dd>${escapeHtml(requiredInputs)}</dd></div><div><dt>Capability</dt><dd>Conversation only</dd></div><div><dt>The Guide receives</dt><dd>Nothing from play or search</dd></div><div><dt>Memento stays</dt><dd>In your chosen harness</dd></div>
+    <div class="detail-art"><img src="../../${escapeHtml(artwork.path)}" width="${artwork.width}" height="${artwork.height}" alt="${escapeHtml(artwork.altText)}"></div>
+    <div class="detail-intro"><p class="eyebrow">${escapeHtml(mechanic)}</p><h1>${escapeHtml(metadata.title)}</h1><p class="lede">${escapeHtml(entry.summary)}</p></div>
+    <section class="play-overview" aria-labelledby="play-overview-title"><p class="eyebrow">At a glance</p><h2 id="play-overview-title">What you need to play</h2><dl class="play-facts">
+      <div><dt>Time and energy</dt><dd>${metadata.estimatedMinutes.min}–${metadata.estimatedMinutes.max} minutes · ${metadata.energy} energy</dd></div>
+      <div><dt>How you play</dt><dd>${escapeHtml(participation)}</dd></div>
+      <div><dt>${playerNeedLabel}</dt><dd>${escapeHtml(playerNeed)}</dd></div>
+      <div><dt>Format</dt><dd>Conversation only · no gameplay tools</dd></div>
     </dl></section>
-    ${storyFacts}
-    ${renderTrustFacts({ entry, release, metadata, catalogue })}
     ${renderLifecycleNotice({ entry, catalogue, hrefPrefix: "../" })}
     <section class="handoff-panel" aria-labelledby="handoff-title" data-elixir-id="${escapeHtml(metadata.id)}" data-elixir-version="${escapeHtml(metadata.version)}">
-      <p class="eyebrow">Primary action</p><h2 id="handoff-title">Start this Elixir in ChatGPT</h2>
-      <ol class="delivery-steps"><li>Copy the complete ChatGPT prompt below.</li><li>Open a fresh ChatGPT conversation and paste it.</li><li>Wait for ChatGPT to explain the game and ask before you consent.</li></ol>
-      <p>The prompt already contains the complete cartridge, so ChatGPT does not need to open a link or use a tool. Use a fresh or appropriately restricted conversation without unnecessary tool permissions.</p>
-      <label for="chatgpt-prompt-${metadata.slug}">Complete ChatGPT prompt</label><textarea id="chatgpt-prompt-${metadata.slug}" data-chatgpt-prompt rows="10" readonly>${escapeHtml(chatgptPrompt)}</textarea>
-      <p class="versioned-link"><strong>Versioned cartridge:</strong> <a data-cartridge-url href="${cartridgePath}">${cartridgePath}</a></p>
-      <p class="versioned-link"><strong>Publisher-qualified mirror:</strong> <a href="../../${release.canonicalPath}">../../${release.canonicalPath}</a></p>
-      <p class="fallback-note"><strong>Manual fallback:</strong> If copy buttons do not appear, select and copy the complete prompt above. You can also download the identical Markdown file and attach it, or copy the raw cartridge source.</p>
-      <div class="actions"><button type="button" data-copy-action data-copy-chatgpt hidden>Copy for ChatGPT</button><button class="secondary-action" type="button" data-copy-action data-copy-cartridge hidden>Copy raw cartridge</button><a class="button-link" data-download-cartridge href="${cartridgePath}" download="the-guide-${metadata.slug}-${metadata.version}.md">Download Markdown</a></div>
-      <p class="copy-status" data-copy-status role="status" aria-live="polite">Copying is optional; select the message or source manually if clipboard access is unavailable.</p>
-      <details class="resolver-panel"><summary>Agent prompt (experimental)</summary><p>For an agent that already has an authorised read-only retrieval capability. The prompt tries only the published cartridge and commit-pinned first-party source, then asks for the complete text or file if retrieval fails.</p><label for="resolver-prompt-${metadata.slug}">Experimental agent resolver prompt</label><textarea id="resolver-prompt-${metadata.slug}" data-resolver-prompt rows="10" readonly>${escapeHtml(resolverPrompt)}</textarea><div class="actions"><button class="secondary-action" type="button" data-copy-action data-copy-resolver hidden>Copy agent prompt</button></div></details>
+      <p class="eyebrow">How to play</p><h2 id="handoff-title">Take this story to your AI</h2>
+      <ol class="delivery-steps"><li>Download the story cartridge.</li><li>Attach the Markdown file to a new conversation.</li><li>Send the short prompt below. Your agent explains the experience and asks before play begins.</li></ol>
+      <div class="actions"><a class="primary-action" data-download-cartridge href="${cartridgePath}" download="${escapeHtml(downloadName)}">Download story</a></div>
+      <label for="launcher-prompt-${metadata.slug}">Prompt to send with the attached file</label><textarea id="launcher-prompt-${metadata.slug}" data-launcher-prompt rows="6" readonly>${escapeHtml(prompt)}</textarea>
+      <div class="actions"><button class="secondary-action" type="button" data-copy-action data-copy-launcher hidden>Copy prompt</button></div>
+      <p class="copy-status" data-copy-status role="status" aria-live="polite">If clipboard access is unavailable, select and copy the visible prompt manually.</p>
+      <details class="skill-panel"><summary>Use the Agent Skill</summary><p>On a compatible Agent Skills host, install this generic skill once. For any story, attach its downloaded cartridge and invoke <code>/agent-elixir</code> instead of sending the prompt above.</p><p>The skill contains no story and the cartridge must still be attached.</p><div class="actions"><a class="button-link" data-download-skill href="../../skills/${agentElixirArchiveName}" download="${agentElixirArchiveName}">Download agent-elixir skill</a></div></details>
     </section>
-    <section class="source-panel" aria-labelledby="source-title"><h2 id="source-title">View exactly what it says</h2><p>This is the complete file used by the link, download, and copy actions. Formatting is visible; there are no hidden instructions.</p><details><summary>Show complete cartridge source</summary><pre tabindex="0"><code data-cartridge-source>${escapeHtml(source)}</code></pre></details></section>
+    ${renderTrustFacts({ entry, release, metadata, catalogue })}
+    <details class="source-panel disclosure-panel"><summary>Read the complete cartridge</summary><div class="disclosure-content"><p>This is the complete story file served by the versioned link and download. Formatting is visible; there are no hidden instructions.</p><pre tabindex="0"><code data-cartridge-source>${escapeHtml(source)}</code></pre></div></details>
     <section class="related-panel" aria-labelledby="related-title"><p class="eyebrow">Explainable suggestions</p><h2 id="related-title">Try a different shape next</h2><div class="related-grid">${related.map(({ entry: relatedEntry, reasonIds, differentMechanic }) => {
       const reasons = reasonIds.map((id) => catalogue.taxonomy.find((value) => value.id === id)?.label).filter(Boolean);
       const reason = `${reasons.slice(0, 1).join("") || "Similar fit"}${differentMechanic ? ", different mechanic" : ""}`;
@@ -342,14 +355,14 @@ const renderDetail = ({ entry, release, metadata, source, sourceRevision, catalo
     }).join("")}</div></section>
   </article>
   ${privacyNotice(2)}
-</main><footer><p><a href="../../">Return to all Elixirs</a></p></footer>`,
+</main><footer><p><a href="../../">Return to all stories</a></p></footer>`,
   });
 };
 
 const renderVersion = ({ entry, release, releaseState, metadata, catalogue }) => renderDocument({
   title: `${entry.title} ${release.version} — Version history`, depth: 4,
-  body: `<header class="site-header"><a class="wordmark" href="../../../../">The Guide <span>Elixir Cabinet</span></a></header>
-<main id="main" tabindex="-1"><nav aria-label="Breadcrumb"><a href="../../../../">All Elixirs</a> <span aria-hidden="true">/</span> <a href="../../">${escapeHtml(entry.title)}</a> <span aria-hidden="true">/</span> ${release.version}</nav>
+  body: `<header class="site-header"><a class="wordmark" href="../../../../">The Guide <span>Interactive stories</span></a></header>
+<main id="main" tabindex="-1"><nav aria-label="Breadcrumb"><a href="../../../../">All stories</a> <span aria-hidden="true">/</span> <a href="../../">${escapeHtml(entry.title)}</a> <span aria-hidden="true">/</span> ${release.version}</nav>
   <section class="hero"><p class="eyebrow">Immutable release record</p><h1>${escapeHtml(entry.title)} ${release.version}</h1><p class="lede">Published cartridge bytes are bound to the paths and digest below.</p></section>
   <section class="trust-panel"><h2>Release facts</h2><dl class="fact-grid"><div><dt>Elixir ID</dt><dd>${release.elixirId}</dd></div><div><dt>Publisher</dt><dd>${metadata.publisher.name}</dd></div><div><dt>Published</dt><dd>${release.publishedAt}</dd></div><div><dt>Lifecycle</dt><dd>${releaseState.lifecycle}</dd></div><div><dt>Maintenance</dt><dd>${escapeHtml(entry.maintenanceOwner)}</dd></div><div><dt>Bytes</dt><dd>${release.bytes}</dd></div><div><dt>SHA-256</dt><dd>${release.sha256}</dd></div><div><dt>Covenant</dt><dd>${release.covenantVersion}</dd></div><div><dt>Review</dt><dd>${entry.review.state} ${entry.review.date}</dd></div><div><dt>Review evidence</dt><dd>${renderEvidenceLinks({ release, kind: "review", references: release.reviewReferences, prefix: "../../../../" })}</dd></div><div><dt>Compatibility</dt><dd>${metadata.compatibility.status}: ${metadata.compatibility.testedHarnessClasses.map(formatToken).join(", ") || "no tested class"}</dd></div><div><dt>Compatibility evidence</dt><dd>${renderEvidenceLinks({ release, kind: "compatibility", references: release.compatibilityReferences, prefix: "../../../../" })}</dd></div><div><dt>Artwork provenance</dt><dd><a href="../../../../assets/cartridges/manifest.json">${escapeHtml(release.artwork.map(({ provenanceId }) => provenanceId).join(", "))}</a></dd></div><div><dt>Rights record</dt><dd><a href="../../../../terms.md">Alpha usage terms</a></dd></div><div><dt>Source revision</dt><dd>${release.sourceRevision}</dd></div></dl>
   <p><strong>Canonical path:</strong> <a href="../../../../${release.canonicalPath}">${release.canonicalPath}</a></p>${release.legacyPaths.map((path) => `<p><strong>Permanent legacy path:</strong> <a href="../../../../${path}">${path}</a></p>`).join("")}</section>
@@ -365,6 +378,14 @@ export const buildElixirSite = ({
   catalogue = loadCatalogue({ repositoryRoot: sourceRoot }),
 } = {}) => {
   validateSourceRevision(sourceRevision);
+  const activeDownloadMetadata = catalogue.entries
+    .filter(({ lifecycle }) => lifecycle !== "withdrawn")
+    .map((entry) => {
+      const release = catalogue.releases.find(({ elixirId, version }) => elixirId === entry.elixirId && version === entry.recommendedVersion);
+      const cartridge = catalogue.cartridges.find(({ release: candidate }) => releaseKey(candidate) === releaseKey(release));
+      return cartridge.metadata;
+    });
+  validateUniqueCartridgeDownloadNames(activeDownloadMetadata);
   rmSync(outputDirectory, { recursive: true, force: true });
   mkdirSync(outputDirectory, { recursive: true });
 
@@ -410,6 +431,7 @@ export const buildElixirSite = ({
     validReferences: catalogue.entries.filter(({ lifecycle }) => lifecycle !== "withdrawn").map(({ elixirId: id, recommendedVersion: version }) => ({ id, version })),
     deploymentRevision: deliveryDeploymentRevision,
   }));
+  write(`skills/${agentElixirArchiveName}`, createAgentElixirArchive({ repositoryRoot }));
   copy("site/elixirs/cabinet.js", "cabinet.js");
   copy("site/elixirs/assets/cartridges/manifest.json", "assets/cartridges/manifest.json");
   for (const asset of catalogue.artworkManifest.assets) copy(`site/elixirs/${asset.path}`, asset.path);
@@ -434,7 +456,7 @@ export const buildElixirSite = ({
   for (const entry of catalogue.entries.filter(({ lifecycle }) => lifecycle !== "withdrawn")) {
     const release = releaseByKey.get(`${entry.elixirId}@${entry.recommendedVersion}`);
     const cartridge = cartridgeByKey.get(releaseKey(release));
-    write(`elixirs/${entry.slug}/index.html`, renderDetail({ entry, release, ...cartridge, sourceRevision, catalogue, index: publicIndex }));
+    write(`elixirs/${entry.slug}/index.html`, renderDetail({ entry, release, ...cartridge, catalogue, index: publicIndex }));
   }
 
   return { outputDirectory, cartridges: catalogue.cartridges, catalogue, publicIndex };

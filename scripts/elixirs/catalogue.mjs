@@ -55,7 +55,7 @@ const artworkManifestAssetSchema = z.object({
   dimensions: z.object({ width: z.number().int().positive().max(4096), height: z.number().int().positive().max(4096) }).strict(),
   generatedAt: date,
   generationMode: z.string().trim().min(1).max(300),
-  referenceAsset: artworkReferenceSchema,
+  referenceAsset: artworkReferenceSchema.nullable(),
   promptSummary: z.string().trim().min(1).max(500),
   sha256,
 }).strict();
@@ -142,6 +142,10 @@ const releaseStateSchema = z.object({
   successor: successorSchema.nullable(),
 }).strict();
 const reviewSchema = z.object({ state: z.literal("reviewed"), date }).strict();
+const catalogueArtworkSchema = z.object({
+  provenanceId: z.string().regex(/^art-[a-z0-9]+(?:-[a-z0-9]+)*$/),
+  altText: z.string().trim().min(40).max(300),
+}).strict();
 const requiredInput = z.enum(["time", "energy", "hard_boundary", "environment_detail", "genre_boundary", "free_text_choice"]);
 const storyDiscoverySchema = z.object({
   genreIds: uniqueArray(slug, "Story genre IDs must be unique").min(1),
@@ -182,6 +186,7 @@ export const catalogueEntrySchema = z.object({
   audienceIds: uniqueArray(slug, "Audience IDs must be unique").min(1),
   localeIds: uniqueArray(slug, "Locale IDs must be unique").min(1),
   storyDiscovery: storyDiscoverySchema.optional(),
+  catalogueArtwork: catalogueArtworkSchema.optional(),
   review: reviewSchema,
   maintenanceOwner: z.string().trim().min(1).max(80),
   successor: successorSchema.nullable(),
@@ -382,12 +387,20 @@ export const validateCatalogueRecords = ({
   assertUnique(parsedArtworkManifest.assets.map(({ path }) => path), "Artwork paths");
   assertUnique(parsedArtworkManifest.assets.map(({ path }) => path.toLocaleLowerCase("en")), "Case-folded artwork paths");
   const artworkById = new Map(parsedArtworkManifest.assets.map((value) => [value.id, value]));
+  const referencedArtworkIds = [
+    ...releases.flatMap(({ artwork }) => artwork.map(({ provenanceId }) => provenanceId)),
+    ...catalogue.entries.flatMap(({ catalogueArtwork }) => catalogueArtwork ? [catalogueArtwork.provenanceId] : []),
+  ];
+  if (parsedArtworkManifest.assets.some(({ id }) => !referencedArtworkIds.includes(id))) throw new Error("Artwork manifest contains an unreferenced production asset");
   for (const asset of parsedArtworkManifest.assets) {
-    if (asset.referenceAsset.availability === "active") {
+    assertFile(repositoryRoot, `site/elixirs/${asset.path}`);
+    const assetHash = createHash("sha256").update(readFileSync(resolve(repositoryRoot, `site/elixirs/${asset.path}`))).digest("hex");
+    if (assetHash !== asset.sha256) throw new Error(`Artwork bytes differ from manifest: ${asset.id}`);
+    if (asset.referenceAsset?.availability === "active") {
       assertFile(repositoryRoot, asset.referenceAsset.path);
       const actual = createHash("sha256").update(readFileSync(resolve(repositoryRoot, asset.referenceAsset.path))).digest("hex");
       if (actual !== asset.referenceAsset.sha256) throw new Error(`Active artwork reference digest differs: ${asset.id}`);
-    } else {
+    } else if (asset.referenceAsset?.availability === "archived_git") {
       assertFile(repositoryRoot, asset.referenceAsset.recoveryRecord);
       const record = readFileSync(resolve(repositoryRoot, asset.referenceAsset.recoveryRecord), "utf8");
       for (const value of [asset.referenceAsset.path, asset.referenceAsset.sourceRevision, asset.referenceAsset.gitObject, String(asset.referenceAsset.bytes), asset.referenceAsset.sha256]) {
@@ -421,9 +434,6 @@ export const validateCatalogueRecords = ({
     return Object.freeze({ release, metadata, source });
   });
 
-  const referencedArtworkIds = releases.flatMap(({ artwork }) => artwork.map(({ provenanceId }) => provenanceId));
-  if (parsedArtworkManifest.assets.some(({ id }) => !referencedArtworkIds.includes(id))) throw new Error("Artwork manifest contains an unreferenced production asset");
-
   for (const entry of catalogue.entries) {
     const release = releaseByKey.get(`${entry.elixirId}@${entry.recommendedVersion}`);
     if (!release) throw new Error(`Catalogue entry has no recommended release: ${entry.elixirId}@${entry.recommendedVersion}`);
@@ -442,6 +452,9 @@ export const validateCatalogueRecords = ({
     }
     if (Boolean(cartridge.metadata.story) !== Boolean(entry.storyDiscovery)) {
       throw new Error(`Story discovery metadata presence differs from cartridge: ${entry.elixirId}`);
+    }
+    if (entry.catalogueArtwork && !artworkById.has(entry.catalogueArtwork.provenanceId)) {
+      throw new Error(`Catalogue artwork provenance mismatch: ${entry.catalogueArtwork.provenanceId}`);
     }
     if (entry.storyDiscovery) {
       for (const [field, expectedFacet] of Object.entries(storyTaxonomyFields)) {
@@ -617,12 +630,21 @@ export const createPublicCatalogueIndex = (catalogue) => {
         gameplayCapability: cartridge.metadata.gameplayCapability,
         dataSummary: `The Guide receives ${cartridge.metadata.dataBehavior.guideReceives}; provider processing: ${cartridge.metadata.dataBehavior.providerProcessing.replaceAll("_", " ")}; memory: ${cartridge.metadata.dataBehavior.memory.replaceAll("_", " ")}; memento: ${cartridge.metadata.dataBehavior.mementoStorage.replaceAll("_", " ")}.`,
         compatibility: cartridge.metadata.compatibility.status,
-        artwork: {
-          path: cartridge.metadata.artwork.path,
-          width: cartridge.metadata.artwork.width,
-          height: cartridge.metadata.artwork.height,
-          altText: cartridge.metadata.artwork.altText,
-        },
+        artwork: (() => {
+          if (!entry.catalogueArtwork) return {
+            path: cartridge.metadata.artwork.path,
+            width: cartridge.metadata.artwork.width,
+            height: cartridge.metadata.artwork.height,
+            altText: cartridge.metadata.artwork.altText,
+          };
+          const asset = catalogue.artworkManifest.assets.find(({ id }) => id === entry.catalogueArtwork.provenanceId);
+          return {
+            path: asset.path,
+            width: asset.dimensions.width,
+            height: asset.dimensions.height,
+            altText: entry.catalogueArtwork.altText,
+          };
+        })(),
         mechanicId: entry.mechanicId,
         interactionLabel: entry.interactionLabel,
         toneIds: entry.toneIds,
@@ -713,6 +735,7 @@ export const deriveExpectedArtifactPaths = (catalogue) => {
     "index.html",
     "styles.css",
     "terms.md",
+    "skills/agent-elixir-0.1.0.zip",
   ]);
   for (const asset of catalogue.artworkManifest.assets) paths.add(asset.path);
   for (const release of catalogue.releases) {

@@ -96,6 +96,20 @@
       },
       "promptSummary": "Original pixel-art Regency ballroom still life with no people or readable text.",
       "sha256": "5a553a6f1f384ef171a5c5d15a4c8ed26600a783ddad0ed54ed4bbc6e2abc270"
+    },
+    {
+      "id": "art-regency-ball-cover",
+      "path": "assets/cartridges/regency-ball-cover.png",
+      "kind": "visual",
+      "source": "OpenAI built-in image generation from a project-authored production prompt",
+      "author": "OpenAI image generation, directed by The Guide project",
+      "license": "Generated for this project; use governed by the applicable OpenAI terms",
+      "dimensions": { "width": 1536, "height": 1024 },
+      "generatedAt": "2026-07-19",
+      "generationMode": "Original generation without a house-style reference; designed as genre-specific catalogue key art",
+      "referenceAsset": null,
+      "promptSummary": "Cinematic Regency historical-romance ensemble at a candlelit final waltz: an identity-neutral adult guest faces two freely offered romantic possibilities while the host and master of ceremonies hold the public stakes; no text, logos, fantasy, danger, or retro game styling.",
+      "sha256": "0b1770adfdacf08403e32a6d991140326765c543cc3cb8b064106a02d98296fe"
     }
   ]
 }

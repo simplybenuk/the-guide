@@ -26,7 +26,7 @@ describe("production-shaped hundreds-scale catalogue", () => {
     const landing = readFileSync(resolve(outputDirectory, "index.html"), "utf8");
     expect((landing.match(/data-spotlight/g) ?? [])).toHaveLength(1);
     expect((landing.match(/data-catalogue-entry/g) ?? [])).toHaveLength(3);
-    expect(landing).toContain(`Search and filter all ${count} Elixirs`);
+    expect(landing).toContain(`Browse all ${count} stories`);
     expect(landing).not.toContain(`data-elixir-id="the-guide.elixir.fixture-${String(count - 1).padStart(4, "0")}"`);
     expect((readFileSync(resolve(outputDirectory, "browse/index.html"), "utf8").match(/data-catalogue-entry/g) ?? [])).toHaveLength(24);
     const lastPage = result.pages === 1 ? "browse/index.html" : `browse/page-${result.pages}/index.html`;
@@ -117,7 +117,7 @@ describe("production-shaped hundreds-scale catalogue", () => {
     const oldVersionPage = readFileSync(resolve(supersededOutput, "elixirs/fixture-0000/versions/0.1.0/index.html"), "utf8");
     expect(oldVersionPage).toContain("superseded");
     expect(oldVersionPage).toContain('href="../../../../elixirs/fixture-0000/versions/0.2.0/"');
-    expect(readFileSync(resolve(supersededOutput, "elixirs/fixture-0000/index.html"), "utf8")).toContain("v0.2.0");
+    expect(readFileSync(resolve(supersededOutput, "elixirs/fixture-0000/index.html"), "utf8")).toContain('data-elixir-version="0.2.0"');
 
     entry.releaseStates[0].lifecycle = "withdrawn";
     const withdrawal = {
@@ -164,7 +164,7 @@ describe("production-shaped hundreds-scale catalogue", () => {
     expect(new URL(successorTarget, "https://example.test/the-guide/cartridges/the-guide/fixture-0000/0.1.0/elixir.md").pathname).toBe("/the-guide/elixirs/fixture-0000/versions/0.2.0/");
     expect(readFileSync(resolve(withdrawnOutput, "cartridges/the-guide/fixture-0000/0.2.0/elixir.md"), "utf8")).toBe(newSource);
     expect(readFileSync(resolve(withdrawnOutput, "catalogue-index.json"), "utf8")).toContain('"version": "0.2.0"');
-    expect(readFileSync(resolve(withdrawnOutput, "elixirs/fixture-0000/index.html"), "utf8")).toContain("Start this Elixir in ChatGPT");
+    expect(readFileSync(resolve(withdrawnOutput, "elixirs/fixture-0000/index.html"), "utf8")).toContain("Take this story to your AI");
     expect(readFileSync(resolve(withdrawnOutput, "elixirs/fixture-0000/versions/0.1.0/index.html"), "utf8")).toContain('href="../../../../elixirs/fixture-0000/versions/0.2.0/"');
   }, 120_000);
 });

@@ -1,699 +1,489 @@
-# The Guide — Elixir “Use Without Installing” Delivery Specification
+# The Guide — File-first Elixir Delivery and Optional Agent Skill
 
 ## Status
 
-**NOT READY FOR HUMAN TESTING**
+**READY FOR HUMAN TESTING**
 
-The repository owner approved this specification for development on
-2026-07-18. It defines the second ChatGPT-first delivery iteration and responds
-to one owner-observed ChatGPT run in which the public Pages cartridge URL could
-not be retrieved and ChatGPT correctly refused to guess. The run used the
-ChatGPT mobile app on a Plus account in Instant mode; the underlying model
-identifier was not exposed. That observation is a failed URL-delivery result,
-not a complete compatibility run.
+Refined on 2026-07-19 from owner feedback after testing story delivery. This
+revision replaces the implemented multi-option delivery design with a simpler
+attachment-first model. The repository owner approved this revision for bounded
+local development on 2026-07-19.
 
-Local implementation, full validation, adversarial audit hardening, and
-independent review completed on 2026-07-18 with no remaining blocking or
-should-fix implementation finding. Human output testing remains blocked solely
-by E07: the required complete second named live harness class is unavailable.
-Commit, push, deployment, release, analytics, MCP, and compatibility claims
-remain outside this development authorization.
+This specification supersedes the delivery-method and delivery-page requirements
+in the previous revision of this file and the URL-first handoff requirements in
+`docs/specs/chatgpt-first-elixir-delivery.md`. The static architecture, canonical
+cartridge bytes, consent covenant, privacy boundary, fail-closed compatibility
+claims, independent review, and separate deployment authority remain unchanged.
 
-This specification supersedes the URL-first primary handoff
-requirements in `docs/specs/chatgpt-first-elixir-delivery.md`. The existing
-event privacy boundary, static architecture, cartridge integrity, fallbacks,
-consent behavior, and compatibility gates remain authoritative except where
-this specification explicitly versions or replaces a delivery method.
-
-Approval authorizes bounded local development and validation only. It does not
-authorize a commit, push, pull request, Pages deployment, release/tag, npm
-publication, live analytics, MCP service, or compatibility claim.
+Approval would authorize bounded local development and validation only. It would
+not authorize a commit, push, pull request, deployment, release, tag, npm
+publication, live analytics, marketplace publication, or compatibility claim.
 
 ## Problem
 
-The current primary **Copy for ChatGPT** action copies a compact instruction
-containing an immutable Pages URL. This keeps the clipboard payload small, but
-the first owner-observed consumer ChatGPT attempt could not retrieve the linked
-Markdown. The failure behavior was honest, yet the player had to return to the
-cabinet and choose a second transport.
+The current cartridge page presents several delivery choices: a self-contained
+prompt, an agent resolver prompt, raw cartridge copy, Markdown download, visible
+source, and immutable URLs. Although each option has a rationale, together they
+make the player decide between technical transports before they can play.
 
-skills.sh demonstrates a useful adjacent pattern: its “use without installing”
-flow copies or generates a retrieval procedure that identifies a canonical
-source, lets a capable agent resolve the complete content, and retains fallback
-behavior. The Guide should borrow that presentation and resolver concept
-without treating Elixirs as skills, installing persistent capability, or asking
-consumer ChatGPT to execute downloaded packages.
+The tested and preferred pattern is simpler: the story is a portable Markdown
+cartridge with a recognizable filename. The player downloads it, attaches it to
+their chosen agent, and supplies one short instruction. A reusable Agent Skill
+can remove even that repeated instruction for players whose agent supports
+skills, but the skill must remain generic and separate from every story.
 
 ## Desired outcome
 
-For a ChatGPT player:
+For a player without the skill:
 
-> I choose an Elixir, copy one self-contained prompt, paste it into a fresh
-> ChatGPT conversation, and reach complete disclosure and the consent question
-> without depending on URL retrieval or returning to the cabinet.
+> I download one clearly named story file, attach it to a new conversation, copy
+> one short prompt, and the agent explains what will happen before asking whether
+> I want to begin.
 
-For a tool-capable agent player:
+For a player with a compatible Agent Skills host:
 
-> I can copy a secondary resolver prompt that identifies exact Pages and pinned
-> GitHub sources, and my agent either loads the verified cartridge or asks for
-> the complete file/text fallback without guessing.
+> I install `agent-elixir` once. For any story, I invoke `/agent-elixir` and attach
+> the downloaded cartridge file. The skill safely loads that cartridge and takes
+> me to the same disclosure and consent point.
 
 For the maintainer:
 
-> Both routes are deterministically generated from the same cartridge bytes,
-> locally observable through the versioned delivery-event contract, and add no
-> transcript collection, persistent installation, or gameplay tool access.
+> Every story remains one canonical, versioned Markdown artifact. The launcher
+> prompt and reusable skill contain only generic intake behavior and never embed,
+> duplicate, retrieve, or silently update story content.
 
 ## Actors
 
-- **ChatGPT player:** uses a consumer chat that may have no shell, browsing,
-  connector, or reliable public-URL retrieval.
-- **Tool-capable agent player:** uses a coding or personal agent that may have
-  already-authorized read-only browsing, HTTP, shell, or file capabilities.
-- **Player's agent:** reads the delivered cartridge, discloses the game, asks
-  for affirmative consent, plays conversation-only, and releases its role.
-- **Publisher:** generates immutable delivery payloads and transparent source
-  without receiving the player's prompt, transcript, identity, or memento.
-- **Evaluator:** records only redacted, named-harness results and does not infer
-  broad compatibility from a copy or retrieval action.
-
-## Work type
-
-Static product UX, deterministic text-envelope generation, event-contract
-versioning, supply-chain and authority-boundary design, browser/accessibility
-testing, and named external-harness evaluation.
+- **Player:** chooses a story, downloads its cartridge, and brings it to an agent.
+- **Player's agent:** receives the attached Markdown and either the short prompt
+  or the installed `agent-elixir` skill invocation.
+- **Publisher:** produces the static cabinet, exact cartridge files, short
+  launcher prompt, and optional generic skill package.
+- **Evaluator:** tests named hosts and records evidence without turning an
+  attachment or skill invocation into a broad compatibility claim.
 
 ## Goals
 
-- Make a complete self-contained ChatGPT prompt the single dominant action.
-- Preserve raw cartridge copy, download, visible source, and versioned URL.
-- Add a secondary, clearly experimental resolver prompt for capable agents.
-- Bind both prompt forms to exact cartridge identity, version, UTF-8 byte count,
-  and SHA-256 digest.
-- Make incomplete delivery observable through delimiters and fail-closed text.
-- Preserve the transition from optional delivery tools to tool-free gameplay.
-- Version the local delivery-event contract for the new methods without live
-  collection or persistence.
-- Evaluate full-paste and resolver behavior honestly in one named ChatGPT
-  product/model before changing compatibility evidence.
+- Make the downloadable Markdown cartridge the single primary delivery artifact.
+- Give every download a deterministic, human-readable, versioned filename.
+- Reduce the normal play journey to download, attach, and send one short prompt.
+- Offer one reusable `agent-elixir` skill as a clearly secondary alternative to
+  copying the prompt.
+- Keep stories out of the skill and keep agent-specific setup out of cartridges.
+- Preserve disclosure, affirmative consent, conversation-only play, stop, data,
+  and role-release behavior.
+- Preserve a static, private, no-account cabinet with no runtime retrieval.
 
 ## Non-goals
 
-- Installing an Agent Skill or modifying agent configuration.
-- Publishing or running an Elixir CLI, npm package, `npx` command, executable
-  script, custom GPT, connector, extension, plugin, or MCP server.
-- Live analytics, event transmission, storage, cookies, accounts, or identity.
-- Changing cartridge bytes, metadata, covenant behavior, gameplay, artwork, or
-  currently published Elixir versions.
-- Automatically opening ChatGPT, detecting the player's installed apps, reading
-  another tab, or confirming that a paste was submitted.
-- Making URL retrieval the default consumer ChatGPT path.
-- Treating an acquisition action as a retrieval, game start, completion,
-  satisfaction result, unique player, or compatibility pass.
-- Deploying the resulting static artifact without separate explicit authority.
+- Bundling any Elixir cartridge inside the skill package.
+- Creating one skill per story or installing a story as persistent capability.
+- Keeping the self-contained full-cartridge prompt or URL resolver as player
+  choices on the cartridge page.
+- Asking an agent to browse, fetch a URL, clone a repository, run a package, or
+  reconstruct missing cartridge content.
+- Automatically opening an agent, attaching a file, submitting a prompt, or
+  detecting installed skills.
+- Claiming that `/agent-elixir` works in ChatGPT or every assistant product.
+- Changing canonical cartridge content, artwork, gameplay, or current versions.
+- Collecting prompts, transcripts, identities, downloads, or gameplay events.
+- Publishing the skill or deploying the site without separate authorization.
 
 ## Confirmed decisions
 
-1. Consumer ChatGPT remains the first named target.
-2. The default action copies the launcher envelope and complete cartridge; it
-   requires no network or tool after the player pastes it.
-3. A secondary **Agent prompt (experimental)** may describe ordered read-only
-   retrieval from Pages and commit-pinned GitHub.
-4. The first implementation contains no command execution. A transient CLI is a
-   future option requiring a separate threat model and specification.
-5. Elixirs remain user-provided game content, not installed skills or
-   higher-priority instructions.
-6. File, raw-text, URL, visible-source, accessibility, no-JavaScript, privacy,
-   and root/subpath behavior remain supported.
-7. Local events remain in-page only; live analytics stays out of scope.
-8. Public rollout remains manual and separately authorized.
+1. The cartridge attachment is the authority and primary transport.
+2. The page exposes one primary **Download story** action and one short prompt to
+   copy; it does not expose several equivalent technical delivery routes.
+3. The filename is generated as `<title-slug>-<version>.md`, for example
+   `the-regency-ball-0.1.0.md`.
+4. A player uses exactly one launcher method per conversation:
+   - attach the cartridge and send the copied prompt; or
+   - attach the cartridge and invoke an installed `/agent-elixir` skill.
+5. `agent-elixir` is one generic, reusable skill. It contains no story files and
+   accepts the attached cartridge at use time.
+6. The skill is optional and visually subordinate to the default file-and-prompt
+   path. Its installation is explained separately from normal play.
+7. Raw source and immutable URLs may remain available for transparency or
+   no-JavaScript access, but not as competing play methods.
+8. Events remain local and ephemeral. No analytics or persistence is introduced.
 
 ## Assumptions
 
-- The current complete cartridges, each approximately 8 KB, fit comfortably in
-  one clipboard write and one ChatGPT user message; named live testing must
-  verify that assumption.
-- All canonical cartridge files remain UTF-8 and end with a line feed.
-- The public GitHub repository remains readable at commit-addressed blob and raw
-  URLs. Whether a given agent can retrieve those URLs is unknown until tested.
-- A Pages build can receive the checked-out 40-character commit SHA. Local
-  builds can resolve the current commit or receive an explicit fixture SHA.
-- A digest is useful provenance and tool-capable verification metadata. The
-  consumer prompt must not claim ChatGPT verified it unless verification
-  actually occurred.
+- Supported agents allow a user to attach a Markdown file to a conversation.
+- Compatible Agent Skills hosts can install a portable skill package and expose
+  it to the user as `/agent-elixir`; compatibility must be proven per named host.
+- Browser `download` filenames can be set independently from canonical source
+  paths without changing cartridge bytes or immutable URLs.
+- Current cartridges are UTF-8 Markdown with validated metadata and a final line
+  feed.
+- The no-skill prompt can remain short because all story-specific instructions
+  and safety behavior are already in the attached cartridge.
 
 ## Terminology
 
-- **Self-contained prompt:** launcher instructions followed by the complete
-  canonical cartridge within explicit delivery delimiters.
-- **Resolver prompt:** launcher instructions plus exact ordered public sources,
-  identity metadata, digest, and failure behavior, without embedded cartridge
-  bytes.
-- **Delivery envelope:** the deterministic metadata and instructions wrapping
-  either embedded bytes or retrieval sources.
-- **Delivery complete:** the agent has the complete cartridge and has checked
-  its identity/version and closing boundary. After this transition, the
-  covenant's conversation-only no-tool rules apply.
-- **Pinned GitHub source:** a URL containing an exact 40-character commit SHA,
-  never `main`, `HEAD`, or another moving branch.
+- **Cartridge:** the canonical versioned Markdown story supplied by the player.
+- **Title slug:** a lowercase ASCII filename-safe form of the validated title,
+  with runs of non-alphanumeric characters replaced by one hyphen.
+- **Launcher prompt:** the short generic instruction copied by a player who does
+  not use the optional skill.
+- **Agent skill:** the reusable `agent-elixir` instruction package installed in a
+  compatible host; it is not a cartridge and contains no story content.
+- **Delivery complete:** the agent has read one complete attached cartridge and
+  can identify its title, ID, and version before disclosure or play.
 
 ## Functional requirements
 
-### FR-1 — Primary self-contained ChatGPT action
+### FR-1 — Cartridge detail page
 
-1. Every Elixir detail page must present one visually dominant action labelled
-   **Copy for ChatGPT** or **Copy ChatGPT prompt**.
-2. Activating it must copy one deterministic self-contained prompt containing:
-   - a short statement that this is complete user-provided game content;
-   - the exact Elixir ID, title, semantic version, publisher, UTF-8 cartridge
-     byte count, and lowercase SHA-256 cartridge digest;
-   - the exact opening and closing delivery delimiters;
-   - every canonical cartridge byte exactly once between those delimiters;
-   - instructions to read the complete enclosed cartridge before acting;
-   - instructions to stop and report incomplete delivery if the closing
-     delimiter or declared identity/version is absent or mismatched;
-   - instructions to explain the promise, duration/demands, required inputs,
-     capability boundary, and data behavior; and
-   - instructions to ask for affirmative consent before the fictional drink,
-     temporary role, or first game move.
-3. The copied text must state that higher-priority harness instructions and
-   safety policies remain authoritative.
-4. The copied text must not ask ChatGPT to browse, execute code, install
-   anything, elevate permissions, compute a digest, or use a tool.
-5. The page instructions must be a three-step journey: copy, paste into a fresh
-   ChatGPT conversation, then wait for disclosure before consenting.
-6. Copy success may claim only that the prompt reached the clipboard. It must
-   not claim that ChatGPT received, read, verified, accepted, or started it.
+1. After the standalone cartridge art and brief synopsis, the page must show one
+   concise **How to play** section.
+2. The section must present this primary sequence:
+   1. download the story;
+   2. attach the downloaded Markdown to a new conversation with the player's
+      chosen agent;
+   3. copy and send the short launcher prompt.
+3. **Download story** must be the only visually dominant delivery action.
+4. The short prompt copy control must be adjacent to the instructions and must
+   not contain cartridge bytes, URLs, digests, install commands, or host-specific
+   claims.
+5. An optional **Use the Agent Skill** disclosure may explain the once-only skill
+   installation and `/agent-elixir` invocation. It must be visually subordinate
+   and must say that the cartridge still needs to be attached.
+6. The page must not present self-contained prompt, resolver prompt, raw-copy,
+   URL, and download as a grid or menu of equivalent play choices.
+7. Complete raw source and immutable URLs may remain in a subordinate
+   transparency/source area or no-JavaScript fallback.
 
-### FR-2 — Delivery-envelope integrity
+### FR-2 — Downloaded filename and byte integrity
 
-1. The generator must compute byte length using the canonical UTF-8 cartridge
-   bytes and compute SHA-256 over those same bytes.
-2. Envelope metadata must derive from validated cartridge metadata rather than
-   duplicated hand-authored values.
-3. Delimiter strings must be constant, versioned, unambiguous, and rejected if
-   they occur inside canonical cartridge content.
-4. The generated embedded region must equal the downloadable, visible, raw-copy,
-   and versioned-URL cartridge byte-for-byte.
-5. The generator must fail if a cartridge does not end with a line feed, cannot
-   be represented as UTF-8, or contains a reserved delivery delimiter.
-6. The envelope must not imply that the receiving agent cryptographically
-   verified the digest. A later evaluator may record verification only when the
-   named harness actually performed it.
+1. The suggested download filename must be deterministically generated from
+   validated metadata as `<title-slug>-<version>.md`.
+2. Current expected filenames are:
+   - `the-regency-ball-0.1.0.md`;
+   - `the-signal-elixir-0.1.0.md`;
+   - `the-mystery-elixir-0.1.0.md`; and
+   - `the-story-elixir-0.1.0.md`.
+3. Filename generation must reject an empty title slug, path separators,
+   traversal, control characters, or a version outside the existing validated
+   semantic-version grammar.
+4. The downloaded bytes must equal the canonical cartridge bytes exactly.
+   Renaming the download must not create or mutate a second story source.
+5. The versioned source URL and visible source must continue to expose those same
+   bytes even if their path basename differs from the suggested download name.
 
-### FR-3 — Secondary agent resolver prompt
+### FR-3 — Short launcher prompt
 
-1. Each detail page must expose **Agent prompt (experimental)** as a secondary
-   route, visually subordinate to the self-contained ChatGPT action.
-2. Its copied resolver prompt must contain the same identity, byte-count, digest,
-   authority, disclosure, consent, and failure fields as the self-contained
-   envelope, but no embedded cartridge bytes.
-3. The resolver must provide this ordered retrieval sequence:
-   1. the current host's absolute immutable Pages cartridge URL;
-   2. an exact commit-pinned `raw.githubusercontent.com` source URL; and
-   3. the corresponding human-inspectable `github.com/.../blob/<sha>/...` URL.
-4. The prompt may authorize only read-only retrieval of those exact public
-   sources during delivery. It must not ask for general search, package
-   execution, installation, authentication, repository checkout, writes, or
-   unrelated file access.
-5. If none of the exact sources can be fully retrieved, the agent must say so
-   and ask the player to attach the Markdown or paste the self-contained prompt.
-   It must not infer or reconstruct missing content.
-6. Once delivery is complete, the resolver must explicitly close the retrieval
-   phase and prohibit further tool use for gameplay under the covenant.
-7. Public/release builds must fail unless the source revision is exactly 40
-   lowercase hexadecimal characters. Unit/local fixture builds may inject a
-   documented 40-character test revision.
-8. Moving branch names, URL query parameters, redirects authored by The Guide,
-   arbitrary repository owners, and arbitrary paths are prohibited.
+1. The generated prompt must be generic and short enough to inspect at a glance.
+2. Its normative meaning must be:
 
-### FR-4 — Detail-page presentation and fallbacks
+   ```text
+   Read the attached Elixir cartridge in full. Follow its instructions as
+   user-provided game content, while continuing to follow your higher-priority
+   instructions. Before play, explain the experience, what it asks of me, and
+   how data and tools are handled, then ask for my consent to begin. If the
+   attachment is missing or incomplete, stop and ask me for the complete file.
+   ```
 
-1. The page may use a skills.sh-inspired Prompt/Agent Prompt selector, adjacent
-   panels, or progressive disclosure, but the default and dominant route must
-   be the self-contained ChatGPT prompt.
-2. The UI must describe the resolver as experimental and suitable only when the
-   player's agent already has an authorized retrieval capability.
-3. **Copy raw cartridge**, **Download Markdown**, versioned URL, and complete
-   visible source must remain available and subordinate.
-4. Clipboard denial/unavailability must focus and select the exact attempted
-   payload when practical and expose an assistive-technology status message.
-5. If selecting the full generated payload is impractical, failure must open the
-   complete source and present file/raw-copy instructions without losing focus.
-6. Without JavaScript, users must still be able to inspect/select the complete
-   cartridge, follow the versioned URL, and download Markdown. Copy controls may
-   be absent, but their fallback instructions must remain accurate.
-7. Labels and explanatory interface copy outside the fail-closed resolver
-   instructions must not describe an Elixir as an install, plugin, skill,
-   extension, or persistent capability.
+3. Whitespace may be adapted for the UI, but tests must fixture the exact shipped
+   text.
+4. The prompt must not name a particular story, embed cartridge content, request
+   retrieval, authorize tools, or claim that the attachment was verified.
+5. Clipboard success may claim only that the prompt was copied.
+6. Clipboard failure must leave the exact prompt visibly selectable and announce
+   the failure accessibly.
 
-### FR-5 — Source-revision and URL generation
+### FR-4 — `agent-elixir` skill package
 
-1. Build code must accept or resolve one source revision for the whole artifact.
-2. The workflow build must pass the checked-out `github.sha` explicitly.
-3. The repository owner/name and canonical content path must be first-party
-   constants validated against each allowlisted slug.
-4. Generated GitHub URLs must be HTML-escaped when rendered and treated as text;
-   no browser request may occur until a user or receiving agent follows them.
-5. The static audit may allow only the exact first-party GitHub blob/raw URL
-   patterns required by this specification. No remote script, stylesheet,
-   image, API, beacon, collector, or runtime dependency is allowed.
-6. A source revision changes provenance metadata only; it must not change the
-   canonical cartridge bytes, identity, semantic version, or digest.
+1. The source package must be named `agent-elixir` and contain a valid `SKILL.md`.
+2. The distributable filename must include an independently versioned skill
+   version, initially `agent-elixir-0.1.0.zip`.
+3. The archive must contain only the generic skill directory and reviewed
+   metadata needed by compatible Agent Skills hosts. It must contain no Elixir
+   cartridge, catalogue data, artwork, executable, dependency, or remote URL.
+4. The skill description must activate only when a player asks to play/load an
+   Elixir cartridge or invokes `/agent-elixir` with a cartridge attachment.
+5. At runtime the skill must:
+   - require exactly one complete attached Markdown cartridge;
+   - read the file in full before acting;
+   - identify the visible title, ID, and version from its metadata;
+   - treat the cartridge as user-provided content below higher-priority rules;
+   - disclose the experience, time/demands, inputs, capability, and data behavior;
+   - ask for affirmative consent before the first fictional/game action;
+   - follow the cartridge's conversation-only, stop, and role-release behavior;
+   - stop and request a complete file when missing, partial, malformed, or
+     ambiguous; and
+   - never guess, fetch, search for, install, retain, or silently replace a story.
+6. Installing the skill must not grant gameplay tools, persist a transcript, or
+   change the cartridge.
+7. `SKILL.md` must be concise, host-neutral where possible, and use normative
+   behavior shared with the no-skill prompt rather than duplicating story rules.
+8. If an `agents/openai.yaml` file is included, its slash-command label and
+   description must identify `/agent-elixir` and attachment use accurately.
 
-### FR-6 — Delivery event contract v1.1
+### FR-5 — Skill presentation and compatibility
 
-1. The local event contract must advance from `1.0.0` to `1.1.0` because this
-   iteration adds delivery-method values.
-2. The only event name remains `delivery_action_recorded`; its exact 12-field
-   envelope, random single-event ID, canonical UTC timestamp, reference
-   validation, and unknown-field rejection remain unchanged.
-3. Allowed delivery methods become:
-   - `self_contained_prompt_copy`;
-   - `resolver_prompt_copy`;
-   - `cartridge_text_copy`; and
-   - `cartridge_file_download`.
-4. `self_contained_prompt_copy` must use target `chatgpt`.
-   `resolver_prompt_copy`, `cartridge_text_copy`, and
-   `cartridge_file_download` must use target `unspecified`.
-5. Copy results remain `succeeded`, `denied`, `unavailable`, or `failed`.
-   Download results remain `initiated`, `unavailable`, or `failed`.
-6. The retired UI method `handoff_message_copy` must not be emitted by the new
-   cabinet. Because no live collector or stored event migration exists, it need
-   not remain accepted by the strict `1.1.0` schema.
-7. Events must remain local, ephemeral `CustomEvent` values. No network,
-   persistence, public logging, cookies, or stable identity may be added.
-8. Acquisition aggregation must count successful prompt/raw-copy actions and
-   initiated downloads separately by Elixir/version/method/target within an
-   explicit half-open time window. It must not claim retrieval or play.
+1. The cabinet must describe the skill as an option for compatible Agent Skills
+   hosts, not as universally supported.
+2. Normal play instructions must not require installation.
+3. The skill area must give one reviewed package download and concise installation
+   guidance. Host-specific steps may be linked or disclosed separately only when
+   verified.
+4. The cabinet must not detect local installations or claim that installation
+   succeeded.
+5. Compatibility remains `untested` until a named host/version completes install,
+   invocation, attachment, disclosure, consent, stop, and release evaluation.
+6. A passing Codex result must be labelled for that tested Codex surface/version
+   and must not be generalized to ChatGPT or other agents.
 
-### FR-7 — Named ChatGPT evaluation
+### FR-6 — Local delivery events and privacy
 
-1. The first owner-observed URL failure must record the exposed ChatGPT product,
-   plan, mode, date, and underlying model identifier when available. The known
-   mobile/Plus/Instant context is contextual feedback rather than a completed
-   matrix run because the underlying model was not exposed and the versioned
-   fixture matrix was not run.
-2. A named evaluation must test all three current Elixirs using:
-   - the self-contained prompt;
-   - the Pages resolver source;
-   - the pinned GitHub raw/blob resolver sources; and
-   - Markdown attachment or raw cartridge paste fallback.
-3. Each run must record whether the complete identity/version and closing
-   boundary were recognized, whether disclosure preceded consent, whether play
-   waited for consent, whether any delivery tool continued into gameplay,
-   whether stop and role release worked, and whether content was truncated.
-4. Evidence must be redacted and scoped to product, model/mode, date, Elixir
-   version, transport, retry count, and outcome.
-5. A transport failure must remain a failure even when a later fallback works.
-   A fallback success may be recorded separately.
-6. No ChatGPT or consumer-assistant compatibility label may change until the
-   existing complete-evidence gate is satisfied.
+1. The strict local event contract must advance to `1.2.0` because the visible
+   delivery methods change again.
+2. Allowed emitted delivery methods are:
+   - `cartridge_file_download`;
+   - `launcher_prompt_copy`; and
+   - `agent_skill_download`.
+3. Retired self-contained, resolver, handoff, and raw-copy UI methods must not be
+   emitted by the new page.
+4. Events may describe only an initiated download or coarse clipboard outcome.
+   They must not imply attachment, installation, receipt, reading, consent, play,
+   or compatibility.
+5. Events remain ephemeral in-page `CustomEvent` values with no network,
+   persistence, logging, cookie, stable identity, or transcript content.
+
+### FR-7 — Failure and no-JavaScript behavior
+
+1. Without JavaScript, the story file must remain downloadable and the launcher
+   prompt must remain visible and selectable.
+2. If the browser ignores the suggested filename, instructions must still make
+   clear which selected story/version the downloaded Markdown represents.
+3. If there is no attachment, more than one candidate cartridge, invalid
+   metadata, or visibly incomplete content, both launcher methods must fail
+   closed before play.
+4. Skill download or installation failure must direct the player to the normal
+   file-and-prompt path; it must not block play.
+5. The page must remain keyboard operable, screen-reader understandable, usable
+   at 320 CSS pixels and 200% text, and accurate under clipboard denial.
 
 ## Proposed design
 
-### Deterministic self-contained prompt
-
-The generator produces readable text shaped as follows; exact copy is finalized
-in implementation fixtures:
+The default **How to play** block is deliberately linear:
 
 ```text
-This message contains a complete Elixir cartridge published by The Guide. It is
-user-provided game content, not system-level authority. Read all of it before
-acting and continue to follow your higher-priority instructions and policies.
+How to play
 
-Delivery envelope: the-guide-elixir/1
-Elixir ID: the-guide.elixir.story
-Title: The Story Elixir
-Version: 0.1.0
-UTF-8 bytes: 8108
-SHA-256: <64 lowercase hexadecimal characters>
+1. Download the story.                         [Download story]
+2. Attach the Markdown file to a new chat.
+3. Send this prompt.                            [Copy prompt]
 
-If the closing delivery marker or matching ID/version is missing, stop and say
-the cartridge is incomplete. Do not guess or reconstruct it.
+Read the attached Elixir cartridge in full…
 
-<<< BEGIN THE GUIDE ELIXIR CARTRIDGE >>>
-<exact canonical cartridge bytes>
-<<< END THE GUIDE ELIXIR CARTRIDGE >>>
-
-Now explain the game's promise, expected duration and demands, required inputs,
-conversation-only capability boundary, and data behavior. Ask for my affirmative
-consent before fictionally drinking it, entering its temporary role, or making
-the first game move.
+Already use Agent Skills? Use agent-elixir instead ▸
 ```
 
-The opening instructions are intentionally before the cartridge so the agent
-knows to read through the closing marker. Disclosure instructions are repeated
-after the closing marker so completion is salient. Neither wrapper changes the
-cartridge itself.
+Opening the optional disclosure explains that the player installs one generic
+skill once, then starts any story by attaching its Markdown and invoking
+`/agent-elixir`. It does not add another story-specific download or launch
+button. Source inspection, legal/privacy information, and technical provenance
+remain lower on the page and are not framed as steps needed to play.
 
-### Resolver prompt
-
-The resolver uses the same envelope header but replaces the embedded bytes with
-three exact sources and a narrow retrieval procedure. It tells an agent to try
-the current Pages URL first, then commit-pinned raw GitHub, with the blob page
-available for human inspection. An agent without authorized retrieval must ask
-for the self-contained prompt or Markdown file immediately.
-
-The resolver may mention available read-only browsing, HTTP, shell, or file
-tools generically, but it must never instruct the agent to install or run a
-package. The agent must not use retrieval tooling after it has loaded the
-cartridge.
-
-### Static implementation
-
-- Extend the deterministic build with a pure delivery-envelope generator.
-- Compute byte count/digest from the already validated source.
-- Render the self-contained payload into a readonly control usable for
-  clipboard fallback and the resolver into a subordinate readonly control.
-- Keep the raw cartridge source as the canonical visible/downloaded artifact.
-- Pass `GITHUB_SHA` into the Pages build as an explicit source revision.
-- Extend the exact static audit only for reviewed first-party source URLs and
-  any changed generated file hashes/allowlists.
-- Add no runtime fetch. Browser interaction remains clipboard and local event
-  dispatch only.
-
-### Accessibility
-
-- Prefer native headings, buttons, links, `<details>`, and readonly textareas.
-- If a tab interface is chosen, implement correct `tablist`, `tab`, and
-  `tabpanel` keyboard/focus behavior; otherwise do not imitate tabs visually.
-- Status updates remain `role="status"` with polite announcements.
-- Large readonly payloads must have explicit labels and must not trap keyboard
-  or screen-reader navigation.
-- The dominant action and experimental resolver distinction must remain clear
-  at 320 CSS pixels and 200% text.
+The build derives the suggested filename from validated cartridge metadata and
+uses the canonical file as the link target. The reusable skill is maintained as
+source in the repository and deterministically archived as a separately audited
+static artifact.
 
 ## Security, privacy, and trust boundaries
 
-- The self-contained route removes delivery-time network and remote-code risk.
-- The resolver authorizes only GET-equivalent reading of three exact public
-  first-party resources. It grants no gameplay permission.
-- Commit pinning prevents a moving branch from silently changing retrieved
-  instructions; SHA-256 binds the declared cartridge bytes.
-- GitHub and the selected harness may process ordinary request/conversation data
-  under their own terms. The Guide receives no conversation through this flow.
-- The wrapper and cartridge remain user content. They never override system,
-  developer, organizational, or safety instructions.
-- The static page must not transmit the copied payload, clipboard outcome,
-  prompt, transcript, or event.
-- An Elixir remains an instruction contract rather than an enforceable sandbox;
-  compatibility claims remain evidence-scoped.
-
-## Failure behavior
-
-- Missing closing marker, ID/version mismatch, or visibly partial paste: stop
-  before disclosure/play and ask the player to recopy or attach Markdown.
-- Clipboard denied/unavailable: select the attempted prompt or open the exact
-  raw source fallback; emit only a coarse local result.
-- Pages retrieval denied/not found: try the pinned GitHub raw source only when
-  authorized.
-- GitHub retrieval denied/not found or digest/identity mismatch: do not try
-  arbitrary search results; ask for self-contained paste or attachment.
-- Agent cannot verify SHA-256: it may rely on visible ID/version/boundaries but
-  must not claim cryptographic verification.
-- Tool remains active after delivery: stop tool use before disclosure/play and
-  mark the evaluated boundary case failed if it continues.
-
-## Rollout and recovery
-
-1. Implement locally behind no remote service or feature flag.
-2. Validate generation, event v1.1, audit, browser, accessibility, and privacy.
-3. Run independent agent review.
-4. Retain **NOT READY FOR HUMAN TESTING** if named ChatGPT evidence remains
-   incomplete; do not manufacture compatibility from local tests.
-5. After a separate publication authorization, merge and manually deploy the
-   reviewed artifact through the existing Pages workflow.
-6. Verify the live artifact byte-for-byte and repeat named ChatGPT transport
-   tests against its actual URLs.
-
-Before merge, recovery is deletion/reversion of the bounded implementation.
-After deployment, recovery is redeployment of the last reviewed Pages artifact
-or revert of the delivery change. There is no event-data migration or deletion
-because nothing is collected or persisted.
+- The player explicitly transfers the selected Markdown to their chosen agent.
+- The Guide receives no attachment, prompt, transcript, identity, or play data.
+- Neither launcher grants authority above user-provided content.
+- The skill performs no network retrieval and includes no executable code.
+- The skill package and cartridge are independently versioned and audited.
+- Cartridge content remains subject to the chosen host's higher-priority rules.
+- Agent behavior is not a sandbox guarantee; compatibility claims remain
+  evidence-scoped.
 
 ## Acceptance criteria
 
-1. Every detail page has one dominant self-contained ChatGPT copy action.
-2. One paste contains the launcher, exact complete cartridge, closing marker,
-   and post-load disclosure/consent instruction.
-3. The embedded cartridge region equals canonical, visible, downloaded,
-   raw-copied, and versioned-URL bytes exactly.
-4. Generated ID/title/version/publisher/byte-count/digest values match validated
-   canonical input for Signal, Mystery, and Story.
-5. Reserved delimiters, missing final line feed, invalid UTF-8, or invalid
-   source revision fail the build with an actionable error.
-6. The self-contained prompt requests no retrieval, command, installation,
-   authentication, permission elevation, or tool.
-7. The experimental resolver contains only the exact current Pages URL and
-   commit-pinned first-party GitHub raw/blob URLs.
-8. No moving branch, query parameter, arbitrary origin/path, package command,
-   or general search instruction appears in a generated resolver.
-9. Resolver failure asks for the complete prompt or Markdown and prohibits
-   guessing.
-10. Delivery and gameplay are explicitly separated; no tool is authorized
-    after the cartridge is loaded.
-11. Raw cartridge copy, download, versioned URL, visible source, and
-    no-JavaScript fallbacks remain functional.
-12. Clipboard success/denial/unavailability/failure gives accurate accessible
-    feedback and does not expose copied text or error details in events/logs.
-13. Contract `1.1.0` accepts exactly the four specified methods and conditional
-    target/result combinations and rejects contract `1.0.0`, retired method
-    emission, unknown fields, invalid references, IDs, and timestamps.
-14. Primary, resolver, raw-copy, and download actions each emit at most one
-    validated local event with the correct method, target, and coarse result.
-15. Aggregation counts qualifying actions separately within explicit half-open
-    windows and makes no retrieval, player, start, completion, or compatibility
-    inference.
-16. No delivery event or prompt causes a cabinet network request, storage write,
-    cookie, service worker, console log, analytics call, or collector call.
-17. The artifact audit rejects all non-allowlisted remote origins and accepts
-    only exact first-party pinned GitHub source literals required by the resolver.
-18. The cabinet remains operable at `/` and `/the-guide/`, 320 CSS pixels, 200%
-    text, keyboard-only, reduced motion, screen-reader semantics, clipboard
-    denial, and without JavaScript.
-19. Canonical cartridge, covenant, metadata, gameplay, artwork, and versioned
-    URLs remain unchanged.
-20. The existing alpha terms and GitHub privacy disclosure remain visible.
-21. Complete named ChatGPT evidence records each transport separately; URL or
-    resolver failure is not converted to a pass by fallback success.
-22. Compatibility remains fail-closed until the existing evidence gate passes.
-23. `npm run validate` and `git diff --check` pass.
-24. Independent review finds no blocking or should-fix issue before human output
+1. Every story detail page presents one dominant **Download story** action, a
+   three-step attachment journey, and one short prompt copy control.
+2. The page no longer presents full-prompt, resolver, raw-copy, and URL choices
+   as alternative ways to play.
+3. Suggested filenames match the four exact expected names in FR-2.
+4. Each download is byte-identical to its canonical cartridge.
+5. Unsafe or empty generated filenames fail the build.
+6. The shipped prompt matches its fixture and contains no cartridge bytes, URL,
+   digest, install instruction, tool authorization, or story-specific value.
+7. Clipboard allowed, denied, unavailable, and throwing behavior is accurate and
+   accessible.
+8. The optional skill area is subordinate, states that attachment is still
+   required, and makes no universal compatibility claim.
+9. `agent-elixir-0.1.0.zip` is deterministic, contains valid skill metadata, and
+   contains no story, art, executable, dependency, or remote URL.
+10. `/agent-elixir` with one valid attached cartridge reaches accurate disclosure
+    and an affirmative consent question before play in each named passing host.
+11. Missing, multiple, malformed, and truncated attachment cases stop before
+    disclosure/play and request one complete cartridge.
+12. Stop and role release work after both the prompt and skill launch paths.
+13. Contract `1.2.0` accepts only the three new method/result combinations and
+    rejects retired emissions, unknown fields, and invalid references.
+14. No action creates an unexpected request, storage entry, cookie, service
+    worker, console payload, analytics call, or collector call.
+15. Source/transparency access and no-JavaScript download/prompt fallback remain
+    available without competing with the play journey.
+16. Canonical cartridges, covenant, artwork, and versioned source URLs are
+    unchanged.
+17. Root and `/the-guide/`, mobile, 200% text, keyboard, reduced-motion, and
+    assistive-technology checks pass.
+18. `npm run validate` and `git diff --check` pass.
+19. Independent review finds no blocking or should-fix issue before human output
     testing or deployment is considered.
-25. No commit, push, pull request, deployment, tag, release, npm publication,
-    MCP service, or live analytics collection occurs without separate authority.
+20. No publication, commit, push, deployment, release, analytics, or compatibility
+    claim occurs without its separate authority and evidence gate.
 
 ## Development-readiness bundle
 
 ### Proposed task outline
 
-#### U01 — Generate deterministic delivery envelopes
+#### U01 — Generate file-first delivery artifacts
 
-- Add a pure self-contained/resolver envelope module with UTF-8 length,
-  SHA-256, delimiter, metadata, revision, and exact-source validation.
-- Add fixtures for all current cartridges and negative integrity cases.
-- Keep canonical cartridge and covenant sources unchanged.
+- Add deterministic title-slug filename generation and negative validation.
+- Replace the full and resolver prompt generators with one exact short prompt.
+- Preserve canonical cartridge bytes and source URLs.
 
-#### U02 — Replace URL-first primary delivery UX
+#### U02 — Simplify the cartridge page
 
-- Render the self-contained ChatGPT payload and dominant copy action.
-- Add the subordinate experimental resolver prompt and accurate guidance.
-- Preserve raw copy, download, URL, source inspection, no-JavaScript behavior,
-  focus recovery, and responsive/accessibility behavior.
+- Implement the three-step **How to play** block and dominant download.
+- Add the short copy action and subordinate skill disclosure.
+- Move raw source and provenance out of the primary play journey while
+  preserving transparency and no-JavaScript access.
 
-#### U03 — Version local delivery events and artifact audit
+#### U03 — Build the reusable skill
 
-- Implement contract `1.1.0`, new methods, conditional targets/results, and
-  aggregation fixtures.
-- Update browser dispatch without transmission or persistence.
-- Pass/validate the source revision and narrowly extend GitHub literal
-  allowlisting while rejecting runtime remote resources.
+- Create the generic `agent-elixir/SKILL.md` and minimal reviewed metadata.
+- Generate and audit `agent-elixir-0.1.0.zip` deterministically.
+- Add valid, missing, multiple, malformed, and truncated attachment fixtures.
 
-#### U04 — Validate complete delivery journeys
+#### U04 — Version events and audit the artifact
 
-- Extend generator, unit, audit, and Playwright coverage.
-- Run root/subpath, responsive, accessibility, clipboard, no-JavaScript,
-  request/storage, and immutable-content regressions.
-- Record the owner-reported URL failure only if its exact harness metadata is
-  supplied; otherwise retain it as contextual product feedback.
-- Run named ChatGPT self-contained, resolver, raw-paste, attachment, consent,
-  stop, tool-release, and role-release cases when that harness is available.
+- Implement local contract `1.2.0` and remove retired UI emissions.
+- Audit the skill archive inventory, digest, absence of story content, and lack
+  of remote/runtime dependencies.
 
-#### U05 — Independent review and handoff
+#### U05 — Validate and independently review
 
-- Review implementation against this specification, the project adapter,
-  current architecture/covenant, changed source, generated artifact, and tests.
-- Resolve blocking and should-fix findings.
-- Preserve the human approval, human output-testing, and separate deployment
-  gates.
+- Run unit, build, audit, browser, accessibility, privacy, and repository tests.
+- Evaluate both launcher methods in named available hosts without inflating
+  compatibility.
+- Complete independent agent review before human output testing.
 
 ### Dependencies
 
-- Existing canonical cartridge validator, static generator, audit, local event
-  runtime, browser suite, and Pages workflow.
-- Node's standard cryptographic hashing and UTF-8 byte-length behavior; no new
-  runtime dependency is expected.
-- Git metadata or explicit source-revision injection for generated resolver
-  URLs.
-- Exact ChatGPT product/model/mode for complete external evidence; this is not a
-  blocker to local implementation.
-- Separate human authority for any commit/push/PR and later Pages deployment.
+- Existing static generator, canonical cartridge validator, local event runtime,
+  audit, browser suite, and Pages workflow.
+- Standard deterministic ZIP tooling already available to the build or a
+  reviewed development-only implementation; no browser runtime dependency.
+- A named compatible Agent Skills host for external skill evaluation. Its
+  absence does not block local implementation but does block compatibility
+  claims.
+- Separate owner approval for development and later external publication.
 
 ### Affected areas
 
-- `scripts/elixirs/build.mjs` or a focused new delivery-envelope module and
-  tests under `scripts/elixirs/`
+- `scripts/elixirs/build.mjs` and focused generator tests
 - `scripts/elixirs/delivery-events.mjs` and tests
 - `scripts/elixirs/audit.mjs` and tests
 - `site/elixirs/cabinet.js` and `site/elixirs/styles.css`
+- a new reviewed `agent-elixir` skill source directory
 - `tests/elixirs/cabinet.spec.ts`
-- `.github/workflows/elixirs-pages.yml` for source-revision injection only
-- `docs/evaluations/elixir-harness-matrix.md` only when complete named evidence
-  is available
-- overview/architecture documentation only where the approved delivery behavior
-  must be described
+- architecture/evaluation documentation where delivery behavior changes
 
-Canonical cartridge, covenant, artwork, archived prototype, runtime hosting,
-and dependency manifests are not expected to change.
+Canonical cartridge content, covenant, artwork, dependency manifests, and
+hosting architecture are not expected to change.
 
 ### Validation plan
 
-#### Unit and generator tests
-
-- Exact self-contained and resolver fixtures for every cartridge.
-- UTF-8 byte count and SHA-256 against canonical bytes.
-- Exact embedded-region extraction and byte equality.
-- Reserved delimiter, missing final LF, invalid identity/version, malformed
-  revision, arbitrary owner/path/origin, and moving-branch rejection.
-- Event `1.1.0` positive/negative conditional cases and acquisition aggregation.
-
-#### Static build and audit
-
-- Deterministic root/subpath artifact generation with a fixed test revision.
-- Exact allowlisted file inventory and canonical cartridge/artwork hashes.
-- Rejection fixtures for remote scripts/resources, unpinned GitHub URLs,
-  arbitrary origins, package commands, collectors, storage, secrets, and
-  unexpected files.
-- Request inventory confirming that rendered resolver URLs are inert text until
-  a user or receiving agent acts.
-
-#### Browser and accessibility
-
-- Copy each payload and compare clipboard text with generated fixtures.
-- Extract the embedded cartridge from the clipboard and compare exact bytes.
-- Verify local event method/target/result/count for each action.
-- Exercise clipboard allowed, denied, missing, and throwing behavior.
-- Verify root and `/the-guide/`, 320 CSS pixels, 200% text, keyboard order,
-  accessible names/status/focus, reduced motion, and no-JavaScript fallback.
-- Confirm zero unexpected requests, cookies, local/session storage, IndexedDB,
-  service workers, and console errors/logs.
-
-#### Named ChatGPT evaluation
-
-- Record exact product, model/mode, date, cartridge/version, transport, retry
-  count, and redacted outcome.
-- Run self-contained prompt for all three cartridges and check completeness,
-  disclosure, consent ordering, stop, and release.
-- Run resolver Pages and pinned GitHub sources separately; do not combine their
-  outcomes.
-- Run raw paste and attachment fallback separately.
-- Check that delivery tools stop before gameplay and that digest verification
-  is claimed only when observed.
-
-#### Repository validation
-
-- `npm test`
-- `npm run build`
-- `npm run audit:elixirs`
-- `npm run test:e2e`
-- `npm run validate`
-- `git diff --check`
-- independent agent review
-
-### Validation evidence required for completion
-
-- Passing focused envelope, event, generator, audit, and browser tests.
-- Passing complete repository validation and independent review.
-- Deterministic artifact with unchanged canonical cartridge/covenant/artwork
-  hashes.
-- Browser request/storage inventory showing no collection or persistence.
-- Complete redacted named ChatGPT evidence, or an explicit external-evidence
-  blocker with no compatibility claim.
+- Unit-test title slugging, unsafe filename rejection, exact prompt text, event
+  contract `1.2.0`, skill metadata, and archive inventory.
+- Build twice from the same inputs and compare the story files, skill archive,
+  and audited manifest for deterministic output.
+- Compare each downloaded artifact byte-for-byte with its canonical cartridge.
+- Browser-test copy and download behavior, root/subpath, no JavaScript, clipboard
+  failure, focus/status, mobile, 200% text, keyboard, and reduced motion.
+- Confirm zero unexpected requests, storage, cookies, service workers, logs, or
+  event transmission.
+- In named skill hosts, test install, `/agent-elixir`, valid attachment,
+  disclosure, consent, play, stop, role release, and all fail-closed attachment
+  cases.
+- Run `npm test`, `npm run build`, `npm run audit:elixirs`,
+  `npm run test:e2e`, `npm run validate`, and `git diff --check`.
+- Complete independent review against this approved specification before human
+  output testing.
 
 ## Risks and mitigations
 
-- **Large clipboard payload or truncation:** current payloads are small; retain
-  delimiters, byte count, digest, raw/file fallback, and named paste testing.
-- **Duplicated source in generated HTML:** accept modest static size growth for
-  reliable no-network copy; audit exact artifact size and mobile rendering.
-- **Resolver supply-chain ambiguity:** pin repository owner, path, and commit;
-  include digest and prohibit arbitrary search/install behavior.
-- **Remote-code execution:** no CLI or package command in this iteration.
-- **Tool leakage:** explicitly close delivery before disclosure/play and test it
-  in named harnesses.
-- **Digest theatre:** never claim receiving-agent verification without evidence;
-  treat digest primarily as provenance and tool-capable verification data.
-- **Authority confusion:** repeat user-content/higher-priority language and keep
-  the covenant unchanged.
-- **Compatibility inflation:** record transports independently and retain the
-  existing evidence gate.
-- **Event semantic drift:** version the strict contract and keep method-specific
-  counts separate.
-- **Deployment regression:** manual workflow and separate authorization allow
-  redeployment of the last reviewed artifact.
+- **Attachment support varies:** label only tested hosts and keep the visible
+  prompt/file path generic.
+- **Skill portability varies:** maintain one minimal host-neutral skill and avoid
+  universal claims.
+- **Skill and cartridge authority blur:** keep them independently versioned and
+  state that the attached cartridge supplies story content.
+- **Stale installed skill:** give the skill its own visible version and keep its
+  behavior generic so story releases do not require skill updates.
+- **Filename collisions:** include semantic version and fail generation on
+  duplicate output names.
+- **ZIP nondeterminism:** normalize archive ordering, paths, timestamps, modes,
+  and compression settings, then fixture its digest.
+- **Technical transparency becomes hidden:** preserve a subordinate source area
+  and no-JavaScript access without turning it into a play-choice menu.
+- **Compatibility inflation:** record named host/version evidence for each launch
+  method and retain fail-closed labels.
 
 ## Decisions and rationale
 
-- **Embed complete cartridge by default:** removes the failed URL dependency and
-  produces the shortest dependable consumer journey.
-- **Retain a resolver prompt:** tests the valuable skills.sh-like canonical
-  source behavior for capable agents without making it universal.
-- **Use commit SHA rather than a release tag initially:** avoids requiring a new
-  release/tag publication and gives immutable provenance; readable tags can be
-  evaluated later.
-- **Exclude `npx`:** transient execution is still downloaded code and creates a
-  materially larger security/ownership surface.
-- **Advance the event contract to 1.1.0:** method additions are explicit and no
-  live consumer or stored-event migration constrains the change.
-- **Do not change cartridges:** delivery reliability should be solved in the
-  envelope and cabinet, not by mutating published game behavior.
+- **Use the file as the product:** it is inspectable, portable, versioned, and
+  worked in the tested delivery pattern without remote retrieval.
+- **Keep the prompt short:** story instructions already belong in the cartridge;
+  duplicating them in a wrapper creates more surface and more choices.
+- **Offer one reusable skill:** frequent players can replace repeated prompt
+  copying without installing stories or coupling releases to a host.
+- **Require attachment with the skill:** `/agent-elixir` selects generic handling;
+  the attached file selects the exact story and version.
+- **Remove resolver and full-prompt choices:** they solve transport edge cases at
+  the cost of a confusing primary journey.
+- **Version filenames and the skill independently:** a saved file remains
+  identifiable while the generic launcher can evolve on its own cadence.
 
 ## Open questions
 
-1. The observed failure environment is recorded as ChatGPT mobile, Plus,
-   Instant mode, 2026-07-18. The UI did not expose an underlying model
-   identifier. A complete versioned evidence run remains required.
-2. After named resolver tests, is the secondary Agent Prompt valuable enough to
-   keep visible, or should the product ship only the self-contained ChatGPT
-   prompt plus raw/file fallbacks? This is a post-evaluation product decision.
-3. Should a future coding-agent iteration introduce a signed or provenance-rich
-   transient CLI? This is explicitly deferred to separate discovery/specification.
+None blocking. Exact host-specific installation instructions and compatibility
+labels must be derived from named evaluation during development; until then the
+cabinet uses only generic, fail-closed language.
 
 ## Stop conditions
 
-- Stop implementation if the complete cartridge cannot be embedded without
-  changing its canonical bytes or published behavior.
-- Stop and refine the spec if commit-pinned GitHub URLs require credentials,
-  mutable aliases, arbitrary redirects, or runtime code execution.
-- Stop external evaluation if the ChatGPT product/model cannot be named or if
-  preserving evidence would require retaining private transcript content.
-- Stop before any npm publication, CLI execution design, MCP, analytics
-  collection, deployment, release, tag, or other external write without new
-  approval.
-- Development must remain within the explicitly approved scope and preserve the
-  later independent-review, human-testing, and deployment gates.
+- Stop and refine if a compatible host cannot invoke `/agent-elixir` with an
+  attached Markdown file without bundling or copying story content into the
+  skill.
+- Stop if a suggested filename cannot be produced without changing canonical
+  bytes or weakening path validation.
+- Stop before claiming host compatibility without the complete named evidence.
+- Stop before introducing runtime retrieval, executable code, package
+  installation, persistence, analytics, or a story-specific skill.
+- Stop before any commit, push, deployment, release, marketplace publication, or
+  other external write without separate authorization.
 
 ## Source-of-truth relationship
 
 - This specification extends `docs/product-brief.md` and
-  `docs/architecture.md`: the Guide remains a static publisher and the game
+  `docs/architecture.md`; The Guide remains a static publisher and gameplay
   remains in the player's chosen harness.
 - It preserves `content/elixirs/covenant.md` unchanged, including disclosure,
-  affirmative consent, conversation-only gameplay, stop, data, and role release.
-- On approval, it supersedes only the URL-first primary-handoff requirements,
-  `handoff_message_copy` browser emission, and contract `1.0.0` method list in
+  affirmative consent, conversation-only play, stop, data, and role release.
+- On human approval, it supersedes the previous multi-option requirements in
+  this file and the URL-first primary handoff in
   `docs/specs/chatgpt-first-elixir-delivery.md`.
-- All other requirements of that approved specification remain in force,
-  especially no collection, exact cartridge bytes, fail-closed compatibility,
-  independent review, and separate deployment authority.
+- It does not supersede the approved minimalist catalogue/detail-page visual
+  direction in `docs/specs/elixir-hosting-and-catalogue.md`.
+- If another document still describes the self-contained full prompt or resolver
+  as the primary journey, this specification governs delivery once approved.

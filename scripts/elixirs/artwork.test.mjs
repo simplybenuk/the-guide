@@ -24,7 +24,7 @@ const pngDimensions = (buffer) => {
 describe("Elixir cartridge artwork", () => {
   it("ships a complete unique 3:2 PNG for every cartridge", () => {
     expect(manifest.schemaVersion).toBe(2);
-    expect(manifest.assets).toHaveLength(4);
+    expect(manifest.assets).toHaveLength(5);
 
     const hashes = manifest.assets.map((asset) => {
       const image = readFileSync(resolve(root, "site/elixirs", asset.path));
@@ -36,7 +36,7 @@ describe("Elixir cartridge artwork", () => {
       return hash;
     });
 
-    expect(new Set(hashes)).toHaveLength(4);
+    expect(new Set(hashes)).toHaveLength(5);
   });
 
   it("matches cartridge metadata to accessible provenance records", () => {
@@ -89,5 +89,17 @@ describe("Elixir cartridge artwork", () => {
       hash,
     ]) expect(provenance).toContain(required);
     expect(manifest.assets.some(({ id }) => id === "art-regency-ball")).toBe(true);
+  });
+
+  it("adds a genre-specific Regency catalogue cover without changing published artwork", () => {
+    const cover = manifest.assets.find(({ id }) => id === "art-regency-ball-cover");
+    const release = JSON.parse(readFileSync(resolve(root, "content/catalogue/releases.json"), "utf8"))
+      .releases.find(({ slug }) => slug === "regency-ball");
+    expect(cover.referenceAsset).toBeNull();
+    expect(cover.sha256).toBe("0b1770adfdacf08403e32a6d991140326765c543cc3cb8b064106a02d98296fe");
+    expect(release.artwork).toEqual([{
+      provenanceId: "art-regency-ball",
+      sha256: "5a553a6f1f384ef171a5c5d15a4c8ed26600a783ddad0ed54ed4bbc6e2abc270",
+    }]);
   });
 });

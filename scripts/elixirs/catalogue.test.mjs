@@ -295,13 +295,11 @@ describe("Elixir catalogue contracts", () => {
       const home = readFileSync(resolve(outputDirectory, "index.html"), "utf8");
       const startHere = readFileSync(resolve(outputDirectory, "collections/start-here/index.html"), "utf8");
       const threeWays = readFileSync(resolve(outputDirectory, "collections/three-ways-to-play/index.html"), "utf8");
-      expect(detail).toContain("Story experience");
-      expect(detail).toContain("How you participate");
+      expect(detail).toContain("What you need to play");
+      expect(detail).toContain("How you play");
       expect(detail).toContain("speech, action, decision");
-      expect(detail).toContain("Four distinct endings");
-      expect(detail).toContain(
-        "Three first-dance routes reveal different conversations and later ways to change the ball.",
-      );
+      expect(detail).toContain("Your role");
+      expect(detail).not.toContain("<h2 id=\"story-facts-title\">Story experience</h2>");
       expect(browse).toContain("data-filter-facet=\"genre\"");
       expect(browse).toContain("data-filter-id=\"interaction-speech\"");
       expect(home).toContain("The Regency Ball");
@@ -431,7 +429,7 @@ describe("Elixir catalogue contracts", () => {
       buildElixirSite({ outputDirectory: successorOutput, sourceRevision: "1234567890abcdef1234567890abcdef12345678", catalogue: successorCatalogue });
       auditElixirArtifact({ artifactDirectory: successorOutput, catalogue: successorCatalogue });
       const detail = readFileSync(resolve(successorOutput, "elixirs/signal/index.html"), "utf8");
-      expect(detail.indexOf("Use the maintained successor")).toBeLessThan(detail.indexOf("Start this Elixir in ChatGPT"));
+      expect(detail.indexOf("Use the maintained successor")).toBeLessThan(detail.indexOf("Take this story to your AI"));
       expect(detail).toContain("The Mystery Elixir 0.1.0");
       expect(readFileSync(resolve(successorOutput, "elixirs/signal/versions/0.1.0/index.html"), "utf8")).toContain("Use the maintained successor");
     } finally {

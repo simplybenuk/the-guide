@@ -32,6 +32,7 @@ describe("static Elixir cabinet build", () => {
       ".nojekyll",
       "assets/cartridges/manifest.json",
       "assets/cartridges/mystery.png",
+      "assets/cartridges/regency-ball-cover.png",
       "assets/cartridges/regency-ball.png",
       "assets/cartridges/signal.png",
       "assets/cartridges/story.png",
@@ -69,6 +70,7 @@ describe("static Elixir cabinet build", () => {
       "evidence/the-guide/story/0.1.0/compatibility-1.md",
       "evidence/the-guide/story/0.1.0/review-1.md",
       "index.html",
+      "skills/agent-elixir-0.1.0.zip",
       "styles.css",
       "terms.md",
     ]);
@@ -97,11 +99,11 @@ describe("static Elixir cabinet build", () => {
       expect(namespaced.equals(canonical)).toBe(true);
       expect(detail).toContain(`../../cartridges/${slug}/0.1.0/elixir.md`);
       expect(detail).toContain("data-cartridge-source");
-      expect(detail).toContain("View exactly what it says");
+      expect(detail).toContain("Read the complete cartridge");
       expect(detail).toContain('href="../../terms.md"');
-      expect(detail).toContain("Start this Elixir in ChatGPT");
-      expect(detail).toContain("Copy for ChatGPT");
-      expect(detail).toContain("Download Markdown");
+      expect(detail).toContain("Take this story to your AI");
+      expect(detail).toContain("Copy prompt");
+      expect(detail).toContain("Download story");
     }
   });
 
@@ -138,9 +140,14 @@ describe("static Elixir cabinet build", () => {
     expect(index).not.toContain("<dt>");
     expect(browse).not.toContain("<dt>");
     expect((browse.match(/<ul class="fit-signals"/g) ?? [])).toHaveLength(4);
-    expect(detail).toContain("Before you play");
-    expect(detail).toContain("The Guide receives");
-    expect(detail).toContain("Publisher, review, and provenance");
+    expect(detail).toContain("What you need to play");
+    expect(detail).not.toContain("<h2 id=\"facts-title\">Before you play</h2>");
+    expect(detail).not.toContain("<h2 id=\"story-facts-title\">Story experience</h2>");
+    expect(detail).toContain("<summary>Version, safety, and provenance</summary>");
+    expect(detail).toContain("<summary>Use the Agent Skill</summary>");
+    expect(detail).toContain("complete story file served by the versioned link and download");
+    expect(detail).not.toContain("link, download, and copy actions");
+    expect(detail.indexOf("What you need to play")).toBeLessThan(detail.indexOf("Take this story to your AI"));
     expect(index).toContain("The game happens in the agent harness you choose");
     expect(index).toContain("does not receive your game conversation");
     expect(index).toContain('href="terms.md"');
@@ -151,8 +158,13 @@ describe("static Elixir cabinet build", () => {
       const source = readFileSync(resolve(repositoryRoot, "site/elixirs", asset.path));
       const emitted = readFileSync(resolve(outputDirectory, asset.path));
       expect(hash(emitted)).toBe(hash(source));
-      expect(index).toContain(`src="./${asset.path}"`);
+      if (asset.id !== "art-regency-ball") expect(index).toContain(`src="./${asset.path}"`);
     }
+    expect(index).not.toContain('src="./assets/cartridges/regency-ball.png"');
+    expect(index).toContain('src="./assets/cartridges/regency-ball-cover.png"');
+    const regencyDetail = readOutput("elixirs/regency-ball/index.html");
+    expect(regencyDetail).toContain('src="../../assets/cartridges/regency-ball-cover.png"');
+    expect(regencyDetail).not.toContain('src="../../assets/cartridges/regency-ball.png"');
   });
 
   it("keeps every generated internal URL relative for root and subpath hosting", () => {
@@ -164,33 +176,32 @@ describe("static Elixir cabinet build", () => {
     }
   });
 
-  it("emits complete self-contained and pinned resolver prompts with progressive copy controls", () => {
-    for (const slug of ["signal", "mystery", "story"]) {
+  it("emits one short launcher prompt, named download, and generic skill option", () => {
+    const expectedNames = {
+      signal: "the-signal-elixir-0.1.0.md",
+      mystery: "the-mystery-elixir-0.1.0.md",
+      story: "the-story-elixir-0.1.0.md",
+      "regency-ball": "the-regency-ball-0.1.0.md",
+    };
+    for (const slug of Object.keys(expectedNames)) {
       const detail = readOutput(`elixirs/${slug}/index.html`);
-      const canonical = readFileSync(resolve(repositoryRoot, `content/elixirs/${slug}.md`), "utf8");
-      const digest = createHash("sha256").update(canonical).digest("hex");
-      expect(detail).toContain("Delivery envelope: the-guide-elixir/1");
-      expect(detail).toContain(`UTF-8 bytes: ${Buffer.byteLength(canonical, "utf8")}`);
-      expect(detail).toContain(`SHA-256: ${digest}`);
-      expect(detail).toContain("&lt;&lt;&lt; BEGIN THE GUIDE ELIXIR CARTRIDGE &gt;&gt;&gt;");
-      expect(detail).toContain("&lt;&lt;&lt; END THE GUIDE ELIXIR CARTRIDGE &gt;&gt;&gt;");
-      expect(detail).toContain(`Published cartridge: ../../cartridges/${slug}/0.1.0/elixir.md`);
-      expect(detail).toContain(
-        `https://raw.githubusercontent.com/simplybenuk/the-guide/${sourceRevision}/content/elixirs/${slug}.md`,
-      );
-      expect(detail).toContain(
-        `https://github.com/simplybenuk/the-guide/blob/${sourceRevision}/content/elixirs/${slug}.md`,
-      );
-      expect(detail).not.toMatch(/\/main\/|\bnpx\b/);
-      expect(detail).toContain("select and copy the complete prompt above");
-      expect(detail.match(/data-copy-action[^>]+hidden/g)).toHaveLength(3);
+      expect(detail).toContain("Read the attached Elixir cartridge in full");
+      expect(detail).toContain(`download="${expectedNames[slug]}"`);
+      expect(detail).toContain("/agent-elixir");
+      expect(detail).toContain('href="../../skills/agent-elixir-0.1.0.zip"');
+      expect(detail).not.toMatch(/Delivery envelope:|BEGIN THE GUIDE|resolver-prompt|Copy raw cartridge|Copy for ChatGPT/);
+      expect(detail.match(/data-copy-action[^>]+hidden/g)).toHaveLength(1);
     }
+    const skillArchive = readFileSync(resolve(outputDirectory, "skills/agent-elixir-0.1.0.zip"));
+    expect(skillArchive.toString("utf8")).toContain("name: agent-elixir");
+    expect(skillArchive.toString("utf8")).not.toMatch(/# The (?:Signal|Mystery|Story|Regency Ball)/);
   });
 
   it("emits a deterministic local-only delivery event runtime", () => {
     const runtime = readOutput("delivery-events.js");
     expect(runtime).toContain("the-guide:delivery-event");
-    expect(runtime).toContain("cabinet-delivery-v1");
+    expect(runtime).toContain("cabinet-delivery-v2");
+    expect(runtime).toContain("launcher_prompt_copy");
     expect(runtime).toContain("the-guide.elixir.signal@0.1.0");
     expect(runtime).toContain("the-guide.elixir.mystery@0.1.0");
     expect(runtime).toContain("the-guide.elixir.story@0.1.0");
@@ -203,6 +214,18 @@ describe("static Elixir cabinet build", () => {
     const maliciousOutput = mkdtempSync(join(tmpdir(), "guide-malicious-build-"));
     try {
       expect(() => buildElixirSite({ outputDirectory: maliciousOutput, sourceRevision, catalogue: malicious })).toThrow(/escapes its approved root/);
+    } finally {
+      rmSync(maliciousOutput, { recursive: true, force: true });
+    }
+  });
+
+  it("rejects active cartridges with colliding suggested download names", () => {
+    const malicious = structuredClone(loadCatalogue());
+    malicious.cartridges[1].metadata.title = malicious.cartridges[0].metadata.title;
+    malicious.cartridges[1].metadata.version = malicious.cartridges[0].metadata.version;
+    const maliciousOutput = mkdtempSync(join(tmpdir(), "guide-colliding-downloads-"));
+    try {
+      expect(() => buildElixirSite({ outputDirectory: maliciousOutput, sourceRevision, catalogue: malicious })).toThrow(/filename collision/);
     } finally {
       rmSync(maliciousOutput, { recursive: true, force: true });
     }

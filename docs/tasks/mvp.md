@@ -19,6 +19,45 @@ active tree under the approved repository-pivot specification.
 
 ## Active
 
+The repository owner approved the file-first delivery revision on 2026-07-19.
+The following bounded local tasks are active; they do not authorize a commit,
+push, deployment, release, skill publication, analytics, or compatibility claim.
+
+- [x] **F01 — Generate file-first delivery artifacts** (2026-07-19)
+  - Add deterministic `<title-slug>-<version>.md` download filenames and replace
+    self-contained/resolver payloads with one exact short launcher prompt.
+  - Preserve canonical cartridge bytes, visible source, and immutable URLs.
+- [x] **F02 — Simplify the cartridge delivery journey** (2026-07-19)
+  - Present one dominant story download, attachment guidance, prompt copy, and a
+    subordinate optional `agent-elixir` skill disclosure.
+  - Keep source transparency and no-JavaScript access out of the primary path.
+- [x] **F03 — Build the reusable `agent-elixir` skill** (2026-07-19)
+  - Add a generic cartridge-intake skill with no bundled story, executable,
+    dependency, artwork, or remote URL.
+  - Produce and audit deterministic `agent-elixir-0.1.0.zip` output.
+- [x] **F04 — Version events, audit, and validate** (2026-07-19)
+  - Advanced the local-only delivery contract to `1.2.0`; full validation
+    passed 17 Vitest files with 109 tests, a deterministic 44-file/
+    11,634,095-byte audited build, and all 12 browser journeys.
+  - The deterministic ZIP passed archive integrity checks and contained only
+    `SKILL.md` and `agents/openai.yaml`. A staged install on the named T3 Code
+    `0.0.28` Codex surface passed valid, missing, multiple, malformed,
+    truncated, stop, and role-release cases. Evidence:
+    `docs/evaluations/agent-elixir-host-matrix.md`.
+- [x] **F05 — Independent review and handoff** (2026-07-19)
+  - Run `bwh-agent-review`, resolve blocking and should-fix findings, and record
+    the final human-output-testing readiness verdict.
+  - Initial review returned one evidence blocker and two should-fix findings.
+    Development completed the scoped named-host matrix, rejected hidden Unicode
+    controls and normalized filename collisions, corrected source disclosure,
+    and repeated full and non-root validation.
+  - Independent re-review found no remaining blocking or should-fix issue and
+    returned the file-first delivery change **READY FOR HUMAN TESTING**.
+    Evidence: `docs/evaluations/file-first-elixir-delivery-agent-review.md`.
+  - Changes remain local and uncommitted. No push, deployment, release, skill
+    publication, analytics, or broad compatibility promotion occurred. Product-
+    wide E07 remains a separate compatibility gate.
+
 The owner explicitly authorized commit, push, and an experimental GitHub Pages
 release of The Regency Ball on 2026-07-19 so live harness evidence can be
 collected. Production registration is additive: the original Story remains
@@ -49,6 +88,50 @@ No approved hosting/catalogue implementation task remains after H11.
   compatibility gate is satisfied.
 
 ## Completed
+
+- [x] **B02 — Simplify the cartridge detail hierarchy** (2026-07-19)
+  - Reduced the opening detail view to artwork, title, mechanic, and one short
+    synopsis; removed visible status badges and duplicate editorial rationale.
+  - Replaced separate “Before you play” and “Story experience” panels with one
+    four-item “What you need to play” section, followed immediately by the
+    three-step ChatGPT start flow.
+  - Moved the complete prompt, resolver, version paths, trust/provenance facts,
+    and raw cartridge into native collapsed disclosures. Clipboard failure
+    opens the relevant fallback automatically; no-JavaScript manual copy and
+    download remain available.
+  - Full validation passed 16 Vitest files with 106 tests, the deterministic
+    43-file/11,732,702-byte build and audit, and all 13 browser journeys.
+    Desktop 1440px and mobile 390px inspection found no overflow or hierarchy
+    defect.
+  - Independent review found no blocking or should-fix issue and returned B02
+    **READY FOR HUMAN TESTING**. Evidence:
+    `docs/evaluations/cartridge-detail-simplification-agent-review.md`.
+  - Changes remain local and uncommitted; published cartridge, release-ledger,
+    artwork, and delivery bytes are unchanged. E07 remains a separate gate.
+
+- [x] **B01 — Rebrand the catalogue and replace Regency presentation art**
+  (2026-07-19)
+  - Replaced the retro monospace, fantasy-gradient, per-cartridge accent, heavy
+    border, and offset-shadow treatment with neutral minimalist chrome,
+    contemporary sans-serif typography, restrained controls, and artwork-led
+    cards.
+  - Repositioned site-level branding as a library of interactive stories while
+    retaining exact Elixir language for cartridge, delivery, compatibility,
+    and trust contracts.
+  - Generated and registered a 1536×1024 cinematic historical-romance Regency
+    catalogue cover. A strict mutable presentation-art projection displays it
+    without changing the published `0.1.0` cartridge, release ledger, original
+    Regency artwork, or the Signal, Mystery, and Story images.
+  - Full validation passed 16 Vitest files with 106 tests, the deterministic
+    43-file/11,734,410-byte build and audit, and all 13 browser journeys. Direct
+    desktop and 390px Regency-detail inspection found no overflow or broken
+    hierarchy.
+  - Independent review repeated 34 focused checks and all 13 browser journeys,
+    verified immutable bytes and hashes, found no blocking or should-fix issue,
+    and returned B01 **READY FOR HUMAN TESTING**. Evidence:
+    `docs/evaluations/catalogue-branding-agent-review.md`.
+  - Changes are local and uncommitted; no publication or release state changed.
+    Product-wide E07 remains a separate compatibility gate.
 
 - [x] **S08 — Create the reusable authored Story template kit** (2026-07-19)
   - Added seven per-story templates covering experience design, the complete

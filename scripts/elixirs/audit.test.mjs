@@ -24,9 +24,9 @@ afterEach(() => {
 describe("Elixir Pages artifact audit", () => {
   it("accepts the exact deterministic static artifact", () => {
     const result = auditElixirArtifact({ artifactDirectory: buildTemporaryArtifact() });
-    expect(result.fileCount).toBe(42);
+    expect(result.fileCount).toBe(44);
     expect(result.totalBytes).toBeGreaterThan(100_000);
-    expect(Object.keys(result.hashes)).toHaveLength(42);
+    expect(Object.keys(result.hashes)).toHaveLength(44);
   });
 
   it("rejects unexpected or missing files", () => {
@@ -116,7 +116,7 @@ describe("Elixir Pages artifact audit", () => {
     }
   });
 
-  it("allows pinned source literals only inside the experimental resolver textarea", () => {
+  it("rejects pinned source literals in all removed resolver contexts", () => {
     const pinned = `https://raw.githubusercontent.com/simplybenuk/the-guide/${sourceRevision}/content/elixirs/story.md`;
     for (const marker of [
       `<p>${pinned}</p>`,

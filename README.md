@@ -3,10 +3,11 @@
 The Guide is a cabinet of transparent, portable role-play games for you and an
 AI companion you already use.
 
-Choose an **Elixir**, give its versioned Markdown cartridge to your agent by URL,
-file, or copied text, and let the agent temporarily run the game inside your
-existing conversation. The Guide needs no provider credential, account,
-transcript, or application server.
+Choose an **Elixir**, download its clearly named Markdown cartridge, attach it to
+a new conversation, and send the short launcher prompt. On compatible Agent
+Skills hosts, the optional reusable `agent-elixir` skill can replace that prompt;
+the story file is still attached each time. The Guide needs no provider
+credential, account, transcript, or application server.
 
 ## Status
 
@@ -62,6 +63,8 @@ npm run audit:releases -- --base-revision=<40-character-reviewed-commit> --boots
 - `tests/elixirs/` verifies the static cabinet at root and repository subpaths.
 - `templates/story-elixir/` contains the reviewed per-story authoring and
   release-evidence starter kit.
+- `skills/agent-elixir/` contains the generic, story-free Agent Skill packaged by
+  the static build.
 - `.github/workflows/elixirs-pages.yml` packages the audited artifact through a
   manual-only Pages workflow. It fails closed unless the externally controlled
   `ELIXIR_LEDGER_BASE_REVISION`, `ELIXIR_BOOTSTRAP_LEDGER_SHA256`, and

@@ -1,6 +1,6 @@
 import { createHash } from "node:crypto";
 import { lstatSync, readFileSync, readdirSync } from "node:fs";
-import { relative, resolve, sep } from "node:path";
+import { dirname, relative, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 
 import {
@@ -9,24 +9,14 @@ import {
   loadCatalogue,
   renderWithdrawalTombstone,
 } from "./catalogue.mjs";
+import { agentElixirArchiveName, createAgentElixirArchive } from "./skill-archive.mjs";
 
+const repositoryRoot = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
 const defaultCatalogue = loadCatalogue();
 const textExtensions = /\.(?:css|html|js|json|md)$/;
 const allowedAbsoluteUrls = new Set([
   "https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement",
 ]);
-const escapeRegex = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-const isInsideResolverTextarea = (text, index, resolverSlugs) => {
-  const openingStart = text.lastIndexOf("<textarea", index);
-  if (openingStart < 0) return false;
-  const openingEnd = text.indexOf(">", openingStart);
-  if (openingEnd < 0 || openingEnd >= index) return false;
-  const closing = text.indexOf("</textarea>", openingEnd);
-  const openingTag = text.slice(openingStart, openingEnd + 1);
-  const match = openingTag.match(/^<textarea id="resolver-prompt-([a-z0-9]+(?:-[a-z0-9]+)*)" data-resolver-prompt rows="10" readonly>$/);
-  return closing > index && match && resolverSlugs.has(match[1]);
-};
-
 const isInsideOrdinaryAnchor = (text, index) => {
   const openingStart = text.lastIndexOf("<a", index);
   if (openingStart < 0) return false;
@@ -34,9 +24,8 @@ const isInsideOrdinaryAnchor = (text, index) => {
   return openingEnd > index && /\bhref\s*=\s*["']?$/.test(text.slice(openingStart, index));
 };
 
-const isAllowedAbsoluteUrl = ({ path, text, url, index, allowedPinnedSourceUrls, resolverSlugs }) =>
-  (path.endsWith(".html") && allowedAbsoluteUrls.has(url) && isInsideOrdinaryAnchor(text, index)) ||
-  (path.endsWith(".html") && allowedPinnedSourceUrls.some((pattern) => pattern.test(url)) && isInsideResolverTextarea(text, index, resolverSlugs));
+const isAllowedAbsoluteUrl = ({ path, text, url, index }) =>
+  path.endsWith(".html") && allowedAbsoluteUrls.has(url) && isInsideOrdinaryAnchor(text, index);
 
 const forbiddenText = [
   { label: "Next.js runtime", pattern: /\/_next\// },
@@ -76,11 +65,6 @@ const walk = (root, directory = root) => readdirSync(directory).flatMap((name) =
 export const auditElixirArtifact = ({ artifactDirectory, catalogue = defaultCatalogue }) => {
   const root = resolve(artifactDirectory);
   const expectedPaths = deriveExpectedArtifactPaths(catalogue);
-  const allowedPinnedSourceUrls = catalogue.releases.flatMap(({ sourcePath }) => [
-    new RegExp(`^https://raw\\.githubusercontent\\.com/simplybenuk/the-guide/[0-9a-f]{40}/${escapeRegex(sourcePath)}$`),
-    new RegExp(`^https://github\\.com/simplybenuk/the-guide/blob/[0-9a-f]{40}/${escapeRegex(sourcePath)}$`),
-  ]);
-  const resolverSlugs = new Set(catalogue.releases.map(({ slug }) => slug));
   const paths = walk(root).sort();
   if (JSON.stringify(paths) !== JSON.stringify(expectedPaths)) {
     const unexpected = paths.filter((path) => !expectedPaths.includes(path));
@@ -88,6 +72,9 @@ export const auditElixirArtifact = ({ artifactDirectory, catalogue = defaultCata
     throw new Error(`Artifact allowlist mismatch. Unexpected: ${unexpected.join(", ") || "none"}. Missing: ${missing.join(", ") || "none"}.`);
   }
   if (readFileSync(resolve(root, ".nojekyll")).length !== 0) throw new Error(".nojekyll must be an empty marker file");
+  const expectedSkillArchive = createAgentElixirArchive({ repositoryRoot });
+  const skillArchive = readFileSync(resolve(root, "skills", agentElixirArchiveName));
+  if (!skillArchive.equals(expectedSkillArchive)) throw new Error("Agent Elixir skill archive differs from reviewed deterministic source");
 
   let totalBytes = 0;
   const hashes = {};
@@ -101,7 +88,7 @@ export const auditElixirArtifact = ({ artifactDirectory, catalogue = defaultCata
       if (forbidden.pattern.test(text)) throw new Error(`${path} contains forbidden ${forbidden.label} content`);
     }
     for (const match of text.matchAll(/https?:\/\/[^\s"'<>)]*/g)) {
-      if (!isAllowedAbsoluteUrl({ path, text, url: match[0], index: match.index, allowedPinnedSourceUrls, resolverSlugs })) throw new Error(`${path} contains unexpected remote origin: ${match[0]}`);
+      if (!isAllowedAbsoluteUrl({ path, text, url: match[0], index: match.index })) throw new Error(`${path} contains unexpected remote origin: ${match[0]}`);
     }
   }
 

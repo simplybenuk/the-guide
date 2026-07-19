@@ -2,15 +2,14 @@ import { randomUUID } from "node:crypto";
 
 import { z } from "zod";
 
-export const deliveryEventContractVersion = "1.1.0";
+export const deliveryEventContractVersion = "1.2.0";
 export const deliveryEventName = "delivery_action_recorded";
 export const deliveryEventBrowserName = "the-guide:delivery-event";
-export const deliveryDeploymentRevision = "cabinet-delivery-v1";
+export const deliveryDeploymentRevision = "cabinet-delivery-v2";
 export const deliveryMethods = [
-  "self_contained_prompt_copy",
-  "resolver_prompt_copy",
-  "cartridge_text_copy",
   "cartridge_file_download",
+  "launcher_prompt_copy",
+  "agent_skill_download",
 ];
 export const deliveryResults = ["succeeded", "initiated", "denied", "unavailable", "failed"];
 export const deliveryTargets = ["chatgpt", "unspecified"];
@@ -45,7 +44,7 @@ export const deliveryEventSchema = z
   .strict()
   .superRefine((event, context) => {
     const copyResults = ["succeeded", "denied", "unavailable", "failed"];
-    if (event.delivery_method === "cartridge_file_download") {
+    if (["cartridge_file_download", "agent_skill_download"].includes(event.delivery_method)) {
       if (!['initiated', 'unavailable', 'failed'].includes(event.result)) {
         context.addIssue({ code: "custom", path: ["result"], message: "Downloads may only be initiated, unavailable, or failed" });
       }
@@ -58,9 +57,8 @@ export const deliveryEventSchema = z
     if (!copyResults.includes(event.result)) {
       context.addIssue({ code: "custom", path: ["result"], message: "Copy actions cannot claim an initiated result" });
     }
-    const expectedTarget = event.delivery_method === "self_contained_prompt_copy" ? "chatgpt" : "unspecified";
-    if (event.target_harness !== expectedTarget) {
-      context.addIssue({ code: "custom", path: ["target_harness"], message: `Expected ${expectedTarget} for ${event.delivery_method}` });
+    if (event.target_harness !== "unspecified") {
+      context.addIssue({ code: "custom", path: ["target_harness"], message: `Expected unspecified for ${event.delivery_method}` });
     }
   });
 
@@ -103,8 +101,8 @@ export const createDeliveryEvent = (
   );
 
 const qualifiesAsAcquisition = (event) =>
-  (event.delivery_method === "cartridge_file_download" && event.result === "initiated") ||
-  (event.delivery_method !== "cartridge_file_download" && event.result === "succeeded");
+  (["cartridge_file_download", "agent_skill_download"].includes(event.delivery_method) && event.result === "initiated") ||
+  (event.delivery_method === "launcher_prompt_copy" && event.result === "succeeded");
 
 export const aggregateAcquisitionActions = (
   events,
@@ -170,11 +168,11 @@ export const renderDeliveryEventBrowserRuntime = ({ validReferences, deploymentR
     if (!references.has(event.elixir_id + "@" + event.elixir_version)) return false;
     if (!methods.has(event.delivery_method) || !results.has(event.result) || !targets.has(event.target_harness)) return false;
     if (event.deployment_revision !== deploymentRevision) return false;
-    if (event.delivery_method === "cartridge_file_download") {
+    if (["cartridge_file_download", "agent_skill_download"].includes(event.delivery_method)) {
       return ["initiated", "unavailable", "failed"].includes(event.result) && event.target_harness === "unspecified";
     }
     if (!["succeeded", "denied", "unavailable", "failed"].includes(event.result)) return false;
-    return event.target_harness === (event.delivery_method === "self_contained_prompt_copy" ? "chatgpt" : "unspecified");
+    return event.target_harness === "unspecified";
   };
 
   const record = (input) => {

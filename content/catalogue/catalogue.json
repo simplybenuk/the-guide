@@ -63,6 +63,10 @@
         "readingIntensityId": "reading-medium",
         "sessionShapeId": "session-single-session"
       },
+      "catalogueArtwork": {
+        "provenanceId": "art-regency-ball-cover",
+        "altText": "At a candlelit Regency ball, an adult guest faces two offered hands while a host and master of ceremonies watch beside the final-waltz programme."
+      },
       "review": { "state": "reviewed", "date": "2026-07-19" },
       "maintenanceOwner": "The Guide",
       "successor": null,

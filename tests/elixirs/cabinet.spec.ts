@@ -44,12 +44,12 @@ for (const basePath of ["/", "/the-guide/"]) {
     page.on("request", (request) => requestedUrls.push(request.url()));
     await page.goto(basePath);
 
-    await expect(page.getByRole("heading", { name: "Choose an Elixir. Let your agent drink the story." })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Choose a story. Shape what happens." })).toBeVisible();
     await expect(page.locator("[data-spotlight]")).toHaveCount(1);
     await expect(page.locator("[data-shelf]")).toHaveCount(3);
     await expect(page.locator("[data-catalogue-entry]")).toHaveCount(10);
-    await expect(page.getByRole("link", { name: "Browse all Elixirs" })).toBeVisible();
-    await expect(page.getByText("This cabinet does not receive your game conversation", { exact: false })).toBeVisible();
+    await expect(page.getByRole("link", { name: "Browse all stories", exact: true })).toBeVisible();
+    await expect(page.getByText("The Guide does not receive your game conversation", { exact: false })).toBeVisible();
     await expect(page.getByRole("link", { name: "Read the alpha usage terms" })).toHaveAttribute("href", "terms.md");
     const termsResponse = await page.context().request.get(new URL("terms.md", page.url()).href);
     expect(termsResponse.ok()).toBe(true);
@@ -60,12 +60,14 @@ for (const basePath of ["/", "/the-guide/"]) {
     await expect(page.getByRole("heading", { name: "The Mystery Elixir", exact: true })).toBeVisible();
     await expect(page.getByText("Three collaborative clue rounds")).toBeVisible();
     await expect(page.getByRole("link", { name: "Read the alpha usage terms" })).toHaveAttribute("href", "../../terms.md");
-    await expect(page.getByRole("link", { name: /cartridges\/mystery\/0\.1\.0\/elixir\.md/ })).toHaveAttribute(
+    await expect(page.getByRole("link", { name: "Download story" })).toHaveAttribute(
       "href",
       "../../cartridges/mystery/0.1.0/elixir.md",
     );
+    await page.getByText("Use the Agent Skill").click();
+    await expect(page.getByText("/agent-elixir", { exact: false })).toBeVisible();
 
-    await page.getByText("Show complete cartridge source").click();
+    await page.getByText("Read the complete cartridge").click();
     await expect(page.locator("[data-cartridge-source]")).toContainText("The Guide Common Elixir Covenant");
     expect(pageErrors).toEqual([]);
     expect(requestedUrls.every((url) => url.startsWith("http://127.0.0.1:4173/"))).toBe(true);
@@ -84,7 +86,7 @@ test("keeps 500-entry discovery bounded, complete, and local-only", async ({ pag
   await expect(page.locator("[data-spotlight]")).toHaveCount(1);
   await expect(page.locator("[data-catalogue-entry]")).toHaveCount(3);
   await expect(page.getByRole("searchbox")).toHaveCount(0);
-  await page.getByRole("link", { name: "Browse all Elixirs" }).click();
+  await page.getByRole("link", { name: "Browse all stories", exact: true }).click();
   await expect(page).toHaveURL("http://127.0.0.1:4174/scale/browse/");
   await expect(page.getByRole("article")).toHaveCount(24);
   await expect(page.getByRole("status")).toHaveText("500 Elixirs shown; first 24 displayed.");
@@ -148,11 +150,12 @@ test("remains usable at 320px, 200% text, keyboard navigation, and reduced motio
   await page.goto("/the-guide/elixirs/mystery/");
   await page.addStyleTag({ content: "html { font-size: 200% !important; }" });
   await assertNoHorizontalOverflow(page);
-  await expect(page.getByRole("heading", { name: "Start this Elixir in ChatGPT" })).toBeVisible();
-  await expect(page.getByRole("button", { name: "Copy for ChatGPT" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Take this story to your AI" })).toBeVisible();
+  await expect(page.getByRole("link", { name: "Download story" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Copy prompt" })).toBeVisible();
 });
 
-test("copies the exact self-contained, resolver, and raw cartridge payloads", async ({ page }) => {
+test("copies the exact short launcher prompt and emits only its local event", async ({ page }) => {
   await captureDeliveryEvents(page);
   await page.addInitScript(() => {
     const state = window as unknown as { copiedText: string[] };
@@ -164,56 +167,21 @@ test("copies the exact self-contained, resolver, and raw cartridge payloads", as
   });
   await page.goto("/the-guide/elixirs/signal/");
 
-  await page.getByRole("button", { name: "Copy for ChatGPT" }).click();
-  await expect(page.getByRole("status")).toContainText("Complete ChatGPT prompt copied");
-  const chatgptPrompt = await page.locator("[data-chatgpt-prompt]").inputValue();
-  const copiedChatgptPrompt = await page.evaluate(
+  await page.getByRole("button", { name: "Copy prompt" }).click();
+  await expect(page.getByRole("status")).toContainText("Prompt copied");
+  const launcherPrompt = await page.locator("[data-launcher-prompt]").inputValue();
+  const copiedPrompt = await page.evaluate(
     () => (window as unknown as { copiedText: string[] }).copiedText[0],
   );
-  expect(copiedChatgptPrompt).toBe(chatgptPrompt);
-  expect(copiedChatgptPrompt).toContain("Delivery envelope: the-guide-elixir/1");
-  expect(copiedChatgptPrompt).toContain("<<< BEGIN THE GUIDE ELIXIR CARTRIDGE >>>");
-  expect(copiedChatgptPrompt).toContain("<<< END THE GUIDE ELIXIR CARTRIDGE >>>");
-  expect(copiedChatgptPrompt).toContain("affirmative consent");
-  expect(copiedChatgptPrompt).not.toContain("http://127.0.0.1:4173");
-
-  await page.getByText("Agent prompt (experimental)").click();
-  await page.getByRole("button", { name: "Copy agent prompt" }).click();
-  await expect(page.getByRole("status")).toContainText("Experimental agent prompt copied");
-  const resolverPrompt = await page.locator("[data-resolver-prompt]").inputValue();
-  const copiedResolverPrompt = await page.evaluate(
-    () => (window as unknown as { copiedText: string[] }).copiedText[1],
-  );
-  expect(copiedResolverPrompt).toBe(resolverPrompt);
-  expect(copiedResolverPrompt).toContain(
-    "http://127.0.0.1:4173/the-guide/cartridges/signal/0.1.0/elixir.md",
-  );
-  expect(copiedResolverPrompt).toMatch(
-    /https:\/\/raw\.githubusercontent\.com\/simplybenuk\/the-guide\/[0-9a-f]{40}\/content\/elixirs\/signal\.md/,
-  );
-  expect(copiedResolverPrompt).not.toMatch(/\/main\/|\bnpx\b/);
-
-  await page.getByRole("button", { name: "Copy raw cartridge" }).click();
-  await expect(page.getByRole("status")).toHaveText("Complete cartridge copied.");
-  const copiedCartridge = await page.evaluate(
-    () => (window as unknown as { copiedText: string[] }).copiedText[2],
-  );
-  expect(copiedCartridge).toBe(await page.locator("[data-cartridge-source]").textContent());
-  expect(copiedCartridge).toContain("# The Signal Elixir");
-  const openingMarker = "<<< BEGIN THE GUIDE ELIXIR CARTRIDGE >>>\n";
-  expect(
-    copiedChatgptPrompt.slice(
-      copiedChatgptPrompt.indexOf(openingMarker) + openingMarker.length,
-      copiedChatgptPrompt.indexOf("<<< END THE GUIDE ELIXIR CARTRIDGE >>>"),
-    ),
-  ).toBe(copiedCartridge);
+  expect(copiedPrompt).toBe(launcherPrompt);
+  expect(copiedPrompt).toContain("Read the attached Elixir cartridge in full");
+  expect(copiedPrompt).toContain("ask for my consent to begin");
+  expect(copiedPrompt).not.toMatch(/https?:\/\/|BEGIN THE GUIDE|# The Signal Elixir/);
 
   const events = await readDeliveryEvents(page);
-  expect(events).toHaveLength(3);
+  expect(events).toHaveLength(1);
   expect(events.map(({ delivery_method, target_harness, result }) => ({ delivery_method, target_harness, result }))).toEqual([
-    { delivery_method: "self_contained_prompt_copy", target_harness: "chatgpt", result: "succeeded" },
-    { delivery_method: "resolver_prompt_copy", target_harness: "unspecified", result: "succeeded" },
-    { delivery_method: "cartridge_text_copy", target_harness: "unspecified", result: "succeeded" },
+    { delivery_method: "launcher_prompt_copy", target_harness: "unspecified", result: "succeeded" },
   ]);
   for (const event of events) {
     expect(Object.keys(event).sort()).toEqual([
@@ -231,27 +199,17 @@ test("copies the exact self-contained, resolver, and raw cartridge payloads", as
       "target_harness",
     ]);
     expect(event).toMatchObject({
-      contract_version: "1.1.0",
+      contract_version: "1.2.0",
       event_name: "delivery_action_recorded",
       surface: "cabinet_detail",
       channel: "cabinet_first",
       elixir_id: "the-guide.elixir.signal",
       elixir_version: "0.1.0",
-      deployment_revision: "cabinet-delivery-v1",
+      deployment_revision: "cabinet-delivery-v2",
     });
     expect(event.event_id).toMatch(/^evt_[0-9a-f-]{36}$/);
     expect(Number.isNaN(Date.parse(event.occurred_at))).toBe(false);
   }
-});
-
-test("resolves only the Pages source in the agent prompt against the current host", async ({ page }) => {
-  await page.goto("http://localhost:4173/the-guide/elixirs/story/");
-
-  await expect(page.locator("[data-resolver-prompt]")).toHaveValue(
-    /http:\/\/localhost:4173\/the-guide\/cartridges\/story\/0\.1\.0\/elixir\.md/,
-  );
-  await expect(page.locator("[data-chatgpt-prompt]")).not.toHaveValue(/https?:\/\//);
-  await expect(page.locator("[data-resolver-prompt]")).not.toHaveValue(/simplybenuk\.github\.io|\/main\//);
 });
 
 test("offers manual fallback when clipboard access is denied", async ({ page }) => {
@@ -264,21 +222,13 @@ test("offers manual fallback when clipboard access is denied", async ({ page }) 
   });
   await page.goto("/the-guide/elixirs/story/");
 
-  await page.getByRole("button", { name: "Copy for ChatGPT" }).click();
+  await page.getByRole("button", { name: "Copy prompt" }).click();
   await expect(page.getByRole("status")).toContainText("selected so you can copy it manually");
-  await expect(page.locator("[data-chatgpt-prompt]")).toBeFocused();
-
-  await page.getByText("Agent prompt (experimental)").click();
-  await page.getByRole("button", { name: "Copy agent prompt" }).click();
-  await expect(page.locator("[data-resolver-prompt]")).toBeFocused();
-
-  await page.getByRole("button", { name: "Copy raw cartridge" }).click();
-  await expect(page.getByRole("status")).toContainText("complete source is open below");
-  await expect(page.locator(".source-panel details")).toHaveAttribute("open", "");
+  await expect(page.locator("[data-launcher-prompt]")).toBeFocused();
 
   const events = await readDeliveryEvents(page);
-  expect(events).toHaveLength(3);
-  expect(events.map(({ result }) => result)).toEqual(["denied", "denied", "denied"]);
+  expect(events).toHaveLength(1);
+  expect(events.map(({ result }) => result)).toEqual(["denied"]);
   expect(events.every((event) => Object.keys(event).length === 12)).toBe(true);
   expect(JSON.stringify(events)).not.toMatch(/transcript|clipboard|stack|private/i);
 });
@@ -290,7 +240,7 @@ test("distinguishes unavailable clipboard access from an unexpected copy failure
   });
   await page.goto("/the-guide/elixirs/story/");
 
-  await page.getByRole("button", { name: "Copy for ChatGPT" }).click();
+  await page.getByRole("button", { name: "Copy prompt" }).click();
   await expect(page.getByRole("status")).toContainText("Clipboard access is unavailable");
   await page.evaluate(() => {
     Object.defineProperty(navigator, "clipboard", {
@@ -298,13 +248,12 @@ test("distinguishes unavailable clipboard access from an unexpected copy failure
       value: { writeText: () => Promise.reject(new Error("unexpected")) },
     });
   });
-  await page.getByText("Agent prompt (experimental)").click();
-  await page.getByRole("button", { name: "Copy agent prompt" }).click();
+  await page.getByRole("button", { name: "Copy prompt" }).click();
   await expect(page.getByRole("status")).toContainText("Copying failed unexpectedly");
 
   expect((await readDeliveryEvents(page)).map(({ delivery_method, result }) => ({ delivery_method, result }))).toEqual([
-    { delivery_method: "self_contained_prompt_copy", result: "unavailable" },
-    { delivery_method: "resolver_prompt_copy", result: "failed" },
+    { delivery_method: "launcher_prompt_copy", result: "unavailable" },
+    { delivery_method: "launcher_prompt_copy", result: "failed" },
   ]);
 });
 
@@ -315,15 +264,28 @@ test("records download initiation locally without an analytics request", async (
   await page.goto("/the-guide/elixirs/mystery/");
 
   const downloadPromise = page.waitForEvent("download");
-  await page.getByRole("link", { name: "Download Markdown" }).click();
+  await page.getByRole("link", { name: "Download story" }).click();
   const download = await downloadPromise;
-  expect(download.suggestedFilename()).toBe("the-guide-mystery-0.1.0.md");
+  expect(download.suggestedFilename()).toBe("the-mystery-elixir-0.1.0.md");
+
+  await page.getByText("Use the Agent Skill").click();
+  const skillDownloadPromise = page.waitForEvent("download");
+  await page.getByRole("link", { name: "Download agent-elixir skill" }).click();
+  const skillDownload = await skillDownloadPromise;
+  expect(skillDownload.suggestedFilename()).toBe("agent-elixir-0.1.0.zip");
 
   expect(await readDeliveryEvents(page)).toMatchObject([
     {
       event_name: "delivery_action_recorded",
       elixir_id: "the-guide.elixir.mystery",
       delivery_method: "cartridge_file_download",
+      target_harness: "unspecified",
+      result: "initiated",
+    },
+    {
+      event_name: "delivery_action_recorded",
+      elixir_id: "the-guide.elixir.mystery",
+      delivery_method: "agent_skill_download",
       target_harness: "unspecified",
       result: "initiated",
     },
@@ -343,21 +305,19 @@ test("records download initiation locally without an analytics request", async (
   ).toEqual({ cookie: "", local: 0, session: 0, indexedDatabases: [] });
 });
 
-test("keeps source inspection and download available without JavaScript", async ({ browser }) => {
+test("keeps the named download, prompt, source, and skill available without JavaScript", async ({ browser }) => {
   const context = await browser.newContext({ javaScriptEnabled: false });
   const page = await context.newPage();
   await page.goto("http://127.0.0.1:4173/the-guide/elixirs/signal/");
 
-  await expect(page.getByRole("button", { name: "Copy for ChatGPT" })).toHaveCount(0);
-  await expect(page.locator("[data-chatgpt-prompt]")).toHaveValue(/<<< END THE GUIDE ELIXIR CARTRIDGE >>>/);
-  await expect(page.locator("[data-resolver-prompt]")).toHaveValue(
-    /\.\.\/\.\.\/cartridges\/signal\/0\.1\.0\/elixir\.md/,
-  );
-  await expect(page.getByText("select and copy the complete prompt above", { exact: false })).toBeVisible();
-  await page.getByText("Show complete cartridge source").click();
+  await expect(page.getByRole("button", { name: "Copy prompt" })).toHaveCount(0);
+  await expect(page.locator("[data-launcher-prompt]")).toHaveValue(/Read the attached Elixir cartridge in full/);
+  await page.getByText("Read the complete cartridge").click();
   await expect(page.locator("[data-cartridge-source]")).toContainText("The Signal Elixir has worn off");
-  const download = page.getByRole("link", { name: "Download Markdown" });
-  await expect(download).toHaveAttribute("download", "the-guide-signal-0.1.0.md");
+  const download = page.getByRole("link", { name: "Download story" });
+  await expect(download).toHaveAttribute("download", "the-signal-elixir-0.1.0.md");
+  await page.getByText("Use the Agent Skill").click();
+  await expect(page.getByRole("link", { name: "Download agent-elixir skill" })).toHaveAttribute("download", "agent-elixir-0.1.0.zip");
   const response = await context.request.get(
     "http://127.0.0.1:4173/the-guide/cartridges/signal/0.1.0/elixir.md",
   );
@@ -404,7 +364,10 @@ test("exposes editorial collections, explainable related items, and immutable re
   await expect(page.getByText("Curated by The Guide")).toBeVisible();
 
   await page.goto("/the-guide/elixirs/signal/");
-  await expect(page.getByRole("heading", { name: "Publisher, review, and provenance" })).toBeVisible();
+  const trustPanel = page.locator("details.trust-panel");
+  await expect(trustPanel).not.toHaveAttribute("open", "");
+  await page.getByText("Version, safety, and provenance").click();
+  await expect(page.getByRole("heading", { name: "Factual trust record" })).toBeVisible();
   const compatibilityEvidence = page.getByRole("link", { name: "elixir-harness-matrix.md" });
   await expect(compatibilityEvidence).toHaveAttribute("href", "../../evidence/the-guide/signal/0.1.0/compatibility-1.md");
   const evidenceResponse = await request.get(new URL(await compatibilityEvidence.getAttribute("href") ?? "", page.url()).href);
@@ -429,8 +392,8 @@ test("keeps the complete static catalogue browseable without JavaScript", async 
   await expect(page.locator("[data-spotlight]")).toHaveCount(1);
   await expect(page.locator("[data-catalogue-entry]")).toHaveCount(10);
   await expect(page.getByRole("searchbox")).toHaveCount(0);
-  await page.getByRole("link", { name: /Search and filter all 4 Elixirs/ }).click();
-  await expect(page.getByRole("heading", { name: "Browse all Elixirs" })).toBeVisible();
+  await page.getByRole("link", { name: /Browse all 4 stories/ }).click();
+  await expect(page.getByRole("heading", { name: "Browse all stories" })).toBeVisible();
   await expect(page.getByRole("searchbox")).toBeVisible();
   await expect(page.getByRole("article")).toHaveCount(4);
   await page.goto("http://127.0.0.1:4173/the-guide/");
@@ -438,6 +401,6 @@ test("keeps the complete static catalogue browseable without JavaScript", async 
   await lowEnergyShelf.getByRole("link", { name: "View collection" }).click();
   await expect(page.getByRole("article")).toHaveCount(3);
   await page.getByRole("link", { name: "Open The Story Elixir" }).click();
-  await expect(page.getByRole("heading", { name: "Start this Elixir in ChatGPT" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Take this story to your AI" })).toBeVisible();
   await context.close();
 });

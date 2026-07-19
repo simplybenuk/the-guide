@@ -12,7 +12,7 @@
 - Cartridge/cabinet contract: `docs/specs/elixir-cartridge-and-first-cabinet.md`
 - ChatGPT-first delivery and local event contract:
   `docs/specs/chatgpt-first-elixir-delivery.md`
-- Self-contained ChatGPT and experimental pinned resolver delivery:
+- File-first attachment delivery and optional reusable Agent Skill:
   `docs/specs/elixir-use-without-installing-delivery.md`
 - Active repository boundary: `docs/specs/elixir-first-repository-pivot.md`
 - Architecture and trust boundaries: `docs/architecture.md` and

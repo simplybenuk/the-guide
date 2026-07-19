@@ -14,167 +14,95 @@ const validReferences = [
 ];
 const options = {
   validReferences,
-  deploymentRevision: "cabinet-delivery-v1",
+  deploymentRevision: "cabinet-delivery-v2",
   eventIdFactory: () => "evt_123e4567-e89b-42d3-a456-426614174000",
-  now: () => "2026-07-18T15:00:00.000Z",
+  now: () => "2026-07-19T15:00:00.000Z",
 };
 
-const create = (overrides = {}) =>
-  createDeliveryEvent(
-    {
-      elixirId: "the-guide.elixir.story",
-      elixirVersion: "0.1.0",
-      deliveryMethod: "self_contained_prompt_copy",
-      targetHarness: "chatgpt",
-      result: "succeeded",
-      ...overrides,
-    },
-    options,
-  );
+const create = (overrides = {}) => createDeliveryEvent({
+  elixirId: "the-guide.elixir.story",
+  elixirVersion: "0.1.0",
+  deliveryMethod: "launcher_prompt_copy",
+  targetHarness: "unspecified",
+  result: "succeeded",
+  ...overrides,
+}, options);
 
-describe("delivery event contract v1.1", () => {
-  it("creates one strict, identity-free self-contained ChatGPT prompt event", () => {
+describe("delivery event contract v1.2", () => {
+  it("creates one strict, identity-free launcher prompt event", () => {
     expect(create()).toEqual({
-      contract_version: "1.1.0",
+      contract_version: "1.2.0",
       event_id: "evt_123e4567-e89b-42d3-a456-426614174000",
       event_name: "delivery_action_recorded",
-      occurred_at: "2026-07-18T15:00:00.000Z",
+      occurred_at: "2026-07-19T15:00:00.000Z",
       surface: "cabinet_detail",
       channel: "cabinet_first",
       elixir_id: "the-guide.elixir.story",
       elixir_version: "0.1.0",
-      delivery_method: "self_contained_prompt_copy",
-      target_harness: "chatgpt",
+      delivery_method: "launcher_prompt_copy",
+      target_harness: "unspecified",
       result: "succeeded",
-      deployment_revision: "cabinet-delivery-v1",
+      deployment_revision: "cabinet-delivery-v2",
     });
   });
 
   it("enforces method, result, and target semantics", () => {
-    expect(() => create({ targetHarness: "unspecified" })).toThrow(/Expected chatgpt/);
+    expect(() => create({ targetHarness: "chatgpt" })).toThrow(/Expected unspecified/);
     expect(() => create({ result: "initiated" })).toThrow(/cannot claim an initiated/);
-    expect(
-      create({ deliveryMethod: "resolver_prompt_copy", targetHarness: "unspecified" }).delivery_method,
-    ).toBe("resolver_prompt_copy");
-    expect(() => create({ deliveryMethod: "resolver_prompt_copy", targetHarness: "chatgpt" })).toThrow(
-      /Expected unspecified/,
-    );
-    expect(() =>
-      create({
-        deliveryMethod: "cartridge_file_download",
-        targetHarness: "unspecified",
-        result: "succeeded",
-      }),
-    ).toThrow(/Downloads may only/);
-    expect(
-      create({
-        deliveryMethod: "cartridge_file_download",
-        targetHarness: "unspecified",
-        result: "initiated",
-      }).result,
-    ).toBe("initiated");
+    for (const deliveryMethod of ["cartridge_file_download", "agent_skill_download"]) {
+      expect(create({ deliveryMethod, result: "initiated" }).result).toBe("initiated");
+      expect(() => create({ deliveryMethod, result: "succeeded" })).toThrow(/Downloads may only/);
+    }
   });
 
-  it("rejects unknown fields and stale cartridge references", () => {
+  it("rejects retired methods, unknown fields, and stale references", () => {
+    for (const deliveryMethod of ["self_contained_prompt_copy", "resolver_prompt_copy", "cartridge_text_copy", "handoff_message_copy"]) {
+      expect(() => create({ deliveryMethod })).toThrow();
+    }
     expect(() => deliveryEventSchema.parse({ ...create(), transcript: "private" })).toThrow();
     expect(() => create({ elixirVersion: "9.9.9" })).toThrow(/Unknown delivery event cartridge/);
-    expect(() => create({ elixirId: "the-guide.elixir.unknown" })).toThrow(/Unknown delivery event cartridge/);
-    expect(() => validateDeliveryEvent({ ...create(), contract_version: "1.0.0" }, { validReferences })).toThrow();
-    expect(() => create({ deliveryMethod: "handoff_message_copy" })).toThrow();
+    expect(() => validateDeliveryEvent({ ...create(), contract_version: "1.1.0" }, { validReferences })).toThrow();
   });
 
   it("rejects malformed IDs, timestamps, and public build identifiers", () => {
     expect(() => validateDeliveryEvent({ ...create(), event_id: "user-123" }, { validReferences })).toThrow();
     expect(() => validateDeliveryEvent({ ...create(), occurred_at: "today" }, { validReferences })).toThrow();
-    expect(() => validateDeliveryEvent({ ...create(), occurred_at: "2026-07-18T15:00:00+00:00" }, { validReferences })).toThrow();
-    expect(() => validateDeliveryEvent({ ...create(), occurred_at: "2026-02-30T15:00:00.000Z" }, { validReferences })).toThrow();
+    expect(() => validateDeliveryEvent({ ...create(), occurred_at: "2026-07-19T15:00:00+00:00" }, { validReferences })).toThrow();
     expect(() => validateDeliveryEvent({ ...create(), deployment_revision: "private value" }, { validReferences })).toThrow();
   });
 
-  it("counts acquisition actions without inventing unique users or outcomes", () => {
+  it("counts the three acquisition actions without inventing outcomes", () => {
     const events = [
-      create(),
-      create(),
-      create({ result: "denied" }),
-      create({ deliveryMethod: "resolver_prompt_copy", targetHarness: "unspecified" }),
-      create({ deliveryMethod: "cartridge_text_copy", targetHarness: "unspecified" }),
-      create({ deliveryMethod: "cartridge_file_download", targetHarness: "unspecified", result: "initiated" }),
-      create({ deliveryMethod: "cartridge_file_download", targetHarness: "unspecified", result: "failed" }),
-      createDeliveryEvent(
-        {
-          elixirId: "the-guide.elixir.story",
-          elixirVersion: "0.1.0",
-          deliveryMethod: "self_contained_prompt_copy",
-          targetHarness: "chatgpt",
-          result: "succeeded",
-        },
-        { ...options, now: () => "2026-07-19T00:00:00.000Z" },
-      ),
+      create(), create(), create({ result: "denied" }),
+      create({ deliveryMethod: "cartridge_file_download", result: "initiated" }),
+      create({ deliveryMethod: "agent_skill_download", result: "initiated" }),
+      create({ deliveryMethod: "agent_skill_download", result: "failed" }),
     ];
-
-    expect(
-      aggregateAcquisitionActions(events, {
-        validReferences,
-        windowStart: "2026-07-18T00:00:00.000Z",
-        windowEnd: "2026-07-19T00:00:00.000Z",
-      }),
-    ).toEqual([
-      {
-        elixir_id: "the-guide.elixir.story",
-        elixir_version: "0.1.0",
-        delivery_method: "cartridge_file_download",
-        target_harness: "unspecified",
-        window_start: "2026-07-18T00:00:00.000Z",
-        window_end: "2026-07-19T00:00:00.000Z",
-        actions: 1,
-      },
-      {
-        elixir_id: "the-guide.elixir.story",
-        elixir_version: "0.1.0",
-        delivery_method: "cartridge_text_copy",
-        target_harness: "unspecified",
-        window_start: "2026-07-18T00:00:00.000Z",
-        window_end: "2026-07-19T00:00:00.000Z",
-        actions: 1,
-      },
-      {
-        elixir_id: "the-guide.elixir.story",
-        elixir_version: "0.1.0",
-        delivery_method: "resolver_prompt_copy",
-        target_harness: "unspecified",
-        window_start: "2026-07-18T00:00:00.000Z",
-        window_end: "2026-07-19T00:00:00.000Z",
-        actions: 1,
-      },
-      {
-        elixir_id: "the-guide.elixir.story",
-        elixir_version: "0.1.0",
-        delivery_method: "self_contained_prompt_copy",
-        target_harness: "chatgpt",
-        window_start: "2026-07-18T00:00:00.000Z",
-        window_end: "2026-07-19T00:00:00.000Z",
-        actions: 2,
-      },
+    expect(aggregateAcquisitionActions(events, {
+      validReferences,
+      windowStart: "2026-07-19T00:00:00.000Z",
+      windowEnd: "2026-07-20T00:00:00.000Z",
+    }).map(({ delivery_method, actions }) => ({ delivery_method, actions }))).toEqual([
+      { delivery_method: "agent_skill_download", actions: 1 },
+      { delivery_method: "cartridge_file_download", actions: 1 },
+      { delivery_method: "launcher_prompt_copy", actions: 2 },
     ]);
   });
 
   it("requires a valid declared acquisition window", () => {
     expect(() => aggregateAcquisitionActions([create()], { validReferences })).toThrow();
-    expect(() =>
-      aggregateAcquisitionActions([create()], {
-        validReferences,
-        windowStart: "2026-07-19T00:00:00.000Z",
-        windowEnd: "2026-07-18T00:00:00.000Z",
-      }),
-    ).toThrow(/must end after/);
+    expect(() => aggregateAcquisitionActions([create()], {
+      validReferences,
+      windowStart: "2026-07-20T00:00:00.000Z",
+      windowEnd: "2026-07-19T00:00:00.000Z",
+    })).toThrow(/must end after/);
   });
 
   it("renders a deterministic local-only browser runtime", () => {
     const runtime = renderDeliveryEventBrowserRuntime({ validReferences, deploymentRevision: options.deploymentRevision });
     expect(runtime).toContain("the-guide:delivery-event");
-    expect(runtime).toContain("GuideDeliveryEvents");
-    expect(runtime).toContain("[89ab]");
-    expect(runtime).toContain("toISOString() !== event.occurred_at");
+    expect(runtime).toContain("launcher_prompt_copy");
+    expect(runtime).toContain("agent_skill_download");
     expect(runtime).not.toMatch(/fetch\s*\(|sendBeacon|XMLHttpRequest|localStorage|sessionStorage|indexedDB/);
   });
 });

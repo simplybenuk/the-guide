@@ -40,6 +40,36 @@ Development resumed on 2026-07-19 with H09 active in `docs/tasks/mvp.md`.
 H09–H11 development and the seventh independent review completed on
 2026-07-19. The reviewer found no blocking or should-fix catalogue-refinement
 finding and returned this workstream for human output testing.
+Human visual review then found that the shared branding still resembled a
+retro adventure game rather than a premium library of interactive stories.
+The owner approved a bounded local branding refinement on 2026-07-19: neutral
+minimalist site chrome, contemporary sans-serif typography, artwork-led cards,
+story-first catalogue language, and new genre-specific presentation art for
+The Regency Ball only. Other story images remain unchanged. Because the
+published Regency `0.1.0` artwork is digest-bound, the new image is registered
+as mutable catalogue presentation art and the original published artwork is
+retained unchanged. This approval authorizes local implementation, validation,
+plan traceability, and independent review, but not commit or publication.
+Local implementation, complete validation, and independent review then
+completed on 2026-07-19. The reviewer found no blocking or should-fix B01
+finding and returned the branding refinement for human visual testing. Detailed
+evidence is recorded in
+`docs/evaluations/catalogue-branding-agent-review.md`.
+Human detail-page review then found that cartridge pages expose too much
+technical and repetitive information before the play action. The owner approved
+a bounded B02 refinement on 2026-07-19: lead with artwork and a short synopsis,
+merge the overlapping pre-play and Story-experience facts into one concise
+section, move the start instructions directly after it, and keep trust,
+provenance, prompt fallbacks, and raw source available through collapsed
+progressive disclosure. Delivery payloads, no-JavaScript recovery, lifecycle
+notices, cartridge bytes, and release facts remain unchanged. This authorizes
+local implementation, validation, plan traceability, and independent review,
+but not commit or publication.
+Local implementation, complete validation, and independent review completed on
+2026-07-19. The reviewer found no blocking or should-fix B02 issue and returned
+the simplified cartridge detail hierarchy for human visual testing. Detailed
+evidence is recorded in
+`docs/evaluations/cartridge-detail-simplification-agent-review.md`.
 It does not authorize a commit, push, deployment, publication, external
 ledger-variable configuration, or gameplay compatibility claim. Overall product
 testing remains separately gated by E07’s second live harness class.
@@ -915,6 +945,31 @@ delivery-envelope or cartridge-byte change stops migration.
 38. No carousel package, remote asset, discovery event, storage, account,
     backend, popularity signal, or personalisation is introduced by the
     presentation refinement.
+39. Shared site branding uses neutral minimalist chrome, contemporary sans-serif
+    typography, restrained controls, and artwork-led cards without retro game
+    typography, fantasy gradients, per-cartridge accent bars, offset shadows,
+    or decorative pixel styling.
+40. Site-level navigation and discovery language presents The Guide as a
+    library of interactive stories while preserving exact Elixir terminology
+    where cartridge, delivery, compatibility, or trust contracts require it.
+41. The Regency Ball uses distinct genre-specific catalogue presentation art;
+    Signal, Mystery, and Story images remain byte-identical and visually
+    unchanged.
+42. The published Regency Ball `0.1.0` cartridge, release ledger, and
+    digest-bound original artwork remain byte-identical; the new cover has its
+    own registered provenance, digest, accessible description, and public
+    catalogue projection.
+43. A cartridge detail page leads with its artwork, title, and one concise story
+    synopsis, without visible status badges or duplicate editorial rationale.
+44. One visible “What you need to play” section replaces separate “Before you
+    play” and “Story experience” panels and shows only the essential duration,
+    participation, role or input, and conversation boundary.
+45. The primary start instructions immediately follow the concise play facts;
+    the complete prompt, alternate resolver, version paths, raw source, and
+    factual trust record remain accessible but collapsed by default.
+46. Progressive disclosure does not weaken keyboard, screen-reader,
+    no-JavaScript, download, manual-copy, lifecycle, privacy, or immutable
+    version access.
 
 ## Development-readiness bundle
 

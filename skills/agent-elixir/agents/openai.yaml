@@ -1,0 +1,4 @@
+interface:
+  display_name: "Agent Elixir"
+  short_description: "Play an attached Elixir cartridge safely"
+  default_prompt: "Use $agent-elixir (shown as /agent-elixir in slash-command hosts) to play the attached Elixir cartridge."

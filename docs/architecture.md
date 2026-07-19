@@ -10,7 +10,7 @@ Canonical Markdown cartridges + original artwork
   -> strict schema/covenant validation
   -> deterministic static generator and artifact audit
   -> static cabinet on any file host
-  -> player hands URL, file, or text to a third-party harness
+  -> player attaches the downloaded file with a short prompt or generic skill
   -> harness discloses, obtains consent, plays, and releases the role
 ```
 
@@ -54,6 +54,12 @@ and remains usable without JavaScript for browsing, comparison, source
 inspection, and download. Search terms remain in page memory and are neither
 persisted nor transmitted.
 
+The detail-page play journey is file-first: one canonical cartridge download,
+one short generic launcher prompt, and one subordinate `agent-elixir` skill
+option for compatible hosts. The skill is independently versioned, contains no
+story, performs no retrieval, and still requires the selected cartridge as an
+attachment.
+
 ### Build and audit
 
 `scripts/elixirs/` parses and cross-validates canonical content and catalogue
@@ -67,10 +73,11 @@ transcript receiver.
 
 ### Third-party harness
 
-After handoff, the chosen harness owns the conversation, model access, memory,
-and ambient permissions. The cartridge yields to higher-priority instructions
-and requests conversation-only play. It is an instruction contract rather than
-an enforceable sandbox.
+After attachment, the chosen harness owns the conversation, model access,
+memory, and ambient permissions. The short prompt or optional skill reads the
+cartridge and takes the player to disclosure and affirmative consent. The
+cartridge yields to higher-priority instructions and requests conversation-only
+play. It is an instruction contract rather than an enforceable sandbox.
 
 ## Trust and privacy boundaries
 
