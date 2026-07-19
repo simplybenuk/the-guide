@@ -18,8 +18,9 @@ Canonical Markdown cartridges + original artwork
 
 ### Canonical content
 
-`content/elixirs/` contains one versioned common covenant, four immutable
-published cartridges, and additive release candidates. Strict metadata binds
+`content/elixirs/` contains one versioned common covenant, fourteen immutable
+published release sources, and eleven actively discoverable authored Stories.
+Strict metadata binds
 identity, version, demands, inputs, compatibility evidence, and artwork
 provenance to each source. Authored Story candidates use schema `1.1.0`: their
 experience contract declares player role, speech/action/decision interaction,
@@ -37,12 +38,12 @@ version, while exhaustive release-version lifecycle records allow an older
 version to be superseded or withdrawn without hiding a newer live recommendation.
 Artwork provenance separately records active references and exact archived Git
 references, including recoverable path, revision, object, bytes, and digest.
-Pre-publication Story preparation snapshots live under
+Story preparation snapshots live under
 `content/catalogue/candidates/`; their exact source/artwork digests and proposed
 transitions remain useful validation evidence after publication. The Regency
-Ball entered the production registry only after local and independent review,
-an immutable source revision, provenance review, and explicit owner authorization
-for an experimental live-test release. Compatibility promotion remains gated by
+Ball and the 2026-07-19 expansion entered the production registry only after
+local and independent review, immutable source revisions, provenance review,
+and explicit owner authorization. Compatibility promotion remains gated by
 named live-harness evidence.
 
 ### Static cabinet

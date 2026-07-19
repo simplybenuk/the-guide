@@ -86,7 +86,10 @@
       "source": "OpenAI built-in image generation from a project-authored production prompt",
       "author": "OpenAI image generation, directed by The Guide project",
       "license": "Generated for this project; use governed by the applicable OpenAI terms",
-      "dimensions": { "width": 1536, "height": 1024 },
+      "dimensions": {
+        "width": 1536,
+        "height": 1024
+      },
       "generatedAt": "2026-07-19",
       "generationMode": "Original generation with current cartridge art as loose style references",
       "referenceAsset": {
@@ -104,12 +107,185 @@
       "source": "OpenAI built-in image generation from a project-authored production prompt",
       "author": "OpenAI image generation, directed by The Guide project",
       "license": "Generated for this project; use governed by the applicable OpenAI terms",
-      "dimensions": { "width": 1536, "height": 1024 },
+      "dimensions": {
+        "width": 1536,
+        "height": 1024
+      },
       "generatedAt": "2026-07-19",
       "generationMode": "Original generation without a house-style reference; designed as genre-specific catalogue key art",
       "referenceAsset": null,
       "promptSummary": "Cinematic Regency historical-romance ensemble at a candlelit final waltz: an identity-neutral adult guest faces two freely offered romantic possibilities while the host and master of ceremonies hold the public stakes; no text, logos, fantasy, danger, or retro game styling.",
       "sha256": "0b1770adfdacf08403e32a6d991140326765c543cc3cb8b064106a02d98296fe"
+    },
+    {
+      "id": "art-last-light",
+      "path": "assets/cartridges/last-light.png",
+      "kind": "visual",
+      "source": "OpenAI built-in image generation from a project-authored production prompt",
+      "author": "OpenAI image generation, directed by The Guide project",
+      "license": "Generated for this project; use governed by applicable OpenAI terms",
+      "dimensions": {
+        "width": 1536,
+        "height": 1024
+      },
+      "generatedAt": "2026-07-19",
+      "generationMode": "Original generation without a house-style reference; genre-specific catalogue key art",
+      "referenceAsset": null,
+      "promptSummary": "A lone waystation beacon sends one warm ray across a blue star field as its surrounding lights fade.",
+      "sha256": "28fb7f014515c9a261a334131ef9e4931a0a98e2c0f04c27cb2463193a93e70d"
+    },
+    {
+      "id": "art-claws",
+      "path": "assets/cartridges/claws.png",
+      "kind": "visual",
+      "source": "OpenAI built-in image generation from a project-authored production prompt",
+      "author": "OpenAI image generation, directed by The Guide project",
+      "license": "Generated for this project; use governed by applicable OpenAI terms",
+      "dimensions": {
+        "width": 1536,
+        "height": 1024
+      },
+      "generatedAt": "2026-07-19",
+      "generationMode": "Original generation without a house-style reference; genre-specific catalogue key art",
+      "referenceAsset": null,
+      "promptSummary": "A storm-lit harbour faces a huge red-orange lobster claw rising from the water while smaller lobsters cross the wet quay toward a lantern-bearing coordinator.",
+      "sha256": "524c97fd0c05951c1baca929bbfdd22f7bee0805d7b1174f1c34c7e691bae0f4"
+    },
+    {
+      "id": "art-red-dust-reckoning",
+      "path": "assets/cartridges/red-dust-reckoning.png",
+      "kind": "visual",
+      "source": "OpenAI built-in image generation from a project-authored production prompt",
+      "author": "OpenAI image generation, directed by The Guide project",
+      "license": "Generated for this project; use governed by applicable OpenAI terms",
+      "dimensions": {
+        "width": 1536,
+        "height": 1024
+      },
+      "generatedAt": "2026-07-19",
+      "generationMode": "Original generation without a house-style reference; genre-specific catalogue key art",
+      "referenceAsset": null,
+      "promptSummary": "A frontier water ledger rests beside a brass key as a red dust storm approaches a sunlit wooden town.",
+      "sha256": "823c34410970382b597a91a72b48a1394d6cde01902aecd79286b7defc8fb8db"
+    },
+    {
+      "id": "art-far-side-of-orpheus",
+      "path": "assets/cartridges/far-side-of-orpheus.png",
+      "kind": "visual",
+      "source": "OpenAI built-in image generation from a project-authored production prompt",
+      "author": "OpenAI image generation, directed by The Guide project",
+      "license": "Generated for this project; use governed by applicable OpenAI terms",
+      "dimensions": {
+        "width": 1536,
+        "height": 1024
+      },
+      "generatedAt": "2026-07-19",
+      "generationMode": "Original generation without a house-style reference; genre-specific catalogue key art",
+      "referenceAsset": null,
+      "promptSummary": "A damaged research vessel arcs behind a black moon while a duplicate distress waveform glows ahead of it.",
+      "sha256": "403bda65348532e891e04061084c6470514ec26c1b02a484f968dbe611204122"
+    },
+    {
+      "id": "art-room-313",
+      "path": "assets/cartridges/room-313.png",
+      "kind": "visual",
+      "source": "OpenAI built-in image generation from a project-authored production prompt",
+      "author": "OpenAI image generation, directed by The Guide project",
+      "license": "Generated for this project; use governed by applicable OpenAI terms",
+      "dimensions": {
+        "width": 1536,
+        "height": 1024
+      },
+      "generatedAt": "2026-07-19",
+      "generationMode": "Original generation without a house-style reference; genre-specific catalogue key art",
+      "referenceAsset": null,
+      "promptSummary": "A dim hotel corridor bends around a glowing impossible door numbered only by three brass shapes, with a distant human silhouette at the far end.",
+      "sha256": "b228afff89c9cf7e9dabf344feb293a22d10330e087facf21f2b8b8de4513092"
+    },
+    {
+      "id": "art-clockwork-masquerade",
+      "path": "assets/cartridges/clockwork-masquerade.png",
+      "kind": "visual",
+      "source": "OpenAI built-in image generation from a project-authored production prompt",
+      "author": "OpenAI image generation, directed by The Guide project",
+      "license": "Generated for this project; use governed by applicable OpenAI terms",
+      "dimensions": {
+        "width": 1536,
+        "height": 1024
+      },
+      "generatedAt": "2026-07-19",
+      "generationMode": "Original generation without a house-style reference; genre-specific catalogue key art",
+      "referenceAsset": null,
+      "promptSummary": "Masked figures cross a brass exhibition hall beneath a vast clockwork engine with one glowing evidence cylinder exposed.",
+      "sha256": "9910199919692edb0d1171d307b03a47fc398dcb7cc47dfc2c0075dedfbee4c6"
+    },
+    {
+      "id": "art-dragons-last-contract",
+      "path": "assets/cartridges/dragons-last-contract.png",
+      "kind": "visual",
+      "source": "OpenAI built-in image generation from a project-authored production prompt",
+      "author": "OpenAI image generation, directed by The Guide project",
+      "license": "Generated for this project; use governed by applicable OpenAI terms",
+      "dimensions": {
+        "width": 1536,
+        "height": 1024
+      },
+      "generatedAt": "2026-07-19",
+      "generationMode": "Original generation without a house-style reference; genre-specific catalogue key art",
+      "referenceAsset": null,
+      "promptSummary": "An ageing dragon and a mountain delegation face a glowing contract across a stone treaty table.",
+      "sha256": "85a78dd7ca4e29a7383883b2d4a04f9e0ae8921593b17a87a131048219e8eb27"
+    },
+    {
+      "id": "art-murder-at-moonlight-express",
+      "path": "assets/cartridges/murder-at-moonlight-express.png",
+      "kind": "visual",
+      "source": "OpenAI built-in image generation from a project-authored production prompt",
+      "author": "OpenAI image generation, directed by The Guide project",
+      "license": "Generated for this project; use governed by applicable OpenAI terms",
+      "dimensions": {
+        "width": 1536,
+        "height": 1024
+      },
+      "generatedAt": "2026-07-19",
+      "generationMode": "Original generation without a house-style reference; genre-specific catalogue key art",
+      "referenceAsset": null,
+      "promptSummary": "A moonlit luxury train stands in deep snow beside an illuminated locked compartment and a trail of precise clues.",
+      "sha256": "2efa69c44f0d200bb5fb68b820408f837c49d0769c9ffe15900e61c9d7f02f65"
+    },
+    {
+      "id": "art-neon-saints",
+      "path": "assets/cartridges/neon-saints.png",
+      "kind": "visual",
+      "source": "OpenAI built-in image generation from a project-authored production prompt",
+      "author": "OpenAI image generation, directed by The Guide project",
+      "license": "Generated for this project; use governed by applicable OpenAI terms",
+      "dimensions": {
+        "width": 1536,
+        "height": 1024
+      },
+      "generatedAt": "2026-07-19",
+      "generationMode": "Original generation without a house-style reference; genre-specific catalogue key art",
+      "referenceAsset": null,
+      "promptSummary": "A lone memory courier carries a glowing sealed capsule through a rain-soaked neon street divided into three routes.",
+      "sha256": "e924849140dd7d5695c5d2a8219118bae8d8d4b574dc2a1b81ce2d22c934be15"
+    },
+    {
+      "id": "art-bone-orchard",
+      "path": "assets/cartridges/bone-orchard.png",
+      "kind": "visual",
+      "source": "OpenAI built-in image generation from a project-authored production prompt",
+      "author": "OpenAI image generation, directed by The Guide project",
+      "license": "Generated for this project; use governed by applicable OpenAI terms",
+      "dimensions": {
+        "width": 1536,
+        "height": 1024
+      },
+      "generatedAt": "2026-07-19",
+      "generationMode": "Original generation without a house-style reference; genre-specific catalogue key art",
+      "referenceAsset": null,
+      "promptSummary": "A moonlit memorial orchard of pale carved trees surrounds one tree bearing a fresh blank name plaque, without gore or bones.",
+      "sha256": "f404320920ba04c354d522b28a86eca68ca08fc268c01d1a773c49e86fbcb69d"
     }
   ]
 }

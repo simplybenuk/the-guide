@@ -47,7 +47,7 @@ for (const basePath of ["/", "/the-guide/"]) {
     await expect(page.getByRole("heading", { name: "Choose a story. Shape what happens." })).toBeVisible();
     await expect(page.locator("[data-spotlight]")).toHaveCount(1);
     await expect(page.locator("[data-shelf]")).toHaveCount(3);
-    await expect(page.locator("[data-catalogue-entry]")).toHaveCount(10);
+    await expect(page.locator("[data-catalogue-entry]")).toHaveCount(7);
     await expect(page.getByRole("link", { name: "Browse all stories", exact: true })).toBeVisible();
     await expect(page.getByText("The Guide does not receive your game conversation", { exact: false })).toBeVisible();
     await expect(page.getByRole("link", { name: "Read the alpha usage terms" })).toHaveAttribute("href", "terms.md");
@@ -56,13 +56,13 @@ for (const basePath of ["/", "/the-guide/"]) {
     expect(await termsResponse.text()).toContain("personal, non-commercial alpha testing");
     await assertNoHorizontalOverflow(page);
 
-    await page.getByRole("link", { name: "Open The Mystery Elixir" }).first().click();
-    await expect(page.getByRole("heading", { name: "The Mystery Elixir", exact: true })).toBeVisible();
-    await expect(page.getByText("Three collaborative clue rounds")).toBeVisible();
+    await page.getByRole("link", { name: "Open The Last Light" }).first().click();
+    await expect(page.getByRole("heading", { name: "The Last Light", exact: true })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "What you need to play" })).toBeVisible();
     await expect(page.getByRole("link", { name: "Read the alpha usage terms" })).toHaveAttribute("href", "../../terms.md");
     await expect(page.getByRole("link", { name: "Download story" })).toHaveAttribute(
       "href",
-      "../../cartridges/mystery/0.1.0/elixir.md",
+      "../../cartridges/last-light/0.1.0/elixir.md",
     );
     await page.getByText("Use the Agent Skill").click();
     await expect(page.getByText("/agent-elixir", { exact: false })).toBeVisible();
@@ -147,7 +147,7 @@ test("remains usable at 320px, 200% text, keyboard navigation, and reduced motio
   await nextShelfButton.click();
   await expect.poll(() => startShelf.locator("[data-shelf-track]").evaluate((track) => track.scrollLeft)).toBeGreaterThan(0);
 
-  await page.goto("/the-guide/elixirs/mystery/");
+  await page.goto("/the-guide/elixirs/last-light/");
   await page.addStyleTag({ content: "html { font-size: 200% !important; }" });
   await assertNoHorizontalOverflow(page);
   await expect(page.getByRole("heading", { name: "Take this story to your AI" })).toBeVisible();
@@ -165,7 +165,7 @@ test("copies the exact short launcher prompt and emits only its local event", as
       value: { writeText: (value: string) => state.copiedText.push(value) },
     });
   });
-  await page.goto("/the-guide/elixirs/signal/");
+  await page.goto("/the-guide/elixirs/last-light/");
 
   await page.getByRole("button", { name: "Copy prompt" }).click();
   await expect(page.getByRole("status")).toContainText("Prompt copied");
@@ -203,7 +203,7 @@ test("copies the exact short launcher prompt and emits only its local event", as
       event_name: "delivery_action_recorded",
       surface: "cabinet_detail",
       channel: "cabinet_first",
-      elixir_id: "the-guide.elixir.signal",
+      elixir_id: "the-guide.elixir.last-light",
       elixir_version: "0.1.0",
       deployment_revision: "cabinet-delivery-v2",
     });
@@ -220,7 +220,7 @@ test("offers manual fallback when clipboard access is denied", async ({ page }) 
       value: { writeText: () => Promise.reject(new DOMException("denied", "NotAllowedError")) },
     });
   });
-  await page.goto("/the-guide/elixirs/story/");
+  await page.goto("/the-guide/elixirs/claws/");
 
   await page.getByRole("button", { name: "Copy prompt" }).click();
   await expect(page.getByRole("status")).toContainText("selected so you can copy it manually");
@@ -238,7 +238,7 @@ test("distinguishes unavailable clipboard access from an unexpected copy failure
   await page.addInitScript(() => {
     Object.defineProperty(navigator, "clipboard", { configurable: true, value: {} });
   });
-  await page.goto("/the-guide/elixirs/story/");
+  await page.goto("/the-guide/elixirs/claws/");
 
   await page.getByRole("button", { name: "Copy prompt" }).click();
   await expect(page.getByRole("status")).toContainText("Clipboard access is unavailable");
@@ -261,12 +261,12 @@ test("records download initiation locally without an analytics request", async (
   await captureDeliveryEvents(page);
   const requestedUrls: string[] = [];
   page.on("request", (request) => requestedUrls.push(request.url()));
-  await page.goto("/the-guide/elixirs/mystery/");
+  await page.goto("/the-guide/elixirs/claws/");
 
   const downloadPromise = page.waitForEvent("download");
   await page.getByRole("link", { name: "Download story" }).click();
   const download = await downloadPromise;
-  expect(download.suggestedFilename()).toBe("the-mystery-elixir-0.1.0.md");
+  expect(download.suggestedFilename()).toBe("claws-0.1.0.md");
 
   await page.getByText("Use the Agent Skill").click();
   const skillDownloadPromise = page.waitForEvent("download");
@@ -277,14 +277,14 @@ test("records download initiation locally without an analytics request", async (
   expect(await readDeliveryEvents(page)).toMatchObject([
     {
       event_name: "delivery_action_recorded",
-      elixir_id: "the-guide.elixir.mystery",
+      elixir_id: "the-guide.elixir.claws",
       delivery_method: "cartridge_file_download",
       target_harness: "unspecified",
       result: "initiated",
     },
     {
       event_name: "delivery_action_recorded",
-      elixir_id: "the-guide.elixir.mystery",
+      elixir_id: "the-guide.elixir.claws",
       delivery_method: "agent_skill_download",
       target_harness: "unspecified",
       result: "initiated",
@@ -308,21 +308,21 @@ test("records download initiation locally without an analytics request", async (
 test("keeps the named download, prompt, source, and skill available without JavaScript", async ({ browser }) => {
   const context = await browser.newContext({ javaScriptEnabled: false });
   const page = await context.newPage();
-  await page.goto("http://127.0.0.1:4173/the-guide/elixirs/signal/");
+  await page.goto("http://127.0.0.1:4173/the-guide/elixirs/last-light/");
 
   await expect(page.getByRole("button", { name: "Copy prompt" })).toHaveCount(0);
   await expect(page.locator("[data-launcher-prompt]")).toHaveValue(/Read the attached Elixir cartridge in full/);
   await page.getByText("Read the complete cartridge").click();
-  await expect(page.locator("[data-cartridge-source]")).toContainText("The Signal Elixir has worn off");
+  await expect(page.locator("[data-cartridge-source]")).toContainText("The Last Light Elixir has worn off");
   const download = page.getByRole("link", { name: "Download story" });
-  await expect(download).toHaveAttribute("download", "the-signal-elixir-0.1.0.md");
+  await expect(download).toHaveAttribute("download", "the-last-light-0.1.0.md");
   await page.getByText("Use the Agent Skill").click();
   await expect(page.getByRole("link", { name: "Download agent-elixir skill" })).toHaveAttribute("download", "agent-elixir-0.1.0.zip");
   const response = await context.request.get(
-    "http://127.0.0.1:4173/the-guide/cartridges/signal/0.1.0/elixir.md",
+    "http://127.0.0.1:4173/the-guide/cartridges/last-light/0.1.0/elixir.md",
   );
   expect(response.ok()).toBe(true);
-  expect(await response.text()).toContain("# The Signal Elixir");
+  expect(await response.text()).toContain("# The Last Light");
   await context.close();
 });
 
@@ -332,25 +332,26 @@ test("searches, filters, sorts, and clears locally without persisting the query"
   await page.goto("/the-guide/browse/");
 
   const search = page.getByRole("searchbox", { name: "Search titles, promises, mechanics, and moods" });
-  await search.fill("deduction");
+  await search.fill("lobster");
   await expect(page.getByRole("status")).toHaveText("1 Elixir shown.");
-  await expect(page.getByRole("link", { name: "Open The Mystery Elixir" })).toBeVisible();
-  await expect(page.getByRole("link", { name: "Open The Signal Elixir" })).toBeHidden();
-  expect(page.url()).not.toContain("deduction");
+  await expect(page.getByRole("link", { name: "Open Claws" })).toBeVisible();
+  await expect(page.getByRole("link", { name: "Open The Last Light" })).toBeHidden();
+  expect(page.url()).not.toContain("lobster");
 
   await search.fill("");
   await page.getByText("Filter the catalogue").click();
-  await page.getByLabel("Grounded noticing").check();
+  await page.getByLabel("Western").check();
   await expect(page.getByRole("status")).toHaveText("1 Elixir shown.");
-  expect(page.url()).toContain("filter=mechanic-noticing");
+  expect(page.url()).toContain("filter=genre-western");
   await page.getByRole("button", { name: "Clear search and filters" }).click();
-  await expect(page.getByRole("status")).toHaveText("4 Elixirs shown.");
+  await expect(page.getByRole("status")).toHaveText("11 Elixirs shown.");
   await expect(search).toBeFocused();
   expect(new URL(page.url()).search).toBe("");
 
   await page.getByRole("combobox", { name: "Sort" }).selectOption("title");
   const titles = await page.locator("[data-catalogue-entry]:not([hidden]) h3").allTextContents();
-  expect(titles).toEqual(["The Mystery Elixir", "The Regency Ball", "The Signal Elixir", "The Story Elixir"]);
+  expect(titles).toHaveLength(11);
+  expect(titles).toEqual([...titles].sort((left, right) => left.localeCompare(right)));
   expect(requestedUrls.every((url) => url.startsWith("http://127.0.0.1:4173/"))).toBe(true);
   expect(await page.evaluate(() => ({ local: localStorage.length, session: sessionStorage.length }))).toEqual({ local: 0, session: 0 });
 });
@@ -360,21 +361,21 @@ test("exposes editorial collections, explainable related items, and immutable re
   const startShelf = page.locator("[data-shelf]").filter({ has: page.getByRole("heading", { name: "Start here" }) });
   await startShelf.getByRole("link", { name: "View collection" }).click();
   await expect(page.getByRole("heading", { name: "Start here" })).toBeVisible();
-  await expect(page.getByRole("article")).toHaveCount(4);
+  await expect(page.getByRole("article")).toHaveCount(3);
   await expect(page.getByText("Curated by The Guide")).toBeVisible();
 
-  await page.goto("/the-guide/elixirs/signal/");
+  await page.goto("/the-guide/elixirs/last-light/");
   const trustPanel = page.locator("details.trust-panel");
   await expect(trustPanel).not.toHaveAttribute("open", "");
   await page.getByText("Version, safety, and provenance").click();
   await expect(page.getByRole("heading", { name: "Factual trust record" })).toBeVisible();
   const compatibilityEvidence = page.getByRole("link", { name: "elixir-harness-matrix.md" });
-  await expect(compatibilityEvidence).toHaveAttribute("href", "../../evidence/the-guide/signal/0.1.0/compatibility-1.md");
+  await expect(compatibilityEvidence).toHaveAttribute("href", "../../evidence/the-guide/last-light/0.1.0/compatibility-1.md");
   const evidenceResponse = await request.get(new URL(await compatibilityEvidence.getAttribute("href") ?? "", page.url()).href);
   expect(evidenceResponse.ok()).toBe(true);
   expect(await evidenceResponse.text()).toContain("Elixir cross-harness evaluation matrix");
-  await expect(page.getByText("different mechanic", { exact: false })).toHaveCount(3);
-  await page.getByRole("link", { name: "View this version’s immutable paths and history" }).click();
+  await expect(page.locator(".related-panel article")).toHaveCount(3);
+  await page.goto("/the-guide/elixirs/signal/versions/0.1.0/");
   await expect(page.getByRole("heading", { name: "The Signal Elixir 0.1.0" })).toBeVisible();
   await expect(page.getByText("1c371b5813f6d93f37cabe486337f2680928f3e2ae5c19d4e86d40328f597cbb")).toBeVisible();
 
@@ -390,17 +391,17 @@ test("keeps the complete static catalogue browseable without JavaScript", async 
   const page = await context.newPage();
   await page.goto("http://127.0.0.1:4173/the-guide/");
   await expect(page.locator("[data-spotlight]")).toHaveCount(1);
-  await expect(page.locator("[data-catalogue-entry]")).toHaveCount(10);
+  await expect(page.locator("[data-catalogue-entry]")).toHaveCount(7);
   await expect(page.getByRole("searchbox")).toHaveCount(0);
-  await page.getByRole("link", { name: /Browse all 4 stories/ }).click();
+  await page.getByRole("link", { name: /Browse all 11 stories/ }).click();
   await expect(page.getByRole("heading", { name: "Browse all stories" })).toBeVisible();
   await expect(page.getByRole("searchbox")).toBeVisible();
-  await expect(page.getByRole("article")).toHaveCount(4);
+  await expect(page.getByRole("article")).toHaveCount(11);
   await page.goto("http://127.0.0.1:4173/the-guide/");
   const lowEnergyShelf = page.locator("[data-shelf]").filter({ has: page.getByRole("heading", { name: "Low-energy play" }) });
   await lowEnergyShelf.getByRole("link", { name: "View collection" }).click();
-  await expect(page.getByRole("article")).toHaveCount(3);
-  await page.getByRole("link", { name: "Open The Story Elixir" }).click();
+  await expect(page.getByRole("article")).toHaveCount(1);
+  await page.getByRole("link", { name: "Open The Last Light" }).click();
   await expect(page.getByRole("heading", { name: "Take this story to your AI" })).toBeVisible();
   await context.close();
 });

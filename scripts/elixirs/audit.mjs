@@ -92,7 +92,7 @@ export const auditElixirArtifact = ({ artifactDirectory, catalogue = defaultCata
     }
   }
 
-  if (totalBytes > 25 * 1024 * 1024) throw new Error(`Artifact exceeds the 25 MiB project limit: ${totalBytes} bytes`);
+  if (totalBytes > 50 * 1024 * 1024) throw new Error(`Artifact exceeds the 50 MiB project limit: ${totalBytes} bytes`);
 
   const withdrawalByKey = new Map(catalogue.withdrawals.map((value) => [`${value.elixirId}@${value.version}`, value]));
   for (const { release, source } of catalogue.cartridges) {

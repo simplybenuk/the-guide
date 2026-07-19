@@ -1,12 +1,12 @@
 # The Far Side of Orpheus experimental publication validation
 
-Date: 2026-07-19  
-Scope: local candidate preparation only  
-Status: NOT READY FOR HUMAN TESTING
+Date: 2026-07-19
+Scope: owner-authorized production publication
+Status: PUBLISHED FOR OWNER TESTING
 
 ## Authorization and lifecycle
 
-Development is approved. Commit, push, publication, deployment, live-harness testing, compatibility promotion, and external outreach are not authorized. Compatibility remains untested with zero named harness runs.
+Independent review and local release validation passed. The owner authorized commit, direct push, publication, and GitHub Pages deployment. Compatibility remains untested; no live-harness or compatibility claim is made.
 
 ## Candidate identity
 
@@ -18,4 +18,4 @@ Development is approved. Commit, push, publication, deployment, live-harness tes
 
 ## Remaining validation
 
-Focused and full validation, independent review, reviewed source revision, explicit publication authorization, and version-scoped live-harness evidence remain required.
+Focused and full validation, independent review, reviewed source revision, and explicit publication authorization are complete. Version-scoped live-harness evidence remains required before any compatibility promotion.

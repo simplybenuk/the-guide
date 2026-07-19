@@ -34,7 +34,7 @@ No blocking or should-fix findings remain.
 
 - Fresh focused re-review: 1 file and 13 tests passed; `git diff --check` passed.
 - Full validation: lint, strict typecheck, 18 files and 124 tests, deterministic
-  44-file/11,634,107-byte build and audit, and all 12 browser journeys passed.
+  131-file/40,166,659-byte build and audit, and all 12 browser journeys passed.
 - All 118 fixture paraphrases executed without drift during the prior challenge
   pass; the final suite adds independent prose beyond those fixture strings.
 

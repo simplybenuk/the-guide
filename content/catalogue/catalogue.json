@@ -1,30 +1,553 @@
 {
   "schemaVersion": "1.0.0",
-  "deploymentRevision": "catalogue-v2-regency-ball",
+  "deploymentRevision": "story-expansion-2026-07-19",
   "entries": [
     {
-      "elixirId": "the-guide.elixir.signal", "publisherId": "the-guide", "slug": "signal", "recommendedVersion": "0.1.0", "lifecycle": "published",
-      "title": "The Signal Elixir", "summary": "A short noticing expedition through an ordinary nearby setting.", "playerPromise": "Follow three grounded signals and return with a field note made from what you actually noticed.",
-      "editorialOrder": 1, "featuredRationale": "A gentle place to begin with grounded attention.", "categoryIds": ["activity-nearby"], "tagIds": ["tone-curious", "replayable-variable"],
-      "toneIds": ["tone-curious"], "mechanicId": "mechanic-noticing", "interactionLabel": "Three grounded noticing moves", "activityIds": ["activity-nearby", "activity-conversation"], "replayabilityId": "replayable-variable", "durationBandId": "duration-under-15",
-      "energy": "low", "movement": "stay_here", "requiredInputs": ["time", "energy", "hard_boundary"], "contentNoteIds": [], "accessConsiderationIds": ["access-seated"], "audienceIds": ["audience-general-alpha"], "localeIds": ["locale-en"],
-      "review": { "state": "reviewed", "date": "2026-07-18" }, "maintenanceOwner": "The Guide", "successor": null, "releaseStates": [{ "version": "0.1.0", "lifecycle": "published", "successor": null }], "corrections": []
+      "elixirId": "the-guide.elixir.last-light",
+      "publisherId": "the-guide",
+      "slug": "last-light",
+      "recommendedVersion": "0.1.0",
+      "lifecycle": "published",
+      "title": "The Last Light",
+      "summary": "One failing beacon, one final message, and five minutes to decide what its light should mean.",
+      "playerPromise": "Choose the last message of a failing waystation and see one small detail change who answers.",
+      "editorialOrder": 1,
+      "featuredRationale": "A complete five-minute introduction to authored interactive stories.",
+      "categoryIds": [
+        "activity-conversation"
+      ],
+      "tagIds": [
+        "tone-imaginative",
+        "replayable-authored-high"
+      ],
+      "toneIds": [
+        "tone-imaginative"
+      ],
+      "mechanicId": "mechanic-branching-story",
+      "interactionLabel": "3 authored beats through speech, action, and decisions",
+      "activityIds": [
+        "activity-conversation"
+      ],
+      "replayabilityId": "replayable-authored-moderate",
+      "durationBandId": "duration-under-15",
+      "energy": "low",
+      "movement": "none",
+      "requiredInputs": [
+        "time",
+        "hard_boundary",
+        "free_text_choice"
+      ],
+      "contentNoteIds": [
+        "content-fiction-clear",
+        "content-moderate-tension"
+      ],
+      "accessConsiderationIds": [
+        "access-seated"
+      ],
+      "audienceIds": [
+        "audience-general-alpha"
+      ],
+      "localeIds": [
+        "locale-en"
+      ],
+      "storyDiscovery": {
+        "genreIds": [
+          "genre-science-fiction"
+        ],
+        "themeIds": [
+          "theme-agency"
+        ],
+        "storyShapeIds": [
+          "story-shape-one-night-event"
+        ],
+        "socialShapeIds": [
+          "social-shape-ensemble"
+        ],
+        "interactionModeIds": [
+          "interaction-speech",
+          "interaction-action",
+          "interaction-decision"
+        ],
+        "choicePresentationId": "choice-hybrid",
+        "emotionalIntensityId": "emotion-gentle",
+        "readingIntensityId": "reading-low",
+        "sessionShapeId": "session-single-session"
+      },
+      "catalogueArtwork": {
+        "provenanceId": "art-last-light",
+        "altText": "A lone waystation beacon sends one warm ray across a blue star field as its surrounding lights fade."
+      },
+      "review": {
+        "state": "reviewed",
+        "date": "2026-07-19"
+      },
+      "maintenanceOwner": "The Guide",
+      "successor": null,
+      "releaseStates": [
+        {
+          "version": "0.1.0",
+          "lifecycle": "published",
+          "successor": null
+        }
+      ],
+      "corrections": []
     },
     {
-      "elixirId": "the-guide.elixir.mystery", "publisherId": "the-guide", "slug": "mystery", "recommendedVersion": "0.1.0", "lifecycle": "published",
-      "title": "The Mystery Elixir", "summary": "A collaborative micro-mystery made from harmless ordinary clues.", "playerPromise": "Build and solve a tiny fictional case with your agent without pretending the story is true.",
-      "editorialOrder": 2, "featuredRationale": "For playful collaboration with a clear fiction boundary.", "categoryIds": ["activity-conversation"], "tagIds": ["tone-playful", "replayable-variable"],
-      "toneIds": ["tone-playful"], "mechanicId": "mechanic-clue-building", "interactionLabel": "Three collaborative clue rounds", "activityIds": ["activity-conversation"], "replayabilityId": "replayable-variable", "durationBandId": "duration-under-15",
-      "energy": "low", "movement": "stay_here", "requiredInputs": ["time", "energy", "hard_boundary", "free_text_choice"], "contentNoteIds": ["content-fiction-clear"], "accessConsiderationIds": ["access-seated"], "audienceIds": ["audience-general-alpha"], "localeIds": ["locale-en"],
-      "review": { "state": "reviewed", "date": "2026-07-18" }, "maintenanceOwner": "The Guide", "successor": null, "releaseStates": [{ "version": "0.1.0", "lifecycle": "published", "successor": null }], "corrections": []
+      "elixirId": "the-guide.elixir.signal",
+      "publisherId": "the-guide",
+      "slug": "signal",
+      "recommendedVersion": "0.1.0",
+      "lifecycle": "retired",
+      "title": "The Signal Elixir",
+      "summary": "A short noticing expedition through an ordinary nearby setting.",
+      "playerPromise": "Follow three grounded signals and return with a field note made from what you actually noticed.",
+      "editorialOrder": 1,
+      "featuredRationale": "A gentle place to begin with grounded attention.",
+      "categoryIds": [
+        "activity-nearby"
+      ],
+      "tagIds": [
+        "tone-curious",
+        "replayable-variable"
+      ],
+      "toneIds": [
+        "tone-curious"
+      ],
+      "mechanicId": "mechanic-noticing",
+      "interactionLabel": "Three grounded noticing moves",
+      "activityIds": [
+        "activity-nearby",
+        "activity-conversation"
+      ],
+      "replayabilityId": "replayable-variable",
+      "durationBandId": "duration-under-15",
+      "energy": "low",
+      "movement": "stay_here",
+      "requiredInputs": [
+        "time",
+        "energy",
+        "hard_boundary"
+      ],
+      "contentNoteIds": [],
+      "accessConsiderationIds": [
+        "access-seated"
+      ],
+      "audienceIds": [
+        "audience-general-alpha"
+      ],
+      "localeIds": [
+        "locale-en"
+      ],
+      "review": {
+        "state": "reviewed",
+        "date": "2026-07-18"
+      },
+      "maintenanceOwner": "The Guide",
+      "successor": null,
+      "releaseStates": [
+        {
+          "version": "0.1.0",
+          "lifecycle": "retired",
+          "successor": null
+        }
+      ],
+      "corrections": []
     },
     {
-      "elixirId": "the-guide.elixir.story", "publisherId": "the-guide", "slug": "story", "recommendedVersion": "0.1.0", "lifecycle": "published",
-      "title": "The Story Elixir", "summary": "A three-scene branching tale created in conversation with your agent.", "playerPromise": "Step into a short shared fiction whose next scene responds to the choices you make.",
-      "editorialOrder": 3, "featuredRationale": "For a complete choice-shaped fiction without real-world activity.", "categoryIds": ["activity-conversation"], "tagIds": ["tone-imaginative", "replayable-variable"],
-      "toneIds": ["tone-imaginative"], "mechanicId": "mechanic-branching-story", "interactionLabel": "Three choice-shaped story scenes", "activityIds": ["activity-conversation"], "replayabilityId": "replayable-variable", "durationBandId": "duration-under-15",
-      "energy": "low", "movement": "none", "requiredInputs": ["time", "hard_boundary", "genre_boundary", "free_text_choice"], "contentNoteIds": ["content-fiction-clear"], "accessConsiderationIds": ["access-seated"], "audienceIds": ["audience-general-alpha"], "localeIds": ["locale-en"],
-      "review": { "state": "reviewed", "date": "2026-07-18" }, "maintenanceOwner": "The Guide", "successor": null, "releaseStates": [{ "version": "0.1.0", "lifecycle": "published", "successor": null }], "corrections": []
+      "elixirId": "the-guide.elixir.claws",
+      "publisherId": "the-guide",
+      "slug": "claws",
+      "recommendedVersion": "0.1.0",
+      "lifecycle": "published",
+      "title": "Claws",
+      "summary": "A storm, a harbour festival, and far too many organised lobsters.",
+      "playerPromise": "Rally an eccentric harbour town and decide whether its advancing lobster swarm should be repelled, redirected, or understood.",
+      "editorialOrder": 2,
+      "featuredRationale": "A distinctive comic coastal creature horror feature with authored routes and earned endings.",
+      "categoryIds": [
+        "activity-conversation"
+      ],
+      "tagIds": [
+        "tone-imaginative",
+        "replayable-authored-high"
+      ],
+      "toneIds": [
+        "tone-imaginative"
+      ],
+      "mechanicId": "mechanic-branching-story",
+      "interactionLabel": "10 authored beats through speech, action, and decisions",
+      "activityIds": [
+        "activity-conversation"
+      ],
+      "replayabilityId": "replayable-authored-high",
+      "durationBandId": "duration-25-45",
+      "energy": "medium",
+      "movement": "none",
+      "requiredInputs": [
+        "time",
+        "hard_boundary",
+        "free_text_choice"
+      ],
+      "contentNoteIds": [
+        "content-fiction-clear",
+        "content-creature-threat"
+      ],
+      "accessConsiderationIds": [
+        "access-seated"
+      ],
+      "audienceIds": [
+        "audience-general-alpha"
+      ],
+      "localeIds": [
+        "locale-en"
+      ],
+      "storyDiscovery": {
+        "genreIds": [
+          "genre-creature-horror"
+        ],
+        "themeIds": [
+          "theme-agency"
+        ],
+        "storyShapeIds": [
+          "story-shape-one-night-event"
+        ],
+        "socialShapeIds": [
+          "social-shape-ensemble"
+        ],
+        "interactionModeIds": [
+          "interaction-speech",
+          "interaction-action",
+          "interaction-decision"
+        ],
+        "choicePresentationId": "choice-hybrid",
+        "emotionalIntensityId": "emotion-moderate",
+        "readingIntensityId": "reading-medium",
+        "sessionShapeId": "session-single-session"
+      },
+      "catalogueArtwork": {
+        "provenanceId": "art-claws",
+        "altText": "A storm-lit harbour faces a huge red-orange lobster claw rising from the water while smaller lobsters cross the wet quay toward a lantern-bearing coordinator."
+      },
+      "review": {
+        "state": "reviewed",
+        "date": "2026-07-19"
+      },
+      "maintenanceOwner": "The Guide",
+      "successor": null,
+      "releaseStates": [
+        {
+          "version": "0.1.0",
+          "lifecycle": "published",
+          "successor": null
+        }
+      ],
+      "corrections": []
+    },
+    {
+      "elixirId": "the-guide.elixir.mystery",
+      "publisherId": "the-guide",
+      "slug": "mystery",
+      "recommendedVersion": "0.1.0",
+      "lifecycle": "retired",
+      "title": "The Mystery Elixir",
+      "summary": "A collaborative micro-mystery made from harmless ordinary clues.",
+      "playerPromise": "Build and solve a tiny fictional case with your agent without pretending the story is true.",
+      "editorialOrder": 2,
+      "featuredRationale": "For playful collaboration with a clear fiction boundary.",
+      "categoryIds": [
+        "activity-conversation"
+      ],
+      "tagIds": [
+        "tone-playful",
+        "replayable-variable"
+      ],
+      "toneIds": [
+        "tone-playful"
+      ],
+      "mechanicId": "mechanic-clue-building",
+      "interactionLabel": "Three collaborative clue rounds",
+      "activityIds": [
+        "activity-conversation"
+      ],
+      "replayabilityId": "replayable-variable",
+      "durationBandId": "duration-under-15",
+      "energy": "low",
+      "movement": "stay_here",
+      "requiredInputs": [
+        "time",
+        "energy",
+        "hard_boundary",
+        "free_text_choice"
+      ],
+      "contentNoteIds": [
+        "content-fiction-clear"
+      ],
+      "accessConsiderationIds": [
+        "access-seated"
+      ],
+      "audienceIds": [
+        "audience-general-alpha"
+      ],
+      "localeIds": [
+        "locale-en"
+      ],
+      "review": {
+        "state": "reviewed",
+        "date": "2026-07-18"
+      },
+      "maintenanceOwner": "The Guide",
+      "successor": null,
+      "releaseStates": [
+        {
+          "version": "0.1.0",
+          "lifecycle": "retired",
+          "successor": null
+        }
+      ],
+      "corrections": []
+    },
+    {
+      "elixirId": "the-guide.elixir.red-dust-reckoning",
+      "publisherId": "the-guide",
+      "slug": "red-dust-reckoning",
+      "recommendedVersion": "0.1.0",
+      "lifecycle": "published",
+      "title": "Red Dust Reckoning",
+      "summary": "At high noon, a frontier town must decide who owns tomorrow's water.",
+      "playerPromise": "Test rival claims, build a public coalition, and write the water allotment that decides a frontier town's future.",
+      "editorialOrder": 3,
+      "featuredRationale": "A distinctive Wild West civic drama feature with authored routes and earned endings.",
+      "categoryIds": [
+        "activity-conversation"
+      ],
+      "tagIds": [
+        "tone-imaginative",
+        "replayable-authored-high"
+      ],
+      "toneIds": [
+        "tone-imaginative"
+      ],
+      "mechanicId": "mechanic-branching-story",
+      "interactionLabel": "11 authored beats through speech, action, and decisions",
+      "activityIds": [
+        "activity-conversation"
+      ],
+      "replayabilityId": "replayable-authored-high",
+      "durationBandId": "duration-25-45",
+      "energy": "medium",
+      "movement": "none",
+      "requiredInputs": [
+        "time",
+        "hard_boundary",
+        "free_text_choice"
+      ],
+      "contentNoteIds": [
+        "content-fiction-clear",
+        "content-moderate-tension"
+      ],
+      "accessConsiderationIds": [
+        "access-seated"
+      ],
+      "audienceIds": [
+        "audience-general-alpha"
+      ],
+      "localeIds": [
+        "locale-en"
+      ],
+      "storyDiscovery": {
+        "genreIds": [
+          "genre-western"
+        ],
+        "themeIds": [
+          "theme-agency"
+        ],
+        "storyShapeIds": [
+          "story-shape-one-night-event"
+        ],
+        "socialShapeIds": [
+          "social-shape-ensemble"
+        ],
+        "interactionModeIds": [
+          "interaction-speech",
+          "interaction-action",
+          "interaction-decision"
+        ],
+        "choicePresentationId": "choice-hybrid",
+        "emotionalIntensityId": "emotion-moderate",
+        "readingIntensityId": "reading-medium",
+        "sessionShapeId": "session-single-session"
+      },
+      "catalogueArtwork": {
+        "provenanceId": "art-red-dust-reckoning",
+        "altText": "A frontier water ledger rests beside a brass key as a red dust storm approaches a sunlit wooden town."
+      },
+      "review": {
+        "state": "reviewed",
+        "date": "2026-07-19"
+      },
+      "maintenanceOwner": "The Guide",
+      "successor": null,
+      "releaseStates": [
+        {
+          "version": "0.1.0",
+          "lifecycle": "published",
+          "successor": null
+        }
+      ],
+      "corrections": []
+    },
+    {
+      "elixirId": "the-guide.elixir.story",
+      "publisherId": "the-guide",
+      "slug": "story",
+      "recommendedVersion": "0.1.0",
+      "lifecycle": "retired",
+      "title": "The Story Elixir",
+      "summary": "A three-scene branching tale created in conversation with your agent.",
+      "playerPromise": "Step into a short shared fiction whose next scene responds to the choices you make.",
+      "editorialOrder": 3,
+      "featuredRationale": "For a complete choice-shaped fiction without real-world activity.",
+      "categoryIds": [
+        "activity-conversation"
+      ],
+      "tagIds": [
+        "tone-imaginative",
+        "replayable-variable"
+      ],
+      "toneIds": [
+        "tone-imaginative"
+      ],
+      "mechanicId": "mechanic-branching-story",
+      "interactionLabel": "Three choice-shaped story scenes",
+      "activityIds": [
+        "activity-conversation"
+      ],
+      "replayabilityId": "replayable-variable",
+      "durationBandId": "duration-under-15",
+      "energy": "low",
+      "movement": "none",
+      "requiredInputs": [
+        "time",
+        "hard_boundary",
+        "genre_boundary",
+        "free_text_choice"
+      ],
+      "contentNoteIds": [
+        "content-fiction-clear"
+      ],
+      "accessConsiderationIds": [
+        "access-seated"
+      ],
+      "audienceIds": [
+        "audience-general-alpha"
+      ],
+      "localeIds": [
+        "locale-en"
+      ],
+      "review": {
+        "state": "reviewed",
+        "date": "2026-07-18"
+      },
+      "maintenanceOwner": "The Guide",
+      "successor": null,
+      "releaseStates": [
+        {
+          "version": "0.1.0",
+          "lifecycle": "retired",
+          "successor": null
+        }
+      ],
+      "corrections": []
+    },
+    {
+      "elixirId": "the-guide.elixir.far-side-of-orpheus",
+      "publisherId": "the-guide",
+      "slug": "far-side-of-orpheus",
+      "recommendedVersion": "0.1.0",
+      "lifecycle": "published",
+      "title": "The Far Side of Orpheus",
+      "summary": "A damaged research ship receives its own distress call twelve minutes early.",
+      "playerPromise": "Hold a divided crew together and decide whether to close, preserve, or exploit a message from the ship's near future.",
+      "editorialOrder": 4,
+      "featuredRationale": "A distinctive hard science fiction time-loop drama feature with authored routes and earned endings.",
+      "categoryIds": [
+        "activity-conversation"
+      ],
+      "tagIds": [
+        "tone-imaginative",
+        "replayable-authored-high"
+      ],
+      "toneIds": [
+        "tone-imaginative"
+      ],
+      "mechanicId": "mechanic-branching-story",
+      "interactionLabel": "11 authored beats through speech, action, and decisions",
+      "activityIds": [
+        "activity-conversation"
+      ],
+      "replayabilityId": "replayable-authored-high",
+      "durationBandId": "duration-25-45",
+      "energy": "medium",
+      "movement": "none",
+      "requiredInputs": [
+        "time",
+        "hard_boundary",
+        "free_text_choice"
+      ],
+      "contentNoteIds": [
+        "content-fiction-clear",
+        "content-moderate-tension"
+      ],
+      "accessConsiderationIds": [
+        "access-seated"
+      ],
+      "audienceIds": [
+        "audience-general-alpha"
+      ],
+      "localeIds": [
+        "locale-en"
+      ],
+      "storyDiscovery": {
+        "genreIds": [
+          "genre-science-fiction"
+        ],
+        "themeIds": [
+          "theme-agency"
+        ],
+        "storyShapeIds": [
+          "story-shape-one-night-event"
+        ],
+        "socialShapeIds": [
+          "social-shape-ensemble"
+        ],
+        "interactionModeIds": [
+          "interaction-speech",
+          "interaction-action",
+          "interaction-decision"
+        ],
+        "choicePresentationId": "choice-hybrid",
+        "emotionalIntensityId": "emotion-moderate",
+        "readingIntensityId": "reading-medium",
+        "sessionShapeId": "session-single-session"
+      },
+      "catalogueArtwork": {
+        "provenanceId": "art-far-side-of-orpheus",
+        "altText": "A damaged research vessel arcs behind a black moon while a duplicate distress waveform glows ahead of it."
+      },
+      "review": {
+        "state": "reviewed",
+        "date": "2026-07-19"
+      },
+      "maintenanceOwner": "The Guide",
+      "successor": null,
+      "releaseStates": [
+        {
+          "version": "0.1.0",
+          "lifecycle": "published",
+          "successor": null
+        }
+      ],
+      "corrections": []
     },
     {
       "elixirId": "the-guide.elixir.regency-ball",
@@ -37,27 +560,66 @@
       "playerPromise": "Speak, act, and decide what survives when affection, obligation, autonomy, and public truth meet at the final waltz.",
       "editorialOrder": 4,
       "featuredRationale": "A dialogue-rich authored feature with three routes and four earned endings.",
-      "categoryIds": ["activity-conversation"],
-      "tagIds": ["tone-romantic", "tone-socially-tense", "replayable-authored-high"],
-      "toneIds": ["tone-romantic", "tone-socially-tense"],
+      "categoryIds": [
+        "activity-conversation"
+      ],
+      "tagIds": [
+        "tone-romantic",
+        "tone-socially-tense",
+        "replayable-authored-high"
+      ],
+      "toneIds": [
+        "tone-romantic",
+        "tone-socially-tense"
+      ],
       "mechanicId": "mechanic-branching-story",
       "interactionLabel": "Eight authored beats through speech, action, and decisions",
-      "activityIds": ["activity-conversation"],
+      "activityIds": [
+        "activity-conversation"
+      ],
       "replayabilityId": "replayable-authored-high",
       "durationBandId": "duration-25-45",
       "energy": "medium",
       "movement": "none",
-      "requiredInputs": ["time", "hard_boundary", "free_text_choice"],
-      "contentNoteIds": ["content-fiction-clear", "content-romance", "content-social-pressure"],
-      "accessConsiderationIds": ["access-seated"],
-      "audienceIds": ["audience-general-alpha"],
-      "localeIds": ["locale-en"],
+      "requiredInputs": [
+        "time",
+        "hard_boundary",
+        "free_text_choice"
+      ],
+      "contentNoteIds": [
+        "content-fiction-clear",
+        "content-romance",
+        "content-social-pressure"
+      ],
+      "accessConsiderationIds": [
+        "access-seated"
+      ],
+      "audienceIds": [
+        "audience-general-alpha"
+      ],
+      "localeIds": [
+        "locale-en"
+      ],
       "storyDiscovery": {
-        "genreIds": ["genre-romance", "genre-historical"],
-        "themeIds": ["theme-agency", "theme-public-truth"],
-        "storyShapeIds": ["story-shape-one-night-event"],
-        "socialShapeIds": ["social-shape-ensemble"],
-        "interactionModeIds": ["interaction-speech", "interaction-action", "interaction-decision"],
+        "genreIds": [
+          "genre-romance",
+          "genre-historical"
+        ],
+        "themeIds": [
+          "theme-agency",
+          "theme-public-truth"
+        ],
+        "storyShapeIds": [
+          "story-shape-one-night-event"
+        ],
+        "socialShapeIds": [
+          "social-shape-ensemble"
+        ],
+        "interactionModeIds": [
+          "interaction-speech",
+          "interaction-action",
+          "interaction-decision"
+        ],
         "choicePresentationId": "choice-hybrid",
         "emotionalIntensityId": "emotion-moderate",
         "readingIntensityId": "reading-medium",
@@ -67,10 +629,559 @@
         "provenanceId": "art-regency-ball-cover",
         "altText": "At a candlelit Regency ball, an adult guest faces two offered hands while a host and master of ceremonies watch beside the final-waltz programme."
       },
-      "review": { "state": "reviewed", "date": "2026-07-19" },
+      "review": {
+        "state": "reviewed",
+        "date": "2026-07-19"
+      },
       "maintenanceOwner": "The Guide",
       "successor": null,
-      "releaseStates": [{ "version": "0.1.0", "lifecycle": "published", "successor": null }],
+      "releaseStates": [
+        {
+          "version": "0.1.0",
+          "lifecycle": "published",
+          "successor": null
+        }
+      ],
+      "corrections": []
+    },
+    {
+      "elixirId": "the-guide.elixir.room-313",
+      "publisherId": "the-guide",
+      "slug": "room-313",
+      "recommendedVersion": "0.1.0",
+      "lifecycle": "published",
+      "title": "Room 313",
+      "summary": "An impossible hotel room appears whenever a guest tells a lie they need to believe.",
+      "playerPromise": "Guide three guests through an impossible hotel floor and decide which truth can safely leave Room 313.",
+      "editorialOrder": 5,
+      "featuredRationale": "A distinctive haunted-hotel horror feature with authored routes and earned endings.",
+      "categoryIds": [
+        "activity-conversation"
+      ],
+      "tagIds": [
+        "tone-imaginative",
+        "replayable-authored-high"
+      ],
+      "toneIds": [
+        "tone-imaginative"
+      ],
+      "mechanicId": "mechanic-branching-story",
+      "interactionLabel": "11 authored beats through speech, action, and decisions",
+      "activityIds": [
+        "activity-conversation"
+      ],
+      "replayabilityId": "replayable-authored-high",
+      "durationBandId": "duration-25-45",
+      "energy": "medium",
+      "movement": "none",
+      "requiredInputs": [
+        "time",
+        "hard_boundary",
+        "free_text_choice"
+      ],
+      "contentNoteIds": [
+        "content-fiction-clear",
+        "content-moderate-tension"
+      ],
+      "accessConsiderationIds": [
+        "access-seated"
+      ],
+      "audienceIds": [
+        "audience-general-alpha"
+      ],
+      "localeIds": [
+        "locale-en"
+      ],
+      "storyDiscovery": {
+        "genreIds": [
+          "genre-haunted-horror"
+        ],
+        "themeIds": [
+          "theme-agency"
+        ],
+        "storyShapeIds": [
+          "story-shape-one-night-event"
+        ],
+        "socialShapeIds": [
+          "social-shape-ensemble"
+        ],
+        "interactionModeIds": [
+          "interaction-speech",
+          "interaction-action",
+          "interaction-decision"
+        ],
+        "choicePresentationId": "choice-hybrid",
+        "emotionalIntensityId": "emotion-moderate",
+        "readingIntensityId": "reading-medium",
+        "sessionShapeId": "session-single-session"
+      },
+      "catalogueArtwork": {
+        "provenanceId": "art-room-313",
+        "altText": "A dim hotel corridor bends around a glowing impossible door numbered only by three brass shapes, with a distant human silhouette at the far end."
+      },
+      "review": {
+        "state": "reviewed",
+        "date": "2026-07-19"
+      },
+      "maintenanceOwner": "The Guide",
+      "successor": null,
+      "releaseStates": [
+        {
+          "version": "0.1.0",
+          "lifecycle": "published",
+          "successor": null
+        }
+      ],
+      "corrections": []
+    },
+    {
+      "elixirId": "the-guide.elixir.clockwork-masquerade",
+      "publisherId": "the-guide",
+      "slug": "clockwork-masquerade",
+      "recommendedVersion": "0.1.0",
+      "lifecycle": "published",
+      "title": "The Clockwork Masquerade",
+      "summary": "Steal the proof beneath a mechanical city's grandest masked exhibition.",
+      "playerPromise": "Recruit a specialist crew, breach the civic engine, and decide what to do with proof that the city's miracle is a fraud.",
+      "editorialOrder": 6,
+      "featuredRationale": "A distinctive steampunk heist feature with authored routes and earned endings.",
+      "categoryIds": [
+        "activity-conversation"
+      ],
+      "tagIds": [
+        "tone-imaginative",
+        "replayable-authored-high"
+      ],
+      "toneIds": [
+        "tone-imaginative"
+      ],
+      "mechanicId": "mechanic-branching-story",
+      "interactionLabel": "12 authored beats through speech, action, and decisions",
+      "activityIds": [
+        "activity-conversation"
+      ],
+      "replayabilityId": "replayable-authored-high",
+      "durationBandId": "duration-25-45",
+      "energy": "medium",
+      "movement": "none",
+      "requiredInputs": [
+        "time",
+        "hard_boundary",
+        "free_text_choice"
+      ],
+      "contentNoteIds": [
+        "content-fiction-clear",
+        "content-moderate-tension"
+      ],
+      "accessConsiderationIds": [
+        "access-seated"
+      ],
+      "audienceIds": [
+        "audience-general-alpha"
+      ],
+      "localeIds": [
+        "locale-en"
+      ],
+      "storyDiscovery": {
+        "genreIds": [
+          "genre-heist"
+        ],
+        "themeIds": [
+          "theme-agency"
+        ],
+        "storyShapeIds": [
+          "story-shape-one-night-event"
+        ],
+        "socialShapeIds": [
+          "social-shape-ensemble"
+        ],
+        "interactionModeIds": [
+          "interaction-speech",
+          "interaction-action",
+          "interaction-decision"
+        ],
+        "choicePresentationId": "choice-hybrid",
+        "emotionalIntensityId": "emotion-moderate",
+        "readingIntensityId": "reading-medium",
+        "sessionShapeId": "session-single-session"
+      },
+      "catalogueArtwork": {
+        "provenanceId": "art-clockwork-masquerade",
+        "altText": "Masked figures cross a brass exhibition hall beneath a vast clockwork engine with one glowing evidence cylinder exposed."
+      },
+      "review": {
+        "state": "reviewed",
+        "date": "2026-07-19"
+      },
+      "maintenanceOwner": "The Guide",
+      "successor": null,
+      "releaseStates": [
+        {
+          "version": "0.1.0",
+          "lifecycle": "published",
+          "successor": null
+        }
+      ],
+      "corrections": []
+    },
+    {
+      "elixirId": "the-guide.elixir.dragons-last-contract",
+      "publisherId": "the-guide",
+      "slug": "dragons-last-contract",
+      "recommendedVersion": "0.1.0",
+      "lifecycle": "published",
+      "title": "The Dragon's Last Contract",
+      "summary": "Every spoken promise has a magical cost at the mountain's final treaty table.",
+      "playerPromise": "Rewrite the last treaty between a dragon and a mountain city before an incomplete legend becomes permanent law.",
+      "editorialOrder": 7,
+      "featuredRationale": "A distinctive high fantasy negotiation feature with authored routes and earned endings.",
+      "categoryIds": [
+        "activity-conversation"
+      ],
+      "tagIds": [
+        "tone-imaginative",
+        "replayable-authored-high"
+      ],
+      "toneIds": [
+        "tone-imaginative"
+      ],
+      "mechanicId": "mechanic-branching-story",
+      "interactionLabel": "12 authored beats through speech, action, and decisions",
+      "activityIds": [
+        "activity-conversation"
+      ],
+      "replayabilityId": "replayable-authored-high",
+      "durationBandId": "duration-25-45",
+      "energy": "medium",
+      "movement": "none",
+      "requiredInputs": [
+        "time",
+        "hard_boundary",
+        "free_text_choice"
+      ],
+      "contentNoteIds": [
+        "content-fiction-clear",
+        "content-moderate-tension"
+      ],
+      "accessConsiderationIds": [
+        "access-seated"
+      ],
+      "audienceIds": [
+        "audience-general-alpha"
+      ],
+      "localeIds": [
+        "locale-en"
+      ],
+      "storyDiscovery": {
+        "genreIds": [
+          "genre-fantasy"
+        ],
+        "themeIds": [
+          "theme-agency"
+        ],
+        "storyShapeIds": [
+          "story-shape-one-night-event"
+        ],
+        "socialShapeIds": [
+          "social-shape-ensemble"
+        ],
+        "interactionModeIds": [
+          "interaction-speech",
+          "interaction-action",
+          "interaction-decision"
+        ],
+        "choicePresentationId": "choice-hybrid",
+        "emotionalIntensityId": "emotion-moderate",
+        "readingIntensityId": "reading-medium",
+        "sessionShapeId": "session-single-session"
+      },
+      "catalogueArtwork": {
+        "provenanceId": "art-dragons-last-contract",
+        "altText": "An ageing dragon and a mountain delegation face a glowing contract across a stone treaty table."
+      },
+      "review": {
+        "state": "reviewed",
+        "date": "2026-07-19"
+      },
+      "maintenanceOwner": "The Guide",
+      "successor": null,
+      "releaseStates": [
+        {
+          "version": "0.1.0",
+          "lifecycle": "published",
+          "successor": null
+        }
+      ],
+      "corrections": []
+    },
+    {
+      "elixirId": "the-guide.elixir.murder-at-moonlight-express",
+      "publisherId": "the-guide",
+      "slug": "murder-at-moonlight-express",
+      "recommendedVersion": "0.1.0",
+      "lifecycle": "published",
+      "title": "Murder at the Moonlight Express",
+      "summary": "A locked compartment, a vanished illusionist, and a train stopped in snow.",
+      "playerPromise": "Follow fair clues through a snowbound luxury train, solve an impossible death, and decide how the truth reaches daylight.",
+      "editorialOrder": 8,
+      "featuredRationale": "A distinctive golden-age locked-room mystery feature with authored routes and earned endings.",
+      "categoryIds": [
+        "activity-conversation"
+      ],
+      "tagIds": [
+        "tone-imaginative",
+        "replayable-authored-high"
+      ],
+      "toneIds": [
+        "tone-imaginative"
+      ],
+      "mechanicId": "mechanic-branching-story",
+      "interactionLabel": "12 authored beats through speech, action, and decisions",
+      "activityIds": [
+        "activity-conversation"
+      ],
+      "replayabilityId": "replayable-authored-high",
+      "durationBandId": "duration-25-45",
+      "energy": "medium",
+      "movement": "none",
+      "requiredInputs": [
+        "time",
+        "hard_boundary",
+        "free_text_choice"
+      ],
+      "contentNoteIds": [
+        "content-fiction-clear",
+        "content-moderate-tension"
+      ],
+      "accessConsiderationIds": [
+        "access-seated"
+      ],
+      "audienceIds": [
+        "audience-general-alpha"
+      ],
+      "localeIds": [
+        "locale-en"
+      ],
+      "storyDiscovery": {
+        "genreIds": [
+          "genre-mystery"
+        ],
+        "themeIds": [
+          "theme-agency"
+        ],
+        "storyShapeIds": [
+          "story-shape-one-night-event"
+        ],
+        "socialShapeIds": [
+          "social-shape-ensemble"
+        ],
+        "interactionModeIds": [
+          "interaction-speech",
+          "interaction-action",
+          "interaction-decision"
+        ],
+        "choicePresentationId": "choice-hybrid",
+        "emotionalIntensityId": "emotion-moderate",
+        "readingIntensityId": "reading-medium",
+        "sessionShapeId": "session-single-session"
+      },
+      "catalogueArtwork": {
+        "provenanceId": "art-murder-at-moonlight-express",
+        "altText": "A moonlit luxury train stands in deep snow beside an illuminated locked compartment and a trail of precise clues."
+      },
+      "review": {
+        "state": "reviewed",
+        "date": "2026-07-19"
+      },
+      "maintenanceOwner": "The Guide",
+      "successor": null,
+      "releaseStates": [
+        {
+          "version": "0.1.0",
+          "lifecycle": "published",
+          "successor": null
+        }
+      ],
+      "corrections": []
+    },
+    {
+      "elixirId": "the-guide.elixir.neon-saints",
+      "publisherId": "the-guide",
+      "slug": "neon-saints",
+      "recommendedVersion": "0.1.0",
+      "lifecycle": "published",
+      "title": "Neon Saints",
+      "summary": "Deliver one disputed memory across a rain-soaked city before dawn.",
+      "playerPromise": "Cross a neon city with an encrypted recollection and decide who, if anyone, can own another person's past.",
+      "editorialOrder": 9,
+      "featuredRationale": "A distinctive cyberpunk noir feature with authored routes and earned endings.",
+      "categoryIds": [
+        "activity-conversation"
+      ],
+      "tagIds": [
+        "tone-imaginative",
+        "replayable-authored-high"
+      ],
+      "toneIds": [
+        "tone-imaginative"
+      ],
+      "mechanicId": "mechanic-branching-story",
+      "interactionLabel": "12 authored beats through speech, action, and decisions",
+      "activityIds": [
+        "activity-conversation"
+      ],
+      "replayabilityId": "replayable-authored-high",
+      "durationBandId": "duration-25-45",
+      "energy": "medium",
+      "movement": "none",
+      "requiredInputs": [
+        "time",
+        "hard_boundary",
+        "free_text_choice"
+      ],
+      "contentNoteIds": [
+        "content-fiction-clear",
+        "content-moderate-tension"
+      ],
+      "accessConsiderationIds": [
+        "access-seated"
+      ],
+      "audienceIds": [
+        "audience-general-alpha"
+      ],
+      "localeIds": [
+        "locale-en"
+      ],
+      "storyDiscovery": {
+        "genreIds": [
+          "genre-cyberpunk"
+        ],
+        "themeIds": [
+          "theme-agency"
+        ],
+        "storyShapeIds": [
+          "story-shape-one-night-event"
+        ],
+        "socialShapeIds": [
+          "social-shape-ensemble"
+        ],
+        "interactionModeIds": [
+          "interaction-speech",
+          "interaction-action",
+          "interaction-decision"
+        ],
+        "choicePresentationId": "choice-hybrid",
+        "emotionalIntensityId": "emotion-moderate",
+        "readingIntensityId": "reading-medium",
+        "sessionShapeId": "session-single-session"
+      },
+      "catalogueArtwork": {
+        "provenanceId": "art-neon-saints",
+        "altText": "A lone memory courier carries a glowing sealed capsule through a rain-soaked neon street divided into three routes."
+      },
+      "review": {
+        "state": "reviewed",
+        "date": "2026-07-19"
+      },
+      "maintenanceOwner": "The Guide",
+      "successor": null,
+      "releaseStates": [
+        {
+          "version": "0.1.0",
+          "lifecycle": "published",
+          "successor": null
+        }
+      ],
+      "corrections": []
+    },
+    {
+      "elixirId": "the-guide.elixir.bone-orchard",
+      "publisherId": "the-guide",
+      "slug": "bone-orchard",
+      "recommendedVersion": "0.1.0",
+      "lifecycle": "published",
+      "title": "The Bone Orchard",
+      "summary": "One memorial tree has grown the name of someone still alive.",
+      "playerPromise": "Keep an ancient village boundary, uncover why a living name appeared, and decide whether its harvest bargain should survive.",
+      "editorialOrder": 10,
+      "featuredRationale": "A distinctive folk horror feature with authored routes and earned endings.",
+      "categoryIds": [
+        "activity-conversation"
+      ],
+      "tagIds": [
+        "tone-imaginative",
+        "replayable-authored-high"
+      ],
+      "toneIds": [
+        "tone-imaginative"
+      ],
+      "mechanicId": "mechanic-branching-story",
+      "interactionLabel": "12 authored beats through speech, action, and decisions",
+      "activityIds": [
+        "activity-conversation"
+      ],
+      "replayabilityId": "replayable-authored-high",
+      "durationBandId": "duration-25-45",
+      "energy": "medium",
+      "movement": "none",
+      "requiredInputs": [
+        "time",
+        "hard_boundary",
+        "free_text_choice"
+      ],
+      "contentNoteIds": [
+        "content-fiction-clear",
+        "content-moderate-tension"
+      ],
+      "accessConsiderationIds": [
+        "access-seated"
+      ],
+      "audienceIds": [
+        "audience-general-alpha"
+      ],
+      "localeIds": [
+        "locale-en"
+      ],
+      "storyDiscovery": {
+        "genreIds": [
+          "genre-folk-horror"
+        ],
+        "themeIds": [
+          "theme-agency"
+        ],
+        "storyShapeIds": [
+          "story-shape-one-night-event"
+        ],
+        "socialShapeIds": [
+          "social-shape-ensemble"
+        ],
+        "interactionModeIds": [
+          "interaction-speech",
+          "interaction-action",
+          "interaction-decision"
+        ],
+        "choicePresentationId": "choice-hybrid",
+        "emotionalIntensityId": "emotion-moderate",
+        "readingIntensityId": "reading-medium",
+        "sessionShapeId": "session-single-session"
+      },
+      "catalogueArtwork": {
+        "provenanceId": "art-bone-orchard",
+        "altText": "A moonlit memorial orchard of pale carved trees surrounds one tree bearing a fresh blank name plaque, without gore or bones."
+      },
+      "review": {
+        "state": "reviewed",
+        "date": "2026-07-19"
+      },
+      "maintenanceOwner": "The Guide",
+      "successor": null,
+      "releaseStates": [
+        {
+          "version": "0.1.0",
+          "lifecycle": "published",
+          "successor": null
+        }
+      ],
       "corrections": []
     }
   ]

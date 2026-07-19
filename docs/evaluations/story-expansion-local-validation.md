@@ -35,7 +35,7 @@ OpenClaw name in player-facing content.
 
 - `npm test`: passed 18 files and 124 tests.
 - The corrected full validation passed lint, strict typecheck, 18 Vitest files
-  with 124 tests, a deterministic 44-file/11,634,107-byte build and audit, and
+  with 124 tests, a deterministic 131-file/40,166,659-byte build and audit, and
   all 12 mobile Chromium browser journeys. Browser output had to be regenerated
   in fresh ignored directories because earlier sandbox-owned result files were
   read-only; the fresh run passed.

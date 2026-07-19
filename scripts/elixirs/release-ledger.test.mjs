@@ -20,12 +20,12 @@ describe("protected-base release-ledger audit", () => {
       baseRevision: approvedBase,
       bootstrapped: false,
       retained: 3,
-      appended: 1,
+      appended: 11,
     });
     const changed = candidate();
     changed.releases[0].publishedAt = "2026-07-19";
     expect(() => auditReleaseLedgerAgainstGit({ baseRevision: approvedBase, bootstrapLedgerSha256: approvedBootstrapLedgerSha256, approvedWithdrawalsSha256, candidateDocument: changed, root })).toThrow(/cannot be modified/);
-    expect(auditReleaseLedgerAgainstGit({ baseRevision: approvedBase, approvedWithdrawalsSha256, candidateDocument: candidate(), root })).toMatchObject({ retained: 3, appended: 1 });
+    expect(auditReleaseLedgerAgainstGit({ baseRevision: approvedBase, approvedWithdrawalsSha256, candidateDocument: candidate(), root })).toMatchObject({ retained: 3, appended: 11 });
     const falseSourceRevision = candidate();
     falseSourceRevision.releases.at(-1).sourceRevision = approvedBase;
     expect(() => auditReleaseLedgerAgainstGit({ baseRevision: approvedBase, approvedWithdrawalsSha256, candidateDocument: falseSourceRevision, root })).toThrow(/sourceRevision/);

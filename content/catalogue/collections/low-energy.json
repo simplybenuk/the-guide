@@ -4,7 +4,9 @@
   "title": "Low-energy play",
   "summary": "Short conversation games designed for a low-energy moment.",
   "curator": "The Guide",
-  "elixirIds": ["the-guide.elixir.signal", "the-guide.elixir.story", "the-guide.elixir.mystery"],
+  "elixirIds": [
+    "the-guide.elixir.last-light"
+  ],
   "lifecycle": "published",
   "publishedAt": "2026-07-18",
   "updatedAt": "2026-07-18"

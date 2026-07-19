@@ -24,7 +24,7 @@ const pngDimensions = (buffer) => {
 describe("Elixir cartridge artwork", () => {
   it("ships a complete unique 3:2 PNG for every cartridge", () => {
     expect(manifest.schemaVersion).toBe(2);
-    expect(manifest.assets).toHaveLength(5);
+    expect(manifest.assets).toHaveLength(15);
 
     const hashes = manifest.assets.map((asset) => {
       const image = readFileSync(resolve(root, "site/elixirs", asset.path));
@@ -36,7 +36,7 @@ describe("Elixir cartridge artwork", () => {
       return hash;
     });
 
-    expect(new Set(hashes)).toHaveLength(5);
+    expect(new Set(hashes)).toHaveLength(15);
   });
 
   it("matches cartridge metadata to accessible provenance records", () => {

@@ -4,7 +4,11 @@
   "title": "Start here",
   "summary": "Four distinct ways to discover how an Elixir works.",
   "curator": "The Guide",
-  "elixirIds": ["the-guide.elixir.signal", "the-guide.elixir.mystery", "the-guide.elixir.story", "the-guide.elixir.regency-ball"],
+  "elixirIds": [
+    "the-guide.elixir.last-light",
+    "the-guide.elixir.regency-ball",
+    "the-guide.elixir.claws"
+  ],
   "lifecycle": "published",
   "publishedAt": "2026-07-18",
   "updatedAt": "2026-07-19"

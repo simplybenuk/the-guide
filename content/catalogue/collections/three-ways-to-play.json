@@ -4,7 +4,11 @@
   "title": "Three ways to play",
   "summary": "Compare grounded noticing, collaborative clues, and branching fiction.",
   "curator": "The Guide",
-  "elixirIds": ["the-guide.elixir.signal", "the-guide.elixir.mystery", "the-guide.elixir.regency-ball"],
+  "elixirIds": [
+    "the-guide.elixir.claws",
+    "the-guide.elixir.far-side-of-orpheus",
+    "the-guide.elixir.regency-ball"
+  ],
   "lifecycle": "published",
   "publishedAt": "2026-07-18",
   "updatedAt": "2026-07-19"

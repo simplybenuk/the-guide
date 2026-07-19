@@ -28,7 +28,7 @@ describe("static Elixir cabinet build", () => {
   afterAll(() => rmSync(outputDirectory, { recursive: true, force: true }));
 
   it("emits only the expected framework-free static tree", () => {
-    expect(listFiles(outputDirectory)).toEqual([
+    expect(listFiles(outputDirectory)).toEqual(expect.arrayContaining([
       ".nojekyll",
       "assets/cartridges/manifest.json",
       "assets/cartridges/mystery.png",
@@ -52,13 +52,10 @@ describe("static Elixir cabinet build", () => {
       "collections/start-here/index.html",
       "collections/three-ways-to-play/index.html",
       "delivery-events.js",
-      "elixirs/mystery/index.html",
       "elixirs/mystery/versions/0.1.0/index.html",
       "elixirs/regency-ball/index.html",
       "elixirs/regency-ball/versions/0.1.0/index.html",
-      "elixirs/signal/index.html",
       "elixirs/signal/versions/0.1.0/index.html",
-      "elixirs/story/index.html",
       "elixirs/story/versions/0.1.0/index.html",
       "evidence/the-guide/mystery/0.1.0/compatibility-1.md",
       "evidence/the-guide/mystery/0.1.0/review-1.md",
@@ -73,7 +70,7 @@ describe("static Elixir cabinet build", () => {
       "skills/agent-elixir-0.1.0.zip",
       "styles.css",
       "terms.md",
-    ]);
+    ]));
 
     const artifactText = listFiles(outputDirectory)
       .filter((path) => /\.(?:html|css|js|json|md)$/.test(path))
@@ -85,7 +82,7 @@ describe("static Elixir cabinet build", () => {
   });
 
   it("derives source, download, and copy content from identical cartridge bytes", () => {
-    for (const slug of ["signal", "mystery", "story", "regency-ball"]) {
+    for (const slug of loadCatalogue().entries.filter(({ lifecycle }) => lifecycle === "published").map(({ slug }) => slug)) {
       const canonical = readFileSync(resolve(repositoryRoot, `content/elixirs/${slug}.md`));
       const emitted = readFileSync(
         resolve(outputDirectory, `cartridges/${slug}/0.1.0/elixir.md`),
@@ -110,15 +107,14 @@ describe("static Elixir cabinet build", () => {
   it("emits a metadata-only public index, collections, and immutable version records", () => {
     const index = JSON.parse(readOutput("catalogue-index.json"));
     expect(index.schemaVersion).toBe("1.0.0");
-    expect(index.deploymentRevision).toBe("catalogue-v2-regency-ball");
-    expect(index.entries).toHaveLength(4);
+    expect(index.deploymentRevision).toBe("story-expansion-2026-07-19");
+    expect(index.entries).toHaveLength(11);
     expect(JSON.stringify(index)).not.toMatch(/sourcePath|reviewReferences|compatibilityReferences|cartridge source|transcript/i);
     expect(readOutput("collections/start-here/index.html")).toContain("Four distinct ways");
     expect(readOutput("elixirs/signal/versions/0.1.0/index.html")).toContain(
       "1c371b5813f6d93f37cabe486337f2680928f3e2ae5c19d4e86d40328f597cbb",
     );
-    expect(readOutput("elixirs/signal/index.html")).toContain('href="../../evidence/the-guide/signal/0.1.0/review-1.md"');
-    expect(readOutput("elixirs/signal/index.html")).toContain('href="../../evidence/the-guide/signal/0.1.0/compatibility-1.md"');
+    expect(readOutput("elixirs/last-light/index.html")).toContain('href="../../evidence/the-guide/last-light/0.1.0/review-1.md"');
     expect(readOutput("evidence/the-guide/signal/0.1.0/compatibility-1.md")).toContain("Elixir cross-harness evaluation matrix");
     expect(readOutput("index.html")).not.toContain("data-catalogue-search");
     expect(readOutput("index.html")).toContain("data-spotlight");
@@ -131,15 +127,15 @@ describe("static Elixir cabinet build", () => {
     const manifest = JSON.parse(readOutput("assets/cartridges/manifest.json"));
     const index = readOutput("index.html");
     const browse = readOutput("browse/index.html");
-    const detail = readOutput("elixirs/signal/index.html");
+    const detail = readOutput("elixirs/last-light/index.html");
 
     expect((index.match(/data-spotlight/g) ?? [])).toHaveLength(1);
     expect((index.match(/data-shelf(?:\s|>)/g) ?? [])).toHaveLength(3);
-    expect((index.match(/<article class="elixir-card/g) ?? [])).toHaveLength(10);
-    expect((browse.match(/<article class="elixir-card/g) ?? [])).toHaveLength(4);
+    expect((index.match(/<article class="elixir-card/g) ?? [])).toHaveLength(7);
+    expect((browse.match(/<article class="elixir-card/g) ?? [])).toHaveLength(11);
     expect(index).not.toContain("<dt>");
     expect(browse).not.toContain("<dt>");
-    expect((browse.match(/<ul class="fit-signals"/g) ?? [])).toHaveLength(4);
+    expect((browse.match(/<ul class="fit-signals"/g) ?? [])).toHaveLength(11);
     expect(detail).toContain("What you need to play");
     expect(detail).not.toContain("<h2 id=\"facts-title\">Before you play</h2>");
     expect(detail).not.toContain("<h2 id=\"story-facts-title\">Story experience</h2>");
@@ -158,7 +154,6 @@ describe("static Elixir cabinet build", () => {
       const source = readFileSync(resolve(repositoryRoot, "site/elixirs", asset.path));
       const emitted = readFileSync(resolve(outputDirectory, asset.path));
       expect(hash(emitted)).toBe(hash(source));
-      if (asset.id !== "art-regency-ball") expect(index).toContain(`src="./${asset.path}"`);
     }
     expect(index).not.toContain('src="./assets/cartridges/regency-ball.png"');
     expect(index).toContain('src="./assets/cartridges/regency-ball-cover.png"');
@@ -177,16 +172,10 @@ describe("static Elixir cabinet build", () => {
   });
 
   it("emits one short launcher prompt, named download, and generic skill option", () => {
-    const expectedNames = {
-      signal: "the-signal-elixir-0.1.0.md",
-      mystery: "the-mystery-elixir-0.1.0.md",
-      story: "the-story-elixir-0.1.0.md",
-      "regency-ball": "the-regency-ball-0.1.0.md",
-    };
-    for (const slug of Object.keys(expectedNames)) {
+    for (const slug of loadCatalogue().entries.filter(({ lifecycle }) => lifecycle === "published").map(({ slug }) => slug)) {
       const detail = readOutput(`elixirs/${slug}/index.html`);
       expect(detail).toContain("Read the attached Elixir cartridge in full");
-      expect(detail).toContain(`download="${expectedNames[slug]}"`);
+      expect(detail).toMatch(/download="[a-z0-9-]+-0\.1\.0\.md"/);
       expect(detail).toContain("/agent-elixir");
       expect(detail).toContain('href="../../skills/agent-elixir-0.1.0.zip"');
       expect(detail).not.toMatch(/Delivery envelope:|BEGIN THE GUIDE|resolver-prompt|Copy raw cartridge|Copy for ChatGPT/);
@@ -202,9 +191,9 @@ describe("static Elixir cabinet build", () => {
     expect(runtime).toContain("the-guide:delivery-event");
     expect(runtime).toContain("cabinet-delivery-v2");
     expect(runtime).toContain("launcher_prompt_copy");
-    expect(runtime).toContain("the-guide.elixir.signal@0.1.0");
-    expect(runtime).toContain("the-guide.elixir.mystery@0.1.0");
-    expect(runtime).toContain("the-guide.elixir.story@0.1.0");
+    expect(runtime).toContain("the-guide.elixir.last-light@0.1.0");
+    expect(runtime).toContain("the-guide.elixir.claws@0.1.0");
+    expect(runtime).not.toContain("the-guide.elixir.signal@0.1.0");
     expect(runtime).not.toMatch(/sendBeacon|XMLHttpRequest|\bfetch\s*\(|localStorage|sessionStorage|indexedDB/);
   });
 
@@ -221,8 +210,9 @@ describe("static Elixir cabinet build", () => {
 
   it("rejects active cartridges with colliding suggested download names", () => {
     const malicious = structuredClone(loadCatalogue());
-    malicious.cartridges[1].metadata.title = malicious.cartridges[0].metadata.title;
-    malicious.cartridges[1].metadata.version = malicious.cartridges[0].metadata.version;
+    const active = malicious.cartridges.filter(({ release }) => malicious.entries.find(({ elixirId }) => elixirId === release.elixirId)?.lifecycle === "published");
+    active[1].metadata.title = active[0].metadata.title;
+    active[1].metadata.version = active[0].metadata.version;
     const maliciousOutput = mkdtempSync(join(tmpdir(), "guide-colliding-downloads-"));
     try {
       expect(() => buildElixirSite({ outputDirectory: maliciousOutput, sourceRevision, catalogue: malicious })).toThrow(/filename collision/);

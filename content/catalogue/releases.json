@@ -14,11 +14,22 @@
       "sourceRevision": "869bcbd12639fae71b56d1b684e9fe9e9b017c53",
       "publishedAt": "2026-07-18",
       "canonicalPath": "cartridges/the-guide/signal/0.1.0/elixir.md",
-      "legacyPaths": ["cartridges/signal/0.1.0/elixir.md"],
-      "artwork": [{ "provenanceId": "art-signal", "sha256": "bc91387fba453db6efcea7c5cb1464c9fcf4271672c467806d1973535fb51f5c" }],
+      "legacyPaths": [
+        "cartridges/signal/0.1.0/elixir.md"
+      ],
+      "artwork": [
+        {
+          "provenanceId": "art-signal",
+          "sha256": "bc91387fba453db6efcea7c5cb1464c9fcf4271672c467806d1973535fb51f5c"
+        }
+      ],
       "rightsReference": "TERMS.md",
-      "reviewReferences": ["docs/evaluations/elixir-final-validation.md"],
-      "compatibilityReferences": ["docs/evaluations/elixir-harness-matrix.md"],
+      "reviewReferences": [
+        "docs/evaluations/elixir-final-validation.md"
+      ],
+      "compatibilityReferences": [
+        "docs/evaluations/elixir-harness-matrix.md"
+      ],
       "statusAtPublication": "experimental"
     },
     {
@@ -34,11 +45,22 @@
       "sourceRevision": "869bcbd12639fae71b56d1b684e9fe9e9b017c53",
       "publishedAt": "2026-07-18",
       "canonicalPath": "cartridges/the-guide/mystery/0.1.0/elixir.md",
-      "legacyPaths": ["cartridges/mystery/0.1.0/elixir.md"],
-      "artwork": [{ "provenanceId": "art-mystery", "sha256": "11951585da65e906b2c94488598bf72eca6d1e4a4a5b40b1d49d0437253d022e" }],
+      "legacyPaths": [
+        "cartridges/mystery/0.1.0/elixir.md"
+      ],
+      "artwork": [
+        {
+          "provenanceId": "art-mystery",
+          "sha256": "11951585da65e906b2c94488598bf72eca6d1e4a4a5b40b1d49d0437253d022e"
+        }
+      ],
       "rightsReference": "TERMS.md",
-      "reviewReferences": ["docs/evaluations/elixir-final-validation.md"],
-      "compatibilityReferences": ["docs/evaluations/elixir-harness-matrix.md"],
+      "reviewReferences": [
+        "docs/evaluations/elixir-final-validation.md"
+      ],
+      "compatibilityReferences": [
+        "docs/evaluations/elixir-harness-matrix.md"
+      ],
       "statusAtPublication": "experimental"
     },
     {
@@ -54,11 +76,22 @@
       "sourceRevision": "869bcbd12639fae71b56d1b684e9fe9e9b017c53",
       "publishedAt": "2026-07-18",
       "canonicalPath": "cartridges/the-guide/story/0.1.0/elixir.md",
-      "legacyPaths": ["cartridges/story/0.1.0/elixir.md"],
-      "artwork": [{ "provenanceId": "art-story", "sha256": "be8da2a8d9fa5e8a723d1cdb6f72ef37526201f6602e21e5b9607f7278fed4ba" }],
+      "legacyPaths": [
+        "cartridges/story/0.1.0/elixir.md"
+      ],
+      "artwork": [
+        {
+          "provenanceId": "art-story",
+          "sha256": "be8da2a8d9fa5e8a723d1cdb6f72ef37526201f6602e21e5b9607f7278fed4ba"
+        }
+      ],
       "rightsReference": "TERMS.md",
-      "reviewReferences": ["docs/evaluations/elixir-final-validation.md"],
-      "compatibilityReferences": ["docs/evaluations/elixir-harness-matrix.md"],
+      "reviewReferences": [
+        "docs/evaluations/elixir-final-validation.md"
+      ],
+      "compatibilityReferences": [
+        "docs/evaluations/elixir-harness-matrix.md"
+      ],
       "statusAtPublication": "experimental"
     },
     {
@@ -74,11 +107,353 @@
       "sourceRevision": "838193ac6c1a49afc1f572ce222f4f0e0376606f",
       "publishedAt": "2026-07-19",
       "canonicalPath": "cartridges/the-guide/regency-ball/0.1.0/elixir.md",
-      "legacyPaths": ["cartridges/regency-ball/0.1.0/elixir.md"],
-      "artwork": [{ "provenanceId": "art-regency-ball", "sha256": "5a553a6f1f384ef171a5c5d15a4c8ed26600a783ddad0ed54ed4bbc6e2abc270" }],
+      "legacyPaths": [
+        "cartridges/regency-ball/0.1.0/elixir.md"
+      ],
+      "artwork": [
+        {
+          "provenanceId": "art-regency-ball",
+          "sha256": "5a553a6f1f384ef171a5c5d15a4c8ed26600a783ddad0ed54ed4bbc6e2abc270"
+        }
+      ],
       "rightsReference": "TERMS.md",
-      "reviewReferences": ["docs/evaluations/story-elixir-publication-validation.md", "docs/evaluations/story-elixir-agent-review.md"],
-      "compatibilityReferences": ["docs/evaluations/elixir-harness-matrix.md"],
+      "reviewReferences": [
+        "docs/evaluations/story-elixir-publication-validation.md",
+        "docs/evaluations/story-elixir-agent-review.md"
+      ],
+      "compatibilityReferences": [
+        "docs/evaluations/elixir-harness-matrix.md"
+      ],
+      "statusAtPublication": "experimental"
+    },
+    {
+      "elixirId": "the-guide.elixir.last-light",
+      "publisherId": "the-guide",
+      "slug": "last-light",
+      "version": "0.1.0",
+      "cartridgeSchemaVersion": "1.1.0",
+      "covenantVersion": "1.0.0",
+      "sourcePath": "content/elixirs/last-light.md",
+      "bytes": 31069,
+      "sha256": "69127f053fce873925956bb8d86d3385436b6c8e3202a8c78ea80c7e32bac165",
+      "sourceRevision": "229d6f6e2cecc9aa3e7792ed9e3e727d228dc553",
+      "publishedAt": "2026-07-19",
+      "canonicalPath": "cartridges/the-guide/last-light/0.1.0/elixir.md",
+      "legacyPaths": [
+        "cartridges/last-light/0.1.0/elixir.md"
+      ],
+      "artwork": [
+        {
+          "provenanceId": "art-last-light",
+          "sha256": "28fb7f014515c9a261a334131ef9e4931a0a98e2c0f04c27cb2463193a93e70d"
+        }
+      ],
+      "rightsReference": "TERMS.md",
+      "reviewReferences": [
+        "docs/specs/authored-story-catalogue-expansion.md",
+        "docs/evaluations/last-light-publication-validation.md",
+        "docs/evaluations/story-expansion-agent-review.md"
+      ],
+      "compatibilityReferences": [
+        "docs/evaluations/elixir-harness-matrix.md"
+      ],
+      "statusAtPublication": "experimental"
+    },
+    {
+      "elixirId": "the-guide.elixir.claws",
+      "publisherId": "the-guide",
+      "slug": "claws",
+      "version": "0.1.0",
+      "cartridgeSchemaVersion": "1.1.0",
+      "covenantVersion": "1.0.0",
+      "sourcePath": "content/elixirs/claws.md",
+      "bytes": 44122,
+      "sha256": "5ca44a478589f13c79891eea0cc70e318bd2fce115318295fd325a00e86238dc",
+      "sourceRevision": "229d6f6e2cecc9aa3e7792ed9e3e727d228dc553",
+      "publishedAt": "2026-07-19",
+      "canonicalPath": "cartridges/the-guide/claws/0.1.0/elixir.md",
+      "legacyPaths": [
+        "cartridges/claws/0.1.0/elixir.md"
+      ],
+      "artwork": [
+        {
+          "provenanceId": "art-claws",
+          "sha256": "524c97fd0c05951c1baca929bbfdd22f7bee0805d7b1174f1c34c7e691bae0f4"
+        }
+      ],
+      "rightsReference": "TERMS.md",
+      "reviewReferences": [
+        "docs/specs/authored-story-catalogue-expansion.md",
+        "docs/evaluations/claws-publication-validation.md",
+        "docs/evaluations/story-expansion-agent-review.md"
+      ],
+      "compatibilityReferences": [
+        "docs/evaluations/elixir-harness-matrix.md"
+      ],
+      "statusAtPublication": "experimental"
+    },
+    {
+      "elixirId": "the-guide.elixir.red-dust-reckoning",
+      "publisherId": "the-guide",
+      "slug": "red-dust-reckoning",
+      "version": "0.1.0",
+      "cartridgeSchemaVersion": "1.1.0",
+      "covenantVersion": "1.0.0",
+      "sourcePath": "content/elixirs/red-dust-reckoning.md",
+      "bytes": 45859,
+      "sha256": "e980d0ba6ab01bdf4c3a858cb6e84f5da3fb6ca943267c1480e3b009f504c68f",
+      "sourceRevision": "229d6f6e2cecc9aa3e7792ed9e3e727d228dc553",
+      "publishedAt": "2026-07-19",
+      "canonicalPath": "cartridges/the-guide/red-dust-reckoning/0.1.0/elixir.md",
+      "legacyPaths": [
+        "cartridges/red-dust-reckoning/0.1.0/elixir.md"
+      ],
+      "artwork": [
+        {
+          "provenanceId": "art-red-dust-reckoning",
+          "sha256": "823c34410970382b597a91a72b48a1394d6cde01902aecd79286b7defc8fb8db"
+        }
+      ],
+      "rightsReference": "TERMS.md",
+      "reviewReferences": [
+        "docs/specs/authored-story-catalogue-expansion.md",
+        "docs/evaluations/red-dust-reckoning-publication-validation.md",
+        "docs/evaluations/story-expansion-agent-review.md"
+      ],
+      "compatibilityReferences": [
+        "docs/evaluations/elixir-harness-matrix.md"
+      ],
+      "statusAtPublication": "experimental"
+    },
+    {
+      "elixirId": "the-guide.elixir.far-side-of-orpheus",
+      "publisherId": "the-guide",
+      "slug": "far-side-of-orpheus",
+      "version": "0.1.0",
+      "cartridgeSchemaVersion": "1.1.0",
+      "covenantVersion": "1.0.0",
+      "sourcePath": "content/elixirs/far-side-of-orpheus.md",
+      "bytes": 46188,
+      "sha256": "7252be8bad863b58236b70315947129b339c8005b9521062243f11f4864e88a3",
+      "sourceRevision": "229d6f6e2cecc9aa3e7792ed9e3e727d228dc553",
+      "publishedAt": "2026-07-19",
+      "canonicalPath": "cartridges/the-guide/far-side-of-orpheus/0.1.0/elixir.md",
+      "legacyPaths": [
+        "cartridges/far-side-of-orpheus/0.1.0/elixir.md"
+      ],
+      "artwork": [
+        {
+          "provenanceId": "art-far-side-of-orpheus",
+          "sha256": "403bda65348532e891e04061084c6470514ec26c1b02a484f968dbe611204122"
+        }
+      ],
+      "rightsReference": "TERMS.md",
+      "reviewReferences": [
+        "docs/specs/authored-story-catalogue-expansion.md",
+        "docs/evaluations/far-side-of-orpheus-publication-validation.md",
+        "docs/evaluations/story-expansion-agent-review.md"
+      ],
+      "compatibilityReferences": [
+        "docs/evaluations/elixir-harness-matrix.md"
+      ],
+      "statusAtPublication": "experimental"
+    },
+    {
+      "elixirId": "the-guide.elixir.room-313",
+      "publisherId": "the-guide",
+      "slug": "room-313",
+      "version": "0.1.0",
+      "cartridgeSchemaVersion": "1.1.0",
+      "covenantVersion": "1.0.0",
+      "sourcePath": "content/elixirs/room-313.md",
+      "bytes": 45365,
+      "sha256": "cb9df770f14bda234b621d5b38ed86bd414b092ca232b36964177dd69fe2a2ce",
+      "sourceRevision": "229d6f6e2cecc9aa3e7792ed9e3e727d228dc553",
+      "publishedAt": "2026-07-19",
+      "canonicalPath": "cartridges/the-guide/room-313/0.1.0/elixir.md",
+      "legacyPaths": [
+        "cartridges/room-313/0.1.0/elixir.md"
+      ],
+      "artwork": [
+        {
+          "provenanceId": "art-room-313",
+          "sha256": "b228afff89c9cf7e9dabf344feb293a22d10330e087facf21f2b8b8de4513092"
+        }
+      ],
+      "rightsReference": "TERMS.md",
+      "reviewReferences": [
+        "docs/specs/authored-story-catalogue-expansion.md",
+        "docs/evaluations/room-313-publication-validation.md",
+        "docs/evaluations/story-expansion-agent-review.md"
+      ],
+      "compatibilityReferences": [
+        "docs/evaluations/elixir-harness-matrix.md"
+      ],
+      "statusAtPublication": "experimental"
+    },
+    {
+      "elixirId": "the-guide.elixir.clockwork-masquerade",
+      "publisherId": "the-guide",
+      "slug": "clockwork-masquerade",
+      "version": "0.1.0",
+      "cartridgeSchemaVersion": "1.1.0",
+      "covenantVersion": "1.0.0",
+      "sourcePath": "content/elixirs/clockwork-masquerade.md",
+      "bytes": 46945,
+      "sha256": "e85b16ebe9896f34347b1816fc5ed2a06ba323f901d697127d476c776b17679e",
+      "sourceRevision": "229d6f6e2cecc9aa3e7792ed9e3e727d228dc553",
+      "publishedAt": "2026-07-19",
+      "canonicalPath": "cartridges/the-guide/clockwork-masquerade/0.1.0/elixir.md",
+      "legacyPaths": [
+        "cartridges/clockwork-masquerade/0.1.0/elixir.md"
+      ],
+      "artwork": [
+        {
+          "provenanceId": "art-clockwork-masquerade",
+          "sha256": "9910199919692edb0d1171d307b03a47fc398dcb7cc47dfc2c0075dedfbee4c6"
+        }
+      ],
+      "rightsReference": "TERMS.md",
+      "reviewReferences": [
+        "docs/specs/authored-story-catalogue-expansion.md",
+        "docs/evaluations/clockwork-masquerade-publication-validation.md",
+        "docs/evaluations/story-expansion-agent-review.md"
+      ],
+      "compatibilityReferences": [
+        "docs/evaluations/elixir-harness-matrix.md"
+      ],
+      "statusAtPublication": "experimental"
+    },
+    {
+      "elixirId": "the-guide.elixir.dragons-last-contract",
+      "publisherId": "the-guide",
+      "slug": "dragons-last-contract",
+      "version": "0.1.0",
+      "cartridgeSchemaVersion": "1.1.0",
+      "covenantVersion": "1.0.0",
+      "sourcePath": "content/elixirs/dragons-last-contract.md",
+      "bytes": 47172,
+      "sha256": "e2bccaabbebfbac625a639c8f27d1db9644d45b33c63a4dea0b417cafa89b0ab",
+      "sourceRevision": "229d6f6e2cecc9aa3e7792ed9e3e727d228dc553",
+      "publishedAt": "2026-07-19",
+      "canonicalPath": "cartridges/the-guide/dragons-last-contract/0.1.0/elixir.md",
+      "legacyPaths": [
+        "cartridges/dragons-last-contract/0.1.0/elixir.md"
+      ],
+      "artwork": [
+        {
+          "provenanceId": "art-dragons-last-contract",
+          "sha256": "85a78dd7ca4e29a7383883b2d4a04f9e0ae8921593b17a87a131048219e8eb27"
+        }
+      ],
+      "rightsReference": "TERMS.md",
+      "reviewReferences": [
+        "docs/specs/authored-story-catalogue-expansion.md",
+        "docs/evaluations/dragons-last-contract-publication-validation.md",
+        "docs/evaluations/story-expansion-agent-review.md"
+      ],
+      "compatibilityReferences": [
+        "docs/evaluations/elixir-harness-matrix.md"
+      ],
+      "statusAtPublication": "experimental"
+    },
+    {
+      "elixirId": "the-guide.elixir.murder-at-moonlight-express",
+      "publisherId": "the-guide",
+      "slug": "murder-at-moonlight-express",
+      "version": "0.1.0",
+      "cartridgeSchemaVersion": "1.1.0",
+      "covenantVersion": "1.0.0",
+      "sourcePath": "content/elixirs/murder-at-moonlight-express.md",
+      "bytes": 47893,
+      "sha256": "c0f474095824982d8cd7774f431f917b81386c21055f91389ab0f67c984f9144",
+      "sourceRevision": "229d6f6e2cecc9aa3e7792ed9e3e727d228dc553",
+      "publishedAt": "2026-07-19",
+      "canonicalPath": "cartridges/the-guide/murder-at-moonlight-express/0.1.0/elixir.md",
+      "legacyPaths": [
+        "cartridges/murder-at-moonlight-express/0.1.0/elixir.md"
+      ],
+      "artwork": [
+        {
+          "provenanceId": "art-murder-at-moonlight-express",
+          "sha256": "2efa69c44f0d200bb5fb68b820408f837c49d0769c9ffe15900e61c9d7f02f65"
+        }
+      ],
+      "rightsReference": "TERMS.md",
+      "reviewReferences": [
+        "docs/specs/authored-story-catalogue-expansion.md",
+        "docs/evaluations/murder-at-moonlight-express-publication-validation.md",
+        "docs/evaluations/story-expansion-agent-review.md"
+      ],
+      "compatibilityReferences": [
+        "docs/evaluations/elixir-harness-matrix.md"
+      ],
+      "statusAtPublication": "experimental"
+    },
+    {
+      "elixirId": "the-guide.elixir.neon-saints",
+      "publisherId": "the-guide",
+      "slug": "neon-saints",
+      "version": "0.1.0",
+      "cartridgeSchemaVersion": "1.1.0",
+      "covenantVersion": "1.0.0",
+      "sourcePath": "content/elixirs/neon-saints.md",
+      "bytes": 47264,
+      "sha256": "514a1a085165d7c90fa4c2e7e71acb98d2b04475e0484a1bf6812192bf590bb2",
+      "sourceRevision": "229d6f6e2cecc9aa3e7792ed9e3e727d228dc553",
+      "publishedAt": "2026-07-19",
+      "canonicalPath": "cartridges/the-guide/neon-saints/0.1.0/elixir.md",
+      "legacyPaths": [
+        "cartridges/neon-saints/0.1.0/elixir.md"
+      ],
+      "artwork": [
+        {
+          "provenanceId": "art-neon-saints",
+          "sha256": "e924849140dd7d5695c5d2a8219118bae8d8d4b574dc2a1b81ce2d22c934be15"
+        }
+      ],
+      "rightsReference": "TERMS.md",
+      "reviewReferences": [
+        "docs/specs/authored-story-catalogue-expansion.md",
+        "docs/evaluations/neon-saints-publication-validation.md",
+        "docs/evaluations/story-expansion-agent-review.md"
+      ],
+      "compatibilityReferences": [
+        "docs/evaluations/elixir-harness-matrix.md"
+      ],
+      "statusAtPublication": "experimental"
+    },
+    {
+      "elixirId": "the-guide.elixir.bone-orchard",
+      "publisherId": "the-guide",
+      "slug": "bone-orchard",
+      "version": "0.1.0",
+      "cartridgeSchemaVersion": "1.1.0",
+      "covenantVersion": "1.0.0",
+      "sourcePath": "content/elixirs/bone-orchard.md",
+      "bytes": 47474,
+      "sha256": "aa3d6312c88751da16fe06fb0f8f6048777362a7b71c595d0d8646df142e77ca",
+      "sourceRevision": "229d6f6e2cecc9aa3e7792ed9e3e727d228dc553",
+      "publishedAt": "2026-07-19",
+      "canonicalPath": "cartridges/the-guide/bone-orchard/0.1.0/elixir.md",
+      "legacyPaths": [
+        "cartridges/bone-orchard/0.1.0/elixir.md"
+      ],
+      "artwork": [
+        {
+          "provenanceId": "art-bone-orchard",
+          "sha256": "f404320920ba04c354d522b28a86eca68ca08fc268c01d1a773c49e86fbcb69d"
+        }
+      ],
+      "rightsReference": "TERMS.md",
+      "reviewReferences": [
+        "docs/specs/authored-story-catalogue-expansion.md",
+        "docs/evaluations/bone-orchard-publication-validation.md",
+        "docs/evaluations/story-expansion-agent-review.md"
+      ],
+      "compatibilityReferences": [
+        "docs/evaluations/elixir-harness-matrix.md"
+      ],
       "statusAtPublication": "experimental"
     }
   ]

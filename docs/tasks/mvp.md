@@ -52,7 +52,7 @@ outside this authorization.
     schema-valid retirement, genre-specific score graphs and state, route- and
     crisis-aware endings, executable per-story cases, exact-turn pacing, and
     corrected crop/accessibility evidence.
-  - Local validation passed 124 tests, a deterministic 44-file/11,634,107-byte
+  - Local validation passed 124 tests, a deterministic 131-file/40,166,659-byte
     audited build, and all 12 browser journeys. A separate ephemeral Codex
     process completed the required independent `bwh-agent-review` and returned
     **READY FOR HUMAN TESTING** with no blocker or should-fix finding. No commit,

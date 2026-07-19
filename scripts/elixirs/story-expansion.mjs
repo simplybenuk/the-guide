@@ -5,7 +5,7 @@ import { resolve } from "node:path";
 import { z } from "zod";
 
 import { validateCartridgeDocument } from "./cartridge.mjs";
-import { taxonomyDocumentSchema, validateCatalogueRecords } from "./catalogue.mjs";
+import { loadCatalogue, taxonomyDocumentSchema, validateCatalogueRecords } from "./catalogue.mjs";
 import { parseStoryScore } from "./story-contract.mjs";
 import { STORY_EXPANSION } from "./story-expansion-data.mjs";
 import { storyCatalogueCandidateSchema, storyReleaseCandidateSchema } from "./story-release-candidate.mjs";
@@ -225,7 +225,11 @@ export function validateStoryExpansionTransition() {
       || transition.retireFromActiveDiscovery.some(({ nextLifecycle, successorRole }) => nextLifecycle !== "retired" || successorRole !== "the-guide.elixir.last-light")) {
     throw new Error("Candidate Story lifecycle transition differs from approved scope");
   }
-  if (catalogue.entries.length !== 4 || catalogue.entries.some(({ lifecycle }) => lifecycle !== "published") || retired.some((id) => !catalogue.entries.some(({ elixirId }) => elixirId === id))) {
+  const candidateOnly = catalogue.entries.length === 4 && catalogue.entries.every(({ lifecycle }) => lifecycle === "published");
+  const activated = catalogue.entries.length === 14
+    && retired.every((id) => catalogue.entries.find(({ elixirId }) => elixirId === id)?.lifecycle === "retired")
+    && expected.every((id) => catalogue.entries.find(({ elixirId }) => elixirId === id)?.lifecycle === "published");
+  if ((!candidateOnly && !activated) || retired.some((id) => !catalogue.entries.some(({ elixirId }) => elixirId === id))) {
     throw new Error("Production catalogue changed before transition authorization");
   }
   return transition;
@@ -237,6 +241,7 @@ export function buildStoryExpansionCandidateCatalogue() {
   const publishersDocument = readJson("content/catalogue/publishers.json");
   const releasesDocument = readJson("content/catalogue/releases.json");
   const catalogueDocument = readJson("content/catalogue/catalogue.json");
+  if (catalogueDocument.deploymentRevision === "story-expansion-2026-07-19") return loadCatalogue({ repositoryRoot: process.cwd() });
   const taxonomyDocument = readJson("content/catalogue/taxonomy.json");
   const withdrawalsDocument = readJson("content/catalogue/withdrawals.json");
   const artworkManifest = readJson("site/elixirs/assets/cartridges/manifest.json");
