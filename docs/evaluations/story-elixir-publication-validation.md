@@ -42,7 +42,7 @@ records and appends exactly one; it retains zero withdrawals and appends zero.
 - `npm run validate`: passed.
 - ESLint and strict TypeScript: passed.
 - Vitest: 15 files, 98 tests passed.
-- Static artifact: 42 allowlisted files, 9,219,996 bytes; audit passed.
+- Static artifact: 42 allowlisted files, 9,220,675 bytes; audit passed.
 - Playwright: all 13 mobile Chromium journeys passed.
 - `git diff --check`: passed.
 - Independent production-registration review: repeated after remediation.
@@ -52,14 +52,14 @@ records and appends exactly one; it retains zero withdrawals and appends zero.
 - Merged by GitHub PR `#8` at main revision
   `0d04de7231efa687a6f82b6b904a11b639a45bf0`.
 - Pages workflow run `29677321017`: build and deployment succeeded.
-- Cabinet verified at `https://simplybenuk.github.io/the-guide/` with four
+- Cabinet verified at host `simplybenuk.github.io`, path `/the-guide/`, with four
   Elixirs and The Regency Ball present.
 - Experience page verified at
-  `https://simplybenuk.github.io/the-guide/elixirs/regency-ball/` with the
+  `/the-guide/elixirs/regency-ball/` on the same host with the
   30–40 minute promise and `experimental`, `untested compatibility`, and
   `published` badges.
 - Canonical cartridge verified at
-  `https://simplybenuk.github.io/the-guide/cartridges/the-guide/regency-ball/0.1.0/elixir.md`.
+  `/the-guide/cartridges/the-guide/regency-ball/0.1.0/elixir.md` on the same host.
   Its served SHA-256 is exactly
   `7ca92ecd00c04b6300f1ebc32656c208cc79f0e508bbd02732aaa48c6abf049c`.
 
