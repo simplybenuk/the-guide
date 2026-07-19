@@ -22,9 +22,9 @@ active tree under the approved repository-pivot specification.
 The owner explicitly authorized commit, push, and an experimental GitHub Pages
 release of The Regency Ball on 2026-07-19 so live harness evidence can be
 collected. Production registration is additive: the original Story remains
-published and unsuperseded. Deployment and live URL verification are in
-progress. E07 remains the gate before compatibility promotion or a formal
-`READY FOR HUMAN TESTING` verdict.
+published and unsuperseded. GitHub Pages deployment and the live cartridge
+digest were verified on 2026-07-19. E07 remains the gate before compatibility
+promotion or a formal `READY FOR HUMAN TESTING` verdict.
 
 ## Hosting and catalogue backlog
 

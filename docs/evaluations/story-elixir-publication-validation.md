@@ -2,7 +2,7 @@
 
 Date: 2026-07-19  
 Scope: production registration for owner-authorized GitHub Pages live testing  
-Status: registration validated; deployment pending
+Status: deployed and live URL verified
 
 ## Authorization and lifecycle
 
@@ -49,6 +49,19 @@ records and appends exactly one; it retains zero withdrawals and appends zero.
 
 ## Deployment evidence
 
-Pending merge, Pages workflow completion, and verification of the public cabinet,
-detail page, and exact raw cartridge digest. This section must be updated after
-deployment; publication does not promote compatibility.
+- Merged by GitHub PR `#8` at main revision
+  `0d04de7231efa687a6f82b6b904a11b639a45bf0`.
+- Pages workflow run `29677321017`: build and deployment succeeded.
+- Cabinet verified at `https://simplybenuk.github.io/the-guide/` with four
+  Elixirs and The Regency Ball present.
+- Experience page verified at
+  `https://simplybenuk.github.io/the-guide/elixirs/regency-ball/` with the
+  30–40 minute promise and `experimental`, `untested compatibility`, and
+  `published` badges.
+- Canonical cartridge verified at
+  `https://simplybenuk.github.io/the-guide/cartridges/the-guide/regency-ball/0.1.0/elixir.md`.
+  Its served SHA-256 is exactly
+  `7ca92ecd00c04b6300f1ebc32656c208cc79f0e508bbd02732aaa48c6abf049c`.
+
+Deployment does not promote compatibility. The next activity is the explicitly
+scoped E07 live-harness evaluation.
