@@ -64,7 +64,7 @@ export const storyReleaseCandidateSchema = z.object({
       collectionId: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
       replaceElixirId: z.string().min(1),
     }).strict()).min(1),
-  }).strict(),
+  }).strict().nullable(),
   activationRequirements: z.array(z.enum([
     "independent_review_passed",
     "reviewed_commit_revision_bound",
@@ -101,24 +101,25 @@ export const validateStoryReleaseCandidate = ({
   const artworkRecord = candidate.release.artwork[0];
   const artwork = readFileSync(resolve(repositoryRoot, artworkRecord.path));
   const provenance = readFileSync(resolve(repositoryRoot, artworkRecord.provenanceReference), "utf8");
-  const predecessor = releasesDocument.releases.find(
-    (release) => releaseKey(release) === releaseKey(candidate.supersession.predecessor),
-  );
-
-  if (!predecessor) throw new Error("Supersession predecessor is absent from the immutable release ledger");
-  if (predecessor.bytes !== candidate.supersession.predecessor.bytes
-      || predecessor.sha256 !== candidate.supersession.predecessor.sha256) {
-    throw new Error("Supersession predecessor does not retain its immutable bytes and digest");
-  }
   if (releaseKey(candidate.release) !== releaseKey({
     elixirId: entry.elixirId,
     version: entry.recommendedVersion,
   })) {
     throw new Error("Release candidate and catalogue candidate identities differ");
   }
-  if (releaseKey(candidate.release) !== releaseKey(candidate.supersession.successor)
-      || releaseKey(candidate.release) !== releaseKey(candidate.supersession.predecessor.successor)) {
-    throw new Error("Supersession successor does not identify the prepared release exactly");
+  if (candidate.supersession) {
+    const predecessor = releasesDocument.releases.find(
+      (release) => releaseKey(release) === releaseKey(candidate.supersession.predecessor),
+    );
+    if (!predecessor) throw new Error("Supersession predecessor is absent from the immutable release ledger");
+    if (predecessor.bytes !== candidate.supersession.predecessor.bytes
+        || predecessor.sha256 !== candidate.supersession.predecessor.sha256) {
+      throw new Error("Supersession predecessor does not retain its immutable bytes and digest");
+    }
+    if (releaseKey(candidate.release) !== releaseKey(candidate.supersession.successor)
+        || releaseKey(candidate.release) !== releaseKey(candidate.supersession.predecessor.successor)) {
+      throw new Error("Supersession successor does not identify the prepared release exactly");
+    }
   }
   if (source.byteLength !== candidate.release.bytes || digest(source) !== candidate.release.sha256) {
     throw new Error("Release candidate source bytes or digest drifted");
@@ -140,7 +141,7 @@ export const validateStoryReleaseCandidate = ({
     String(artworkRecord.height), artworkRecord.sha256]) {
     if (!provenance.includes(value)) throw new Error("Release candidate artwork provenance is incomplete");
   }
-  for (const replacement of candidate.supersession.collectionReplacements) {
+  for (const replacement of candidate.supersession?.collectionReplacements ?? []) {
     const collection = collections.find(({ id }) => id === replacement.collectionId);
     if (!collection?.elixirIds.includes(replacement.replaceElixirId)) {
       throw new Error(`Collection replacement is not anchored: ${replacement.collectionId}`);

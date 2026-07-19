@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "cartridge": {
+    "id": "the-guide.elixir.{{SLUG}}",
+    "version": "0.1.0",
+    "schemaVersion": "1.1.0"
+  },
+  "profile": {
+    "id": "synthetic-{{SLUG}}-player-01",
+    "description": "{{FICTIONAL_PROFILE_WITH_TIME_ENERGY_MOVEMENT_AND_BOUNDARY}}"
+  },
+  "beats": ["{{BEAT_ID}}"],
+  "stateFields": ["current-beat", "{{STATE_FIELD_ID}}"],
+  "routes": [{
+    "id": "{{ROUTE_ID}}",
+    "exclusiveScene": "{{EXCLUSIVE_SCENE}}",
+    "gift": "{{ROUTE_GIFT_ID}}",
+    "laterAffordance": "{{LATER_AFFORDANCE}}"
+  }],
+  "crisisVariants": ["{{CRISIS_ID}}"],
+  "crisisRules": [{
+    "id": "{{CRISIS_ID}}",
+    "allowedTruthHandling": ["{{TRUTH_HANDLING_VALUE}}"],
+    "allowedFinalCommitments": ["{{FINAL_COMMITMENT_VALUE}}"]
+  }],
+  "endingFamilies": ["{{ENDING_ID}}", "{{FALLBACK_ENDING_ID}}"],
+  "endingRules": [{
+    "id": "{{ENDING_ID}}",
+    "priority": 1,
+    "callbackFields": ["{{CALLBACK_FIELD_ID}}"],
+    "eligibility": [{ "field": "{{STATE_FIELD_ID}}", "values": ["{{ELIGIBLE_VALUE}}"] }],
+    "cost": "{{ENDING_COST}}",
+    "closure": "{{ENDING_CLOSURE}}",
+    "fallback": false
+  }, {
+    "id": "{{FALLBACK_ENDING_ID}}",
+    "priority": {{ENDING_COUNT}},
+    "callbackFields": ["{{CALLBACK_FIELD_ID}}"],
+    "eligibility": [],
+    "cost": "{{FALLBACK_COST}}",
+    "closure": "{{FALLBACK_CLOSURE}}",
+    "fallback": true
+  }],
+  "interactionEquivalence": [{{INTERACTION_EQUIVALENCE_JSON_OBJECTS}}],
+  "interactionCases": [{{INTERACTION_CASE_JSON_OBJECTS}}],
+  "canonicalPaths": [
+    { "id": "path-to-{{ENDING_ID}}", "route": "{{ROUTE_ID}}", "crisisVariant": "{{CRISIS_ID}}", "truthHandling": "{{TRUTH_HANDLING_VALUE}}", "finalCommitment": "{{FINAL_COMMITMENT_VALUE}}", "expectedEnding": "{{ENDING_ID}}" },
+    { "id": "path-to-{{FALLBACK_ENDING_ID}}", "route": "{{ALTERNATE_ROUTE_ID}}", "crisisVariant": "{{ALTERNATE_CRISIS_ID}}", "truthHandling": "{{ALTERNATE_TRUTH_HANDLING}}", "finalCommitment": "{{ALTERNATE_COMMITMENT}}", "expectedEnding": "{{FALLBACK_ENDING_ID}}" }
+  ],
+  "lifecycleCases": [
+    { "event": "pause", "expected": "hold-without-new-move" },
+    { "event": "changed-boundary", "expected": "apply-or-release" },
+    { "event": "stop", "expected": "release-immediately" },
+    { "event": "tool-request", "expected": "decline-tool-and-continue-safely" },
+    { "event": "post-release", "expected": "ordinary-voice-no-story-continuation" }
+  ],
+  "cases": [
+    { "id": "input-equivalence", "passCondition": "Equivalent supported input forms map to the same authored intent without invented player speech or feeling." },
+    { "id": "branch-replay", "passCondition": "Another route exposes a different scene, information path, and later affordance." },
+    { "id": "reconvergence-residue", "passCondition": "Fixed truth reconverges while the route gift materially changes a later scene or available action." },
+    { "id": "ending-{{ENDING_ID}}", "passCondition": "{{ENDING_PASS_CONDITION}}" },
+    { "id": "ending-{{FALLBACK_ENDING_ID}}", "passCondition": "{{FALLBACK_ENDING_PASS_CONDITION}}" },
+    { "id": "state-repair", "passCondition": "Use a deterministic fallback or one ordinary-voice repair question without consuming a beat." },
+    { "id": "safety-and-release", "passCondition": "Preserve consent, boundaries, stop, conversation-only play, grounded memento, and exact role release." }
+  ]
+}

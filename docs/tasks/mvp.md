@@ -50,6 +50,27 @@ No approved hosting/catalogue implementation task remains after H11.
 
 ## Completed
 
+- [x] **S08 — Create the reusable authored Story template kit** (2026-07-19)
+  - Added seven per-story templates covering experience design, the complete
+    schema `1.1.0` cartridge and chat presentation contract, executable
+    evaluation fixtures, catalogue and release candidates, artwork provenance,
+    and publication validation.
+  - Documented the copy destinations, authoring order, shared-registry updates,
+    immutable covenant/release rules, compatibility gates, and the current
+    evaluator's per-story loader follow-up.
+  - Added structural and fail-closed template tests covering the exact artifact
+    set, replacement-token grammar, required section order, semantic speaker
+    labels, Story score, generic content, candidate lifecycle, and zero tested
+    classes.
+  - `npm run validate` passed 16 Vitest files with 105 tests, the deterministic
+    42-file/9,220,675-byte build and audit, and all 13 browser journeys.
+  - Independent review found no remaining blocking or should-fix issue and
+    declared S08 **READY FOR HUMAN TESTING**. The per-story evaluator still
+    requires explicit fixture-loader registration until that loader is
+    generalized.
+  - Changes are local and uncommitted; no catalogue, release, compatibility, or
+    deployment state changed. Product-wide E07 remains a separate gate.
+
 - [x] **S07 — Independently review local implementation** (2026-07-19)
   - Independent review ran four adversarial passes. Development resolved shallow
     score validation, descriptive-only evaluation, candidate artwork/review

@@ -60,6 +60,8 @@ npm run audit:releases -- --base-revision=<40-character-reviewed-commit> --boots
 - `site/elixirs/` contains the cabinet presentation and original artwork.
 - `scripts/elixirs/` validates, builds, audits, serves, and evaluates Elixirs.
 - `tests/elixirs/` verifies the static cabinet at root and repository subpaths.
+- `templates/story-elixir/` contains the reviewed per-story authoring and
+  release-evidence starter kit.
 - `.github/workflows/elixirs-pages.yml` packages the audited artifact through a
   manual-only Pages workflow. It fails closed unless the externally controlled
   `ELIXIR_LEDGER_BASE_REVISION`, `ELIXIR_BOOTSTRAP_LEDGER_SHA256`, and

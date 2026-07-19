@@ -52,6 +52,12 @@ describe("authored Story release preparation", () => {
     });
   });
 
+  it("allows a new Story identity without inventing a predecessor transition", () => {
+    const additive = inputs();
+    additive.candidateDocument.supersession = null;
+    expect(validateStoryReleaseCandidate(additive).supersession).toBeNull();
+  });
+
   it("fails closed on source, predecessor, successor, and collection drift", () => {
     const sourceDrift = inputs();
     sourceDrift.candidateDocument.release.sha256 = "0".repeat(64);

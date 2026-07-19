@@ -1,0 +1,41 @@
+{
+  "schemaVersion": "1.0.0",
+  "state": "prepared_not_publishable",
+  "preparedAt": "{{YYYY_MM_DD}}",
+  "release": {
+    "elixirId": "the-guide.elixir.{{SLUG}}",
+    "publisherId": "the-guide",
+    "slug": "{{SLUG}}",
+    "version": "0.1.0",
+    "cartridgeSchemaVersion": "1.1.0",
+    "covenantVersion": "{{COVENANT_VERSION}}",
+    "sourcePath": "content/elixirs/{{SLUG}}.md",
+    "bytes": {{CARTRIDGE_BYTES}},
+    "sha256": "{{CARTRIDGE_SHA256}}",
+    "canonicalPath": "cartridges/the-guide/{{SLUG}}/0.1.0/elixir.md",
+    "legacyPaths": ["cartridges/{{SLUG}}/0.1.0/elixir.md"],
+    "artwork": [{
+      "provenanceId": "art-{{SLUG}}",
+      "path": "site/elixirs/assets/cartridges/{{SLUG}}.png",
+      "bytes": {{ARTWORK_BYTES}},
+      "width": {{ARTWORK_WIDTH}},
+      "height": {{ARTWORK_HEIGHT}},
+      "provenanceReference": "content/catalogue/provenance/{{SLUG}}-artwork.md",
+      "sha256": "{{ARTWORK_SHA256}}"
+    }],
+    "rightsReference": "TERMS.md",
+    "reviewReferences": [
+      "docs/specs/story-elixir-authoring-and-chat-presentation.md",
+      "docs/evaluations/{{SLUG}}-publication-validation.md"
+    ],
+    "compatibilityReferences": ["docs/evaluations/elixir-harness-matrix.md"],
+    "statusAtPublication": "experimental"
+  },
+  "supersession": null,
+  "activationRequirements": [
+    "independent_review_passed",
+    "reviewed_commit_revision_bound",
+    "live_harness_evidence_recorded",
+    "publication_explicitly_authorized"
+  ]
+}
