@@ -18,9 +18,15 @@ Canonical Markdown cartridges + original artwork
 
 ### Canonical content
 
-`content/elixirs/` contains one versioned common covenant and exactly three
-self-contained Markdown cartridges. Strict metadata binds identity, version,
-demands, inputs, compatibility evidence, and artwork provenance to each source.
+`content/elixirs/` contains one versioned common covenant, four immutable
+published cartridges, and additive release candidates. Strict metadata binds
+identity, version, demands, inputs, compatibility evidence, and artwork
+provenance to each source. Authored Story candidates use schema `1.1.0`: their
+experience contract declares player role, speech/action/decision interaction,
+choice presentation, intensity, endings, replay promise, and session shape.
+Their source prescribes ordered beats, compact state, reconvergence, ending
+eligibility, and semantic narrator/character labels while leaving prose
+realisation to the model.
 
 `content/catalogue/` is the strict publication registry for those immutable
 sources. Publisher, release-ledger, discovery, taxonomy, collection, and
@@ -31,6 +37,13 @@ version, while exhaustive release-version lifecycle records allow an older
 version to be superseded or withdrawn without hiding a newer live recommendation.
 Artwork provenance separately records active references and exact archived Git
 references, including recoverable path, revision, object, bytes, and digest.
+Pre-publication Story preparation snapshots live under
+`content/catalogue/candidates/`; their exact source/artwork digests and proposed
+transitions remain useful validation evidence after publication. The Regency
+Ball entered the production registry only after local and independent review,
+an immutable source revision, provenance review, and explicit owner authorization
+for an experimental live-test release. Compatibility promotion remains gated by
+named live-harness evidence.
 
 ### Static cabinet
 
@@ -45,7 +58,8 @@ persisted nor transmitted.
 
 `scripts/elixirs/` parses and cross-validates canonical content and catalogue
 records, enforces append-only release history against an explicit reviewed Git
-revision, emits the exact registry-derived
+revision, verifies each appended release against the bytes at its recorded
+source commit, emits the exact registry-derived
 artifact tree, rejects unexpected or unsafe files, serves local previews, and
 defines redacted cross-harness evidence. The artifact contains no server
 bundle, API, runtime environment, credential, database, analytics collector, or

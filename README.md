@@ -10,8 +10,8 @@ transcript, or application server.
 
 ## Status
 
-The static catalogue contains three experimental first-party Elixirs: Signal,
-Mystery, and Story. A strict registry binds immutable releases to exact bytes
+The static catalogue contains four experimental first-party Elixirs: Signal,
+Mystery, Story, and The Regency Ball. A strict registry binds immutable releases to exact bytes
 and paths; local search, filters, editorial collections, and explainable related
 items use only public catalogue metadata and send no search or gameplay data.
 Local implementation and artifact validation are complete.
@@ -19,8 +19,11 @@ Live Codex evidence supports the experimental `coding_agent` class only. One
 owner-observed ChatGPT attempt failed to retrieve the public Pages cartridge,
 using the ChatGPT mobile app on a Plus account in Instant mode. The underlying
 model identifier was not exposed, and this is not a complete evidence run or
-compatibility pass. A second complete live harness class is required before
-human output testing.
+compatibility pass. The Regency Ball currently has zero live harness runs. It
+is published specifically so the owner can collect evidence, and must complete
+its versioned evaluation in two named harness classes—including at least one
+consumer or personal-agent class—before compatibility promotion or a formal
+human-testing readiness verdict.
 
 The former hosted Next.js prototype is retired. Its final snapshot is preserved
 at the `hosted-prototype-final` Git tag and documented in

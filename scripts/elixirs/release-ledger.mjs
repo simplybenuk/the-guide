@@ -11,6 +11,32 @@ const approvedBootstrapRevision = "869bcbd12639fae71b56d1b684e9fe9e9b017c53";
 
 const canonicalHash = (document) => createHash("sha256").update(JSON.stringify(document)).digest("hex");
 
+const verifyReleaseSourceRevision = (release, root) => {
+  let resolvedRevision;
+  let source;
+  try {
+    resolvedRevision = execFileSync("git", ["rev-parse", "--verify", `${release.sourceRevision}^{commit}`], {
+      cwd: root,
+      encoding: "utf8",
+      stdio: ["ignore", "pipe", "pipe"],
+    }).trim();
+    source = execFileSync("git", ["show", `${release.sourceRevision}:${release.sourcePath}`], {
+      cwd: root,
+      encoding: null,
+      stdio: ["ignore", "pipe", "pipe"],
+    });
+  } catch {
+    throw new Error(`Release ${release.elixirId}@${release.version} sourceRevision does not resolve its sourcePath`);
+  }
+  if (resolvedRevision !== release.sourceRevision) {
+    throw new Error(`Release ${release.elixirId}@${release.version} sourceRevision did not resolve exactly`);
+  }
+  const digest = createHash("sha256").update(source).digest("hex");
+  if (source.byteLength !== release.bytes || digest !== release.sha256) {
+    throw new Error(`Release ${release.elixirId}@${release.version} sourceRevision bytes or SHA-256 do not match the ledger`);
+  }
+};
+
 export const auditReleaseLedgerAgainstGit = ({
   baseRevision,
   bootstrapLedgerSha256,
@@ -36,11 +62,13 @@ export const auditReleaseLedgerAgainstGit = ({
     if (baseRevision !== approvedBootstrapRevision) throw new Error("Protected base has no release ledger; bootstrap is allowed only from the approved pre-catalogue revision");
     if (!/^[0-9a-f]{64}$/.test(bootstrapLedgerSha256 ?? "")) throw new Error("Bootstrap requires an externally controlled 64-character ledger SHA-256");
     if (canonicalHash(candidate) !== bootstrapLedgerSha256) throw new Error("Candidate release ledger differs from the externally approved bootstrap ledger");
+    candidate.releases.forEach((release) => verifyReleaseSourceRevision(release, root));
     const withdrawals = compareWithdrawalLedgers({ schemaVersion: "1.0.0", withdrawals: [] }, candidateWithdrawals);
     return Object.freeze({ baseRevision, bootstrapped: true, retained: 0, appended: candidate.releases.length, withdrawals });
   }
 
   const comparison = compareReleaseLedgers(JSON.parse(baseText), candidate);
+  candidate.releases.slice(comparison.retained).forEach((release) => verifyReleaseSourceRevision(release, root));
   let baseWithdrawals;
   try {
     baseWithdrawals = JSON.parse(execFileSync("git", ["show", `${baseRevision}:content/catalogue/withdrawals.json`], { cwd: root, encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] }));

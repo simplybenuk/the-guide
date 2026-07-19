@@ -32,14 +32,17 @@ describe("static Elixir cabinet build", () => {
       ".nojekyll",
       "assets/cartridges/manifest.json",
       "assets/cartridges/mystery.png",
+      "assets/cartridges/regency-ball.png",
       "assets/cartridges/signal.png",
       "assets/cartridges/story.png",
       "browse/index.html",
       "cabinet.js",
       "cartridges/mystery/0.1.0/elixir.md",
+      "cartridges/regency-ball/0.1.0/elixir.md",
       "cartridges/signal/0.1.0/elixir.md",
       "cartridges/story/0.1.0/elixir.md",
       "cartridges/the-guide/mystery/0.1.0/elixir.md",
+      "cartridges/the-guide/regency-ball/0.1.0/elixir.md",
       "cartridges/the-guide/signal/0.1.0/elixir.md",
       "cartridges/the-guide/story/0.1.0/elixir.md",
       "catalogue-index.json",
@@ -50,12 +53,17 @@ describe("static Elixir cabinet build", () => {
       "delivery-events.js",
       "elixirs/mystery/index.html",
       "elixirs/mystery/versions/0.1.0/index.html",
+      "elixirs/regency-ball/index.html",
+      "elixirs/regency-ball/versions/0.1.0/index.html",
       "elixirs/signal/index.html",
       "elixirs/signal/versions/0.1.0/index.html",
       "elixirs/story/index.html",
       "elixirs/story/versions/0.1.0/index.html",
       "evidence/the-guide/mystery/0.1.0/compatibility-1.md",
       "evidence/the-guide/mystery/0.1.0/review-1.md",
+      "evidence/the-guide/regency-ball/0.1.0/compatibility-1.md",
+      "evidence/the-guide/regency-ball/0.1.0/review-1.md",
+      "evidence/the-guide/regency-ball/0.1.0/review-2.md",
       "evidence/the-guide/signal/0.1.0/compatibility-1.md",
       "evidence/the-guide/signal/0.1.0/review-1.md",
       "evidence/the-guide/story/0.1.0/compatibility-1.md",
@@ -71,11 +79,11 @@ describe("static Elixir cabinet build", () => {
       .join("\n");
     expect(artifactText).not.toMatch(/\/_next|\/api\/(?:health|expedition)|localStorage|sessionStorage|GUIDE_PROVIDER_/);
     expect(artifactText).not.toMatch(/sendBeacon|XMLHttpRequest|\bfetch\s*\(|console\.(?:log|info|debug|table)\s*\(/);
-    expect(artifactText).not.toContain("react");
+    expect(artifactText).not.toMatch(/react-dom|data-reactroot|__REACT/i);
   });
 
   it("derives source, download, and copy content from identical cartridge bytes", () => {
-    for (const slug of ["signal", "mystery", "story"]) {
+    for (const slug of ["signal", "mystery", "story", "regency-ball"]) {
       const canonical = readFileSync(resolve(repositoryRoot, `content/elixirs/${slug}.md`));
       const emitted = readFileSync(
         resolve(outputDirectory, `cartridges/${slug}/0.1.0/elixir.md`),
@@ -100,10 +108,10 @@ describe("static Elixir cabinet build", () => {
   it("emits a metadata-only public index, collections, and immutable version records", () => {
     const index = JSON.parse(readOutput("catalogue-index.json"));
     expect(index.schemaVersion).toBe("1.0.0");
-    expect(index.deploymentRevision).toBe("catalogue-v1");
-    expect(index.entries).toHaveLength(3);
+    expect(index.deploymentRevision).toBe("catalogue-v2-regency-ball");
+    expect(index.entries).toHaveLength(4);
     expect(JSON.stringify(index)).not.toMatch(/sourcePath|reviewReferences|compatibilityReferences|cartridge source|transcript/i);
-    expect(readOutput("collections/start-here/index.html")).toContain("Three distinct ways");
+    expect(readOutput("collections/start-here/index.html")).toContain("Four distinct ways");
     expect(readOutput("elixirs/signal/versions/0.1.0/index.html")).toContain(
       "1c371b5813f6d93f37cabe486337f2680928f3e2ae5c19d4e86d40328f597cbb",
     );
@@ -125,11 +133,11 @@ describe("static Elixir cabinet build", () => {
 
     expect((index.match(/data-spotlight/g) ?? [])).toHaveLength(1);
     expect((index.match(/data-shelf(?:\s|>)/g) ?? [])).toHaveLength(3);
-    expect((index.match(/<article class="elixir-card/g) ?? [])).toHaveLength(9);
-    expect((browse.match(/<article class="elixir-card/g) ?? [])).toHaveLength(3);
+    expect((index.match(/<article class="elixir-card/g) ?? [])).toHaveLength(10);
+    expect((browse.match(/<article class="elixir-card/g) ?? [])).toHaveLength(4);
     expect(index).not.toContain("<dt>");
     expect(browse).not.toContain("<dt>");
-    expect((browse.match(/<ul class="fit-signals"/g) ?? [])).toHaveLength(3);
+    expect((browse.match(/<ul class="fit-signals"/g) ?? [])).toHaveLength(4);
     expect(detail).toContain("Before you play");
     expect(detail).toContain("The Guide receives");
     expect(detail).toContain("Publisher, review, and provenance");

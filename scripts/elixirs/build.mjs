@@ -90,6 +90,7 @@ const compactCardView = ({ entry, catalogue }) => {
     ...entry.categoryIds, ...entry.tagIds, ...entry.toneIds, entry.mechanicId,
     ...entry.activityIds, entry.replayabilityId, entry.durationBandId,
     ...entry.contentNoteIds, ...entry.accessConsiderationIds, ...entry.audienceIds, ...entry.localeIds,
+    ...(entry.storyDiscovery ? Object.values(entry.storyDiscovery).flat() : []),
   ])].join(" ");
   return { release, metadata, mechanic, taxonomyIds };
 };
@@ -153,7 +154,10 @@ const publicJson = (value) => JSON.stringify(value).replaceAll("<", "\\u003c");
 const renderFilterControls = (catalogue) => {
   const index = createPublicCatalogueIndex(catalogue);
   const used = new Set(index.entries.flatMap(({ taxonomyIds }) => taxonomyIds));
-  const facets = ["duration", "energy", "movement", "mechanic", "tone", "input", "content_note", "access"];
+  const facets = [
+    "duration", "energy", "movement", "mechanic", "tone", "genre", "story_shape",
+    "interaction_mode", "emotional_intensity", "replayability", "input", "content_note", "access",
+  ];
   return facets.map((facet) => {
     const values = catalogue.taxonomy.filter((value) => value.facet === facet && value.lifecycle === "active" && used.has(value.id));
     if (values.length === 0) return "";
@@ -294,6 +298,16 @@ const renderDetail = ({ entry, release, metadata, source, sourceRevision, catalo
   const resolverPrompt = createResolverPrompt({ metadata, source, cartridgeUrl: cartridgePath, sourceRevision, contentPath: release.sourcePath });
   const mechanic = catalogue.taxonomy.find(({ id }) => id === entry.mechanicId).label;
   const related = relatedCatalogueEntries(index.entries, entry.elixirId);
+  const storyFacts = metadata.story ? `<section class="detail-facts" aria-labelledby="story-facts-title"><h2 id="story-facts-title">Story experience</h2><dl class="fact-grid">
+      <div><dt>Your role</dt><dd>${escapeHtml(metadata.story.playerRole)}</dd></div>
+      <div><dt>How you participate</dt><dd>${escapeHtml(metadata.story.interactionModes.map(formatToken).join(", "))}</dd></div>
+      <div><dt>Choice style</dt><dd>${escapeHtml(formatToken(metadata.story.choicePresentation))}</dd></div>
+      <div><dt>Emotional intensity</dt><dd>${escapeHtml(metadata.story.emotionalIntensity)}</dd></div>
+      <div><dt>Reading intensity</dt><dd>${escapeHtml(metadata.story.readingIntensity)}</dd></div>
+      <div><dt>Session</dt><dd>${escapeHtml(formatToken(metadata.story.sessionShape))}</dd></div>
+      <div><dt>Endings</dt><dd>${escapeHtml(metadata.story.endingProfile.description)}</dd></div>
+      <div><dt>Replay</dt><dd>${escapeHtml(`${metadata.story.replayProfile.level}: ${metadata.story.replayProfile.promise}`)}</dd></div>
+    </dl></section>` : "";
   return renderDocument({
     title: `${metadata.title} — The Elixir Cabinet`, depth: 2,
     body: `<header class="site-header"><a class="wordmark" href="../../">The Guide <span>Elixir Cabinet</span></a></header>
@@ -305,6 +319,7 @@ const renderDetail = ({ entry, release, metadata, source, sourceRevision, catalo
     <section class="detail-facts" aria-labelledby="facts-title"><h2 id="facts-title">Before you play</h2><dl class="fact-grid">
       <div><dt>Game shape</dt><dd>${escapeHtml(entry.interactionLabel)}</dd></div><div><dt>Expected time</dt><dd>${metadata.estimatedMinutes.min}–${metadata.estimatedMinutes.max} minutes</dd></div><div><dt>Energy</dt><dd>${metadata.energy}</dd></div><div><dt>Movement</dt><dd>${formatToken(metadata.movement)}</dd></div><div><dt>Player input</dt><dd>${escapeHtml(requiredInputs)}</dd></div><div><dt>Capability</dt><dd>Conversation only</dd></div><div><dt>The Guide receives</dt><dd>Nothing from play or search</dd></div><div><dt>Memento stays</dt><dd>In your chosen harness</dd></div>
     </dl></section>
+    ${storyFacts}
     ${renderTrustFacts({ entry, release, metadata, catalogue })}
     ${renderLifecycleNotice({ entry, catalogue, hrefPrefix: "../" })}
     <section class="handoff-panel" aria-labelledby="handoff-title" data-elixir-id="${escapeHtml(metadata.id)}" data-elixir-version="${escapeHtml(metadata.version)}">

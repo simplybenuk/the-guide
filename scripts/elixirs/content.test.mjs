@@ -114,6 +114,98 @@ describe("first-party Elixir content", () => {
     expect(source).toContain("Do not force a\nsequel, continue narrating, or invite a fourth scene");
   });
 
+  it("validates The Regency Ball as an authored eight-beat Story score", () => {
+    const source = read("content/elixirs/regency-ball.md");
+    const metadata = validateCartridgeDocument(source, covenant);
+
+    expect(metadata).toMatchObject({
+      schemaVersion: "1.1.0",
+      id: "the-guide.elixir.regency-ball",
+      estimatedMinutes: { min: 30, max: 40 },
+      movement: "none",
+      compatibility: { status: "untested", testedHarnessClasses: [] },
+      story: {
+        storyFormat: "feature",
+        interactionModes: ["speech", "action", "decision"],
+        choicePresentation: "hybrid",
+        endingProfile: { familyCount: 4 },
+        sessionShape: "single_session",
+      },
+    });
+    expect(source.match(/^### Beat: /gm)).toHaveLength(8);
+    expect(source.match(/^### Ending family: /gm)).toHaveLength(4);
+    expect(source.match(/^### State field: /gm)).toHaveLength(9);
+    expect(source).toContain("Adrian route:");
+    expect(source).toContain("Celia route:");
+    expect(source).toContain("Rowan route:");
+    expect(source).toContain("Private crisis, used for protect or private-disclosure:");
+    expect(source).toContain("Public crisis, used for public-correction:");
+    expect(source).toContain("The Regency Ball Elixir has worn off.");
+  });
+
+  it("rejects authored-score count, reference, and prose-exit drift", () => {
+    const source = read("content/elixirs/regency-ball.md");
+    expect(() => validateCartridgeDocument(
+      source.replace("### Beat: crisis", "### Beat: missing-crisis"), covenant,
+    )).toThrow(/beat blocks/);
+    expect(() => validateCartridgeDocument(
+      source.replace("### State field: connection", "### State field: missing-connection"), covenant,
+    )).toThrow(/State field blocks/);
+    expect(() => validateCartridgeDocument(
+      source.replace("### Ending family: honoured-bargain", "### Ending family: missing-bargain"), covenant,
+    )).toThrow(/ending blocks/);
+    expect(() => validateCartridgeDocument(
+      source.replace(
+        "Exit: write obligation and current-beat first-dance.",
+        "Exit: go wherever seems interesting.",
+      ), covenant,
+    )).toThrow(/scored destination: first-dance/);
+    expect(() => validateCartridgeDocument(
+      source.replace('"reads": ["current-beat"]', '"reads": ["unknown-state"]'), covenant,
+    )).toThrow(/unknown state field/);
+    expect(() => validateCartridgeDocument(
+      source.replace(
+        "Write: first-dance.\n\nRead: route-encounter, printed-understanding, quiet-promise, public-reversal,",
+        "Write: arrival.\n\nRead: route-encounter, printed-understanding, quiet-promise, public-reversal,",
+      ), covenant,
+    )).toThrow(/writers\/readers/);
+    expect(() => validateCartridgeDocument(
+      source.replace(
+        "Eligibility: truth-handling=public-correction; final-commitment=public-account.",
+        "Eligibility: truth-handling=protect; final-commitment=leave-unpaired.",
+      ), covenant,
+    )).toThrow(/prose eligibility/);
+    expect(() => validateCartridgeDocument(
+      source.replace(
+        "Required facts: marked-card, programme-meaning-withheld, no-consent-assumption.",
+        "Required facts: marked-card, no-consent-assumption.",
+      ), covenant,
+    )).toThrow(/required facts/);
+    expect(() => validateCartridgeDocument(
+      source.replace(
+        "Cost: The family plan fails visibly and some private possibilities remain unresolved.",
+        "Cost: Nothing is lost.",
+      ), covenant,
+    )).toThrow(/cost, callbacks, and closure/);
+    expect(() => validateCartridgeDocument(
+      source.replace("Required callbacks: route-gift, promise.", "Required callbacks: none."), covenant,
+    )).toThrow(/cost, callbacks, and closure/);
+  });
+
+  it("lets the Regency player speak, act, or decide without speaking for them", () => {
+    const source = read("content/elixirs/regency-ball.md");
+
+    expect(source).toContain("**Narrator**");
+    expect(source).toContain("**Character Name**");
+    expect(source).toContain("**Your turn**");
+    expect(source).toContain("**Possible approaches**");
+    expect(source).toContain("own words—speak, act, or decide");
+    expect(source).toContain("must not speak for the player");
+    expect(source).toContain("A direct answer is valid speech");
+    expect(source).toContain("Casual conversation must\nnot secretly choose an ending");
+    expect(source).toContain("Never decide the player's name, title, gender, pronouns, appearance, attraction");
+  });
+
   it("keeps the three games mechanically distinct rather than tonal variants", () => {
     expect(cartridgeSources.signal).toContain("Run exactly three accepted moves");
     expect(cartridgeSources.signal).toContain("shared attention, not proving a theory");

@@ -103,7 +103,7 @@ describe("redacted cross-harness evaluation contract", () => {
   });
 
   it("statically maps every cartridge to consent, tool, grounding, stop, and release controls", () => {
-    for (const slug of ["signal", "mystery", "story"]) {
+    for (const slug of ["signal", "mystery", "story", "regency-ball"]) {
       const source = readFileSync(resolve(process.cwd(), `content/elixirs/${slug}.md`), "utf8");
       expect(source).toContain("Ask whether the player wants you to\ndrink the fictional Elixir");
       expect(source).toContain("Do not browse, call tools, execute code");

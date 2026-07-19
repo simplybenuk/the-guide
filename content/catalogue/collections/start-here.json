@@ -2,10 +2,10 @@
   "schemaVersion": "1.0.0",
   "id": "start-here",
   "title": "Start here",
-  "summary": "Three distinct ways to discover how an Elixir works.",
+  "summary": "Four distinct ways to discover how an Elixir works.",
   "curator": "The Guide",
-  "elixirIds": ["the-guide.elixir.signal", "the-guide.elixir.mystery", "the-guide.elixir.story"],
+  "elixirIds": ["the-guide.elixir.signal", "the-guide.elixir.mystery", "the-guide.elixir.story", "the-guide.elixir.regency-ball"],
   "lifecycle": "published",
   "publishedAt": "2026-07-18",
-  "updatedAt": "2026-07-18"
+  "updatedAt": "2026-07-19"
 }

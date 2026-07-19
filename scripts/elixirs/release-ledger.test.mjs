@@ -9,23 +9,26 @@ import { describe, expect, it } from "vitest";
 import { auditReleaseLedgerAgainstGit } from "./release-ledger.mjs";
 
 const root = process.cwd();
-const approvedBase = "869bcbd12639fae71b56d1b684e9fe9e9b017c53";
+const approvedBase = "daaa336c32699b7d6603cbb3861d8d8ffba1fd78";
 const approvedBootstrapLedgerSha256 = "28aa5dfd287975bfd28ea9312e5a93a28077ebf0b2c8af3c2cf34703c741cdf1";
 const approvedWithdrawalsSha256 = "0fe13842971a4bc090532fd5c3ae81013042ad484f274c699ce9d2e05b7c80d3";
 const candidate = () => JSON.parse(readFileSync(resolve(root, "content/catalogue/releases.json"), "utf8"));
 
 describe("protected-base release-ledger audit", () => {
-  it("accepts only the exact approved initial ledger from the approved pre-ledger revision", () => {
+  it("accepts one append-only release from the protected catalogue revision", () => {
     expect(auditReleaseLedgerAgainstGit({ baseRevision: approvedBase, bootstrapLedgerSha256: approvedBootstrapLedgerSha256, approvedWithdrawalsSha256, candidateDocument: candidate(), root })).toMatchObject({
       baseRevision: approvedBase,
-      bootstrapped: true,
-      retained: 0,
-      appended: 3,
+      bootstrapped: false,
+      retained: 3,
+      appended: 1,
     });
     const changed = candidate();
     changed.releases[0].publishedAt = "2026-07-19";
-    expect(() => auditReleaseLedgerAgainstGit({ baseRevision: approvedBase, bootstrapLedgerSha256: approvedBootstrapLedgerSha256, approvedWithdrawalsSha256, candidateDocument: changed, root })).toThrow(/externally approved bootstrap/);
-    expect(() => auditReleaseLedgerAgainstGit({ baseRevision: approvedBase, approvedWithdrawalsSha256, candidateDocument: candidate(), root })).toThrow(/externally controlled/);
+    expect(() => auditReleaseLedgerAgainstGit({ baseRevision: approvedBase, bootstrapLedgerSha256: approvedBootstrapLedgerSha256, approvedWithdrawalsSha256, candidateDocument: changed, root })).toThrow(/cannot be modified/);
+    expect(auditReleaseLedgerAgainstGit({ baseRevision: approvedBase, approvedWithdrawalsSha256, candidateDocument: candidate(), root })).toMatchObject({ retained: 3, appended: 1 });
+    const falseSourceRevision = candidate();
+    falseSourceRevision.releases.at(-1).sourceRevision = approvedBase;
+    expect(() => auditReleaseLedgerAgainstGit({ baseRevision: approvedBase, approvedWithdrawalsSha256, candidateDocument: falseSourceRevision, root })).toThrow(/sourceRevision/);
     expect(() => auditReleaseLedgerAgainstGit({ baseRevision: approvedBase, bootstrapLedgerSha256: approvedBootstrapLedgerSha256, candidateDocument: candidate(), root })).toThrow(/Withdrawal publication requires/);
     const removedApproval = { schemaVersion: "1.0.0", withdrawals: [{ elixirId: "the-guide.elixir.signal", version: "0.1.0" }] };
     expect(() => auditReleaseLedgerAgainstGit({ baseRevision: approvedBase, bootstrapLedgerSha256: approvedBootstrapLedgerSha256, approvedWithdrawalsSha256, candidateDocument: candidate(), candidateWithdrawalsDocument: removedApproval, root })).toThrow();
@@ -35,7 +38,7 @@ describe("protected-base release-ledger audit", () => {
     expect(() => auditReleaseLedgerAgainstGit({ candidateDocument: candidate(), root })).toThrow(/explicit 40-character/);
     expect(() => auditReleaseLedgerAgainstGit({ baseRevision: "869bcbd", candidateDocument: candidate(), root })).toThrow(/explicit 40-character/);
     const earlier = execFileSync("git", ["rev-parse", `${approvedBase}^`], { cwd: root, encoding: "utf8" }).trim();
-    expect(() => auditReleaseLedgerAgainstGit({ baseRevision: earlier, bootstrapLedgerSha256: approvedBootstrapLedgerSha256, approvedWithdrawalsSha256, candidateDocument: candidate(), root })).toThrow(/bootstrap is allowed only/);
+    expect(() => auditReleaseLedgerAgainstGit({ baseRevision: earlier, bootstrapLedgerSha256: approvedBootstrapLedgerSha256, approvedWithdrawalsSha256, candidateDocument: candidate(), root })).toThrow(/externally approved bootstrap/);
     expect(() => auditReleaseLedgerAgainstGit({ baseRevision: "f".repeat(40), candidateDocument: candidate(), root })).toThrow();
   });
 

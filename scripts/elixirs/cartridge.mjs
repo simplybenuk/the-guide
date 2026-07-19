@@ -1,4 +1,5 @@
 import { ELIXIR_METADATA_FENCE, elixirMetadataSchema } from "./schema.mjs";
+import { validateStoryAuthoringStructure } from "./story-contract.mjs";
 
 const metadataBlockPattern = new RegExp(
   "^```" + ELIXIR_METADATA_FENCE + "\\r?\\n([\\s\\S]*?)\\r?\\n```$",
@@ -106,5 +107,6 @@ export function validateCartridgeDocument(source, covenant) {
   validatePortableSource(source);
   const metadata = parseCartridgeMetadata(source);
   assertCanonicalCovenant(source, covenant, metadata.covenantVersion);
+  if (metadata.story) validateStoryAuthoringStructure(source, covenant, metadata.story);
   return metadata;
 }
