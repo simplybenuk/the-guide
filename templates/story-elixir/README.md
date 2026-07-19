@@ -75,6 +75,9 @@ an older release and never implies compatibility.
 - Players can participate by speech, action, decision, or the declared subset.
 - Narrator, character, `Your turn`, and optional approach labels remain semantic
   and readable without provider-specific chat UI.
+- Every character-spoken paragraph is displayed as a Markdown block quote beneath
+  its standalone speaker label; narration, prompts, and lifecycle notices remain
+  outside block quotes, and quotation marks preserve plain-text clarity.
 - The cartridge prescribes experience, state, consequences, pacing, and endings,
   while leaving prose realization to the model.
 - The original Story and all published releases remain byte-for-byte immutable.

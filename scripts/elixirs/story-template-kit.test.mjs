@@ -9,6 +9,7 @@ const root = process.cwd();
 const templateDirectory = resolve(root, "templates/story-elixir");
 const read = (name) => readFileSync(resolve(templateDirectory, name), "utf8");
 const covenant = readFileSync(resolve(root, "content/elixirs/covenant.md"), "utf8").trim();
+const storySpecification = readFileSync(resolve(root, "docs/specs/story-elixir-authoring-and-chat-presentation.md"), "utf8");
 const templateFiles = [
   "01-story-design-brief.md",
   "02-cartridge.md",
@@ -102,6 +103,15 @@ describe("authored Story template kit", () => {
     ]) expect(cartridge).toContain(label);
     expect(cartridge).toContain("at least 3 ordered beats, 2 routes");
     expect(cartridge).toContain("2 crisis variants, and 3 ending families");
+    expect(cartridge).toMatch(/^> “\{\{SHORT_CHARACTER_LINE_OR_QUESTION\}\}”$/m);
+    expect(cartridge).toContain("Every paragraph of character speech must use Markdown");
+    expect(cartridge).toContain('"evaluationCaseIds": ["speech-blockquote"');
+    expect(cartridge).toContain("### Evaluation case: speech-blockquote");
+    expect(read("03-evaluation-fixtures.json.tmpl")).toContain('"id": "speech-blockquote"');
+    expect(cartridge).toContain("lifecycle notices, and state repair remain outside");
+    expect(read("03-evaluation-fixtures.json.tmpl")).toContain("quotation marks beneath its standalone speaker label");
+    expect(storySpecification.match(/^ {3}> “/gm)).toHaveLength(2);
+    expect(storySpecification).not.toMatch(/^ {3}“(?:Tell me plainly|If I asked you)/m);
   });
 
   it("materializes into a representative cartridge accepted by the real validator", () => {
@@ -173,7 +183,7 @@ describe("authored Story template kit", () => {
         { id: "second-truth", priority: 2, requiredStateFields: ["current-beat", "route-gift"], callbackFields: ["current-beat", "route-gift"], eligibility: [{ field: "route-gift", values: ["gift-two"] }], cost: "The signature is settled while the date remains disputed.", closure: "The signature is verified and the witnesses retain separate motives.", fallback: false },
         { id: "open-question", priority: 3, requiredStateFields: ["current-beat", "route-gift"], callbackFields: ["current-beat", "route-gift"], eligibility: [], cost: "The letter remains unresolved tonight.", closure: "The player leaves without an invented answer or forced companion.", fallback: true },
       ],
-      evaluationCaseIds: ["input-equivalence"],
+      evaluationCaseIds: ["speech-blockquote", "input-equivalence"],
     };
     let source = read("02-cartridge.md")
       .replace(/^```elixir-metadata\n[\s\S]*?\n```$/m, `\`\`\`elixir-metadata\n${JSON.stringify(metadata, null, 2)}\n\`\`\``)
@@ -182,7 +192,7 @@ describe("authored Story template kit", () => {
     source = replaceSection(source, "## State ledger", "## Beat map", `### State field: current-beat\n\nWrite: opening, route-scene, climax.\n\nRead: route-scene, climax.\n\n### State field: route-gift\n\nWrite: route-scene.\n\nRead: climax.`);
     source = replaceSection(source, "## Beat map", "## Branch and reconvergence rules", `### Beat: opening\n\nType: required\nPurpose: establish the letter and invite a stance\nRequired facts: sealed-letter\nExit: route-scene.\n\n### Beat: route-scene\n\nType: branch\nPurpose: choose one witness and receive route evidence\nRequired facts: exclusive-witness\nExit: climax.\n\n### Beat: climax\n\nType: climax\nPurpose: use the earned evidence in one final decision\nRequired facts: earned-cost\nExit: end.`);
     source = replaceSection(source, "## Climax and ending families", "## Recap and state repair", `### Ending family: first-truth\n\nEligibility: route-gift=gift-one.\nCost: The first account becomes public while the second remains unresolved.\nRequired callbacks: current-beat, route-gift.\nClosure: The date is verified and the letter receives a bounded public meaning.\n\n### Ending family: second-truth\n\nEligibility: route-gift=gift-two.\nCost: The signature is settled while the date remains disputed.\nRequired callbacks: current-beat, route-gift.\nClosure: The signature is verified and the witnesses retain separate motives.\n\n### Ending family: open-question\n\nEligibility: fallback=true.\nCost: The letter remains unresolved tonight.\nRequired callbacks: current-beat, route-gift.\nClosure: The player leaves without an invented answer or forced companion.`);
-    source = replaceSection(source, "## Evaluation cases", null, `### Evaluation case: input-equivalence\n\nPass when speech, action, and decision forms map to the same authored intent.`);
+    source = replaceSection(source, "## Evaluation cases", null, `### Evaluation case: speech-blockquote\n\nPass when every character-spoken paragraph begins with Markdown > block-quote syntax, remains in quotation marks beneath a standalone speaker label, and narration, player prompts, lifecycle notices, and state repair remain outside the block quote.\n\n### Evaluation case: input-equivalence\n\nPass when speech, action, and decision forms map to the same authored intent.`);
     expect(validateCartridgeDocument(source, covenant)).toMatchObject({
       id: "the-guide.elixir.template-proof",
       story: { beatProfile: { count: 3 }, endingProfile: { familyCount: 3 } },

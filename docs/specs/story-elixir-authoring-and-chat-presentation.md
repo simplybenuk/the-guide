@@ -308,6 +308,11 @@ recognisable across supported harnesses even though its prose varies.
    requires a new labelled block.
 3. Character dialogue must use quotation marks. Narration must not use quotation
    marks merely to simulate another unlabeled speaker.
+   New Story cartridges authored from the reusable template must also render
+   every character-spoken paragraph as a Markdown block quote beneath its
+   standalone speaker label. Narration, player prompts, lifecycle notices, and
+   state repair must remain outside the block quote; quotation marks and labels
+   preserve the plain-text fallback.
 4. The format must remain understandable when Markdown renders as plain text.
    Styling may aid scanning but cannot carry speaker identity by itself.
 5. Colour, emoji, icons, tables, HTML, images, custom components, alignment, and
@@ -346,7 +351,7 @@ recognisable across supported harnesses even though its prose varies.
 
    **Lady Harcourt**
 
-   “Tell me plainly: did you come tonight for your family, or for yourself?”
+   > “Tell me plainly: did you come tonight for your family, or for yourself?”
 
    **Your turn**
 
@@ -367,7 +372,7 @@ recognisable across supported harnesses even though its prose varies.
    ```markdown
    **Mr Vale**
 
-   “If I asked you to leave before the final waltz, would you trust me?”
+   > “If I asked you to leave before the final waltz, would you trust me?”
 
    **Your turn**
 

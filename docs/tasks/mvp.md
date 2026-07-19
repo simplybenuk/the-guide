@@ -62,12 +62,16 @@ No approved hosting/catalogue implementation task remains after H11.
     set, replacement-token grammar, required section order, semantic speaker
     labels, Story score, generic content, candidate lifecycle, and zero tested
     classes.
+  - Refined future Story speech presentation from owner feedback: every
+    character-spoken paragraph is a Markdown block quote beneath its standalone
+    speaker label, with narration and prompts outside; the cartridge score and
+    evaluation fixture retain a mandatory `speech-blockquote` case.
   - `npm run validate` passed 16 Vitest files with 105 tests, the deterministic
     42-file/9,220,675-byte build and audit, and all 13 browser journeys.
-  - Independent review found no remaining blocking or should-fix issue and
-    declared S08 **READY FOR HUMAN TESTING**. The per-story evaluator still
-    requires explicit fixture-loader registration until that loader is
-    generalized.
+  - Independent review and focused speech-blockquote re-review found no blocking
+    or should-fix issue and declared S08 **READY FOR HUMAN TESTING**. The
+    per-story evaluator still requires explicit fixture-loader registration
+    until that loader is generalized.
   - Changes are local and uncommitted; no catalogue, release, compatibility, or
     deployment state changed. Product-wide E07 remains a separate gate.
 

@@ -129,7 +129,7 @@ Use this semantic presentation consistently:
 
 **Character Name**
 
-“{{SHORT_CHARACTER_LINE_OR_QUESTION}}”
+> “{{SHORT_CHARACTER_LINE_OR_QUESTION}}”
 
 **Your turn**
 
@@ -143,9 +143,12 @@ describe what you do, or state your decision.
 - Something else that fits the moment.
 
 Labels are semantic Markdown, not simulated provider UI. Present one current
-interaction focus. Keep character dialogue in quotation marks beneath the
-speaker label and ensure the turn remains understandable as plain text. The
-model must not speak for the player.
+interaction focus. Every paragraph of character speech must use Markdown
+block-quote syntax beginning with `> ` and quotation marks beneath its speaker
+label. Do not put narration, `Your turn`, approaches, lifecycle notices, or
+state repair inside a block quote. Speaker labels and quotation marks must keep
+the exchange understandable as plain text even when block-quote styling is not
+rendered. The model must not speak for the player.
 
 ## World truths and information schedule
 
@@ -265,7 +268,7 @@ do not treat its abbreviated array cardinality as a playable score.
     "closure": "{{FALLBACK_CLOSURE}}",
     "fallback": true
   }],
-  "evaluationCaseIds": ["{{EVALUATION_CASE_ID}}"]
+  "evaluationCaseIds": ["speech-blockquote", "{{EVALUATION_CASE_ID}}"]
 }
 ```
 
@@ -330,12 +333,22 @@ Return to ordinary agent voice and do not prompt continued story play.
 
 Pacing: {{PACING_ENVELOPE}}  
 Narration: {{NARRATION_BOUNDARIES}}  
-Dialogue: {{DIALOGUE_BOUNDARIES}}  
+Dialogue: {{DIALOGUE_BOUNDARIES}} Every character-spoken paragraph uses
+Markdown block-quote syntax beginning with `> ` and remains in quotation marks.
 Continuity: {{STATE_CALLBACK_RULE}}  
 Player autonomy: never invent player speech, feeling, identity, or commitment.  
 Prose freedom: vary realization while preserving the authored score.
 
 ## Evaluation cases
+
+### Evaluation case: speech-blockquote
+
+Input / setup: render a turn containing narration, character speech, and a
+player invitation.
+Pass when every character-spoken paragraph begins with Markdown `> ` block-quote
+syntax, remains in quotation marks beneath a standalone speaker label, and
+narration, player prompts, lifecycle notices, and state repair remain outside
+the block quote.
 
 ### Evaluation case: {{EVALUATION_CASE_ID}}
 

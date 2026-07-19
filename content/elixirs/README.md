@@ -95,6 +95,12 @@ to speak, act, or decide, and the rule that the model never speaks for the
 player. These are authoring and runtime instructions rather than assumptions
 about third-party chat bubbles, colours, portraits, or layout.
 
+New authored Story templates additionally require every character-spoken
+paragraph to use Markdown block-quote syntax beneath its standalone speaker
+label. Narration, player prompts, lifecycle notices, and state repair remain
+outside block quotes. Quotation marks and speaker labels remain mandatory so
+the exchange is still legible when block-quote styling degrades to plain text.
+
 Use the reusable kit at `templates/story-elixir/` when starting a new authored
 Story. It provides the design brief, self-contained cartridge skeleton,
 evaluation fixture, catalogue and release candidates, artwork provenance, and

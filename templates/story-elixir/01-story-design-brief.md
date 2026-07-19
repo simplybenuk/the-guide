@@ -23,6 +23,8 @@ Date: {{YYYY_MM_DD}}
 - Facts deliberately left for the player: {{OPEN_PLAYER_FACTS}}
 - Supported modes: {{SPEECH_ACTION_DECISION_SUBSET}}
 - Choice presentation: {{OPEN_HYBRID_OR_AUTHORED_OPTIONS}}
+- Speech presentation: every character-spoken paragraph uses a Markdown block
+  quote beneath its standalone speaker label; narration and player prompts do not.
 - What an off-menu response can change: {{OFF_MENU_AGENCY}}
 - What the story must never decide for the player: {{PLAYER_AUTONOMY_LIMITS}}
 
@@ -111,4 +113,3 @@ replays, input-equivalence cases, ambiguity and off-menu cases, state repair,
 changed boundary, pause, stop, tool refusal, grounded memento, and post-release.
 
 {{EVALUATION_OUTLINE}}
-
