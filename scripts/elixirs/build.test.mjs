@@ -119,7 +119,7 @@ describe("static Elixir cabinet build", () => {
     expect(index.deploymentRevision).toBe("story-expansion-2026-07-19");
     expect(index.entries).toHaveLength(11);
     expect(JSON.stringify(index)).not.toMatch(/sourcePath|reviewReferences|compatibilityReferences|cartridge source|transcript/i);
-    expect(readOutput("collections/start-here/index.html")).toContain("Four distinct ways");
+    expect(readOutput("collections/start-here/index.html")).toContain("Four distinct genres");
     expect(readOutput("elixirs/signal/versions/0.1.0/index.html")).toContain(
       "1c371b5813f6d93f37cabe486337f2680928f3e2ae5c19d4e86d40328f597cbb",
     );
@@ -140,7 +140,7 @@ describe("static Elixir cabinet build", () => {
 
     expect((index.match(/data-spotlight/g) ?? [])).toHaveLength(1);
     expect((index.match(/data-shelf(?:\s|>)/g) ?? [])).toHaveLength(3);
-    expect((index.match(/<article class="elixir-card/g) ?? [])).toHaveLength(7);
+    expect((index.match(/<article class="elixir-card/g) ?? [])).toHaveLength(8);
     expect((browse.match(/<article class="elixir-card/g) ?? [])).toHaveLength(11);
     expect(index).not.toContain("<dt>");
     expect(browse).not.toContain("<dt>");

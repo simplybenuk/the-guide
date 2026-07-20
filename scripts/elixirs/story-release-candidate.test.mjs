@@ -20,8 +20,10 @@ const inputs = () => ({
       collection.elixirIds.push("the-guide.elixir.story");
     }
     if (id === "three-ways-to-play") {
-      collection.elixirIds = collection.elixirIds.map((elixirId) =>
-        elixirId === "the-guide.elixir.regency-ball" ? "the-guide.elixir.story" : elixirId);
+      collection.elixirIds = collection.elixirIds.filter(
+        (elixirId) => elixirId !== "the-guide.elixir.regency-ball",
+      );
+      collection.elixirIds.push("the-guide.elixir.story");
     }
     return collection;
   }),

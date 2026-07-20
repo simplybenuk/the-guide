@@ -216,9 +216,9 @@ describe("Elixir catalogue contracts", () => {
       expect(browse).toContain("data-filter-id=\"interaction-speech\"");
       expect(home).toContain("The Regency Ball");
       expect(home).toContain("Start here");
-      expect(home).toContain("Three ways to play");
+      expect(home).toContain("Three worlds to enter");
       expect(startHere).toContain("The Regency Ball");
-      expect(threeWays).toContain("The Regency Ball");
+      expect(threeWays).toContain("The Dragon&#39;s Last Contract");
       expect(() => auditElixirArtifact({ artifactDirectory: outputDirectory, catalogue })).not.toThrow();
     } finally {
       rmSync(outputDirectory, { recursive: true, force: true });

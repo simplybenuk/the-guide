@@ -47,7 +47,21 @@ for (const basePath of ["/", "/the-guide/"]) {
     await expect(page.getByRole("heading", { name: "Choose a story. Shape what happens." })).toBeVisible();
     await expect(page.locator("[data-spotlight]")).toHaveCount(1);
     await expect(page.locator("[data-shelf]")).toHaveCount(3);
-    await expect(page.locator("[data-catalogue-entry]")).toHaveCount(7);
+    await expect(page.locator("[data-catalogue-entry]")).toHaveCount(8);
+    const homeShelfTitles = await page.locator("[data-shelf] [data-catalogue-entry] h3").allTextContents();
+    expect(homeShelfTitles).toEqual([
+      "The Last Light",
+      "The Last Light",
+      "The Regency Ball",
+      "Claws",
+      "Room 313",
+      "Red Dust Reckoning",
+      "Murder at the Moonlight Express",
+      "The Dragon's Last Contract",
+    ]);
+    expect(homeShelfTitles).not.toContain("The Signal Elixir");
+    expect(homeShelfTitles).not.toContain("The Mystery Elixir");
+    expect(homeShelfTitles).not.toContain("The Story Elixir");
     await expect(page.getByRole("link", { name: "Browse all stories", exact: true })).toBeVisible();
     await expect(page.getByText("The Guide does not receive your game conversation", { exact: false })).toBeVisible();
     await expect(page.getByRole("link", { name: "Read the alpha usage terms" })).toHaveAttribute("href", "terms.md");
@@ -363,7 +377,7 @@ test("exposes editorial collections, explainable related items, and immutable re
   const startShelf = page.locator("[data-shelf]").filter({ has: page.getByRole("heading", { name: "Start here" }) });
   await startShelf.getByRole("link", { name: "View collection" }).click();
   await expect(page.getByRole("heading", { name: "Start here" })).toBeVisible();
-  await expect(page.getByRole("article")).toHaveCount(3);
+  await expect(page.getByRole("article")).toHaveCount(4);
   await expect(page.getByText("Curated by The Guide")).toBeVisible();
 
   await page.goto("/the-guide/elixirs/last-light/");
@@ -393,7 +407,7 @@ test("keeps the complete static catalogue browseable without JavaScript", async 
   const page = await context.newPage();
   await page.goto("http://127.0.0.1:4173/the-guide/");
   await expect(page.locator("[data-spotlight]")).toHaveCount(1);
-  await expect(page.locator("[data-catalogue-entry]")).toHaveCount(7);
+  await expect(page.locator("[data-catalogue-entry]")).toHaveCount(8);
   await expect(page.getByRole("searchbox")).toHaveCount(0);
   await page.getByRole("link", { name: /Browse all 11 stories/ }).click();
   await expect(page.getByRole("heading", { name: "Browse all stories" })).toBeVisible();

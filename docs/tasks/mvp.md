@@ -107,6 +107,16 @@ push, deployment, release, skill publication, analytics, or compatibility claim.
   - Independent `bwh-agent-review` found no blocking or should-fix issue and
     returned **READY FOR HUMAN TESTING**. Evidence:
     `docs/evaluations/named-story-download-agent-review.md`.
+- [x] **F07 — Refresh homepage shelves for the authored catalogue** (2026-07-20)
+  - Reduce repeated titles across the three shelves while retaining the single
+    editorial spotlight and bounded collection-led homepage.
+  - Expand Start here to four genre-distinct entries and replace the obsolete
+    mechanic comparison with three new genre-led story picks.
+  - Full validation passed lint, typecheck, 124 tests, a deterministic
+    142-file/40,672,541-byte build audit, and all 12 browser journeys.
+  - Independent `bwh-agent-review` found no blocking or should-fix issue and
+    returned **READY FOR HUMAN TESTING**. Evidence:
+    `docs/evaluations/homepage-story-shelves-agent-review.md`.
 
 The owner explicitly authorized commit, push, and an experimental GitHub Pages
 release of The Regency Ball on 2026-07-19 so live harness evidence can be

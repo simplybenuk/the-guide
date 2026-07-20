@@ -40,7 +40,7 @@ describe("authored Story catalogue expansion", () => {
     expect(retired.map(({ elixirId }) => elixirId)).toEqual(["the-guide.elixir.signal", "the-guide.elixir.mystery", "the-guide.elixir.story"]);
     expect(discoverable).toHaveLength(11);
     expect(catalogue.collections.find(({ id }) => id === "start-here").elixirIds).toEqual([
-      "the-guide.elixir.last-light", "the-guide.elixir.regency-ball", "the-guide.elixir.claws",
+      "the-guide.elixir.last-light", "the-guide.elixir.regency-ball", "the-guide.elixir.claws", "the-guide.elixir.room-313",
     ]);
   });
 
