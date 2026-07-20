@@ -62,7 +62,7 @@ for (const basePath of ["/", "/the-guide/"]) {
     await expect(page.getByRole("link", { name: "Read the alpha usage terms" })).toHaveAttribute("href", "../../terms.md");
     await expect(page.getByRole("link", { name: "Download story" })).toHaveAttribute(
       "href",
-      "../../cartridges/last-light/0.1.0/elixir.md",
+      "../../downloads/the-last-light-0.1.0.md",
     );
     await page.getByText("Use the Agent Skill").click();
     await expect(page.getByText("/agent-elixir", { exact: false })).toBeVisible();
@@ -267,6 +267,7 @@ test("records download initiation locally without an analytics request", async (
   await page.getByRole("link", { name: "Download story" }).click();
   const download = await downloadPromise;
   expect(download.suggestedFilename()).toBe("claws-0.1.0.md");
+  expect(download.url()).toMatch(/\/downloads\/claws-0\.1\.0\.md$/);
 
   await page.getByText("Use the Agent Skill").click();
   const skillDownloadPromise = page.waitForEvent("download");
@@ -316,6 +317,7 @@ test("keeps the named download, prompt, source, and skill available without Java
   await expect(page.locator("[data-cartridge-source]")).toContainText("The Last Light Elixir has worn off");
   const download = page.getByRole("link", { name: "Download story" });
   await expect(download).toHaveAttribute("download", "the-last-light-0.1.0.md");
+  await expect(download).toHaveAttribute("href", "../../downloads/the-last-light-0.1.0.md");
   await page.getByText("Use the Agent Skill").click();
   await expect(page.getByRole("link", { name: "Download agent-elixir skill" })).toHaveAttribute("download", "agent-elixir-0.1.0.zip");
   const response = await context.request.get(

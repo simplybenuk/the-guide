@@ -287,10 +287,11 @@ skill once, then starts any story by attaching its Markdown and invoking
 button. Source inspection, legal/privacy information, and technical provenance
 remain lower on the page and are not framed as steps needed to play.
 
-The build derives the suggested filename from validated cartridge metadata and
-uses the canonical file as the link target. The reusable skill is maintained as
-source in the repository and deterministically archived as a separately audited
-static artifact.
+The build derives the filename from validated cartridge metadata and emits a
+byte-identical named download artifact as the primary link target. Canonical and
+legacy `elixir.md` paths remain immutable source/transparency URLs. The reusable
+skill is maintained as source in the repository and deterministically archived
+as a separately audited static artifact.
 
 ## Security, privacy, and trust boundaries
 

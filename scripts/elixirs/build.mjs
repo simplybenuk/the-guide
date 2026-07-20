@@ -47,6 +47,7 @@ const escapeHtml = (value) =>
 
 const formatToken = (value) => value.replaceAll("_", " ");
 const releaseKey = ({ elixirId, version }) => `${elixirId}@${version}`;
+const cartridgeDownloadPath = (metadata) => `downloads/${createCartridgeDownloadName(metadata)}`;
 const evidenceArtifactPath = ({ release, kind, index }) => `evidence/${release.publisherId}/${release.slug}/${release.version}/${kind}-${index + 1}.md`;
 const renderEvidenceLinks = ({ release, kind, references, prefix }) => references.map((reference, index) => `<a href="${prefix}${evidenceArtifactPath({ release, kind, index })}">${escapeHtml(reference.split("/").at(-1))}</a>`).join(", ");
 
@@ -312,9 +313,8 @@ const renderLifecycleNotice = ({ entry, state = entry, catalogue, hrefPrefix, ve
 };
 
 const renderDetail = ({ entry, release, metadata, source, catalogue, index }) => {
-  const deliveryPath = release.legacyPaths[0] ?? release.canonicalPath;
-  const cartridgePath = `../../${deliveryPath}`;
   const downloadName = createCartridgeDownloadName(metadata);
+  const cartridgePath = `../../${cartridgeDownloadPath(metadata)}`;
   const requiredInputs = metadata.requiredInputs.map(formatToken).join(", ");
   const prompt = createLauncherPrompt();
   const mechanic = catalogue.taxonomy.find(({ id }) => id === entry.mechanicId).label;
@@ -459,6 +459,7 @@ export const buildElixirSite = ({
   for (const entry of catalogue.entries.filter(({ lifecycle }) => !["retired", "withdrawn"].includes(lifecycle))) {
     const release = releaseByKey.get(`${entry.elixirId}@${entry.recommendedVersion}`);
     const cartridge = cartridgeByKey.get(releaseKey(release));
+    write(cartridgeDownloadPath(cartridge.metadata), cartridge.source);
     write(`elixirs/${entry.slug}/index.html`, renderDetail({ entry, release, ...cartridge, catalogue, index: publicIndex }));
   }
 

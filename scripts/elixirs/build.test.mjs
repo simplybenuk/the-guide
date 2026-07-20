@@ -7,6 +7,7 @@ import { afterAll, beforeAll, describe, expect, it } from "vitest";
 
 import { buildElixirSite } from "./build.mjs";
 import { loadCatalogue } from "./catalogue.mjs";
+import { createCartridgeDownloadName } from "./delivery-envelope.mjs";
 
 const repositoryRoot = process.cwd();
 const outputDirectory = mkdtempSync(join(tmpdir(), "guide-elixirs-build-"));
@@ -82,7 +83,8 @@ describe("static Elixir cabinet build", () => {
   });
 
   it("derives source, download, and copy content from identical cartridge bytes", () => {
-    for (const slug of loadCatalogue().entries.filter(({ lifecycle }) => lifecycle === "published").map(({ slug }) => slug)) {
+    const catalogue = loadCatalogue();
+    for (const slug of catalogue.entries.filter(({ lifecycle }) => lifecycle === "published").map(({ slug }) => slug)) {
       const canonical = readFileSync(resolve(repositoryRoot, `content/elixirs/${slug}.md`));
       const emitted = readFileSync(
         resolve(outputDirectory, `cartridges/${slug}/0.1.0/elixir.md`),
@@ -91,10 +93,17 @@ describe("static Elixir cabinet build", () => {
         resolve(outputDirectory, `cartridges/the-guide/${slug}/0.1.0/elixir.md`),
       );
       const detail = readOutput(`elixirs/${slug}/index.html`);
+      const entry = catalogue.entries.find((candidate) => candidate.slug === slug);
+      const release = catalogue.releases.find(({ elixirId, version }) => elixirId === entry.elixirId && version === entry.recommendedVersion);
+      const metadata = catalogue.cartridges.find(({ release: candidate }) => candidate.elixirId === release.elixirId && candidate.version === release.version).metadata;
+      const downloadName = createCartridgeDownloadName(metadata);
+      const namedDownload = readFileSync(resolve(outputDirectory, `downloads/${downloadName}`));
 
       expect(emitted.equals(canonical)).toBe(true);
       expect(namespaced.equals(canonical)).toBe(true);
-      expect(detail).toContain(`../../cartridges/${slug}/0.1.0/elixir.md`);
+      expect(namedDownload.equals(canonical)).toBe(true);
+      expect(detail).toContain(`href="../../downloads/${downloadName}"`);
+      expect(detail).toContain(`download="${downloadName}"`);
       expect(detail).toContain("data-cartridge-source");
       expect(detail).toContain("Read the complete cartridge");
       expect(detail).toContain('href="../../terms.md"');

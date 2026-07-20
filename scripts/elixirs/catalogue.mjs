@@ -6,6 +6,7 @@ import { fileURLToPath } from "node:url";
 import { z } from "zod";
 
 import { validateCartridgeDocument } from "./cartridge.mjs";
+import { createCartridgeDownloadName } from "./delivery-envelope.mjs";
 
 export const catalogueSchemaVersion = "1.0.0";
 const moduleRoot = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
@@ -743,7 +744,12 @@ export const deriveExpectedArtifactPaths = (catalogue) => {
     for (const legacyPath of release.legacyPaths) paths.add(legacyPath);
     paths.add(`elixirs/${release.slug}/versions/${release.version}/index.html`);
   }
-  for (const entry of catalogue.entries.filter(({ lifecycle }) => !["retired", "withdrawn"].includes(lifecycle))) paths.add(`elixirs/${entry.slug}/index.html`);
+  for (const entry of catalogue.entries.filter(({ lifecycle }) => !["retired", "withdrawn"].includes(lifecycle))) {
+    paths.add(`elixirs/${entry.slug}/index.html`);
+    const release = catalogue.releases.find(({ elixirId, version }) => elixirId === entry.elixirId && version === entry.recommendedVersion);
+    const cartridge = catalogue.cartridges.find(({ release: candidate }) => releaseKey(candidate) === releaseKey(release));
+    paths.add(`downloads/${createCartridgeDownloadName(cartridge.metadata)}`);
+  }
   for (const collection of catalogue.collections) paths.add(`collections/${collection.id}/index.html`);
   for (const release of catalogue.releases) {
     release.reviewReferences.forEach((_, index) => paths.add(`evidence/${release.publisherId}/${release.slug}/${release.version}/review-${index + 1}.md`));

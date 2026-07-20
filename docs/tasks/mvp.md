@@ -98,6 +98,15 @@ push, deployment, release, skill publication, analytics, or compatibility claim.
   - Changes remain local and uncommitted. No push, deployment, release, skill
     publication, analytics, or broad compatibility promotion occurred. Product-
     wide E07 remains a separate compatibility gate.
+- [x] **F06 — Make download URL basenames match story filenames** (2026-07-20)
+  - Emit a byte-identical generated download artifact named from the validated
+    story title and version, while preserving immutable `elixir.md` URLs.
+  - Point the primary action at the named path and audit byte integrity. Local
+    validation passed 124 tests, a deterministic 142-file/40,669,833-byte build
+    and audit, and all 12 browser journeys.
+  - Independent `bwh-agent-review` found no blocking or should-fix issue and
+    returned **READY FOR HUMAN TESTING**. Evidence:
+    `docs/evaluations/named-story-download-agent-review.md`.
 
 The owner explicitly authorized commit, push, and an experimental GitHub Pages
 release of The Regency Ball on 2026-07-19 so live harness evidence can be

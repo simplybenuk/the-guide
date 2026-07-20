@@ -10,6 +10,7 @@ import {
   renderWithdrawalTombstone,
 } from "./catalogue.mjs";
 import { agentElixirArchiveName, createAgentElixirArchive } from "./skill-archive.mjs";
+import { createCartridgeDownloadName } from "./delivery-envelope.mjs";
 
 const repositoryRoot = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
 const defaultCatalogue = loadCatalogue();
@@ -102,6 +103,13 @@ export const auditElixirArtifact = ({ artifactDirectory, catalogue = defaultCata
     for (const path of [release.canonicalPath, ...release.legacyPaths]) {
       if (hashes[path] !== expectedHash) throw new Error(`Emitted ${release.slug} cartridge differs from canonical bytes or approved tombstone`);
     }
+  }
+
+  for (const entry of catalogue.entries.filter(({ lifecycle }) => !["retired", "withdrawn"].includes(lifecycle))) {
+    const cartridge = catalogue.cartridges.find(({ release }) => release.elixirId === entry.elixirId && release.version === entry.recommendedVersion);
+    const expectedHash = createHash("sha256").update(cartridge.source).digest("hex");
+    const path = `downloads/${createCartridgeDownloadName(cartridge.metadata)}`;
+    if (hashes[path] !== expectedHash) throw new Error(`Named download for ${entry.slug} differs from canonical cartridge bytes`);
   }
 
   const expectedIndex = `${JSON.stringify(createPublicCatalogueIndex(catalogue), null, 2)}\n`;
