@@ -606,9 +606,11 @@ unchanged for `0.1.0`.
    reviewed collection/catalogue record with visible rationale.
 7. Recommendations must not claim personal knowledge, popularity, completion,
    quality, safety, or compatibility beyond displayed evidence.
-8. Every published collection is represented as an ordered landing-page shelf.
-   A shelf is a labelled semantic list with its rationale and a link to the
-   complete static collection page.
+8. The landing page presents a reviewed subset of published collections as
+   ordered shelves. A collection may remain available as a complete static page
+   while omitted from the landing page when it duplicates the spotlight. Each
+   visible shelf is a labelled semantic list with its rationale and a link to
+   its complete collection page.
 9. Shelves use contained horizontal overflow: touch/trackpad scrolling on small
    screens and labelled previous/next controls where controls add value. They
    must not auto-advance, loop deceptively, trap focus, or cause document-level
@@ -926,9 +928,9 @@ delivery-envelope or cartridge-byte change stops migration.
     withdrawal, or creator intake occurs under this specification alone.
 31. The root page contains exactly one deterministic editorial spotlight and
     does not render the complete catalogue as a vertical card grid.
-32. Every published editorial collection appears as a labelled shelf with a
-    rationale, ordered compact cards, and a link to its complete collection
-    page.
+32. Every homepage-selected editorial collection appears as a labelled shelf
+    with a rationale, ordered compact cards, and a link to its complete
+    collection page; omitted published collections retain their static pages.
 33. Landing and browse cards contain no full fact grid and expose no more than
     three fit signals in addition to title, artwork, concise promise, and
     lifecycle/status treatment.

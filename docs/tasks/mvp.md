@@ -117,6 +117,17 @@ push, deployment, release, skill publication, analytics, or compatibility claim.
   - Independent `bwh-agent-review` found no blocking or should-fix issue and
     returned **READY FOR HUMAN TESTING**. Evidence:
     `docs/evaluations/homepage-story-shelves-agent-review.md`.
+- [ ] **F08 — Simplify the homepage collection stack** (2026-07-20)
+  - Remove the visible Find something to play heading block and omit the
+    redundant Low-energy play shelf from the homepage.
+  - Preserve the standalone Low-energy play collection page and keep the two
+    remaining homepage shelves accessible and bounded.
+  - Full validation covers lint, typecheck, 124 tests, a deterministic
+    142-file/40,670,133-byte build audit, and all 12 browser journeys.
+  - Initial independent review found one specification-only should-fix: AC32
+    still required every published collection on the homepage. The criterion is
+    now aligned with FR-7, but independent re-review is pending because the
+    review CLI reached its usage cap and the team-agent service was unavailable.
 
 The owner explicitly authorized commit, push, and an experimental GitHub Pages
 release of The Regency Ball on 2026-07-19 so live harness evidence can be

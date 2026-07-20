@@ -46,11 +46,12 @@ for (const basePath of ["/", "/the-guide/"]) {
 
     await expect(page.getByRole("heading", { name: "Choose a story. Shape what happens." })).toBeVisible();
     await expect(page.locator("[data-spotlight]")).toHaveCount(1);
-    await expect(page.locator("[data-shelf]")).toHaveCount(3);
-    await expect(page.locator("[data-catalogue-entry]")).toHaveCount(8);
+    await expect(page.locator("[data-shelf]")).toHaveCount(2);
+    await expect(page.locator("[data-catalogue-entry]")).toHaveCount(7);
+    await expect(page.getByRole("heading", { name: "Find something to play" })).toHaveCount(0);
+    await expect(page.getByRole("heading", { name: "Low-energy play" })).toHaveCount(0);
     const homeShelfTitles = await page.locator("[data-shelf] [data-catalogue-entry] h3").allTextContents();
     expect(homeShelfTitles).toEqual([
-      "The Last Light",
       "The Last Light",
       "The Regency Ball",
       "Claws",
@@ -407,15 +408,14 @@ test("keeps the complete static catalogue browseable without JavaScript", async 
   const page = await context.newPage();
   await page.goto("http://127.0.0.1:4173/the-guide/");
   await expect(page.locator("[data-spotlight]")).toHaveCount(1);
-  await expect(page.locator("[data-catalogue-entry]")).toHaveCount(8);
+  await expect(page.locator("[data-catalogue-entry]")).toHaveCount(7);
   await expect(page.getByRole("searchbox")).toHaveCount(0);
   await page.getByRole("link", { name: /Browse all 11 stories/ }).click();
   await expect(page.getByRole("heading", { name: "Browse all stories" })).toBeVisible();
   await expect(page.getByRole("searchbox")).toBeVisible();
   await expect(page.getByRole("article")).toHaveCount(11);
-  await page.goto("http://127.0.0.1:4173/the-guide/");
-  const lowEnergyShelf = page.locator("[data-shelf]").filter({ has: page.getByRole("heading", { name: "Low-energy play" }) });
-  await lowEnergyShelf.getByRole("link", { name: "View collection" }).click();
+  await page.goto("http://127.0.0.1:4173/the-guide/collections/low-energy/");
+  await expect(page.getByRole("heading", { name: "Low-energy play" })).toBeVisible();
   await expect(page.getByRole("article")).toHaveCount(1);
   await page.getByRole("link", { name: "Open The Last Light" }).click();
   await expect(page.getByRole("heading", { name: "Take this story to your AI" })).toBeVisible();

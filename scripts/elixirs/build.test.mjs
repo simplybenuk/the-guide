@@ -139,8 +139,11 @@ describe("static Elixir cabinet build", () => {
     const detail = readOutput("elixirs/last-light/index.html");
 
     expect((index.match(/data-spotlight/g) ?? [])).toHaveLength(1);
-    expect((index.match(/data-shelf(?:\s|>)/g) ?? [])).toHaveLength(3);
-    expect((index.match(/<article class="elixir-card/g) ?? [])).toHaveLength(8);
+    expect((index.match(/data-shelf(?:\s|>)/g) ?? [])).toHaveLength(2);
+    expect((index.match(/<article class="elixir-card/g) ?? [])).toHaveLength(7);
+    expect(index).not.toContain("Find something to play");
+    expect(index).not.toContain("Low-energy play");
+    expect(readOutput("collections/low-energy/index.html")).toContain("Low-energy play");
     expect((browse.match(/<article class="elixir-card/g) ?? [])).toHaveLength(11);
     expect(index).not.toContain("<dt>");
     expect(browse).not.toContain("<dt>");

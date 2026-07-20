@@ -196,6 +196,7 @@ const renderPagination = ({ page, pages, nested = false }) => {
 const renderIndex = (catalogue) => {
   const publicEntries = catalogue.entries.filter(({ lifecycle }) => !["retired", "withdrawn"].includes(lifecycle));
   const spotlight = publicEntries.find(({ featuredRationale }) => featuredRationale) ?? publicEntries[0];
+  const homeCollections = catalogue.collections.filter(({ id }) => id !== "low-energy");
   return renderDocument({
     title: "The Guide — Interactive stories",
     body: `<header class="site-header">
@@ -209,9 +210,8 @@ const renderIndex = (catalogue) => {
     <p><a class="button-link" href="./browse/#catalogue-search">Browse all ${publicEntries.length} stories</a></p>
   </section>
   ${renderSpotlight({ entry: spotlight, catalogue })}
-  <section class="shelf-library" aria-labelledby="collections-title">
-    <div class="section-heading"><div><p class="eyebrow">The collection</p><h2 id="collections-title">Find something to play</h2></div><p>Curated by people, never ranked from private play, tracking, or popularity.</p></div>
-    ${catalogue.collections.map((collection) => renderShelf({ collection, catalogue })).join("\n")}
+  <section class="shelf-library" aria-label="Featured story collections">
+    ${homeCollections.map((collection) => renderShelf({ collection, catalogue })).join("\n")}
   </section>
   <section class="how-it-works" aria-labelledby="how-title">
     <p class="eyebrow">No special protocol</p><h2 id="how-title">Download, attach, play</h2>
