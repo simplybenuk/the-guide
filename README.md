@@ -1,3 +1,6 @@
+<img width="1080" height="998" alt="Screenshot_20260721-220310" src="https://github.com/user-attachments/assets/ee2a515c-2585-4a6f-8650-693caeb433d6" />
+
+
 # The Guide
 
 The Guide is a cabinet of transparent, portable role-play games for you and an
